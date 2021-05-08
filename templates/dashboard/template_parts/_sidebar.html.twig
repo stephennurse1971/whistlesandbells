@@ -31,4 +31,21 @@
     </li>
     <hr class="sidebar-divider">
 
+
+    <!-- Nav Item #4 - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
+           aria-expanded="true" aria-controls="collapseAdmin">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Settings</span>
+        </a>
+        <div id="collapseAdmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
+{#                <a class="collapse-item text-secondary" href="{{ path('log_index') }}">>>User usage</a>#}
+            </div>
+        </div>
+    </li>
+    <hr class="sidebar-divider">
+
 </ul>
