@@ -17,4 +17,21 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+    /**
+     * @Route("/aboutSN", name="aboutSN", methods={"GET"})
+     */
+    public function aboutSN(): Response
+    {
+        return $this->render('home/aboutSN.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+
+
+
+
+
+
+
 }

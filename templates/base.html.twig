@@ -5,17 +5,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Stephen Nurse personal site">
+    <meta name="description" content="Stephen Nurse personal website">
     <meta name="author" content="Stephen Nurse">
     <link rel="icon" href="{{ asset('admin/img/beer-glass.png') }}">
-
-    <title>{% block title %}Stephen Nurse - Dashboard{% endblock %}</title>
+    <title>{% block title %}Stephen Nurse{% endblock %}</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('admin/css/font.css') }}">
 
@@ -39,97 +37,7 @@
         <!-- Main Content -->
         <div id="content">
 
-            <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                <!-- Sidebar Toggle (Topbar) -->
-                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                    <i class="fa fa-bars"></i>
-                </button>
-
-{#                <!-- Topbar Search -->#}
-
-
-{#                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">#}
-{#                    <div class="input-group">#}
-{#                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."#}
-{#                               aria-label="Search" aria-describedby="basic-addon2">#}
-{#                        <div class="input-group-append">#}
-{#                            <button class="btn btn-primary" type="button">#}
-{#                                <i class="fas fa-search fa-sm"></i>#}
-{#                            </button>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </form>#}
-
-                <!-- Topbar Navbar -->
-                <ul class="navbar-nav ml-auto">
-                    <!-- dropdown phone added -->
-                    <li class="nav-item mr-2" style="font-size: 12px">
-                        <div class="dropdown">
-                            <button class="btn btn-light btn-sm dropdown-toggle" type="button"
-                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                <i class="fa fa-phone"></i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#"><i class="fa fa-ukflag"></i>+44 7588 717515</a>
-                                <a class="dropdown-item" href="https://wa.me/447588717515"> <i class="fa fa-whatsapp"></i>WhatsApp</a>
-                                <a class="dropdown-item" href="skype:stephennurse?call"><i class="fa fa-skype"></i>Skype
-                                </a>
-
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item mr-2"><a href="mailto:info@vbc.com"><i class="fa fa-envelope" style="color:#d7cccc;font-size:16px"></i></a></li>
-{#                    <li class="nav-item mr-2" style="font-size: 18px"><a href="">FAQ</a></li>#}
-
-                </ul>
-<div style="margin-left: 50px">
-    <ul class="navbar-nav">
-                {% set loggedUser = app.user %}
-                <!-- Nav Item - User Information -->
-
-                {% if loggedUser is not null %}
-                    <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ loggedUser.email }} </span>
-
-                        </a>
-                        <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
-                            </a>
-                            <a class="dropdown-item" href="">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Password change
-                            </a>
-
-                            <a class="dropdown-item" href="{{ path('app_logout') }}" data-toggle="modal"
-                               data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</a>
-                        </div>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}" role="button"><span
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small"> Login </span>
-
-                        </a>
-                    </li>
-
-                {% endif %}
-
-
-                </ul>
-</div>
-            </nav>
-            <!-- End of Topbar -->
-
+            {{ include ('\dashboard/template_parts/_header.html.twig') }}
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
@@ -143,10 +51,8 @@
                 {% endblock body %}
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
-
         <!-- Footer
 {#{{ include('dashboard/template_parts/_footer.html.twig') }}#}
         <!-- End of Footer -->
@@ -183,17 +89,10 @@
 </div>
 {{ include('dashboard/template_parts/_footer.html.twig') }}
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.compatibility.min.js"
-            integrity="sha256-5ZrdaeOQG3t2uVEkC6FxsGF2y3taTxhdjyGLXi3RUDk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.compatibility.min.js" integrity="sha256-5ZrdaeOQG3t2uVEkC6FxsGF2y3taTxhdjyGLXi3RUDk=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
