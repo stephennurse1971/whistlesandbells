@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tennis Availability index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">Tennis Availability</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Venue</th>
+            <th style="text-align: right">Date</th>
+            <th style="text-align: right">Hour</th>
+            <th style="text-align: right">Available</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tennis_availability in tennis_availabilities %}
+            <tr>
+                <td>{{ tennis_availability.venue.venue }}</td>
+                <td style="text-align: right">{{ tennis_availability.date|date('d-M-Y') }}</td>
+                <td style="text-align: right">
+                    <a href="{{ path('tennis_availability_edit', {'id': tennis_availability.id}) }}">{{ tennis_availability.hour|number_format(2, '.', ',') }}</a>
+                </td>
+                <td style="text-align: right">{{ tennis_availability.available }}</td>
+
+            </tr>
+        {% else %}
+
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a class="btn btn-outline-success" href="{{ path('tennis_availability_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

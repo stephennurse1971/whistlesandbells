@@ -15,24 +15,40 @@
     <hr class="sidebar-divider">
 
 
-    <!-- Nav Item #1 - Pubs -->
+    <!-- Nav Item #1 - Photos -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePubs"
-           aria-expanded="true" aria-controls="collapsePubs">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePhotos"
+           aria-expanded="true" aria-controls="collapsePhotos">
             <i class="fas fa-fw fa-cog"></i>
             <span>Photos</span>
         </a>
-        <div id="collapsePubs" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapsePhotos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item text" href="">Photos</a>
+            </div>
+        </div>
+    </li>
+
+
+    <!-- Nav Item #2 - Tennis -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTennis"
+           aria-expanded="true" aria-controls="collapseTennis">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Tennis</span>
+        </a>
+        <div id="collapseTennis" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item text" href="{{ path('tennis_availability_index') }}">Tennis</a>
             </div>
         </div>
     </li>
     <hr class="sidebar-divider">
 
 
-    <!-- Nav Item #4 - Pages Collapse Menu -->
+    <!-- Nav Item #3 - Settings -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
            aria-expanded="true" aria-controls="collapseAdmin">
@@ -42,6 +58,9 @@
         <div id="collapseAdmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
+                <hr>
+                <a class="collapse-item" href="{{ path('tennis_venues_index') }}">Tennis venues</a>
+
 {#                <a class="collapse-item text-secondary" href="{{ path('log_index') }}">>>User usage</a>#}
             </div>
         </div>

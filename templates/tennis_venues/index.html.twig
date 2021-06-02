@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tennis Venues{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tennis Venues</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Venue</th>
+                <th>Address</th>
+                <th>Map</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tennis_venue in tennis_venues %}
+            <tr>
+                <td><a href="{{ path('tennis_venues_edit', {'id': tennis_venue.id}) }}">{{ tennis_venue.venue }}</a></td>
+                <td>{{ tennis_venue.address }}</td>
+                <td style="text-align: right"> <a target="_blank" href="{{ tennis_venue.mapLink }}"> <i style="font-size: 20px" class="fas fa-map-marker"></i>  </a></td>
+                <td>{{ tennis_venue.comment }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary bt-sm mt-2" href="{{ path('tennis_venues_new') }}">New</a>
+{% endblock %}

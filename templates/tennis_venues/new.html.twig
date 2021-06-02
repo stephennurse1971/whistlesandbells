@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Tennis Venues{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Tennis Venues</h1>
+
+    {{ include('tennis_venues/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_venues_index') }}">Return to list</a>
+{% endblock %}
