@@ -7,5 +7,24 @@
 
     {{ include('tennis_availability/_form.html.twig') }}
 
-    <a class="btn btn-outline-success btn-sm mt-2" href="{{ path('tennis_availability_index') }}">Return to list</a>
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_availability_index') }}">Return to list</a>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+    <script>
+        $("input.datetime").flatpickr({
+            altInput: true,
+            altFormat: "D j F Y",
+            time_24hr: true,
+            enableTime: false,
+            noCalendar: false,
+            dateFormat: "Y-m-d H:i:s",
+            minuteIncrement: 15
+            //minDate: "today",
+        });
+    </script>
+{% endblock javascripts %}

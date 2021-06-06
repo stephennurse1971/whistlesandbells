@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Credit Card Details index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Credit Card Details index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CardNumber</th>
+                <th>CardExpiry</th>
+                <th>CardCVC</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for credit_card_detail in credit_card_details %}
+            <tr>
+                <td>{{ credit_card_detail.cardNumber }}</td>
+                <td>{{ credit_card_detail.cardExpiry }}</td>
+                <td>{{ credit_card_detail.cardCVC }}</td>
+                <td>
+                    <a href="{{ path('credit_card_details_show', {'id': credit_card_detail.id}) }}">show</a>
+                    <a href="{{ path('credit_card_details_edit', {'id': credit_card_detail.id}) }}">edit</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-success btn-sm mt-2" href="{{ path('credit_card_details_new') }}">Create new</a>
+{% endblock %}

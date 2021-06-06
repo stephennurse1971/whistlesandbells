@@ -14,12 +14,10 @@
 
 {% block javascripts %}
     {{ parent() }}
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
     <script>
-
         $("input.datetime").flatpickr({
             altInput: true,
             altFormat: "D j F Y",
@@ -30,6 +28,5 @@
             minuteIncrement: 15
             //minDate: "today",
         });
-
     </script>
 {% endblock javascripts %}

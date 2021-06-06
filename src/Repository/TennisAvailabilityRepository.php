@@ -19,22 +19,28 @@ class TennisAvailabilityRepository extends ServiceEntityRepository
         parent::__construct($registry, TennisAvailability::class);
     }
 
-    // /**
-    //  * @return TennisAvailability[] Returns an array of TennisAvailability objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+
+    public function UniqueDate()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('t.date')
+            ->distinct()
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    public function UniqueHours()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.hour')
+            ->distinct()
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?TennisAvailability

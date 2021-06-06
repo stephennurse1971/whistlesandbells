@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\TennisAvailability;
 use App\Form\TennisAvailabilityType;
 use App\Repository\TennisAvailabilityRepository;
+use App\Repository\TennisVenuesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +19,13 @@ class TennisAvailabilityController extends AbstractController
     /**
      * @Route("/", name="tennis_availability_index", methods={"GET"})
      */
-    public function index(TennisAvailabilityRepository $tennisAvailabilityRepository): Response
+    public function index(TennisAvailabilityRepository $tennisAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
     {
         return $this->render('tennis_availability/index.html.twig', [
             'tennis_availabilities' => $tennisAvailabilityRepository->findAll(),
+            'tennis_venues'=>$tennisVenuesRepository->findAll(),
+            'dates'=> $tennisAvailabilityRepository->UniqueDate(),
+            'hours'=> $tennisAvailabilityRepository->UniqueHours()
         ]);
     }
 
