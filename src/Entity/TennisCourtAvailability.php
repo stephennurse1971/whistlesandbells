@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\TennisAvailabilityRepository;
+use App\Repository\TennisCourtAvailabilityRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TennisAvailabilityRepository::class)
  */
-class TennisAvailability
+class TennisCourtAvailability
 {
     /**
      * @ORM\Id

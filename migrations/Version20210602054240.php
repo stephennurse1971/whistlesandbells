@@ -21,13 +21,13 @@ final class Version20210602054240 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE tennis_venues (id INT AUTO_INCREMENT NOT NULL, venue VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, map_link VARCHAR(255) NOT NULL, comment VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE tennis_availability ADD date DATE NOT NULL');
+        $this->addSql('ALTER TABLE tennis_court_availability ADD date DATE NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE tennis_venues');
-        $this->addSql('ALTER TABLE tennis_availability DROP date');
+        $this->addSql('ALTER TABLE tennis_court_availability DROP date');
     }
 }

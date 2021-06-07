@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Tennis Player Availability{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">New Tennis Player Availability</h1>
+
+    {{ include('tennis_player_availability/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index') }}">Return to list</a>
+{% endblock %}

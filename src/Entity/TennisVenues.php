@@ -45,7 +45,7 @@ class TennisVenues
     private $webLink;
 
     /**
-     * @ORM\OneToMany(targetEntity=TennisAvailability::class, mappedBy="venue", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=TennisPlayerAvailability::class, mappedBy="venue", orphanRemoval=true)
      */
     private $tennisAvailabilities;
 
@@ -120,14 +120,14 @@ class TennisVenues
     }
 
     /**
-     * @return Collection|TennisAvailability[]
+     * @return Collection|TennisCourtAvailability[]
      */
     public function getTennisAvailabilities(): Collection
     {
         return $this->tennisAvailabilities;
     }
 
-    public function addTennisAvailability(TennisAvailability $tennisAvailability): self
+    public function addTennisAvailability(TennisCourtAvailability $tennisAvailability): self
     {
         if (!$this->tennisAvailabilities->contains($tennisAvailability)) {
             $this->tennisAvailabilities[] = $tennisAvailability;
@@ -137,7 +137,7 @@ class TennisVenues
         return $this;
     }
 
-    public function removeTennisAvailability(TennisAvailability $tennisAvailability): self
+    public function removeTennisAvailability(TennisCourtAvailability $tennisAvailability): self
     {
         if ($this->tennisAvailabilities->removeElement($tennisAvailability)) {
             // set the owning side to null (unless already changed)

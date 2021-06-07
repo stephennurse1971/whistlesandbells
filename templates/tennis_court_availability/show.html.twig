@@ -26,9 +26,9 @@
         </tbody>
     </table>
 
-    <a class="btn btn-outline-success bt-sm mt-2" href="{{ path('tennis_availability_index') }}">Return to list</a>
+    <a class="btn btn-outline-success bt-sm mt-2" href="{{ path('tennis_court_availability_index') }}">Return to list</a>
 
-    <a class="btn btn-outline-danger bt-sm mt-2" href="{{ path('tennis_availability_edit', {'id': tennis_availability.id}) }}">edit</a>
+    <a class="btn btn-outline-danger bt-sm mt-2" href="{{ path('tennis_court_availability_edit', {'id': tennis_availability.id}) }}">edit</a>
 
-    {{ include('tennis_availability/_delete_form.html.twig') }}
+    {{ include('tennis_court_availability/_delete_form.html.twig') }}
 {% endblock %}

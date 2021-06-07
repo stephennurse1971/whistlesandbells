@@ -20,12 +20,12 @@ final class Version20210602052959 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE tennis_availability (id INT AUTO_INCREMENT NOT NULL, venue VARCHAR(255) NOT NULL, hour INT NOT NULL, available VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE tennis_court_availability (id INT AUTO_INCREMENT NOT NULL, venue VARCHAR(255) NOT NULL, hour INT NOT NULL, available VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE tennis_availability');
+        $this->addSql('DROP TABLE tennis_court_availability');
     }
 }

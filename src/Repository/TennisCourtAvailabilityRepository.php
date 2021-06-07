@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\TennisAvailability;
+use App\Entity\TennisCourtAvailability;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method TennisAvailability|null find($id, $lockMode = null, $lockVersion = null)
- * @method TennisAvailability|null findOneBy(array $criteria, array $orderBy = null)
- * @method TennisAvailability[]    findAll()
- * @method TennisAvailability[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TennisCourtAvailability|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TennisCourtAvailability|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TennisCourtAvailability[]    findAll()
+ * @method TennisCourtAvailability[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TennisAvailabilityRepository extends ServiceEntityRepository
+class TennisCourtAvailabilityRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TennisAvailability::class);
+        parent::__construct($registry, TennisCourtAvailability::class);
     }
 
 
@@ -43,7 +43,7 @@ class TennisAvailabilityRepository extends ServiceEntityRepository
 
 
     /*
-    public function findOneBySomeField($value): ?TennisAvailability
+    public function findOneBySomeField($value): ?TennisCourtAvailability
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

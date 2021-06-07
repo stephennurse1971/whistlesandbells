@@ -1,36 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tennis Availability index{% endblock %}
+{% block title %}Tennis Player Availability{% endblock %}
 
 {% block body %}
-    <h1 style="color: red;">Tennis Availability</h1>
+
+    <h1 style="color: red">Tennis Player Availability</h1>
 
     {% for date in dates %}
         <h3 style="color: blue;">{{ date.date |date('d-M-Y') }}</h3>
+
         <table class="table">
+
             <thead>
             <tr>
                 <th style="text-align: right">Hour</th>
-                {% for venue in tennis_venues %}
-                    <th style="text-align: right" title="{{ venue.address }}">
-                        <a target="_blank" href={{ venue.weblink }}>{{ venue.venue }}
-                            <a target="_blank" href={{ venue.maplink }}><i style="font-size: 15px" class="fas fa-map-marker"></i></a></th>
+                {% for tennis_player in tennis_players %}
+                    <th>{{ tennis_player.name }}</th>
                 {% endfor %}
             </tr>
             </thead>
-
 
             <tbody>
             {% for hour in hours %}
                 <tr>
                     <td>{{ hour.hour }}</td>
-                    {% for venue in tennis_venues %}
-                        {% set availability = "Not scraped" %}
+                    {% for tennis_player in tennis_players %}
+                        {% set availability = "Not defined" %}
                         <td>
-                            {% for tennis_availability in tennis_availabilities %}
-                                {% if tennis_availability.date == date.date and tennis_availability.hour == hour.hour and tennis_availability.venue.id == venue.id %}
+                            {% for tennis_player_availability in tennis_player_availabilities %}
+                                {% if tennis_player_availability.date == date.date and tennis_player_availability.hour == hour.hour
+                                and tennis_player_availability.tennisPlayer.id == tennis_player.id %}
                                     {% set flag=1 %}
-                                    {% set availability= tennis_availability.available %}
+                                    {% set availability= tennis_player_availability.available %}
                                 {% endif %}
                             {% endfor %}
                             {{ availability }}
@@ -40,13 +41,13 @@
             {% endfor %}
             </tbody>
         </table>
-        <hr>
     {% endfor %}
 
 
-    <br>
-    <a class="btn btn-outline-success" href="{{ path('tennis_availability_new') }}">New</a>
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_new') }}">New</a>
+
 {% endblock %}
+
 
 {% block datatable %}
     <script>

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TennisPlayersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,16 @@ class TennisPlayers
      * @ORM\Column(type="integer", nullable=true)
      */
     private $rank;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TennisPlayerAvailability::class, mappedBy="tennisPlayer", orphanRemoval=true)
+     */
+    private $tennisPlayerAppetites;
+
+    public function __construct()
+    {
+        $this->tennisPlayerAppetites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +115,36 @@ class TennisPlayers
     public function setRank(?int $rank): self
     {
         $this->rank = $rank;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TennisPlayerAvailability[]
+     */
+    public function getTennisPlayerAppetites(): Collection
+    {
+        return $this->tennisPlayerAppetites;
+    }
+
+    public function addTennisPlayerAppetite(TennisPlayerAvailability $tennisPlayerAppetite): self
+    {
+        if (!$this->tennisPlayerAppetites->contains($tennisPlayerAppetite)) {
+            $this->tennisPlayerAppetites[] = $tennisPlayerAppetite;
+            $tennisPlayerAppetite->setTennisPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTennisPlayerAppetite(TennisPlayerAvailability $tennisPlayerAppetite): self
+    {
+        if ($this->tennisPlayerAppetites->removeElement($tennisPlayerAppetite)) {
+            // set the owning side to null (unless already changed)
+            if ($tennisPlayerAppetite->getTennisPlayer() === $this) {
+                $tennisPlayerAppetite->setTennisPlayer(null);
+            }
+        }
 
         return $this;
     }
