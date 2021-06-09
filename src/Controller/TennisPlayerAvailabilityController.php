@@ -8,6 +8,7 @@ use App\Repository\TennisCourtAvailabilityRepository;
 use App\Repository\TennisPlayerAvailabilityRepository;
 use App\Repository\TennisPlayersRepository;
 use App\Repository\TennisVenuesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,6 +55,35 @@ class TennisPlayerAvailabilityController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/add", name="tennis_player_availability_add")
+     */
+    public function newFromCalendar(TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository,EntityManagerInterface $entityManager, Request $request, TennisPlayersRepository $tennisPlayersRepository)
+    {
+        $hour = $request->query->get('hour');
+        $date = $request->query->get('date');
+        $tennisPlayerId = $request->query->get('player');
+        $tennisPlayer = $tennisPlayersRepository->find($tennisPlayerId);
+        $date = new \DateTime($date);
+        $tennisPlayerAvailability = new TennisPlayerAvailability();
+            $tennisPlayerAvailability->setTennisPlayer($tennisPlayer);
+            $tennisPlayerAvailability->setDate($date);
+            $tennisPlayerAvailability->setHour($hour);
+            $tennisPlayerAvailability->setAvailable('1');
+            $entityManager->persist($tennisPlayerAvailability);
+            $entityManager->flush();
+
+        return $this->render('tennis_player_availability/index.html.twig', [
+            'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
+            'dates'=> $tennisPlayerAvailabilityRepository->UniqueDate(),
+            'hours'=> $tennisPlayerAvailabilityRepository->UniqueHour(),
+            'tennis_players'=>$tennisPlayersRepository->findAll(),
+        ]);
+    }
+
+
+
     /**
      * @Route("/{id}", name="tennis_player_availability_show", methods={"GET"})
      */
@@ -67,21 +97,28 @@ class TennisPlayerAvailabilityController extends AbstractController
     /**
      * @Route("/{id}/edit", name="tennis_player_availability_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, TennisPlayerAvailability $tennisPlayerAvailability): Response
+    public function edit(Request $request, TennisPlayerAvailability $tennisPlayerAvailability,EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(TennisPlayerAvailabilityType::class, $tennisPlayerAvailability);
-        $form->handleRequest($request);
+        $available = $request->query->get('available');
+//        $form = $this->createForm(TennisPlayerAvailabilityType::class, $tennisPlayerAvailability);
+//        $form->handleRequest($request);
+        if ($available =='1') {
+            $tennisPlayerAvailability->setAvailable('0');
+        }
+        else {
+            $tennisPlayerAvailability->setAvailable('1');
+        }
 
-        if ($form->isSubmitted() && $form->isValid()) {
+//        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('tennis_player_availability_index');
-        }
-
-        return $this->render('tennis_player_availability/edit.html.twig', [
-            'tennis_player_availability' => $tennisPlayerAvailability,
-            'form' => $form->createView(),
-        ]);
+//        }
+//
+//        return $this->render('tennis_player_availability/edit.html.twig', [
+//            'tennis_player_availability' => $tennisPlayerAvailability,
+//            'form' => $form->createView(),
+//        ]);
     }
 
     /**

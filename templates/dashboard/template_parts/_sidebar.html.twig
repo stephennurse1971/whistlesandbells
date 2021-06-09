@@ -16,7 +16,7 @@
 
 
     <!-- Nav Item #1 - Photos -->
-
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePhotos"
            aria-expanded="true" aria-controls="collapsePhotos">
@@ -30,26 +30,30 @@
         </div>
     </li>
     <hr class="sidebar-divider">
+    {% endif %}
 
 
     <!-- Nav Item #2 - Tennis -->
-
+    {% if is_granted('ROLE_TENNIS_PLAYER') %}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTennis"
            aria-expanded="true" aria-controls="collapseTennis">
             <i class="fas fa-fw fa-cog"></i>
             <span>Tennis</span>
         </a>
-        <div id="collapseTennis" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseTennis" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item text" href="{{ path('tennis_court_availability_index') }}">Court availability</a>
-                <a class="collapse-item text" href="{{ path('tennis_player_availability_index')}}">Appetite to play</a>
+                <a class="collapse-item text" href="{{ path('tennis_player_availability_index')}}">Player availability</a>
+                <a class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_TENNIS_PLAYER'}) }}">Tennis players</a>
             </div>
         </div>
     </li>
     <hr class="sidebar-divider">
+    {% endif %}
 
 
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Nav Item #3 - Settings -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
@@ -60,13 +64,13 @@
         <div id="collapseAdmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
+                <a class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_FAMILY'}) }}">Family</a>
                 <hr>
                 <a class="collapse-item" href="{{ path('tennis_venues_index') }}">Tennis venues</a>
-                <a class="collapse-item" href="{{ path('tennis_players_index') }}">Tennis players</a>
                 <a class="collapse-item" href="">Credit cards</a>
             </div>
         </div>
     </li>
     <hr class="sidebar-divider">
-
+    {% endif %}
 </ul>

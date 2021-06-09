@@ -23,7 +23,21 @@ class UserController extends AbstractController
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'role' => 'All'
         ]);
+    }
+
+/**
+     * @Route("/{role}", name="user_role_index", methods={"GET"})
+     */
+    public function indexByRole(string $role,UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+            'role' => $role
+        ]);
+
+
     }
 
     /**
@@ -36,12 +50,18 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $get_roles = $form->get('role')->getData();
+            $roles = [
+                $get_roles
+            ];
+            $user->setRoles($roles);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
             return $this->redirectToRoute('user_index');
         }
+
 
         return $this->render('user/new.html.twig', [
             'user' => $user,
@@ -69,6 +89,11 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $get_roles = $form->get('role')->getData();
+            $roles = [
+                $get_roles
+            ];
+            $user->setRoles($roles);
             $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('user_index');

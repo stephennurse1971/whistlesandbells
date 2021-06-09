@@ -7,7 +7,7 @@
     <h1 style="color: red">Tennis Player Availability</h1>
 
     {% for date in dates %}
-        <h3 style="color: blue;">{{ date.date |date('d-M-Y') }}</h3>
+        <h3 style="color: blue;">{{ date.date |date('D d-M-Y') }}</h3>
 
         <table class="table">
 
@@ -15,36 +15,47 @@
             <tr>
                 <th style="text-align: right">Hour</th>
                 {% for tennis_player in tennis_players %}
-                    <th>{{ tennis_player.name }}</th>
+                    <th title={{ tennis_player.mobile }} >{{ tennis_player.name }}</th>
                 {% endfor %}
             </tr>
             </thead>
 
             <tbody>
-            {% for hour in hours %}
+            {% for i in 7..20 %}
                 <tr>
-                    <td>{{ hour.hour }}</td>
+                    <td>{{ i }}</td>
                     {% for tennis_player in tennis_players %}
-                        {% set availability = "Not defined" %}
-                        <td>
+                        {% set availability = 0 %}
+                        {% set id = 0 %}
+                        <td style="text-align: center" >
                             {% for tennis_player_availability in tennis_player_availabilities %}
-                                {% if tennis_player_availability.date == date.date and tennis_player_availability.hour == hour.hour
-                                and tennis_player_availability.tennisPlayer.id == tennis_player.id %}
+                                {% if tennis_player_availability.date == date.date and tennis_player_availability.hour == i
+                                    and tennis_player_availability.tennisPlayer.id == tennis_player.id %}
                                     {% set flag=1 %}
                                     {% set availability= tennis_player_availability.available %}
+                                    {% set id = tennis_player_availability.id %}
                                 {% endif %}
                             {% endfor %}
-                            {{ availability }}
+                            {% if availability == 0 %}
+                                <a href={{ path('tennis_player_availability_add', {'hour': i, 'date': date.date |date('Y-m-d') , 'player' : tennis_player.id}) }}>
+                                    <i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                            {% else %}
+                                <a href={{ path('tennis_player_availability_edit', {'id' : id, 'available':availability} ) }}><i class="fa fa-circle" style="color: green"></i> </a>
+                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        <br><hr>
     {% endfor %}
 
 
     <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_new') }}">New</a>
+    <br>
+    <br>
+    <br>
 
 {% endblock %}
 

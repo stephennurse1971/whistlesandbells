@@ -27,6 +27,7 @@ class TennisPlayerAvailabilityType extends AbstractType
                 ],
             ])
             ->add('hour')
+            ->add('available')
         ;
     }
 
