@@ -45,9 +45,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $get_roles = $form->get('role')->getData();
-            $roles = [
-                $get_roles
-            ];
+            $roles = $get_roles;
             $password=$form->get('password')->getData();
             if($password != '') {
                 $user->setPlainPassword($password);
