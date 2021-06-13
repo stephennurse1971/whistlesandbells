@@ -6149,6 +6149,10 @@
                 "MIT"
             ],
             "description": "Symfony bundle that adds password reset functionality.",
+            "support": {
+                "issues": "https://github.com/SymfonyCasts/reset-password-bundle/issues",
+                "source": "https://github.com/SymfonyCasts/reset-password-bundle/tree/v1.8.0"
+            },
             "time": "2021-05-05T18:21:50+00:00"
         }
     ],
@@ -6649,5 +6653,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.1.0"
 }

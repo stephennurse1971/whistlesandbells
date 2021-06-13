@@ -17,11 +17,7 @@ class TennisPlayerAvailability
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TennisPlayers::class, inversedBy="tennisPlayerAvailability")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $tennisPlayer;
+
 
     /**
      * @ORM\Column(type="date")
@@ -38,6 +34,11 @@ class TennisPlayerAvailability
      */
     private $available;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $user;
+
 
 
     public function getId(): ?int
@@ -45,17 +46,6 @@ class TennisPlayerAvailability
         return $this->id;
     }
 
-    public function getTennisPlayer(): ?TennisPlayers
-    {
-        return $this->tennisPlayer;
-    }
-
-    public function setTennisPlayer(?TennisPlayers $tennisPlayer): self
-    {
-        $this->tennisPlayer = $tennisPlayer;
-
-        return $this;
-    }
 
     public function getDate(): ?\DateTimeInterface
     {
@@ -89,6 +79,18 @@ class TennisPlayerAvailability
     public function setAvailable(?bool $available): self
     {
         $this->available = $available;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -1,4 +1,6 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn btn-outline-primary mt-1 mb-1">{{ button_label|default('Save') }}</button>
+
+<button id="save" class="btn btn-primary btn-sm">{{ button_label|default('Save (no welcome email)') }}</button>
+<button id="sendEmail" class="btn-success btn-sm">Save & send welcome e-mail</button>
 {{ form_end(form) }}

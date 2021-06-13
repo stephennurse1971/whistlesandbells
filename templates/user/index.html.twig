@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h1><span class="text-danger">Users : {{ role }}</span></h1>
+    <h1><span class="text-danger">Users: {{ role_title }}</span></h1>
 
     <table class="table">
         <thead>
@@ -13,19 +13,24 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Roles</th>
+            <th>PlainPassword</th>
+            <th>Password</th>
         </tr>
         </thead>
         <tbody>
         {% for user in users %}
-            {% if user.roles[0]==role or role=='All' %}
-                <tr>
-                    <td><a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.mobile }}</td>
-                    <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                </tr>
-            {% endif %}
-
+            {% for matchrole in user.roles %}
+                {% if matchrole == role or role == 'All' %}
+                    <tr>
+                        <td><a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.mobile }}</td>
+                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                        <td>{{ user.plainPassword }}</td>
+                        <td>{{ user.password }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
         </tbody>
     </table>

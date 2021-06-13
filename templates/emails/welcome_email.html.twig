@@ -1,0 +1,20 @@
+<div>
+
+    <h2> Welcome to SN's personal website</h2>
+    {{ include('template_parts/objectives.html.twig') }}
+
+    {{ include('template_parts/tennisplayer.html.twig') }}
+
+    {{ include('template_parts/family.html.twig') }}
+
+
+    <h3>Website: Your login and password details</h3>
+    <p>The URL for the News Scrapper website is <a href="{{ absolute_url(path('app_home')) }}">{{ absolute_url(path('app_home')) }}</a>
+    <p>Your login is your email and you can set a new password, or reset a forgotten password from the login screen.<p>
+    <p>
+        Kind regards, Stephen
+    </p>
+
+    <br>
+
+</div>

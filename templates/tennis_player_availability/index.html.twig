@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Tennis Player Availability{% endblock %}
-
 {% block body %}
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': '2021-06-05', 'maxDate': '2021-07-04'})}}">This week</a>
+    <a class="btn btn-outline-primary btn-sm mt-2" href="">Next week</a>
+    <a class="btn btn-outline-primary btn-sm mt-2" href="">Following week</a>
 
     <h1 style="color: red">Tennis Player Availability</h1>
 
@@ -14,41 +16,74 @@
             <thead>
             <tr>
                 <th style="text-align: right">Hour</th>
+                <th style="text-align: right">Court Available</th>
                 {% for tennis_player in tennis_players %}
-                    <th title={{ tennis_player.mobile }} >{{ tennis_player.name }}</th>
+
+                    {% for matchrole in tennis_player.roles %}
+                        {% if matchrole == 'ROLE_TENNIS_PLAYER' %}
+
+                            <th title={{ tennis_player.email }};{{ tennis_player.mobile }}>
+                                <a target="_blank" href= {{ path('user_edit', {'id': tennis_player.id}) }}> {{ tennis_player.fullName }}</a>
+                                <br>
+                                <a href="mailto:{{ tennis_player.email }}"><i class="fa fa-envelope" style="color:#d7cccc;font-size:16px ; text-align: center"></i></a>
+                                <a href="https://wa.me/{{ tennis_player.mobile }}"> <i class="fa fa-whatsapp" style="color:green; text-align: center"></i></a>
+                            </th>
+                        {% endif %}
+                    {% endfor %}
+
                 {% endfor %}
             </tr>
             </thead>
 
             <tbody>
-            {% for i in 7..20 %}
+            {% for i in 7..21 %}
                 <tr>
                     <td>{{ i }}</td>
+                    <td style="text-align: center">Poplar</td>
                     {% for tennis_player in tennis_players %}
-                        {% set availability = 0 %}
-                        {% set id = 0 %}
-                        <td style="text-align: center" >
-                            {% for tennis_player_availability in tennis_player_availabilities %}
-                                {% if tennis_player_availability.date == date.date and tennis_player_availability.hour == i
-                                    and tennis_player_availability.tennisPlayer.id == tennis_player.id %}
-                                    {% set flag=1 %}
-                                    {% set availability= tennis_player_availability.available %}
-                                    {% set id = tennis_player_availability.id %}
+                        {% for matchrole in tennis_player.roles %}
+                            {% if matchrole == 'ROLE_TENNIS_PLAYER' %}
+
+                                {% set availability = 0 %}
+                                {% set id = 0 %}
+                                <td style="text-align: center">
+                                {% for tennis_player_availability in tennis_player_availabilities %}
+                                    {% if tennis_player_availability.date == date.date and tennis_player_availability.hour == i
+                                        and tennis_player_availability.user.id == tennis_player.id %}
+                                        {% set flag=1 %}
+                                        {% set availability= tennis_player_availability.available %}
+                                        {% set id = tennis_player_availability.id %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if is_granted('ROLE_SUPER_ADMIN') or tennis_player.id ==app.user.id %}
+                                    {% if availability == 0 %}
+                                        <a href={{ path('tennis_player_availability_add', {'hour': i, 'date': date.date |date('Y-m-d') , 'player' : tennis_player.id}) }}>
+                                            <i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+
+                                    {% else %}
+                                        <a href={{ path('tennis_player_availability_edit', {'id' : id, 'available':availability} ) }}><i
+                                                    class="fa fa-circle" style="color: green"></i> </a>
+                                    {% endif %}
+
+
+                                {% else %}
+                                    {% if availability == 0 %}
+                                        <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                                    {% else %}
+                                        <i class="fa fa-circle" style="color: green"></i>
+                                    {% endif %}
                                 {% endif %}
-                            {% endfor %}
-                            {% if availability == 0 %}
-                                <a href={{ path('tennis_player_availability_add', {'hour': i, 'date': date.date |date('Y-m-d') , 'player' : tennis_player.id}) }}>
-                                    <i class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                            {% else %}
-                                <a href={{ path('tennis_player_availability_edit', {'id' : id, 'available':availability} ) }}><i class="fa fa-circle" style="color: green"></i> </a>
                             {% endif %}
+                        {% endfor %}
+
                         </td>
                     {% endfor %}
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <br><hr>
+        <br>
+        <hr>
     {% endfor %}
 
 
@@ -61,15 +96,15 @@
 
 
 {% block datatable %}
-    <script>
-        $(document).ready(function () {
-            $('.table').DataTable({
-                'pageLength': 50,
-                "order": [[0, 'asc']],
-                "paging": false,
-                "searching": false,
-                "bInfo": false
-            });
-        });
-    </script>
+    {#    <script>#}
+    {#        $(document).ready(function () {#}
+    {#            $('.table').DataTable({#}
+    {#                'pageLength': 50,#}
+    {#                "order": [[0, 'asc']],#}
+    {#                "paging": false,#}
+    {#                "searching": false,#}
+    {#                "bInfo": false#}
+    {#            });#}
+    {#        });#}
+    {#    </script>#}
 {% endblock datatable %}

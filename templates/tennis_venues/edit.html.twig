@@ -8,6 +8,24 @@
     {{ include('tennis_venues/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_venues_index') }}">Return to list</a>
-
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_venues_index') }}">Save & invite </a>
     {{ include('tennis_venues/_delete_form.html.twig') }}
 {% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#sendEmail').click(function (e) {
+            e.preventDefault();
+            $('#user_sendEmail').val(1).change();/*
+            e.unbind();*/
+            $('#save').trigger('click');
+        });
+        $('#user_pictureFile').on('change', function () {
+            var fileName = $(this).val();
+            $('.picture-name').html(fileName);
+        })
+    </script>
+{% endblock javascripts %}

@@ -23,7 +23,7 @@
             <i class="fas fa-fw fa-cog"></i>
             <span>Photos</span>
         </a>
-        <div id="collapsePhotos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapsePhotos" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item text" href="">Photos</a>
             </div>
@@ -61,13 +61,14 @@
             <i class="fas fa-fw fa-cog"></i>
             <span>Settings</span>
         </a>
-        <div id="collapseAdmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseAdmin" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
                 <a class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_FAMILY'}) }}">Family</a>
                 <hr>
                 <a class="collapse-item" href="{{ path('tennis_venues_index') }}">Tennis venues</a>
-                <a class="collapse-item" href="">Credit cards</a>
+                <a class="collapse-item" href="{{ path('credit_card_details_index') }}">Credit cards</a>
+
             </div>
         </div>
     </li>

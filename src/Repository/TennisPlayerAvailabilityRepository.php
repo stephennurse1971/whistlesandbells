@@ -19,11 +19,16 @@ class TennisPlayerAvailabilityRepository extends ServiceEntityRepository
         parent::__construct($registry, TennisPlayerAvailability::class);
     }
 
-    public function UniqueDate()
+    public function UniqueDate(?string $minDate, ?string $maxDate )
     {
         return $this->createQueryBuilder('t')
             ->select('t.date')
+            ->andWhere('t.date >= :minDate')
+            ->andWhere('t.date <= :maxDate')
+            ->setParameter('minDate',$minDate)
+            ->setParameter('maxDate',$maxDate)
             ->distinct()
+            ->orderBy('t.date', 'ASC')
             ->getQuery()
             ->getResult()
             ;

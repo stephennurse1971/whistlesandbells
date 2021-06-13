@@ -46,6 +46,11 @@ class User implements UserInterface
      */
     private $mobile;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $plainPassword;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -147,6 +152,18 @@ class User implements UserInterface
     public function setMobile(string $mobile): self
     {
         $this->mobile = $mobile;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

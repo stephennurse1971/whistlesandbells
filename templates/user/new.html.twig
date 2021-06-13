@@ -6,6 +6,23 @@
     <h1 style="color: red">New User</h1>
 
     {{ include('user/_form.html.twig') }}
+<br>
+<br>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('user_index') }}">Don't save & Return to list</a>
 
-    <a class="btn btn-outline-primary" href="{{ path('user_index') }}">Return to list</a>
+
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $('#sendEmail').click(function (e) {
+            e.preventDefault();
+            $('#user_sendEmail').val(1).change();/*
+            e.unbind();*/
+            $('#save').trigger('click');
+        });
+
+    </script>
+{% endblock javascripts %}

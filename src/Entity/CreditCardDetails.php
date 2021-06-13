@@ -18,7 +18,7 @@ class CreditCardDetails
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=TennisPlayers::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $cardholder;
@@ -43,12 +43,12 @@ class CreditCardDetails
         return $this->id;
     }
 
-    public function getCardholder(): ?TennisPlayers
+    public function getCardholder(): ?User
     {
         return $this->cardholder;
     }
 
-    public function setCardholder(TennisPlayers $cardholder): self
+    public function setCardholder(User $cardholder): self
     {
         $this->cardholder = $cardholder;
 
