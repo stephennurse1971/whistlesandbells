@@ -22,13 +22,50 @@ class TennisCourtAvailabilityController extends AbstractController
     /**
      * @Route("/", name="tennis_court_availability_index", methods={"GET"})
      */
-    public function index(TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
+    public function index(Request $request,TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
     {
+        $minDate = $request->query->get('minDate');
+        $maxDate = $request->query->get('maxDate');
+
+        $today = new \DateTime('now');
+        $weekday = $today->format('N') - 1;
+        $lastMonday = $today->modify('-' . $weekday . ' days');
+
+        $nextSunday = new \DateTime($lastMonday->format('Y-m-d'));
+        $nextSunday->modify('+6 days');
+
+        if ($minDate && $maxDate) {
+            $dates = $tennisCourtAvailabilityRepository->UniqueDate($minDate, $maxDate);
+        } else {
+            $dates = $tennisCourtAvailabilityRepository->UniqueDate($lastMonday->format('Y-m-d'), $nextSunday->format('Y-m-d'));
+        }
+
+        $monday2=new \DateTime($lastMonday->format('Y-m-d'));
+        $monday3=new \DateTime($lastMonday->format('Y-m-d'));
+        $sunday2=new \DateTime($nextSunday->format('Y-m-d'));
+        $sunday3=new \DateTime($nextSunday->format('Y-m-d'));
+
+        $monday2->modify('+7 days');
+        $monday3->modify('+14 days');
+        $sunday2->modify('+7 days');
+        $sunday3->modify('+14 days');
+
+
         return $this->render('tennis_court_availability/index.html.twig', [
             'tennis_venues'=>$tennisVenuesRepository->findAll(),
             'tennis_court_availabilities' =>  $tennisCourtAvailabilityRepository->findAll(),
-            'dates'=> $tennisCourtAvailabilityRepository->UniqueDate(),
-            'hours'=> $tennisCourtAvailabilityRepository->UniqueHours()
+            'dates' => $dates,
+//            'dates'=> $tennisCourtAvailabilityRepository->UniqueDate(),
+            'hours'=> $tennisCourtAvailabilityRepository->UniqueHours(),
+
+            'minDate' => $request->query->get('minDate'),
+            'maxDate' => $request->query->get('maxDate'),
+            'lastMonday' => $lastMonday,
+            'nextSunday' => $nextSunday,
+            'monday2' => $monday2,
+            'monday3' => $monday3,
+            'sunday2' => $sunday2,
+            'sunday3' => $sunday3,
         ]);
     }
 

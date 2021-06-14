@@ -2,11 +2,41 @@
 
 {% block title %}Tennis Player Availability{% endblock %}
 {% block body %}
-    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': '2021-06-05', 'maxDate': '2021-07-04'})}}">This week</a>
-    <a class="btn btn-outline-primary btn-sm mt-2" href="">Next week</a>
-    <a class="btn btn-outline-primary btn-sm mt-2" href="">Following week</a>
 
     <h1 style="color: red">Tennis Player Availability</h1>
+
+    {% if minDate == lastMonday|date('Y-m-d') %}
+        <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': lastMonday|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This week </a>
+    {% else %}
+        <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': lastMonday|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This week</a>
+    {% endif %}
+
+
+    {% if minDate == monday2|date('Y-m-d') %}
+        <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next week</a>
+    {% else %}
+        <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next week</a>
+    {% endif %}
+
+
+    {% if minDate == monday3|date('Y-m-d') %}
+    <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following week</a>
+    {% else %}
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following week</a>
+    {% endif %}
+    <hr>
+
+{#    <br>#}
+{#    Last Monday: {{ lastMonday|date('d-M-y') }} <br>#}
+{#    Next Monday2: {{ monday2|date('d-M-y') }} <br>#}
+{#    Next Monday3: {{ monday3|date('d-M-y') }} <br>#}
+{#    Next Sunday: {{ nextSunday|date('d-M-y') }} <br>#}
+{#    Next Sunday2: {{ sunday2|date('d-M-y') }} <br>#}
+{#    Next Sunday3: {{ sunday3|date('d-M-y') }} <br>#}
+{#    <hr>#}
+{#    minDate: {{ minDate|date('d-M-y') }} <br>#}
+{#    maxDate: {{ maxDate|date('d-M-y') }} <br>#}
+
 
     {% for date in dates %}
         <h3 style="color: blue;">{{ date.date |date('D d-M-Y') }}</h3>
@@ -57,12 +87,10 @@
                                 {% endfor %}
                                 {% if is_granted('ROLE_SUPER_ADMIN') or tennis_player.id ==app.user.id %}
                                     {% if availability == 0 %}
-                                        <a href={{ path('tennis_player_availability_add', {'hour': i, 'date': date.date |date('Y-m-d') , 'player' : tennis_player.id}) }}>
-                                            <i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                                        <a href={{ path('tennis_player_availability_add', {'hour': i, 'date': date.date |date('Y-m-d') , 'player' : tennis_player.id}) }}><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
 
                                     {% else %}
-                                        <a href={{ path('tennis_player_availability_edit', {'id' : id, 'available':availability} ) }}><i
-                                                    class="fa fa-circle" style="color: green"></i> </a>
+                                        <a href={{ path('tennis_player_availability_edit', {'id' : id, 'available':availability} ) }}><i class="fa fa-circle" style="color: green"></i> </a>
                                     {% endif %}
 
 

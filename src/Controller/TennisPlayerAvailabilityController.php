@@ -27,30 +27,46 @@ class TennisPlayerAvailabilityController extends AbstractController
     {
         $minDate = $request->query->get('minDate');
         $maxDate = $request->query->get('maxDate');
+
         $today = new \DateTime('now');
         $weekday = $today->format('N') - 1;
-
         $lastMonday = $today->modify('-' . $weekday . ' days');
 
-        $maxDate = new \DateTime($lastMonday->format('Y-m-d'));
-        $maxDate->modify('+7 days');
-        echo $lastMonday->format('Y-m-d');
-        echo $maxDate->format('Y-m-d');
+        $nextSunday = new \DateTime($lastMonday->format('Y-m-d'));
+        $nextSunday->modify('+6 days');
 
-        return new Response(null);
+        if ($minDate && $maxDate) {
+            $dates = $tennisPlayerAvailabilityRepository->UniqueDate($minDate, $maxDate);
+        } else {
+            $dates = $tennisPlayerAvailabilityRepository->UniqueDate($lastMonday->format('Y-m-d'), $nextSunday->format('Y-m-d'));
+        }
 
-//
-//        return $this->render('tennis_player_availability/index.html.twig', [
-//            'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
-////            'dates' => $tennisPlayerAvailabilityRepository->UniqueDate($minDate->format('Y-m-d'), $maxDate->format('Y-m-d')),
-//            'dates' => $tennisPlayerAvailabilityRepository->UniqueDate($minDate, $maxDate),
-//            'hours' => $tennisPlayerAvailabilityRepository->UniqueHour(),
-//            'tennis_players' => $userRepository->findAll(),
-//            '$minDate' => $request->query->get('minDate'),
-//            '$maxDate' => $request->query->get('maxDate'),
-//            'lastMonday' =>$lastMonday,
-//
-//        ]);
+        $monday2=new \DateTime($lastMonday->format('Y-m-d'));
+        $monday3=new \DateTime($lastMonday->format('Y-m-d'));
+        $sunday2=new \DateTime($nextSunday->format('Y-m-d'));
+        $sunday3=new \DateTime($nextSunday->format('Y-m-d'));
+
+        $monday2->modify('+7 days');
+        $monday3->modify('+14 days');
+        $sunday2->modify('+7 days');
+        $sunday3->modify('+14 days');
+
+
+        return $this->render('tennis_player_availability/index.html.twig', [
+            'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
+            'dates' => $dates,
+            'hours' => $tennisPlayerAvailabilityRepository->UniqueHour(),
+            'tennis_players' => $userRepository->findAll(),
+            'minDate' => $request->query->get('minDate'),
+            'maxDate' => $request->query->get('maxDate'),
+            'lastMonday' => $lastMonday,
+            'nextSunday' => $nextSunday,
+            'monday2' => $monday2,
+            'monday3' => $monday3,
+            'sunday2' => $sunday2,
+            'sunday3' => $sunday3,
+
+        ]);
     }
 
     /**
@@ -94,13 +110,8 @@ class TennisPlayerAvailabilityController extends AbstractController
         $tennisPlayerAvailability->setAvailable('1');
         $entityManager->persist($tennisPlayerAvailability);
         $entityManager->flush();
-
-        return $this->render('tennis_player_availability/index.html.twig', [
-            'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
-            'dates' => $tennisPlayerAvailabilityRepository->UniqueDate(),
-            'hours' => $tennisPlayerAvailabilityRepository->UniqueHour(),
-            'tennis_players' => $userRepository->findAll(),
-        ]);
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
     }
 
 
@@ -127,7 +138,9 @@ class TennisPlayerAvailabilityController extends AbstractController
             $tennisPlayerAvailability->setAvailable('1');
         }
         $this->getDoctrine()->getManager()->flush();
-        return $this->redirectToRoute('tennis_player_availability_index');
+
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
 
     }
 
