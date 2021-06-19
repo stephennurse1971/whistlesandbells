@@ -27,7 +27,7 @@ class TennisPlayerAvailabilityType extends AbstractType
                     'class' => 'datetimepicker datetime'
                 ],
             ])
-            ->add('hour')
+            ->add('')
             ->add('available')
         ;
     }

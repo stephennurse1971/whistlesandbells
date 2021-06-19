@@ -115,7 +115,9 @@
     {% endfor %}
 
 
-    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_new') }}">New</a>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_new') }}">New tennis player availability</a> <br>
+    {%  endif %}
     <br>
     <br>
     <br>
@@ -124,15 +126,15 @@
 
 
 {% block datatable %}
-    {#    <script>#}
-    {#        $(document).ready(function () {#}
-    {#            $('.table').DataTable({#}
-    {#                'pageLength': 50,#}
-    {#                "order": [[0, 'asc']],#}
-    {#                "paging": false,#}
-    {#                "searching": false,#}
-    {#                "bInfo": false#}
-    {#            });#}
-    {#        });#}
-    {#    </script>#}
+        <script>
+            $(document).ready(function () {
+                $('.table').DataTable({
+                    'pageLength': 50,
+                    "order": [[0, 'asc']],
+                    "paging": false,
+                    "searching": false,
+                    "bInfo": false
+                });
+            });
+        </script>
 {% endblock datatable %}

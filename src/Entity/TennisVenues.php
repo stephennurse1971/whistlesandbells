@@ -49,6 +49,26 @@ class TennisVenues
      */
     private $tennisAvailabilities;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $telNumber;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $bookingEngine;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $londonRegion;
+
     public function __construct()
     {
         $this->tennisAvailabilities = new ArrayCollection();
@@ -145,6 +165,54 @@ class TennisVenues
                 $tennisAvailability->setVenue(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTelNumber(): ?string
+    {
+        return $this->telNumber;
+    }
+
+    public function setTelNumber(?string $telNumber): self
+    {
+        $this->telNumber = $telNumber;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getBookingEngine(): ?string
+    {
+        return $this->bookingEngine;
+    }
+
+    public function setBookingEngine(?string $bookingEngine): self
+    {
+        $this->bookingEngine = $bookingEngine;
+
+        return $this;
+    }
+
+    public function getLondonRegion(): ?string
+    {
+        return $this->londonRegion;
+    }
+
+    public function setLondonRegion(?string $londonRegion): self
+    {
+        $this->londonRegion = $londonRegion;
 
         return $this;
     }

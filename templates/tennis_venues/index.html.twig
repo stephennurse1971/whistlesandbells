@@ -7,26 +7,54 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Venue</th>
-                <th>Address</th>
-                <th>Map</th>
-                <th>Booking site</th>
-                <th>Comment</th>
-            </tr>
+        <tr>
+            <th>London Region</th>
+            <th>Venue</th>
+            <th>Address</th>
+            <th>email</th>
+            <th>tel</th>
+            <th>Map</th>
+            <th>Booking site</th>
+            <th>Comment</th>
+        </tr>
         </thead>
         <tbody>
         {% for tennis_venue in tennis_venues %}
             <tr>
-                <td><a href="{{ path('tennis_venues_edit', {'id': tennis_venue.id}) }}">{{ tennis_venue.venue }}</a></td>
+                <td>{{ tennis_venue.londonRegion }}</td>
+                <td><a href="{{ path('tennis_venues_edit', {'id': tennis_venue.id}) }}">{{ tennis_venue.venue }}</a>
+                </td>
                 <td>{{ tennis_venue.address }}</td>
-                <td style="text-align: right"> <a target="_blank" href="{{ tennis_venue.mapLink }}"> <i style="font-size: 20px" class="fas fa-map-marker"></i>  </a></td>
-                <td style="text-align: right"> <a target="_blank" href="{{ tennis_venue.weblink }}"> <i style="font-size: 20px" class="fas fa-link"></i>  </a></td>
+                <td>{{ tennis_venue.email }}</td>
+                <td>{{ tennis_venue.telNumber }}</td>
+                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.mapLink }}"> <i
+                                style="font-size: 20px" class="fas fa-map-marker"></i> </a></td>
+                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.weblink }}"> <i
+                                style="font-size: 20px" class="fas fa-link"></i> </a></td>
                 <td>{{ tennis_venue.comment }}</td>
+
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <br>
+    <hr>
 
-    <a class="btn btn-outline-primary bt-sm mt-2" href="{{ path('tennis_venues_new') }}">New</a>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    <a class="btn btn-success bt-sm mt-2" href="{{ path('tennis_venues_new') }}">New venue</a>
+    {%  endif %}
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -16,7 +16,10 @@ class TennisVenuesType extends AbstractType
             ->add('address')
             ->add('mapLink')
             ->add('webLink')
-            ->add('comment')
+            ->add('telNumber')
+            ->add('email')
+            ->add('bookingEngine')
+            ->add('londonRegion')
         ;
     }
 
