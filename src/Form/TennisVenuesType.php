@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\TennisVenues;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,8 +19,27 @@ class TennisVenuesType extends AbstractType
             ->add('webLink')
             ->add('telNumber')
             ->add('email')
-            ->add('bookingEngine')
-            ->add('londonRegion')
+            ->add('bookingEngine',ChoiceType::class,[
+                'multiple'=>false,
+                'choices'=>[
+                    'TowerHamlets'=>'TowerHamlets',
+                    'WillToWin'=>'WillToWin',
+                ]
+            ])
+            ->add('londonRegion',ChoiceType::class,[
+                'multiple'=>false,
+                'choices'=>[
+                    'North'=>'North',
+                    'North-East'=>'North-East',
+                    'East'=>'East',
+                    'South-East'=>'South-East',
+                    'South'=>'South',
+                    'South-West'=>'South-West',
+                    'West'=>'West',
+                    'North-West'=>'North-West',
+                ]
+            ])
+            ->add('comment')
         ;
     }
 

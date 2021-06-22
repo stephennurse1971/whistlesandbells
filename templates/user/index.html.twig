@@ -1,11 +1,7 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}User index{% endblock %}
-
 {% block body %}
-
     <h1><span class="text-danger">Users: {{ role_title }}</span></h1>
-
     <table class="table">
         <thead>
         <tr>
@@ -17,25 +13,46 @@
             <th>Password</th>
         </tr>
         </thead>
+
         <tbody>
-        {% for user in users %}
-            {% for matchrole in user.roles %}
-                {% if matchrole == role or role == 'All' %}
-                    <tr>
-                        <td><a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.mobile }}</td>
-                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                        <td>{{ user.plainPassword }}</td>
-                        <td>{{ user.password }}</td>
-                    </tr>
-                {% endif %}
+        {% if role=='All' %}
+            {% for user in users %}
+                <tr>
+                    <td><a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.mobile }}</td>
+                    <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                    <td>{{ user.plainPassword }}</td>
+                    <td>{{ user.password }}</td>
+                </tr>
             {% endfor %}
-        {% endfor %}
+        {% endif %}
+
+        <!-- user by specific role -->
+        {% if role != 'All' %}
+            {% for user in users %}
+                {% for matchrole in user.roles %}
+                    {% if matchrole == role  %}
+                        <tr>
+                            <td><a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.mobile }}</td>
+                            <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                            <td>{{ user.plainPassword }}</td>
+                            <td>{{ user.password }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 
-    <a class="btn btn-outline-success mt-3" href="{{ path('user_new') }}">New user</a>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
+    <a class="btn btn-primary mt-3" href="">Import users</a>
+    {% endif %}
+
 {% endblock %}
 {% block datatable %}
     <script>

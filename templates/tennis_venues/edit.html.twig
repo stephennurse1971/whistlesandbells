@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Tennis Venue{% endblock %}
+{% block title %}Edit Venue: {{ tennis_venue.venue }}{% endblock %}
 
 {% block body %}
     <h1 style="color: red">{{ tennis_venue.venue }}</h1>
 
-    {{ include('tennis_venues/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('tennis_venues/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_venues_index') }}">Return to list</a>
     <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_venues_index') }}">Save & invite </a>

@@ -5,7 +5,8 @@
 {% block body %}
     <h1 style="color: red">New Tennis Venues</h1>
 
-    {{ include('tennis_venues/_form.html.twig') }}
+    {{ include('tennis_venues/_form.html.twig', {'button_label': 'Update'}) }}
+
 <br>
 <br>
     <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_venues_index') }}">Don't Save & Return to list</a>

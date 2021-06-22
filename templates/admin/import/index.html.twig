@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Imports{% endblock %}
+
+{% block body %}
+{#    {% if selection is defined %}#}
+{#        <div id="selection" data="{{ selection }}">#}
+{#        </div>#}
+{#    {% endif %}#}
+
+    <h1 class="text-danger">Import from CSV files</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-success" type="submit">Import</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            bsCustomFileInput.init();
+        });
+    </script>
+    <script>
+        var selection = $('#selection').attr('data');
+        $('#import_importType').val(selection).change();
+    </script>
+{% endblock %}

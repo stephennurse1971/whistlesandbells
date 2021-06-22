@@ -13,6 +13,7 @@
             <th>Address</th>
             <th>email</th>
             <th>tel</th>
+            <th>Booking engine</th>
             <th>Map</th>
             <th>Booking site</th>
             <th>Comment</th>
@@ -27,10 +28,9 @@
                 <td>{{ tennis_venue.address }}</td>
                 <td>{{ tennis_venue.email }}</td>
                 <td>{{ tennis_venue.telNumber }}</td>
-                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.mapLink }}"> <i
-                                style="font-size: 20px" class="fas fa-map-marker"></i> </a></td>
-                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.weblink }}"> <i
-                                style="font-size: 20px" class="fas fa-link"></i> </a></td>
+                <td>{{ tennis_venue.bookingEngine }}</td>
+                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.mapLink }}"> <i style="font-size: 20px" class="fas fa-map-marker"></i> </a></td>
+                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.weblink }}"> <i style="font-size: 20px" class="fas fa-link"></i> </a></td>
                 <td>{{ tennis_venue.comment }}</td>
 
             </tr>
@@ -50,7 +50,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc']],
+                "order": [[0, 'asc'] [1,'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
