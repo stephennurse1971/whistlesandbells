@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tennis Court Preferences Index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tennis Court Preferences</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tennis Player</th>
+                <th>Venue</th>
+                <th>Weekday Election</th>
+                <th>Weekend Election</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tennis_court_preference in tennis_court_preferences %}
+            <tr>
+                <td style="text-align: left">{{ tennis_court_preference.user.fullName }}</td>
+                <td style="text-align: left">{{ tennis_court_preference.tennisvenue.venue }}</td>
+                <td style="text-align: right">{{ tennis_court_preference.weekdayElection }}</td>
+                <td style="text-align: right">{{ tennis_court_preference.weekendElection }}</td>
+                <td style="text-align: right"><a class="btn btn-outline-primary btn-sm" href="{{ path('tennis_court_preferences_edit', {'id': tennis_court_preference.id}) }}">Edit</a></td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+<br> <hr>
+    <a class="btn btn-outline-success btn-sm" href="{{ path('tennis_court_preferences_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[1, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

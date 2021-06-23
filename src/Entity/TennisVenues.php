@@ -69,9 +69,16 @@ class TennisVenues
      */
     private $londonRegion;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TennisCourtPreferences::class, mappedBy="tennisVenue")
+     */
+    private $tennisCourtPreferences;
+
+    
     public function __construct()
     {
         $this->tennisAvailabilities = new ArrayCollection();
+        $this->tennisCourtPreferences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,4 +223,36 @@ class TennisVenues
 
         return $this;
     }
+
+    /**
+     * @return Collection|TennisCourtPreferences[]
+     */
+    public function getTennisCourtPreferences(): Collection
+    {
+        return $this->tennisCourtPreferences;
+    }
+
+    public function addTennisCourtPreference(TennisCourtPreferences $tennisCourtPreference): self
+    {
+        if (!$this->tennisCourtPreferences->contains($tennisCourtPreference)) {
+            $this->tennisCourtPreferences[] = $tennisCourtPreference;
+            $tennisCourtPreference->setTennisVenue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTennisCourtPreference(TennisCourtPreferences $tennisCourtPreference): self
+    {
+        if ($this->tennisCourtPreferences->removeElement($tennisCourtPreference)) {
+            // set the owning side to null (unless already changed)
+            if ($tennisCourtPreference->getTennisVenue() === $this) {
+                $tennisCourtPreference->setTennisVenue(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }
