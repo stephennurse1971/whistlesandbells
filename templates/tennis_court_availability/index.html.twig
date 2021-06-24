@@ -47,7 +47,8 @@
                 {% for venue in tennis_venues %}
                     <th style="text-align: right" title="{{ venue.address }}">
                         <a target="_blank" href={{ venue.weblink }}>{{ venue.venue }}
-                            <a target="_blank" href={{ venue.maplink }}><i style="font-size: 15px" class="fas fa-map-marker"></i></a></th>
+                            <a target="_blank" href={{ venue.maplink }}><i style="font-size: 15px" class="fas fa-map-marker"></i></a>
+                    </th>
                 {% endfor %}
             </tr>
             </thead>

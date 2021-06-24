@@ -88,7 +88,6 @@
                                 {% if is_granted('ROLE_SUPER_ADMIN') or tennis_player.id ==app.user.id %}
                                     {% if availability == 0 %}
                                         <a href={{ path('tennis_player_availability_add', {'hour': i, 'date': date.date |date('Y-m-d') , 'player' : tennis_player.id}) }}><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
-
                                     {% else %}
                                         <a href={{ path('tennis_player_availability_edit', {'id' : id, 'available':availability} ) }}><i class="fa fa-circle" style="color: green"></i> </a>
                                     {% endif %}

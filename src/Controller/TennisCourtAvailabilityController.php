@@ -55,7 +55,6 @@ class TennisCourtAvailabilityController extends AbstractController
             'tennis_venues'=>$tennisVenuesRepository->findAll(),
             'tennis_court_availabilities' =>  $tennisCourtAvailabilityRepository->findAll(),
             'dates' => $dates,
-//            'dates'=> $tennisCourtAvailabilityRepository->UniqueDate(),
             'hours'=> $tennisCourtAvailabilityRepository->UniqueHours(),
 
             'minDate' => $request->query->get('minDate'),

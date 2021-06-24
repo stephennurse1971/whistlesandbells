@@ -5,31 +5,128 @@
 {% block body %}
     <h1 style="color: red">Tennis Court Preferences</h1>
 
+    <h2 style="color: blue">Weekdays</h2>
+
     <table class="table">
         <thead>
-            <tr>
-                <th>Tennis Player</th>
-                <th>Venue</th>
-                <th>Weekday Election</th>
-                <th>Weekend Election</th>
-                <th>#</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for tennis_court_preference in tennis_court_preferences %}
-            <tr>
-                <td style="text-align: left">{{ tennis_court_preference.user.fullName }}</td>
-                <td style="text-align: left">{{ tennis_court_preference.tennisvenue.venue }}</td>
-                <td style="text-align: right">{{ tennis_court_preference.weekdayElection }}</td>
-                <td style="text-align: right">{{ tennis_court_preference.weekendElection }}</td>
-                <td style="text-align: right"><a class="btn btn-outline-primary btn-sm" href="{{ path('tennis_court_preferences_edit', {'id': tennis_court_preference.id}) }}">Edit</a></td>
-            </tr>
+        <tr>
+            <th style="text-align: left">Tennis Player</th>
+            {% for venue in venues %}
+                <th title="{{ venue.address }}">
+                    <a target="_blank" href="{{ venue.weblink }}">{{ venue.venue }} </a>
+                    <a target="_blank" href="{{ venue.maplink }}"><i style="font-size: 15px"
+                                                                     class="fas fa-map-marker"></i></a>
+                </th>
+            {% endfor %}
 
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for user in users %}
+            {% for role in user.roles %}
+                {% if role == 'ROLE_TENNIS_PLAYER' %}
+                    <tr>
+                        <td style="text-align: left"><a target="_blank"
+                                                        href="{{ path('user_edit', {'id': user.id}) }}"> {{ user.fullName }}</a>
+                        </td>
+
+                        {% for venue in venues %}
+                            <td style="text-align: right">
+                                {% set flag = 0  %}
+                                {% set weekdayElection = 0 %}
+                                {% for tennis_court_preference in tennis_court_preferences %}
+                                    {% if tennis_court_preference.user.id == user.id and tennis_court_preference.tennisVenue.id == venue.id %}
+                                          {% set flag = 1 %}
+                                        {% set weekdayElection = tennis_court_preference.weekdayElection %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if flag == 1  %}
+                                    {% if  weekdayElection == 1 %}
+                                        <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekday'}) }}"><i
+                                                    class="fa fa-circle" style="color: green; text-align: right"></i></a>
+
+                                    {% else %}
+                                        <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekday'}) }}"><i
+                                                    class="fa fa-circle" style="color: red; text-align: right"></i></a>
+
+                                    {% endif %}
+
+                                {% else %}
+                                    <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekday'}) }}"><i
+                                                class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
         </tbody>
     </table>
-<br> <hr>
-    <a class="btn btn-outline-success btn-sm" href="{{ path('tennis_court_preferences_new') }}">New</a>
+    <br>
+    <hr>
+
+    <h2 style="color: blue">WeekEnds</h2>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="text-align: left">Tennis Player</th>
+            {% for venue in venues %}
+                <th title="{{ venue.address }}">
+                    <a target="_blank" href="{{ venue.weblink }}">{{ venue.venue }} </a>
+                    <a target="_blank" href="{{ venue.maplink }}"><i style="font-size: 15px"
+                                                                     class="fas fa-map-marker"></i></a>
+                </th>
+            {% endfor %}
+
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for user in users %}
+            {% for role in user.roles %}
+                {% if role == 'ROLE_TENNIS_PLAYER' %}
+                    <tr>
+                        <td style="text-align: left"><a target="_blank" href="{{ path('user_edit', {'id': user.id}) }}"> {{ user.fullName }}</a>
+                        </td>
+
+                        {% for venue in venues %}
+                            <td style="text-align: right">
+                                {% set flag = 0  %}
+                                {% set weekendElection = 0 %}
+                                {% for tennis_court_preference in tennis_court_preferences %}
+                                    {% if tennis_court_preference.user.id == user.id and tennis_court_preference.tennisVenue.id == venue.id %}
+                                          {% set flag = 1 %}
+                                        {% set weekendElection = tennis_court_preference.weekendElection %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if flag == 1  %}
+                                    {% if  weekendElection == 1 %}
+                                        <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
+                                                    class="fa fa-circle" style="color: green; text-align: right"></i></a>
+
+                                    {% else %}
+                                        <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
+                                                    class="fa fa-circle" style="color: red; text-align: right"></i></a>
+
+                                    {% endif %}
+
+                                {% else %}
+                                    <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
+                                                class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <hr>
 {% endblock %}
 
 {% block datatable %}
