@@ -26,7 +26,7 @@ class TennisCourtPreferencesController extends AbstractController
     {
         return $this->render('tennis_court_preferences/index.html.twig', [
             'tennis_court_preferences' => $tennisCourtPreferencesRepository->findAll(),
-            'venues' => $tennisVenuesRepository->findAll(),
+            'venues' => $tennisVenuesRepository->sortVenuesByRegion(),
             'users' => $userRepository->findAll()
         ]);
     }
