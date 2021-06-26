@@ -5,48 +5,61 @@
 {% block body %}
     <h1 style="color: red;">Tennis Court Availability</h1>
 
-
-    {% if minDate == lastMonday|date('Y-m-d') %}
-        <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_court_availability_index', {'minDate': lastMonday|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This week </a>
-    {% else %}
-        <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_court_availability_index', {'minDate': lastMonday|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This week</a>
-    {% endif %}
-
-
-    {% if minDate == monday2|date('Y-m-d') %}
-        <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_court_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next week</a>
-    {% else %}
-        <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_court_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next week</a>
-    {% endif %}
+    <div class="row">
+        <div class="col-md-8">
+            {% if minDate == today|date('Y-m-d') %}
+                <a class="btn btn-primary btn-sm mt-2"
+                   href="{{ path('tennis_court_availability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
+                    week </a>
+            {% else %}
+                <a class="btn btn-outline-primary btn-sm mt-2"
+                   href="{{ path('tennis_court_availability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
+                    week</a>
+            {% endif %}
 
 
-    {% if minDate == monday3|date('Y-m-d') %}
-        <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_court_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following week</a>
-    {% else %}
-        <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_court_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following week</a>
-    {% endif %}
+
+            {% if minDate == monday2|date('Y-m-d') %}
+                <a class="btn btn-primary btn-sm mt-2"
+                   href="{{ path('tennis_court_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next
+                    week</a>
+            {% else %}
+                <a class="btn btn-outline-primary btn-sm mt-2"
+                   href="{{ path('tennis_court_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next
+                    week</a>
+            {% endif %}
+
+
+            {% if minDate == monday3|date('Y-m-d') %}
+                <a class="btn btn-primary btn-sm mt-2"
+                   href="{{ path('tennis_court_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
+                    week</a>
+            {% else %}
+                <a class="btn btn-outline-primary btn-sm mt-2"
+                   href="{{ path('tennis_court_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
+                    week</a>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            {% if minDate is null %}
+                <strong>Date range: </strong> {{ lastMonday |date('d-M-Y') }} - {{ nextSunday |date('d-M-Y')}}
+            {% else %}
+                <strong>Date range: </strong>  {{ minDate|date('d-M-Y') }} - {{ maxDate|date('d-M-Y') }}
+            {% endif %}
+        </div>
+    </div>
+
     <hr>
 
-{#        <br>#}
-{#        Last Monday: {{ lastMonday|date('d-M-y') }} <br>#}
-{#        Next Monday2: {{ monday2|date('d-M-y') }} <br>#}
-{#        Next Monday3: {{ monday3|date('d-M-y') }} <br>#}
-{#        Next Sunday: {{ nextSunday|date('d-M-y') }} <br>#}
-{#        Next Sunday2: {{ sunday2|date('d-M-y') }} <br>#}
-{#        Next Sunday3: {{ sunday3|date('d-M-y') }} <br>#}
-{#        <hr>#}
-{#        minDate: {{ minDate|date('d-M-y') }} <br>#}
-{#        maxDate: {{ maxDate|date('d-M-y') }} <br>#}
-
     {% for date in dates %}
-        <h3 style="color: blue;">{{ date.date |date('d-M-Y') }}</h3>
+        <h3 style="color: blue;">{{ date.date |date('D d-M-Y') }}</h3>
         <table class="table">
             <thead>
             <tr>
                 <th style="text-align: right">Hour</th>
                 {% for venue in tennis_venues %}
                     <th style="text-align: right" title="{{ venue.address }}">
-                        <a target="_blank" href={{ venue.weblink }}>{{ venue.venue }}
+                        <a target="_blank" href={{ venue.weblink }}>{{ venue.venue }} </a>
                             <a target="_blank" href={{ venue.maplink }}><i style="font-size: 15px" class="fas fa-map-marker"></i></a>
                     </th>
                 {% endfor %}
@@ -57,10 +70,10 @@
             <tbody>
             {% for hour in hours %}
                 <tr>
-                    <td>{{ hour.hour }}</td>
+                    <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
                     {% for venue in tennis_venues %}
                         {% set availability = "Not scraped" %}
-                        <td>
+                        <td style="text-align: center">
                             {% for tennis_court_availability in tennis_court_availabilities %}
                                 {% if tennis_court_availability.date == date.date and tennis_court_availability.hour == hour.hour and tennis_court_availability.venue.id == venue.id %}
                                     {% set flag=1 %}
@@ -79,7 +92,10 @@
 
 
     <br>
+
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <a class="btn btn-outline-success" href="{{ path('tennis_court_availability_new') }}">New</a>
+    {% endif %}
     <br>
     <br>
     <br>

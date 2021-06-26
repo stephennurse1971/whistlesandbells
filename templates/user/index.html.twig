@@ -18,7 +18,13 @@
         {% if role=='All' %}
             {% for user in users %}
                 <tr>
-                    <td><a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</td>
+                    <td>
+                        {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
+                            <a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</a>
+                        {% else %}
+                            {{ user.fullName }}
+                        {% endif %}
+                    </td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.mobile }}</td>
                     <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
@@ -32,9 +38,15 @@
         {% if role != 'All' %}
             {% for user in users %}
                 {% for matchrole in user.roles %}
-                    {% if matchrole == role  %}
+                    {% if matchrole == role %}
                         <tr>
-                            <td><a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</td>
+                            <td>
+                                {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
+                                    <a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</a>
+                                {% else %}
+                                    {{ user.fullName }}
+                                {% endif %}
+                            </td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.mobile }}</td>
                             <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
@@ -49,8 +61,8 @@
     </table>
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
-    <a class="btn btn-primary mt-3" href="">Import users</a>
+        <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
+        <a class="btn btn-primary mt-3" href="">Import users</a>
     {% endif %}
 
 {% endblock %}

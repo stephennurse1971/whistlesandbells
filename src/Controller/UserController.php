@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,7 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => 'All',
-            'role_title'=> 'All'
+            'role_title' => 'All'
 
         ]);
     }
@@ -35,19 +36,19 @@ class UserController extends AbstractController
     /**
      * @Route("/role/{role}", name="user_role_index", methods={"GET"})
      */
-    public function indexRole(string $role,UserRepository $userRepository): Response
+    public function indexRole(string $role, UserRepository $userRepository): Response
     {
-        $role_title='';
-        if ($role == 'ROLE_TENNIS_PLAYER'){
-            $role_title="Tennis Player";
+        $role_title = '';
+        if ($role == 'ROLE_TENNIS_PLAYER') {
+            $role_title = "Tennis Player";
         }
-        if ($role == 'ROLE_FAMILY'){
-            $role_title="Family";
+        if ($role == 'ROLE_FAMILY') {
+            $role_title = "Family";
         }
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => $role,
-            'role_title'=> $role_title
+            'role_title' => $role_title
         ]);
     }
 
@@ -55,7 +56,7 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
-    public function new(MailerInterface $mailer,Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -64,8 +65,8 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $get_roles = $form->get('role')->getData();
             $roles = $get_roles;
-            $password=$form->get('password')->getData();
-            if($password != '') {
+            $password = $form->get('password')->getData();
+            if ($password != '') {
                 $user->setPlainPassword($password);
                 $user->setPassword($passwordEncoder->encodePassword($user, $password));
             }
@@ -75,7 +76,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            if ($form['sendEmail']->getData()==1) {
+            if ($form['sendEmail']->getData() == 1) {
                 $html = $this->renderView('emails/welcome_email.html.twig');
                 $email = (new Email())
                     ->from('nurse_stephen@hotmail.com')
@@ -85,7 +86,6 @@ class UserController extends AbstractController
                     ->html($html);
                 $mailer->send($email);
             }
-
 
 
             return $this->redirectToRoute('user_index');
@@ -110,47 +110,56 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(MailerInterface $mailer,Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(int $id, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $plainPassword=$user->getPlainPassword();
-        $roles=$user->getRoles();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $referer = $request->server->get('HTTP_REFERER');
+        $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
+        if ($this->getUser()->getId() == $id || $hasAccess)
+        {
+            $plainPassword = $user->getPlainPassword();
+            $roles = $user->getRoles();
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $get_roles = $form->get('role')->getData();
-            $roles = $get_roles;
-            $password=$form->get('password')->getData();
-            if($password != '') {
-                $user->setPassword($passwordEncoder->encodePassword($user, $password));
-                $user->setPlainPassword($password);
-            }
-            $user->setRoles($roles);
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $get_roles = $form->get('role')->getData();
+                $roles = $get_roles;
+                $password = $form->get('password')->getData();
+                if ($password != '') {
+                    $user->setPassword($passwordEncoder->encodePassword($user, $password));
+                    $user->setPlainPassword($password);
+                }
+                $user->setRoles($roles);
+                $this->getDoctrine()->getManager()->flush();
 
-            if ($form['sendEmail']->getData()==1) {
-                $html = $this->renderView('emails/welcome_email.html.twig');
-                $email = (new Email())
-                    ->from('nurse_stephen@hotmail.com')
-                    ->to($user->getEmail())
-                    ->cc('nurse_stephen@hotmail.com')
-                    ->subject("Welcome to SN's personal website")
-                    ->html($html);
-                $mailer->send($email);
+                if ($form['sendEmail']->getData() == 1) {
+                    $html = $this->renderView('emails/welcome_email.html.twig');
+                    $email = (new Email())
+                        ->from('nurse_stephen@hotmail.com')
+                        ->to($user->getEmail())
+                        ->cc('nurse_stephen@hotmail.com')
+                        ->subject("Welcome to SN's personal website")
+                        ->html($html);
+                    $mailer->send($email);
+                }
+                return $this->redirectToRoute('user_index');
             }
-            return $this->redirectToRoute('user_index');
+
+            return $this->render('user/edit.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
+                'password' => $plainPassword,
+                'roles' => $roles
+            ]);
         }
-
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-            'password'=>$plainPassword,
-            'roles'=>$roles
-        ]);
+        return $this->redirect($referer);
     }
+
+
 
     /**
      * @Route("/{id}", name="user_delete", methods={"POST"})
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      */
     public function delete(Request $request, User $user): Response
     {
@@ -162,10 +171,6 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_index');
     }
-
-
-
-
 
 
 }

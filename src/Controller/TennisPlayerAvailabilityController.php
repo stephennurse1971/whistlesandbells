@@ -30,15 +30,38 @@ class TennisPlayerAvailabilityController extends AbstractController
 
         $today = new \DateTime('now');
         $weekday = $today->format('N') - 1;
-        $lastMonday = $today->modify('-' . $weekday . ' days');
+        $lastMonday = new \DateTime($today->format('Y-m-d'));
+        $lastMonday->modify('-' . $weekday . ' days');
 
         $nextSunday = new \DateTime($lastMonday->format('Y-m-d'));
         $nextSunday->modify('+6 days');
+        $daysRemainingThisWeek = 7 - $weekday;
 
         if ($minDate && $maxDate) {
-            $dates = $tennisPlayerAvailabilityRepository->UniqueDate($minDate, $maxDate);
-        } else {
-            $dates = $tennisPlayerAvailabilityRepository->UniqueDate($lastMonday->format('Y-m-d'), $nextSunday->format('Y-m-d'));
+
+            if ($minDate == $today->format('Y-m-d')) {
+                $dates = [];
+                for ($i = 0; $i < $daysRemainingThisWeek; $i++) {
+                    $next_date = new \DateTime($today->format('Y-m-d'));
+                    $next_date->modify($i . 'days');
+                    $dates[$i] = $next_date;
+                }
+            } else {
+                $dates = [];
+                $dates[0] = new \DateTime($minDate);
+                for ($i = 1; $i <= 6; $i++) {
+                    $next_date = new \DateTime($minDate);
+                    $next_date->modify($i . 'days');
+                    $dates[$i] = $next_date;
+                }
+            }
+        }else {
+            $dates=[];
+            for($i=0;$i<$daysRemainingThisWeek ;$i++){
+                $next_date = new \DateTime($today->format('Y-m-d'));
+                $next_date->modify($i .'days');
+                $dates[$i]=$next_date;
+            }
         }
 
         $monday2=new \DateTime($lastMonday->format('Y-m-d'));
@@ -59,12 +82,14 @@ class TennisPlayerAvailabilityController extends AbstractController
             'tennis_players' => $userRepository->findAll(),
             'minDate' => $request->query->get('minDate'),
             'maxDate' => $request->query->get('maxDate'),
+            'today' => $today,
             'lastMonday' => $lastMonday,
             'nextSunday' => $nextSunday,
             'monday2' => $monday2,
             'monday3' => $monday3,
             'sunday2' => $sunday2,
             'sunday3' => $sunday3,
+
 
         ]);
     }

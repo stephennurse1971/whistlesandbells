@@ -24,20 +24,50 @@ class TennisCourtAvailabilityController extends AbstractController
      */
     public function index(Request $request,TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
     {
+        $hours = [];
+        for ($i= 7; $i<=23; $i++)
+        {
+            $hours[$i]['hour']=$i.':00';
+            $hours[$i]['sort']=$i;
+        }
+
         $minDate = $request->query->get('minDate');
         $maxDate = $request->query->get('maxDate');
 
         $today = new \DateTime('now');
         $weekday = $today->format('N') - 1;
-        $lastMonday = $today->modify('-' . $weekday . ' days');
+        $lastMonday = new \DateTime($today->format('Y-m-d'));
+        $lastMonday->modify('-' . $weekday . ' days');
 
         $nextSunday = new \DateTime($lastMonday->format('Y-m-d'));
         $nextSunday->modify('+6 days');
+        $daysRemainingThisWeek = 7 - $weekday;
 
         if ($minDate && $maxDate) {
-            $dates = $tennisCourtAvailabilityRepository->UniqueDate($minDate, $maxDate);
-        } else {
-            $dates = $tennisCourtAvailabilityRepository->UniqueDate($lastMonday->format('Y-m-d'), $nextSunday->format('Y-m-d'));
+
+            if ($minDate == $today->format('Y-m-d')) {
+                $dates = [];
+                for ($i = 0; $i < $daysRemainingThisWeek; $i++) {
+                    $next_date = new \DateTime($today->format('Y-m-d'));
+                    $next_date->modify($i . 'days');
+                    $dates[$i] = $next_date;
+                }
+            } else {
+                $dates = [];
+                $dates[0] = new \DateTime($minDate);
+                for ($i = 1; $i <= 6; $i++) {
+                    $next_date = new \DateTime($minDate);
+                    $next_date->modify($i . 'days');
+                    $dates[$i] = $next_date;
+                }
+            }
+        }else {
+            $dates=[];
+            for($i=0;$i<$daysRemainingThisWeek ;$i++){
+                $next_date = new \DateTime($today->format('Y-m-d'));
+                $next_date->modify($i .'days');
+                $dates[$i]=$next_date;
+            }
         }
 
         $monday2=new \DateTime($lastMonday->format('Y-m-d'));
@@ -55,8 +85,8 @@ class TennisCourtAvailabilityController extends AbstractController
             'tennis_venues'=>$tennisVenuesRepository->findAll(),
             'tennis_court_availabilities' =>  $tennisCourtAvailabilityRepository->findAll(),
             'dates' => $dates,
-            'hours'=> $tennisCourtAvailabilityRepository->UniqueHours(),
-
+            'hours'=> $hours,
+            'today' => $today,
             'minDate' => $request->query->get('minDate'),
             'maxDate' => $request->query->get('maxDate'),
             'lastMonday' => $lastMonday,

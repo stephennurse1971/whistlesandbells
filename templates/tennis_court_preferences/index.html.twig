@@ -8,131 +8,160 @@
     <button class="btn btn-outline-primary" id="weekend">Weekend</button>
     <hr>
 
-<div id="weekday-table">
-    <h2 style="color: blue">Week-Days</h2>
+    <div id="weekday-table">
+        <h2 style="color: blue">Week-Days</h2>
 
 
-    <table class="table" id="weekday-table">
-        <thead>
-        <tr>
-            <th style="text-align: left">Tennis Player</th>
-            {% for venue in venues %}
-                <th style="text-align: center" title="{{ venue.address }}">
-                    <a target="_blank" href="{{ venue.weblink }}">{{ venue.venue }} </a>
-                    <a target="_blank" href="{{ venue.maplink }}"><i style="font-size: 15px" class="fas fa-map-marker"></i></a>
-                    ({{ venue.londonRegion }})
-                </th>
-            {% endfor %}
+        <table class="table" id="weekday-table">
+            <thead>
+            <tr>
+                <th style="text-align: left">Tennis Player</th>
+                {% for venue in venues %}
+                    <th style="text-align: center" title="{{ venue.address }}">
+                        <a target="_blank" href="{{ venue.weblink }}">{{ venue.venue }} </a>
+                        <a target="_blank" href="{{ venue.maplink }}"><i style="font-size: 15px"
+                                                                         class="fas fa-map-marker"></i></a>
+                        ({{ venue.londonRegion }})
+                    </th>
+                {% endfor %}
 
-        </tr>
-        </thead>
+            </tr>
+            </thead>
 
-        <tbody>
-        {% for user in users %}
-            {% for role in user.roles %}
-                {% if role == 'ROLE_TENNIS_PLAYER' %}
-                    <tr>
-                        <td style="text-align: left"><a target="_blank" href="{{ path('user_edit', {'id': user.id}) }}"> {{ user.fullName }}</a>
-                        </td>
+            <tbody>
+            {% for user in users %}
+                {% for role in user.roles %}
+                    {% if role == 'ROLE_TENNIS_PLAYER' %}
+                        <tr>
+                            <td title={{ user.email }};{{ user.mobile }}>
 
-                        {% for venue in venues %}
-                            <td style="text-align: center">
-                                {% set flag = 0  %}
-                                {% set weekdayElection = 0 %}
-                                {% for tennis_court_preference in tennis_court_preferences %}
-                                    {% if tennis_court_preference.user.id == user.id and tennis_court_preference.tennisVenue.id == venue.id %}
-                                          {% set flag = 1 %}
-                                        {% set weekdayElection = tennis_court_preference.weekdayElection %}
-                                    {% endif %}
-                                {% endfor %}
-                                {% if flag == 1  %}
-                                    {% if  weekdayElection == 1 %}
-                                        <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekday'}) }}"><i
-                                                    class="fa fa-circle" style="color: green; text-align: center"></i></a>
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a target="_blank"
+                                       href= {{ path('user_edit', {'id': user.id}) }}> {{ user.fullName }}</a>
+                                {% else %}
+                                    {{ user.fullName }}</a>
+                                {% endif %}
+
+                                <br>
+                                <a href="mailto:{{ user.email }}"><i class="fa fa-envelope"
+                                                                     style="color:#d7cccc;font-size:16px ; text-align: center"></i></a>
+                                <a href="https://wa.me/{{ user.mobile }}"> <i class="fa fa-whatsapp"
+                                                                              style="color:green; text-align: center"></i></a>
+                            </td>
+
+                            {% for venue in venues %}
+                                <td style="text-align: center">
+                                    {% set flag = 0 %}
+                                    {% set weekdayElection = 0 %}
+                                    {% for tennis_court_preference in tennis_court_preferences %}
+                                        {% if tennis_court_preference.user.id == user.id and tennis_court_preference.tennisVenue.id == venue.id %}
+                                            {% set flag = 1 %}
+                                            {% set weekdayElection = tennis_court_preference.weekdayElection %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if flag == 1 %}
+                                        {% if  weekdayElection == 1 %}
+                                            <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekday'}) }}"><i
+                                                        class="fa fa-circle"
+                                                        style="color: green; text-align: center"></i></a>
+
+                                        {% else %}
+                                            <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekday'}) }}"><i
+                                                        class="fa fa-circle" style="color: red; text-align: center"></i></a>
+
+                                        {% endif %}
 
                                     {% else %}
                                         <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekday'}) }}"><i
                                                     class="fa fa-circle" style="color: red; text-align: center"></i></a>
-
                                     {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
 
+    </div>
+
+    <div id="weekend-table">
+        <h2 style="color: blue">Week-End</h2>
+
+        <table class="table" id="weekend-table">
+
+            <thead>
+            <tr>
+                <th style="text-align: left">Tennis Player</th>
+                {% for venue in venues %}
+                    <th style="text-align: center" title="{{ venue.address }}">
+                        <a target="_blank" href="{{ venue.weblink }}">{{ venue.venue }} </a>
+                        <a target="_blank" href="{{ venue.maplink }}"><i style="font-size: 15px"
+                                                                         class="fas fa-map-marker"></i></a>
+                        ({{ venue.londonRegion }})
+                    </th>
+                {% endfor %}
+
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                {% for role in user.roles %}
+                    {% if role == 'ROLE_TENNIS_PLAYER' %}
+                        <tr>
+                            <td title={{ user.email }};{{ user.mobile }}>
+
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a target="_blank"
+                                       href= {{ path('user_edit', {'id': user.id}) }}> {{ user.fullName }}</a>
                                 {% else %}
-                                    <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekday'}) }}"><i
-                                                class="fa fa-circle" style="color: red; text-align: center"></i></a>
+                                    {{ user.fullName }}</a>
                                 {% endif %}
+                                <br>
+                                <a href="mailto:{{ user.email }}"><i class="fa fa-envelope"
+                                                                     style="color:#d7cccc;font-size:16px ; text-align: center"></i></a>
+                                <a href="https://wa.me/{{ user.mobile }}"> <i class="fa fa-whatsapp"
+                                                                              style="color:green; text-align: center"></i></a>
                             </td>
-                        {% endfor %}
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-        </tbody>
-    </table>
 
-</div>
+                            {% for venue in venues %}
+                                <td style="text-align: center">
+                                    {% set flag = 0 %}
+                                    {% set weekendElection = 0 %}
+                                    {% for tennis_court_preference in tennis_court_preferences %}
+                                        {% if tennis_court_preference.user.id == user.id and tennis_court_preference.tennisVenue.id == venue.id %}
+                                            {% set flag = 1 %}
+                                            {% set weekendElection = tennis_court_preference.weekendElection %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if flag == 1 %}
+                                        {% if  weekendElection == 1 %}
+                                            <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
+                                                        class="fa fa-circle"
+                                                        style="color: green; text-align: center"></i></a>
 
-<div id="weekend-table">
-    <h2 style="color: blue">Week-End</h2>
+                                        {% else %}
+                                            <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
+                                                        class="fa fa-circle" style="color: red; text-align: center"></i></a>
 
-    <table class="table" id="weekend-table">
-
-        <thead>
-        <tr>
-            <th style="text-align: left">Tennis Player</th>
-            {% for venue in venues %}
-                <th style="text-align: center"  title="{{ venue.address }}">
-                    <a target="_blank" href="{{ venue.weblink }}">{{ venue.venue }} </a>
-                    <a target="_blank" href="{{ venue.maplink }}"><i style="font-size: 15px" class="fas fa-map-marker"></i></a>
-                    ({{ venue.londonRegion }})
-                </th>
-            {% endfor %}
-
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for user in users %}
-            {% for role in user.roles %}
-                {% if role == 'ROLE_TENNIS_PLAYER' %}
-                    <tr>
-                        <td style="text-align: left"><a target="_blank" href="{{ path('user_edit', {'id': user.id}) }}"> {{ user.fullName }}</a>
-                        </td>
-
-                        {% for venue in venues %}
-                            <td style="text-align: center">
-                                {% set flag = 0  %}
-                                {% set weekendElection = 0 %}
-                                {% for tennis_court_preference in tennis_court_preferences %}
-                                    {% if tennis_court_preference.user.id == user.id and tennis_court_preference.tennisVenue.id == venue.id %}
-                                          {% set flag = 1 %}
-                                        {% set weekendElection = tennis_court_preference.weekendElection %}
-                                    {% endif %}
-                                {% endfor %}
-                                {% if flag == 1  %}
-                                    {% if  weekendElection == 1 %}
-                                        <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
-                                                    class="fa fa-circle" style="color: green; text-align: center"></i></a>
+                                        {% endif %}
 
                                     {% else %}
                                         <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
                                                     class="fa fa-circle" style="color: red; text-align: center"></i></a>
-
                                     {% endif %}
-
-                                {% else %}
-                                    <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
-                                                class="fa fa-circle" style="color: red; text-align: center"></i></a>
-                                {% endif %}
-                            </td>
-                        {% endfor %}
-                    </tr>
-                {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-</div>
+    </div>
 
 
 {% endblock %}
@@ -143,7 +172,7 @@
         $('#weekend').click(function () {
             $('#weekend-table').show();
             $('#weekday-table').hide();
-        }) ;
+        });
         $('#weekday').click(function () {
             $('#weekday-table').show();
             $('#weekend-table').hide();

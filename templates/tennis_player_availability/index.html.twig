@@ -5,38 +5,51 @@
 
     <h1 style="color: red">Tennis Player Availability</h1>
 
-    {% if minDate == lastMonday|date('Y-m-d') %}
-        <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': lastMonday|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This week </a>
-    {% else %}
-        <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': lastMonday|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This week</a>
-    {% endif %}
+
+    <div class="row">
+        <div class="col-md-8">
+            {% if minDate == today|date('Y-m-d') %}
+                <a class="btn btn-primary btn-sm mt-2"
+                   href="{{ path('tennis_player_availability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
+                    week </a>
+            {% else %}
+                <a class="btn btn-outline-primary btn-sm mt-2"
+                   href="{{ path('tennis_player_availability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
+                    week</a>
+            {% endif %}
 
 
-    {% if minDate == monday2|date('Y-m-d') %}
-        <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next week</a>
-    {% else %}
-        <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next week</a>
-    {% endif %}
+            {% if minDate == monday2|date('Y-m-d') %}
+                <a class="btn btn-primary btn-sm mt-2"
+                   href="{{ path('tennis_player_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next
+                    week</a>
+            {% else %}
+                <a class="btn btn-outline-primary btn-sm mt-2"
+                   href="{{ path('tennis_player_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next
+                    week</a>
+            {% endif %}
 
 
-    {% if minDate == monday3|date('Y-m-d') %}
-    <a class="btn btn-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following week</a>
-    {% else %}
-    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following week</a>
-    {% endif %}
+            {% if minDate == monday3|date('Y-m-d') %}
+                <a class="btn btn-primary btn-sm mt-2"
+                   href="{{ path('tennis_player_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
+                    week</a>
+            {% else %}
+                <a class="btn btn-outline-primary btn-sm mt-2"
+                   href="{{ path('tennis_player_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
+                    week</a>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            {% if minDate is null %}
+                <strong>Date range: </strong> {{ lastMonday |date('d-M-Y') }} - {{ nextSunday |date('d-M-Y')}}
+            {% else %}
+                <strong>Date range: </strong>  {{ minDate|date('d-M-Y') }} - {{ maxDate|date('d-M-Y') }}
+            {% endif %}
+        </div>
+    </div>
+
     <hr>
-
-{#    <br>#}
-{#    Last Monday: {{ lastMonday|date('d-M-y') }} <br>#}
-{#    Next Monday2: {{ monday2|date('d-M-y') }} <br>#}
-{#    Next Monday3: {{ monday3|date('d-M-y') }} <br>#}
-{#    Next Sunday: {{ nextSunday|date('d-M-y') }} <br>#}
-{#    Next Sunday2: {{ sunday2|date('d-M-y') }} <br>#}
-{#    Next Sunday3: {{ sunday3|date('d-M-y') }} <br>#}
-{#    <hr>#}
-{#    minDate: {{ minDate|date('d-M-y') }} <br>#}
-{#    maxDate: {{ maxDate|date('d-M-y') }} <br>#}
-
 
     {% for date in dates %}
         <h3 style="color: blue;">{{ date.date |date('D d-M-Y') }}</h3>
@@ -69,24 +82,27 @@
             {% for i in 7..21 %}
                 <tr>
                     <td>{{ i }}</td>
-                    <td style="text-align: center">Poplar</td>
+                    <td style="text-align: center">  xxxxxxxxxxxxx  </td>
                     {% for tennis_player in tennis_players %}
                         {% for matchrole in tennis_player.roles %}
                             {% if matchrole == 'ROLE_TENNIS_PLAYER' %}
 
                                 {% set availability = 0 %}
                                 {% set id = 0 %}
+
                                 <td style="text-align: center">
                                 {% for tennis_player_availability in tennis_player_availabilities %}
-                                    {% if tennis_player_availability.date == date.date and tennis_player_availability.hour == i
+                                    {% if tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and tennis_player_availability.hour == i
                                         and tennis_player_availability.user.id == tennis_player.id %}
                                         {% set flag=1 %}
                                         {% set availability= tennis_player_availability.available %}
                                         {% set id = tennis_player_availability.id %}
+
                                     {% endif %}
                                 {% endfor %}
                                 {% if is_granted('ROLE_SUPER_ADMIN') or tennis_player.id ==app.user.id %}
                                     {% if availability == 0 %}
+
                                         <a href={{ path('tennis_player_availability_add', {'hour': i, 'date': date.date |date('Y-m-d') , 'player' : tennis_player.id}) }}><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
                                     {% else %}
                                         <a href={{ path('tennis_player_availability_edit', {'id' : id, 'available':availability} ) }}><i class="fa fa-circle" style="color: green"></i> </a>
@@ -117,8 +133,6 @@
     {% if is_granted('ROLE_SUPER_ADMIN') %}
     <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tennis_player_availability_new') }}">New tennis player availability</a> <br>
     {%  endif %}
-    <br>
-    <br>
     <br>
 
 {% endblock %}
