@@ -72,15 +72,18 @@
                 <tr>
                     <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
                     {% for venue in tennis_venues %}
-                        {% set availability = "Not scraped" %}
+                        {% set availability = "-" %}
                         <td style="text-align: center">
                             {% for tennis_court_availability in tennis_court_availabilities %}
-                                {% if tennis_court_availability.date == date.date and tennis_court_availability.hour == hour.hour and tennis_court_availability.venue.id == venue.id %}
+                                {% if tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and tennis_court_availability.hour == hour.sort  and tennis_court_availability.venue.id == venue.id %}
                                     {% set flag=1 %}
                                     {% set availability= tennis_court_availability.available %}
+
                                 {% endif %}
                             {% endfor %}
-                            {{ availability }}
+                           <a target="_blank" href="{{ path('tennis_court_availability_edit', {'id':'1' }) }}" >{{ availability }}</a>
+
+
                         </td>
                     {% endfor %}
                 </tr>

@@ -6,7 +6,7 @@ use App\Repository\TennisCourtAvailabilityRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TennisAvailabilityRepository::class)
+ * @ORM\Entity(repositoryClass=TennisCourtAvailabilityRepository::class)
  */
 class TennisCourtAvailability
 {
@@ -38,6 +38,16 @@ class TennisCourtAvailability
      * @ORM\JoinColumn(nullable=false)
      */
     private $venue;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $courtBooked;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $courtCost;
 
     public function getId(): ?int
     {
@@ -90,6 +100,30 @@ class TennisCourtAvailability
     public function setVenue(?TennisVenues $venue): self
     {
         $this->venue = $venue;
+
+        return $this;
+    }
+
+    public function getCourtBooked(): ?bool
+    {
+        return $this->courtBooked;
+    }
+
+    public function setCourtBooked(?bool $courtBooked): self
+    {
+        $this->courtBooked = $courtBooked;
+
+        return $this;
+    }
+
+    public function getCourtCost(): ?float
+    {
+        return $this->courtCost;
+    }
+
+    public function setCourtCost(?float $courtCost): self
+    {
+        $this->courtCost = $courtCost;
 
         return $this;
     }

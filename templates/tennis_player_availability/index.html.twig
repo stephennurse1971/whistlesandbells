@@ -79,9 +79,12 @@
             </thead>
 
             <tbody>
-            {% for i in 7..21 %}
+            {% for hour in hours %}
+                {% set i = hour.sort %}
                 <tr>
-                    <td>{{ i }}</td>
+
+                    <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
+
                     <td style="text-align: center">  xxxxxxxxxxxxx  </td>
                     {% for tennis_player in tennis_players %}
                         {% for matchrole in tennis_player.roles %}

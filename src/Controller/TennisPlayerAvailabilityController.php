@@ -25,6 +25,13 @@ class TennisPlayerAvailabilityController extends AbstractController
      */
     public function index(Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository, UserRepository $userRepository, TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
     {
+        $hours = [];
+        for ($i= 7; $i<=23; $i++)
+        {
+            $hours[$i]['hour']=$i.':00';
+            $hours[$i]['sort']=$i;
+        }
+
         $minDate = $request->query->get('minDate');
         $maxDate = $request->query->get('maxDate');
 
@@ -78,7 +85,7 @@ class TennisPlayerAvailabilityController extends AbstractController
         return $this->render('tennis_player_availability/index.html.twig', [
             'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
             'dates' => $dates,
-            'hours' => $tennisPlayerAvailabilityRepository->UniqueHour(),
+            'hours' => $hours,
             'tennis_players' => $userRepository->findAll(),
             'minDate' => $request->query->get('minDate'),
             'maxDate' => $request->query->get('maxDate'),
