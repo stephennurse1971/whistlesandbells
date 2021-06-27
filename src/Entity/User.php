@@ -73,6 +73,16 @@ class User implements UserInterface
      */
     private $calendarInviteEmail;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $LastName;
+
 
 
     public function __construct()
@@ -260,6 +270,30 @@ class User implements UserInterface
     public function setCalendarInviteEmail(?string $calendarInviteEmail): self
     {
         $this->calendarInviteEmail = $calendarInviteEmail;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->LastName;
+    }
+
+    public function setLastName(?string $LastName): self
+    {
+        $this->LastName = $LastName;
 
         return $this;
     }
