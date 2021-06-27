@@ -43,38 +43,56 @@
         </a>
         <div id="collapseTennis" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item text" href="{{ path('tennis_court_availability_index') }}">Court availability</a>
-                <a class="collapse-item text" href="{{ path('tennis_player_availability_index')}}">Player availability</a>
+                <a class="collapse-item text" href="{{ path('tennis_court_availability_index') }}">Court Availability</a>
+                <a class="collapse-item text" href="{{ path('tennis_player_availability_index')}}">Player Availability</a>
                 <hr>
-                <a style="color: darkgray" class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_TENNIS_PLAYER'}) }}">Tennis players</a>
-                <a style="color: darkgray"  class="collapse-item" href="{{ path('tennis_court_preferences_index') }}">Tennis court prefs</a>
+                <a style="color: darkgray" class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_TENNIS_PLAYER'}) }}">Players</a>
+                <a style="color: darkgray"  class="collapse-item" href="{{ path('tennis_court_preferences_index') }}">Venue Preferences</a>
             </div>
         </div>
     </li>
     <hr class="sidebar-divider">
+    {% endif %}
+
+
+    {% if is_granted('ROLE_FAMILY') %}
+        <!-- Nav Item #3 - Settings -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFamily"
+               aria-expanded="true" aria-controls="collapseFamily">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Family</span>
+            </a>
+            <div id="collapseFamily" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_FAMILY'}) }}">Family</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
     {% endif %}
 
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Nav Item #3 - Settings -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
-           aria-expanded="true" aria-controls="collapseAdmin">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings"
+           aria-expanded="true" aria-controls="collapseSettings">
             <i class="fas fa-fw fa-cog"></i>
             <span>Settings</span>
         </a>
-        <div id="collapseAdmin" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseSettings" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
-                <a class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_FAMILY'}) }}">Family</a>
-                <hr>
-                <a class="collapse-item" href="{{ path('tennis_venues_index') }}">Tennis venues</a>
-                <a class="collapse-item" href="{{ path('credit_card_details_index') }}">Credit cards</a>
                 <a class="collapse-item" href="{{ path('admin_import') }}">Import from xls</a>
-
+                <hr>
+                <a class="collapse-item" href="{{ path('tennis_venues_index') }}">Tennis Venues</a>
+                <a class="collapse-item" href="{{ path('credit_card_details_index') }}">Credit Cards</a>
             </div>
         </div>
     </li>
     <hr class="sidebar-divider">
     {% endif %}
+
+
 </ul>

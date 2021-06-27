@@ -58,6 +58,21 @@ class User implements UserInterface
      */
     private $tennisCourtPreferences;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Email2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mobile2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $calendarInviteEmail;
+
 
 
     public function __construct()
@@ -209,6 +224,42 @@ class User implements UserInterface
                 $tennisCourtPreference->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmail2(): ?string
+    {
+        return $this->Email2;
+    }
+
+    public function setEmail2(?string $Email2): self
+    {
+        $this->Email2 = $Email2;
+
+        return $this;
+    }
+
+    public function getMobile2(): ?string
+    {
+        return $this->mobile2;
+    }
+
+    public function setMobile2(?string $mobile2): self
+    {
+        $this->mobile2 = $mobile2;
+
+        return $this;
+    }
+
+    public function getCalendarInviteEmail(): ?string
+    {
+        return $this->calendarInviteEmail;
+    }
+
+    public function setCalendarInviteEmail(?string $calendarInviteEmail): self
+    {
+        $this->calendarInviteEmail = $calendarInviteEmail;
 
         return $this;
     }

@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-4">
             {% if minDate is null %}
-                <strong>Date range: </strong> {{ lastMonday |date('d-M-Y') }} - {{ nextSunday |date('d-M-Y')}}
+                <strong>Date range: </strong> {{ lastMonday |date('d-M-Y') }} - {{ nextSunday |date('d-M-Y') }}
             {% else %}
                 <strong>Date range: </strong>  {{ minDate|date('d-M-Y') }} - {{ maxDate|date('d-M-Y') }}
             {% endif %}
@@ -60,7 +60,8 @@
                 {% for venue in tennis_venues %}
                     <th style="text-align: right" title="{{ venue.address }}">
                         <a target="_blank" href={{ venue.weblink }}>{{ venue.venue }} </a>
-                            <a target="_blank" href={{ venue.maplink }}><i style="font-size: 15px" class="fas fa-map-marker"></i></a>
+                        <a target="_blank" href={{ venue.maplink }}><i style="font-size: 15px"
+                                                                       class="fas fa-map-marker"></i></a>
                     </th>
                 {% endfor %}
             </tr>
@@ -73,15 +74,22 @@
                     <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
                     {% for venue in tennis_venues %}
                         {% set availability = "-" %}
+                        {% set id = '' %}
                         <td style="text-align: center">
                             {% for tennis_court_availability in tennis_court_availabilities %}
                                 {% if tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and tennis_court_availability.hour == hour.sort  and tennis_court_availability.venue.id == venue.id %}
                                     {% set flag=1 %}
                                     {% set availability= tennis_court_availability.available %}
+                                    {% set id = tennis_court_availability.id %}
 
                                 {% endif %}
                             {% endfor %}
-                           <a target="_blank" href="{{ path('tennis_court_availability_edit', {'id':'1' }) }}" >{{ availability }}</a>
+                            {% if availability == 1 %}
+                                <a target="_blank"
+                                   href="{{ path('tennis_court_availability_edit', {'id': id}) }}">Available</a>
+                            {% else %}
+                                <a href="{{ path('tennis_court_availability_newfromcalendar', {'date': date.date|date('Y-m-d') , 'venue': venue.id, 'hour':hour.sort}) }}">{{ availability }}</a>
+                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>
@@ -95,7 +103,7 @@
     <br>
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <a class="btn btn-outline-success" href="{{ path('tennis_court_availability_new') }}">New</a>
+        <a class="btn btn-outline-success" href="{{ path('tennis_court_availability_new') }}">New</a>
     {% endif %}
     <br>
     <br>

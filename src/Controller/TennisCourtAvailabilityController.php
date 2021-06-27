@@ -9,6 +9,7 @@ use App\Repository\TennisCourtAvailabilityRepository;
 use App\Repository\TennisPlayerAvailabilityRepository;
 use App\Repository\TennisPlayersRepository;
 use App\Repository\TennisVenuesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -118,6 +119,30 @@ class TennisCourtAvailabilityController extends AbstractController
             'tennis_court_availabilities' => $tennisCourtAvailability,
             'form' => $form->createView(),
         ]);
+    }
+
+ /**
+     * @Route("/newFromCalendar", name="tennis_court_availability_newfromcalendar", methods={"GET","POST"})
+     */
+    public function newFromCalendar(Request $request,TennisVenuesRepository $tennisVenuesRepository, EntityManagerInterface $entityManager): Response
+    {
+        $tennisCourtAvailability = new TennisCourtAvailability();
+        $venueId=$request->query->get('venue');
+        $date=$request->query->get('date');
+        $hour=$request->query->get('hour');
+        $date= new \DateTime($date);
+       // $date->format('Y-m-d');
+
+        $venue = $tennisVenuesRepository->find($venueId);
+        $tennisCourtAvailability = new TennisCourtAvailability();
+        $tennisCourtAvailability->setVenue($venue);
+        $tennisCourtAvailability->setDate($date);
+        $tennisCourtAvailability->setHour($hour);
+        $tennisCourtAvailability->setAvailable('1');
+        $entityManager->persist($tennisCourtAvailability);
+        $entityManager->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
     }
 
     /**

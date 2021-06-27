@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\TennisPlayerAvailability;
 use App\Form\TennisPlayerAvailabilityType;
 use App\Repository\TennisCourtAvailabilityRepository;
+use App\Repository\TennisCourtPreferencesRepository;
 use App\Repository\TennisPlayerAvailabilityRepository;
 use App\Repository\TennisPlayersRepository;
 use App\Repository\TennisVenuesRepository;
@@ -23,7 +24,7 @@ class TennisPlayerAvailabilityController extends AbstractController
     /**
      * @Route("/", name="tennis_player_availability_index", methods={"GET"})
      */
-    public function index(Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository, UserRepository $userRepository, TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
+    public function index(Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository,TennisCourtPreferencesRepository $tennisCourtPreferencesRepository,UserRepository $userRepository, TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
     {
         $hours = [];
         for ($i= 7; $i<=23; $i++)
@@ -84,6 +85,8 @@ class TennisPlayerAvailabilityController extends AbstractController
 
         return $this->render('tennis_player_availability/index.html.twig', [
             'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
+            'tennis_court_availabilities'=> $tennisCourtAvailabilityRepository->findAll(),
+            'tennis_court_preferences'=> $tennisCourtPreferencesRepository->findAll(),
             'dates' => $dates,
             'hours' => $hours,
             'tennis_players' => $userRepository->findAll(),
