@@ -7,6 +7,7 @@ use App\Entity\TennisPlayers;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,7 +29,12 @@ class TennisPlayerAvailabilityType extends AbstractType
                 ],
             ])
             ->add('hour')
-            ->add('available')
+            ->add('available',ChoiceType::class,[
+                'choices'=>[
+                    'Not available'=>0,
+                    'Available'=>1
+                ]
+            ])
         ;
     }
 

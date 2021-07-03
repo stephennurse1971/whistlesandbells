@@ -26,6 +26,7 @@ class TennisVenuesType extends AbstractType
                     'WillToWin'=>'WillToWin',
                 ]
             ])
+            ->add('towerHamletsId')
             ->add('londonRegion',ChoiceType::class,[
                 'multiple'=>false,
                 'choices'=>[

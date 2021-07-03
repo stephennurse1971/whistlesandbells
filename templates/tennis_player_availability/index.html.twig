@@ -90,57 +90,50 @@
                     <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
 
                     <td style="text-align:left">
-                        {% set flag=0 %}
-                        {% set length = tennis_court_availabilities|length %}
-                        {% set count = 0 %}
+                        {% set flag = 0 %}
                         {% for tennis_court_availability in tennis_court_availabilities %}
-                            {% set count = count + 1 %}
                             {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}
                                 {% if tennis_court_availability.available=='1' %}
-                                    {{ tennis_court_availability.venue.venue }}
-                                {% endif %}
-                                {% if count<length %}
-                                    <br>
+                                    {{ tennis_court_availability.venue.venue }} <br>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
                     </td>
 
 
-
-
-
-
                     <td style="text-align:left">
-                        {% set flag=0 %}
-                        {% set length = tennis_court_availabilities|length %}
-                        {% set count = 0 %}
+                        {% set flag = 0 %}
+
+
                         {% for tennis_court_availability in tennis_court_availabilities %}
-                            {% set count = count + 1 %}
+
                             {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}
                                 {% if tennis_court_availability.available=='1' %}
 
 
+
+
                                     {% for tennis_player_availability in tennis_player_availabilities %}
+
                                         {% for tennis_court_preference in tennis_court_preferences %}
-                                        {% if tennis_player_availability.hour == hour.sort and
-                                            tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and
-                                            tennis_player_availability.available=='1'  and 1==1
-                                        %}
-                                            {{ tennis_player_availability.user.fullName }}
+                                            {% if tennis_player_availability.hour == hour.sort and
+                                                tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and
+                                                tennis_player_availability.available=='1' and
+                                                tennis_court_preference.user.id == tennis_player_availability.user.id and
+                                                tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and
+                                                tennis_court_preference.weekdayElection == 1 %}
+                                                {{ tennis_player_availability.user.fullName }};
+                                            {% endif %}
 
-                                        {% endif %}
+                                        {% endfor %}
                                     {% endfor %}
-                                    {% endfor %}
-
-
-
-                                {% endif %}
-                                {% if count<length %}
                                     <br>
                                 {% endif %}
+
                             {% endif %}
+
                         {% endfor %}
+
                     </td>
 
 

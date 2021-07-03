@@ -17,11 +17,16 @@ class UserType extends AbstractType
         $builder
             ->add('firstName')
             ->add('lastName')
-            ->add('fullName')
             ->add('email')
             ->add('email2')
             ->add('mobile')
             ->add('mobile2')
+            ->add('calendarInviteEmail',ChoiceType::class,[
+                'choices'=>[
+                    $options['email1']=>$options['email1'],
+                    $options['email2']=>$options['email2']
+                ],
+            ])
             ->add('role',ChoiceType::class,[
                 'multiple'=>true,
                 'expanded'=>true,
@@ -49,6 +54,9 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'email1'=>null,
+            'email2'=>null,
+
         ]);
     }
 }

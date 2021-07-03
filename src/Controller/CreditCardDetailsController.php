@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/credit/card/details")
+ * @Route("/admin/credit/card/details")
  */
 class CreditCardDetailsController extends AbstractController
 {

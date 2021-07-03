@@ -6,7 +6,7 @@
     <h1 style="color: red;">Tennis Court Availability</h1>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
             {% if minDate == today|date('Y-m-d') %}
                 <a class="btn btn-primary btn-sm mt-2"
                    href="{{ path('tennis_court_availability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
@@ -39,6 +39,10 @@
                    href="{{ path('tennis_court_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
                     week</a>
             {% endif %}
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-danger btn-sm mt-2" href="{{ path('tennis_court_availability_scrape') }}">Scrape</a>
+            <a class="btn btn-danger btn-sm mt-2" href="{{ path('tennis_court_availability_delete_all') }}">Delete all entries</a>
         </div>
         <div class="col-md-4">
             {% if minDate is null %}
@@ -84,12 +88,17 @@
 
                                 {% endif %}
                             {% endfor %}
+
+
                             {% if availability == 1 %}
-                                <a target="_blank"
-                                   href="{{ path('tennis_court_availability_edit', {'id': id}) }}">Available</a>
+                                <a target="_blank" href="{{ path('tennis_court_availability_edit', {'id': id}) }}">Available</a>
+                            {% elseif availability == 2 %}
+                                <a target="_blank" href="{{ path('tennis_court_availability_edit', {'id': id}) }}">Booked</a>
                             {% else %}
                                 <a href="{{ path('tennis_court_availability_newfromcalendar', {'date': date.date|date('Y-m-d') , 'venue': venue.id, 'hour':hour.sort}) }}">{{ availability }}</a>
                             {% endif %}
+
+
                         </td>
                     {% endfor %}
                 </tr>

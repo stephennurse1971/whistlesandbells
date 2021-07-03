@@ -54,12 +54,18 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
+     * @Route("/admin/new", name="user_new", methods={"GET","POST"})
      */
+
     public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['email1'=>$user->getEmail(),'email2'=>$user->getEmail2()]);
+        $roles = $this->getUser()->getRoles();
+
+        if (!in_array('ROLE_SUPER_ADMIN',$roles)) {
+            $form->remove('role');
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -71,6 +77,10 @@ class UserController extends AbstractController
                 $user->setPassword($passwordEncoder->encodePassword($user, $password));
             }
             $user->setRoles($roles);
+
+            $firstName = $user->getFirstName();
+            $lastName = $user->getLastName();
+            $user->setFullName($firstName . ' '.$lastName);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -112,24 +122,36 @@ class UserController extends AbstractController
      */
     public function edit(int $id, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $referer = $request->server->get('HTTP_REFERER');
+
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
         if ($this->getUser()->getId() == $id || $hasAccess)
         {
             $plainPassword = $user->getPlainPassword();
             $roles = $user->getRoles();
-            $form = $this->createForm(UserType::class, $user);
+            $form = $this->createForm(UserType::class, $user, ['email1'=>$user->getEmail(),'email2'=>$user->getEmail2()]);
+            $logged_user_roles = $this->getUser()->getRoles();
+            if (!in_array('ROLE_SUPER_ADMIN',$logged_user_roles)) {
+                $form->remove('role');
+            }
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                if($form->has('role')){
                 $get_roles = $form->get('role')->getData();
+
                 $roles = $get_roles;
+                $user->setRoles($roles);
+                }
                 $password = $form->get('password')->getData();
                 if ($password != '') {
                     $user->setPassword($passwordEncoder->encodePassword($user, $password));
                     $user->setPlainPassword($password);
                 }
-                $user->setRoles($roles);
+
+                $firstName = $user->getFirstName();
+                $lastName = $user->getLastName();
+                $user->setFullName($firstName . ' '.$lastName);
+
                 $this->getDoctrine()->getManager()->flush();
 
                 if ($form['sendEmail']->getData() == 1) {
@@ -152,13 +174,20 @@ class UserController extends AbstractController
                 'roles' => $roles
             ]);
         }
-        return $this->redirect($referer);
+        $referer = $request->server->get('HTTP_REFERER');
+        if($referer){
+            return $this->redirect($referer);
+
+        }
+        else{
+            return $this->redirectToRoute('user_index');
+        }
     }
 
 
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"POST"})
+     * @Route("/admin/{id}", name="user_delete", methods={"POST"})
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
      */
     public function delete(Request $request, User $user): Response

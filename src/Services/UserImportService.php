@@ -36,20 +36,28 @@ class UserImportService
 
         foreach ($alldatatsFromCsv as $oneLineFromCsv) {
             $fullName = trim($oneLineFromCsv[0]);
-            $email = trim(strtolower($oneLineFromCsv[1]));
-            $mobile = trim($oneLineFromCsv[2]);
+            $mobile1 = trim($oneLineFromCsv[1]);
+            $mobile2 = trim($oneLineFromCsv[2]);
+            $email1 = trim(strtolower($oneLineFromCsv[3]));
+            $email2 = trim(strtolower($oneLineFromCsv[4]));
+            $firstName = trim($oneLineFromCsv[5]);
+            $lastName = trim($oneLineFromCsv[6]);
 
-            if (!$email) {
+            if (!$email1) {
                 continue;
             }
 
-            $user = $this->userRepository->findOneBy(['email' => $email]);
+            $user = $this->userRepository->findOneBy(['email' => $email1]);
 
             if (!$user) {
                 $user = new User();
                 $user->setFullName($fullName)
-                    ->setEmail($email)
-                    ->setMobile($mobile)
+                    ->setFirstName($firstName)
+                    ->setLastName($lastName)
+                    ->setEmail($email1)
+                    ->setEmail2($email2)
+                    ->setMobile($mobile1)
+                    ->setMobile2($mobile2)
                     ->setPlainPassword('password')
                     ->setPassword('password');
                 $this->manager->persist($user);

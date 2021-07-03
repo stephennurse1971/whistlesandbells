@@ -7,10 +7,17 @@
         <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Phone</th>
-            <th>Roles</th>
-            <th>PlainPassword</th>
-            <th>Password</th>
+            <th>Email2</th>
+            <th>Mobile1</th>
+            <th>Mobile2</th>
+            <th>Admin</th>
+            <th>Tennis</th>
+            <th>Family</th>
+
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <th style="color: red;">Plain Password</th>
+            {% endif %}
+            <th>Edit</th>
         </tr>
         </thead>
 
@@ -18,18 +25,66 @@
         {% if role=='All' %}
             {% for user in users %}
                 <tr>
-                    <td>
-                        {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
-                            <a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</a>
+                    <td><b>{{ user.fullName }}</b></td>
+                    <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                    <td><a href="mailto:{{ user.email2 }}">{{ user.email2 }}</a></td>
+                    <td>{{ user.mobile }}</td>
+                    <td>{{ user.mobile2 }}</td>
+
+
+                    <td style="text-align: center">
+                        {% set flag = 0 %}
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_SUPER_ADMIN' or role == 'ROLE_ADMIN' %}
+                                {% set flag = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if flag == 1 %}
+                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
                         {% else %}
-                            {{ user.fullName }}
+                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
                         {% endif %}
                     </td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.mobile }}</td>
-                    <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                    <td>{{ user.plainPassword }}</td>
-                    <td>{{ user.password }}</td>
+
+                    <td style="text-align: center">
+                        {% set flag = 0 %}
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_TENNIS_PLAYER' %}
+                                {% set flag = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if flag == 1 %}
+                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                        {% else %}
+                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                        {% endif %}
+                    </td>
+
+                    <td style="text-align: center">
+                        {% set flag = 0 %}
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_FAMILY' %}
+                                {% set flag = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if flag == 1 %}
+                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                        {% else %}
+                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                        {% endif %}
+                    </td>
+
+
+
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <td>{{ user.plainPassword }}</td>
+                    {% endif %}
+                    <td>
+                        {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
+                            <a class="btn btn-outline-danger btn-sm"
+                               href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         {% endif %}
@@ -40,18 +95,67 @@
                 {% for matchrole in user.roles %}
                     {% if matchrole == role %}
                         <tr>
-                            <td>
-                                {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
-                                    <a href="{{ path('user_edit', {'id': user.id}) }}">{{ user.fullName }}</a>
+                            <td><b>{{ user.fullName }}</b></td>
+                            <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                            <td><a href="mailto:{{ user.email2 }}">{{ user.email2 }}</a></td>
+                            <td>{{ user.mobile }}</td>
+                            <td>{{ user.mobile2 }}</td>
+
+
+
+                            <td style="text-align: center">
+                                {% set flag = 0 %}
+                                {% for role in user.roles %}
+                                    {% if role == 'ROLE_SUPER_ADMIN' or role == 'ROLE_ADMIN' %}
+                                        {% set flag = 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if flag == 1 %}
+                                    <i class="fa fa-circle" style="color: green; text-align: right"></i>
                                 {% else %}
-                                    {{ user.fullName }}
+                                    <i class="fa fa-circle" style="color: red; text-align: right"></i>
                                 {% endif %}
                             </td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.mobile }}</td>
-                            <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                            <td>{{ user.plainPassword }}</td>
-                            <td>{{ user.password }}</td>
+
+                            <td style="text-align: center">
+                                {% set flag = 0 %}
+                                {% for role in user.roles %}
+                                    {% if role == 'ROLE_TENNIS_PLAYER' %}
+                                        {% set flag = 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if flag == 1 %}
+                                    <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                                {% else %}
+                                    <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                                {% endif %}
+                            </td>
+
+                            <td style="text-align: center">
+                                {% set flag = 0 %}
+                                {% for role in user.roles %}
+                                    {% if role == 'ROLE_FAMILY' %}
+                                        {% set flag = 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if flag == 1 %}
+                                    <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                                {% else %}
+                                    <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                                {% endif %}
+                            </td>
+
+
+
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <td>{{ user.plainPassword }}</td>
+                            {% endif %}
+                            <td>
+                                {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
+                                    <a class="btn btn-outline-danger btn-sm"
+                                       href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endif %}
                 {% endfor %}
@@ -62,7 +166,7 @@
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
-        <a class="btn btn-primary mt-3" href="">Import users</a>
+        <a class="btn btn-primary mt-3" href="{{ path('admin_import') }}">Import users</a>
     {% endif %}
 
 {% endblock %}

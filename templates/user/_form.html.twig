@@ -1,5 +1,30 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <h3><b>Name</b></h3>
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+    </div>
+
+    <div class="col-md-4">
+        <h3><b>Contact details</b></h3>
+        {{ form_row(form.email) }}
+        {{ form_row(form.email2) }}
+        {{ form_row(form.calendarInviteEmail) }}
+        {{ form_row(form.mobile) }}
+        {{ form_row(form.mobile2) }}
+    </div>
+    <div class="col-md-4">
+        <h3><b>Access rights</b></h3>
+        {{ form_row(form.password) }}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        {{ form_row(form.role) }}
+        {% endif %}
+    </div>
+</div>
+
 
 <button id="save" class="btn btn-primary btn-sm">{{ button_label|default('Save (no welcome email)') }}</button>
 <button id="sendEmail" class="btn-success btn-sm">Save & send welcome e-mail</button>

@@ -46,4 +46,14 @@ class TennisVenuesRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByWebID()
+    {
+        return $this->createQueryBuilder('t')
+            ->Where('t.towerHamletsId != :val')
+            ->setParameter('val', '')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

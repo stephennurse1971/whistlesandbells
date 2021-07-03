@@ -74,6 +74,11 @@ class TennisVenues
      */
     private $tennisCourtPreferences;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $towerHamletsId;
+
     
     public function __construct()
     {
@@ -250,6 +255,18 @@ class TennisVenues
                 $tennisCourtPreference->setTennisVenue(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTowerHamletsId(): ?string
+    {
+        return $this->towerHamletsId;
+    }
+
+    public function setTowerHamletsId(?string $towerHamletsId): self
+    {
+        $this->towerHamletsId = $towerHamletsId;
 
         return $this;
     }

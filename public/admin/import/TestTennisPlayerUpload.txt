@@ -1,4 +1,0 @@
-﻿John Smith,john22@gmail.com,12345
-Tim Draper,tim123@gmail.com,4444
-Amir Khan,amir123@gmail.com,245543
-Mike Atherton,mike@hotmail.com,6656564

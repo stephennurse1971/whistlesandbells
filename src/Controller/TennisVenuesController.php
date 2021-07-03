@@ -5,13 +5,14 @@ namespace App\Controller;
 use App\Entity\TennisVenues;
 use App\Form\TennisVenuesType;
 use App\Repository\TennisVenuesRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/tennis/venues")
+ * @Route("/admin/tennis/venues")
  */
 class TennisVenuesController extends AbstractController
 {
@@ -60,6 +61,7 @@ class TennisVenuesController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="tennis_venues_edit", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      */
     public function edit(Request $request, TennisVenues $tennisVenue): Response
     {
@@ -91,4 +93,5 @@ class TennisVenuesController extends AbstractController
 
         return $this->redirectToRoute('tennis_venues_index');
     }
+
 }

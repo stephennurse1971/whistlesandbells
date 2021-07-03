@@ -3,23 +3,24 @@
 {% block title %}Edit: {{ user.fullname }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red"><span class="text-danger">{{user.fullName}}</span></h1>
+    <h1 style="color: red"><span class="text-danger">{{ user.fullName }}</span></h1>
 
     {{ include('user/_form.html.twig', {'button_label': 'Save (no welcome email)'}) }}
-<br>
-<br>
+    <br>
+    <br>
     <a class="btn btn-outline-primary btn-sm mt-1 mb-1" href="{{ path('user_index') }}">Don't save & Return to list</a>
-
-   {{ include('user/_delete_form.html.twig') }}
+    {% if is_granted ('ROLE_SUPER_ADMIN') %}
+        {{ include('user/_delete_form.html.twig') }}
+    {% endif %}
     <div id="pw" data="{{ password }}"></div>
     {% set count=0 %}
     {% for role in roles %}
         {% set count=count + 1 %}
         {% set id = 'role'~count %}
-    <div id="{{ id }}" data-role{{ count }}="{{ role }}"></div>
+        <div id="{{ id }}" data-role{{ count }}="{{ role }}"></div>
 
-   {% endfor %}
-<div id="counter" data-count="{{ count }}"></div>
+    {% endfor %}
+    <div id="counter" data-count="{{ count }}"></div>
 {% endblock %}
 
 
@@ -29,12 +30,12 @@
         $('#user_password').val(pw).change();
         var counter = $('#counter').attr('data-count');
 
- for(let i=1; i<counter;i++){
+        for (let i = 1; i < counter; i++) {
 
-    var role = $("#role"+i).attr("data-role"+i);
+            var role = $("#role" + i).attr("data-role" + i);
 
-     $('input[value="'+role+'"]').prop('checked', true);
- }
+            $('input[value="' + role + '"]').prop('checked', true);
+        }
 
 
     </script>
@@ -45,7 +46,7 @@
     <script>
         $('#sendEmail').click(function (e) {
             e.preventDefault();
-                $('#user_sendEmail').val(1).change();/*
+            $('#user_sendEmail').val(1).change();/*
             e.unbind();*/
             $('#save').trigger('click');
         });

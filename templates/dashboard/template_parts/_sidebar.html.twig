@@ -47,6 +47,7 @@
                 <a class="collapse-item text" href="{{ path('tennis_player_availability_index')}}">Player Availability</a>
                 <hr>
                 <a style="color: darkgray" class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_TENNIS_PLAYER'}) }}">Players</a>
+                <a style="color: darkgray" class="collapse-item" href="{{ path('tennis_venues_index') }}">Tennis Venues</a>
                 <a style="color: darkgray"  class="collapse-item" href="{{ path('tennis_court_preferences_index') }}">Venue Preferences</a>
             </div>
         </div>
@@ -84,9 +85,7 @@
         <div id="collapseSettings" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
-                <a class="collapse-item" href="{{ path('admin_import') }}">Import from xls</a>
                 <hr>
-                <a class="collapse-item" href="{{ path('tennis_venues_index') }}">Tennis Venues</a>
                 <a class="collapse-item" href="{{ path('credit_card_details_index') }}">Credit Cards</a>
             </div>
         </div>

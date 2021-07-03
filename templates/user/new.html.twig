@@ -24,5 +24,32 @@
             $('#save').trigger('click');
         });
 
+        var email1 = $('#user_email').val();
+        if(email1 != '') {
+            $('#user_calendarInviteEmail option:eq(0)').text(email1);
+        }
+       $('#user_email').change(function () {
+           var email1 = $('#user_email').val();
+           $('#user_calendarInviteEmail option:eq(0)').text(email1);
+       });
+
+        var email2 = $('#user_email2').val();
+        if(email2 != '') {
+            $('#user_calendarInviteEmail ').append($('<option>', {
+                value: email2,
+                text: email2
+            }));;
+        }
+        $('#user_email2').change(function () {
+            var email2 = $('#user_email2').val();
+            $('#user_calendarInviteEmail ').append($('<option>', {
+                value: email2,
+                text: email2
+            }));;
+        });
+
+
+
+
     </script>
 {% endblock javascripts %}

@@ -16,7 +16,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ImportController extends AbstractController
 {
     /**
-     * @Route("/import", name="admin_import")
+     * @Route("/admin/import", name="admin_import")
      */
     public function index(Request $request, EntityManagerInterface $manager,SluggerInterface $slugger, UserImportService $userImportService): Response
     {
