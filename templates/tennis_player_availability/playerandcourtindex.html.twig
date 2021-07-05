@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tennis Player Availability{% endblock %}
+{% block title %}Tennis Player & Court Availability{% endblock %}
 {% block body %}
 
-    <h1 style="color: red">Tennis Player Availability</h1>
+    <h1 style="color: red">Tennis Player & Court Availability</h1>
 
 
     <div class="row">
@@ -64,8 +64,8 @@
             <thead>
             <tr>
                 <th style="text-align: right">Hour</th>
-{#                <th style="text-align: left">Court(s) Available</th>#}
-{#                <th style="text-align: right">Court Available & Match criteria for 2+</th>#}
+                <th style="text-align: left">Court(s) Available</th>
+                <th style="text-align: right">Court Available & Match criteria for 2+</th>
                 {% for tennis_player in tennis_players %}
 
                     {% for matchrole in tennis_player.roles %}
@@ -94,61 +94,61 @@
 
                     <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
 
-{#                    <td style="text-align:left">#}
-{#                        {% set flag = 0 %}#}
-{#                        {% for tennis_court_availability in tennis_court_availabilities %}#}
-{#                            {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}#}
-{#                                {% if tennis_court_availability.available|first == '£' %}#}
-{#                                    {{ tennis_court_availability.venue.venue }} ({{ tennis_court_availability.available }})#}
-{#                                    <br>#}
-{#                                {% endif %}#}
-{#                            {% endif %}#}
-{#                        {% endfor %}#}
-{#                    </td>#}
+                    <td style="text-align:left">
+                        {% set flag = 0 %}
+                        {% for tennis_court_availability in tennis_court_availabilities %}
+                            {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}
+                                {% if tennis_court_availability.available|first == '£' %}
+                                    {{ tennis_court_availability.venue.venue }} ({{ tennis_court_availability.available }})
+                                    <br>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
 
 
-{#                    <td style="text-align:left">#}
-{#                        {% set flag = 0 %}#}
-{#                        {% for tennis_court_availability in tennis_court_availabilities %}#}
-{#                            {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}#}
-{#                                {% if tennis_court_availability.available|first=='£' %}#}
+                    <td style="text-align:left">
+                        {% set flag = 0 %}
+                        {% for tennis_court_availability in tennis_court_availabilities %}
+                            {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}
+                                {% if tennis_court_availability.available|first=='£' %}
 
-{#                                    {% for tennis_player_availability in tennis_player_availabilities %}#}
+                                    {% for tennis_player_availability in tennis_player_availabilities %}
 
-{#                                        {% for tennis_court_preference in tennis_court_preferences %}#}
+                                        {% for tennis_court_preference in tennis_court_preferences %}
 
-{#                                            {% if date.date|date('l')  == 'Saturday' or date.date|date('l') == 'Sunday' %}#}
+                                            {% if date.date|date('l')  == 'Saturday' or date.date|date('l') == 'Sunday' %}
 
-{#                                                {% if tennis_player_availability.hour == hour.sort and#}
-{#                                                    tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and#}
-{#                                                    tennis_player_availability.available=='1' and#}
-{#                                                    tennis_court_preference.user.id == tennis_player_availability.user.id and#}
-{#                                                    tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and#}
-{#                                                    tennis_court_preference.weekendElection == 1 %}#}
-{#                                                    {{ tennis_player_availability.user.fullName }};#}
-{#                                                {% endif %}#}
-{#                                            {% else %}#}
-{#                                                {% if tennis_player_availability.hour == hour.sort and#}
-{#                                                    tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and#}
-{#                                                    tennis_player_availability.available=='1' and#}
-{#                                                    tennis_court_preference.user.id == tennis_player_availability.user.id and#}
-{#                                                    tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and#}
-{#                                                    tennis_court_preference.weekdayElection == 1 %}#}
-{#                                                    {{ tennis_player_availability.user.fullName }}; #}
-{#                                                {% endif %}#}
+                                                {% if tennis_player_availability.hour == hour.sort and
+                                                    tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and
+                                                    tennis_player_availability.available=='1' and
+                                                    tennis_court_preference.user.id == tennis_player_availability.user.id and
+                                                    tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and
+                                                    tennis_court_preference.weekendElection == 1 %}
+                                                    {{ tennis_player_availability.user.fullName }};
+                                                {% endif %}
+                                            {% else %}
+                                                {% if tennis_player_availability.hour == hour.sort and
+                                                    tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and
+                                                    tennis_player_availability.available=='1' and
+                                                    tennis_court_preference.user.id == tennis_player_availability.user.id and
+                                                    tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and
+                                                    tennis_court_preference.weekdayElection == 1 %}
+                                                    {{ tennis_player_availability.user.fullName }};
+                                                {% endif %}
 
-{#                                            {% endif %}#}
+                                            {% endif %}
 
-{#                                        {% endfor %}#}
-{#                                    {% endfor %}#}
-{#                                    <br>#}
-{#                                {% endif %}#}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    <br>
+                                {% endif %}
 
-{#                            {% endif %}#}
+                            {% endif %}
 
-{#                        {% endfor %}#}
+                        {% endfor %}
 
-{#                    </td>#}
+                    </td>
 
 
                     {% for tennis_player in tennis_players %}

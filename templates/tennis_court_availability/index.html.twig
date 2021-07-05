@@ -6,7 +6,7 @@
     <h1 style="color: red;">Tennis Court Availability</h1>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
             {% if minDate == today|date('Y-m-d') %}
                 <a class="btn btn-primary btn-sm mt-2"
                    href="{{ path('tennis_court_availability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
@@ -40,6 +40,9 @@
                     week</a>
             {% endif %}
         </div>
+        <div class="col-md-1">
+            <a target="_blank" href="{{ path('instructionsTennis') }}"><i style="font-size: 25px; color: red; background-color: yellow" class="fas fa-info-circle"></i></a>
+        </div>
         <div class="col-md-2">
             <a class="btn btn-danger btn-sm mt-2" href="{{ path('tennis_court_availability_scrape') }}">Scrape</a>
             <a class="btn btn-danger btn-sm mt-2" href="{{ path('tennis_court_availability_delete_all') }}">Delete all entries</a>
@@ -63,7 +66,7 @@
                 <th style="text-align: right">Hour</th>
                 {% for venue in tennis_venues %}
                     <th style="text-align: right" title="{{ venue.address }}">
-                        <a target="_blank" href={{ venue.weblink }}>{{ venue.venue }} </a>
+                        <a target="_blank" href={{ venue.weblink }}>{{ venue.venue }} </a> <br> ({{ venue.londonRegion }})
                         <a target="_blank" href={{ venue.maplink }}><i style="font-size: 15px"
                                                                        class="fas fa-map-marker"></i></a>
                     </th>

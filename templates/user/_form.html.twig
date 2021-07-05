@@ -20,10 +20,27 @@
         <h3><b>Access rights</b></h3>
         {{ form_row(form.password) }}
         {% if is_granted('ROLE_SUPER_ADMIN') %}
-        {{ form_row(form.role) }}
+            {{ form_row(form.role) }}
         {% endif %}
     </div>
 </div>
+<hr>
+<div class="row">
+    <div class="col-md-4">
+        <h3><b>Weekday</b></h3>
+        xxxx
+        xxxx
+        xxxx
+    </div>
+    <div class="col-md-4">
+        <h3><b>Weekend</b></h3>
+        xxx
+        xxx
+        xxx
+    </div>
+    <hr>
+</div>
+<hr>
 
 
 <button id="save" class="btn btn-primary btn-sm">{{ button_label|default('Save (no welcome email)') }}</button>

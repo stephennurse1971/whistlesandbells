@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Default Tennis Player Availability Hours index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">Default Tennis Player Availability Hours</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Weekday/Weekend</th>
+                <th>Hour</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for default_tennis_player_availability_hour in default_tennis_player_availability_hours %}
+            <tr>
+                <td>{{ default_tennis_player_availability_hour.User.fullName}}</td>
+                <td>{{ default_tennis_player_availability_hour.WeekdayOrWeekend }}</td>
+                <td>{{ default_tennis_player_availability_hour.hour }}</td>
+                <td><a href="{{ path('default_tennis_player_availability_hours_edit', {'id': default_tennis_player_availability_hour.id}) }}">{{ default_tennis_player_availability_hour.defaultAvailable }}</a></td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+<br> <hr>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('default_tennis_player_availability_hours_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

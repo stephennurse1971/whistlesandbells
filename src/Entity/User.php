@@ -83,12 +83,18 @@ class User implements UserInterface
      */
     private $LastName;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DefaultTennisPlayerAvailabilityHours::class, mappedBy="user")
+     */
+    private $defaultTennisPlayerAvailabilityHours;
+
 
 
     public function __construct()
     {
 
         $this->tennisCourtPreferences = new ArrayCollection();
+        $this->defaultTennisPlayerAvailabilityHours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -294,6 +300,36 @@ class User implements UserInterface
     public function setLastName(?string $LastName): self
     {
         $this->LastName = $LastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DefaultTennisPlayerAvailabilityHours[]
+     */
+    public function getDefaultTennisPlayerAvailabilityHours(): Collection
+    {
+        return $this->defaultTennisPlayerAvailabilityHours;
+    }
+
+    public function addDefaultTennisPlayerAvailabilityHour(DefaultTennisPlayerAvailabilityHours $defaultTennisPlayerAvailabilityHour): self
+    {
+        if (!$this->defaultTennisPlayerAvailabilityHours->contains($defaultTennisPlayerAvailabilityHour)) {
+            $this->defaultTennisPlayerAvailabilityHours[] = $defaultTennisPlayerAvailabilityHour;
+            $defaultTennisPlayerAvailabilityHour->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDefaultTennisPlayerAvailabilityHour(DefaultTennisPlayerAvailabilityHours $defaultTennisPlayerAvailabilityHour): self
+    {
+        if ($this->defaultTennisPlayerAvailabilityHours->removeElement($defaultTennisPlayerAvailabilityHour)) {
+            // set the owning side to null (unless already changed)
+            if ($defaultTennisPlayerAvailabilityHour->getUser() === $this) {
+                $defaultTennisPlayerAvailabilityHour->setUser(null);
+            }
+        }
 
         return $this;
     }

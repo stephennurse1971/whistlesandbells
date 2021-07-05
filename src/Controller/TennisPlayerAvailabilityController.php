@@ -82,7 +82,6 @@ class TennisPlayerAvailabilityController extends AbstractController
         $sunday2->modify('+7 days');
         $sunday3->modify('+14 days');
 
-
         return $this->render('tennis_player_availability/index.html.twig', [
             'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
             'tennis_court_availabilities'=> $tennisCourtAvailabilityRepository->findAll(),
@@ -99,8 +98,85 @@ class TennisPlayerAvailabilityController extends AbstractController
             'monday3' => $monday3,
             'sunday2' => $sunday2,
             'sunday3' => $sunday3,
+        ]);
+    }
+     /**
+     * @Route("/tennisplayerandcourt", name="tennis_player_and_courtavailability_index", methods={"GET"})
+     */
+    public function indexPlayerAndCourt(Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository,TennisCourtPreferencesRepository $tennisCourtPreferencesRepository,UserRepository $userRepository, TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
+    {
+        $hours = [];
+        for ($i= 7; $i<=23; $i++)
+        {
+            $hours[$i]['hour']=$i.':00';
+            $hours[$i]['sort']=$i;
+        }
 
+        $minDate = $request->query->get('minDate');
+        $maxDate = $request->query->get('maxDate');
 
+        $today = new \DateTime('now');
+        $weekday = $today->format('N') - 1;
+        $lastMonday = new \DateTime($today->format('Y-m-d'));
+        $lastMonday->modify('-' . $weekday . ' days');
+
+        $nextSunday = new \DateTime($lastMonday->format('Y-m-d'));
+        $nextSunday->modify('+6 days');
+        $daysRemainingThisWeek = 7 - $weekday;
+
+        if ($minDate && $maxDate) {
+
+            if ($minDate == $today->format('Y-m-d')) {
+                $dates = [];
+                for ($i = 0; $i < $daysRemainingThisWeek; $i++) {
+                    $next_date = new \DateTime($today->format('Y-m-d'));
+                    $next_date->modify($i . 'days');
+                    $dates[$i] = $next_date;
+                }
+            } else {
+                $dates = [];
+                $dates[0] = new \DateTime($minDate);
+                for ($i = 1; $i <= 6; $i++) {
+                    $next_date = new \DateTime($minDate);
+                    $next_date->modify($i . 'days');
+                    $dates[$i] = $next_date;
+                }
+            }
+        }else {
+            $dates=[];
+            for($i=0;$i<$daysRemainingThisWeek ;$i++){
+                $next_date = new \DateTime($today->format('Y-m-d'));
+                $next_date->modify($i .'days');
+                $dates[$i]=$next_date;
+            }
+        }
+
+        $monday2=new \DateTime($lastMonday->format('Y-m-d'));
+        $monday3=new \DateTime($lastMonday->format('Y-m-d'));
+        $sunday2=new \DateTime($nextSunday->format('Y-m-d'));
+        $sunday3=new \DateTime($nextSunday->format('Y-m-d'));
+
+        $monday2->modify('+7 days');
+        $monday3->modify('+14 days');
+        $sunday2->modify('+7 days');
+        $sunday3->modify('+14 days');
+
+        return $this->render('tennis_player_availability/playerandcourtindex.html.twig', [
+            'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
+            'tennis_court_availabilities'=> $tennisCourtAvailabilityRepository->findAll(),
+            'tennis_court_preferences'=> $tennisCourtPreferencesRepository->findAll(),
+            'dates' => $dates,
+            'hours' => $hours,
+            'tennis_players' => $userRepository->findAll(),
+            'minDate' => $request->query->get('minDate'),
+            'maxDate' => $request->query->get('maxDate'),
+            'today' => $today,
+            'lastMonday' => $lastMonday,
+            'nextSunday' => $nextSunday,
+            'monday2' => $monday2,
+            'monday3' => $monday3,
+            'sunday2' => $sunday2,
+            'sunday3' => $sunday3,
         ]);
     }
 
