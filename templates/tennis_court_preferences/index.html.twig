@@ -139,8 +139,7 @@
                                     {% if flag == 1 %}
                                         {% if  weekendElection == 1 %}
                                             <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i
-                                                        class="fa fa-circle"
-                                                        style="color: green; text-align: center"></i></a>
+                                                        class="fa fa-circle" style="color: green; text-align: center"></i></a>
 
                                         {% else %}
                                             <a href="{{ path('tennis_court_preferences_edit', {'userid':user.id, 'venueid': venue.id,'weekdayWeekend':'Weekend'}) }}"><i

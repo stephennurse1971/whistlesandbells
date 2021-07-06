@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\DefaultTennisPlayerAvailabilityHours;
+use App\Entity\TennisPlayerAvailability;
 use App\Form\DefaultTennisPlayerAvailabilityHoursType;
 use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
+use App\Repository\TennisPlayerAvailabilityRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +22,18 @@ class DefaultTennisPlayerAvailabilityHoursController extends AbstractController
     /**
      * @Route("/", name="default_tennis_player_availability_hours_index", methods={"GET"})
      */
-    public function index(DefaultTennisPlayerAvailabilityHoursRepository $defaultTennisPlayerAvailabilityHoursRepository): Response
+    public function index(DefaultTennisPlayerAvailabilityHoursRepository $defaultTennisPlayerAvailabilityHoursRepository,UserRepository $userRepository): Response
     {
+        $hours = [];
+        for ($i= 7; $i<=23; $i++)
+        {
+            $hours[$i]['hour']=$i.':00';
+            $hours[$i]['sort']=$i;
+        }
         return $this->render('default_tennis_player_availability_hours/index.html.twig', [
             'default_tennis_player_availability_hours' => $defaultTennisPlayerAvailabilityHoursRepository->findAll(),
-        ]);
+            'hours' => $hours,
+            'users'=> $userRepository->findByRole('ROLE_TENNIS_PLAYER')]);
     }
 
     /**
@@ -48,6 +59,33 @@ class DefaultTennisPlayerAvailabilityHoursController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/add", name="default_tennis_player_availability_hours_add")
+     */
+    public function newFromGrid(DefaultTennisPlayerAvailabilityHoursRepository $defaultTennisPlayerAvailabilityHoursRepository, EntityManagerInterface $entityManager, Request $request, UserRepository $userRepository)
+    {
+        $hour = $request->query->get('hour');
+        $userID = $request->query->get('player');
+        $day = $request->query->get('day');
+
+        $user = $userRepository->find($userID);
+        $tennisPlayerDefaultHours = new DefaultTennisPlayerAvailabilityHours();
+        $tennisPlayerDefaultHours->setUser($user);
+        $tennisPlayerDefaultHours->setHour($hour);
+        $tennisPlayerDefaultHours->setWeekdayOrWeekend($day);
+        $tennisPlayerDefaultHours->setDefaultAvailable('1');
+        $entityManager->persist($tennisPlayerDefaultHours);
+        $entityManager->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
+
+
+
+
+
     /**
      * @Route("/{id}", name="default_tennis_player_availability_hours_show", methods={"GET"})
      */
@@ -63,19 +101,16 @@ class DefaultTennisPlayerAvailabilityHoursController extends AbstractController
      */
     public function edit(Request $request, DefaultTennisPlayerAvailabilityHours $defaultTennisPlayerAvailabilityHour): Response
     {
-        $form = $this->createForm(DefaultTennisPlayerAvailabilityHoursType::class, $defaultTennisPlayerAvailabilityHour);
-        $form->handleRequest($request);
+        $available = $request->query->get('available');
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('default_tennis_player_availability_hours_index');
+        if ($available == '1') {
+            $defaultTennisPlayerAvailabilityHour->setDefaultAvailable('0');
+        } else {
+            $defaultTennisPlayerAvailabilityHour->setDefaultAvailable('1');
         }
-
-        return $this->render('default_tennis_player_availability_hours/edit.html.twig', [
-            'default_tennis_player_availability_hour' => $defaultTennisPlayerAvailabilityHour,
-            'form' => $form->createView(),
-        ]);
+        $this->getDoctrine()->getManager()->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
     }
 
     /**

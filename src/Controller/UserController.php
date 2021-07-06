@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +30,6 @@ class UserController extends AbstractController
             'users' => $userRepository->findAll(),
             'role' => 'All',
             'role_title' => 'All'
-
         ]);
     }
 
@@ -120,8 +120,14 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(int $id, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(int $id, MailerInterface $mailer, Request $request, User $user,DefaultTennisPlayerAvailabilityHoursRepository $defaultTennisPlayerAvailabilityHoursRepository ,UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $hours = [];
+        for ($i= 7; $i<=23; $i++)
+        {
+            $hours[$i]['hour']=$i.':00';
+            $hours[$i]['sort']=$i;
+        }
 
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
         if ($this->getUser()->getId() == $id || $hasAccess)
@@ -168,10 +174,13 @@ class UserController extends AbstractController
             }
 
             return $this->render('user/edit.html.twig', [
+
+                'default_tennis_player_availability_hours' => $defaultTennisPlayerAvailabilityHoursRepository->findAll(),
                 'user' => $user,
                 'form' => $form->createView(),
                 'password' => $plainPassword,
-                'roles' => $roles
+                'roles' => $roles,
+                'hours' => $hours
             ]);
         }
         $referer = $request->server->get('HTTP_REFERER');

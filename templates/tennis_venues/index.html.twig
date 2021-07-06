@@ -8,12 +8,11 @@
     <table class="table">
         <thead>
         <tr>
-            <th>ID</th>
             <th>London Region</th>
             <th>Venue</th>
             <th>Address</th>
             <th>email</th>
-            <th>tel</th>
+            <th>Telephone</th>
             <th>Booking engine</th>
             <th>TH WebID</th>
             <th>Map</th>
@@ -24,19 +23,25 @@
         <tbody>
         {% for tennis_venue in tennis_venues %}
             <tr>
-                <td>{{ tennis_venue.id }}</td>
                 <td>{{ tennis_venue.londonRegion }}</td>
-                <td><a href="{{ path('tennis_venues_edit', {'id': tennis_venue.id}) }}">{{ tennis_venue.venue }}</a>
+                <td>
+                    {% if is_granted ('ROLE_SUPER_ADMIN') %}
+                        <a target="_blank"
+                           href="{{ path('tennis_venues_edit', {'id': tennis_venue.id}) }}">{{ tennis_venue.venue }}</a>
+                    {% else %}
+                        {{ tennis_venue.venue }}
+                    {% endif %}
                 </td>
                 <td>{{ tennis_venue.address }}</td>
                 <td>{{ tennis_venue.email }}</td>
                 <td>{{ tennis_venue.telNumber }}</td>
                 <td>{{ tennis_venue.bookingEngine }}</td>
                 <td>{{ tennis_venue.towerHamletsId }}</td>
-                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.mapLink }}"> <i style="font-size: 20px" class="fas fa-map-marker"></i> </a></td>
-                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.weblink }}"> <i style="font-size: 20px" class="fas fa-link"></i> </a></td>
+                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.mapLink }}"> <i
+                                style="font-size: 20px" class="fas fa-map-marker"></i> </a></td>
+                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.weblink }}"> <i
+                                style="font-size: 20px" class="fas fa-link"></i> </a></td>
                 <td>{{ tennis_venue.comment }}</td>
-
             </tr>
         {% endfor %}
         </tbody>
@@ -45,8 +50,8 @@
     <hr>
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <a class="btn btn-success bt-sm mt-2" href="{{ path('tennis_venues_new') }}">New venue</a>
-    {%  endif %}
+        <a class="btn btn-success bt-sm mt-2" href="{{ path('tennis_venues_new') }}">New venue</a>
+    {% endif %}
 {% endblock %}
 
 {% block datatable %}
@@ -54,7 +59,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc'] [1,'asc']],
+                "order": [[ 0, 'asc' ], [ 1, 'desc' ]],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
