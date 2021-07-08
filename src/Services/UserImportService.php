@@ -66,7 +66,7 @@ class UserImportService
 
         }
 
-
+return null;
     }
 
     public function __construct(ContainerInterface $container, UserRepository $userRepository, EntityManagerInterface $manager)
