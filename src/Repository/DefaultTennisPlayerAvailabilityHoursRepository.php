@@ -29,6 +29,20 @@ class DefaultTennisPlayerAvailabilityHoursRepository extends ServiceEntityReposi
             ;
     }
 
+    public function ByPlayerAndWeekendWeekDayAndHour(int $UserId, ?string $DoW, ?string $hour )
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.WeekdayOrWeekend >= :DoW')
+            ->andWhere('t.hour <= :hour')
+            ->andWhere('t.user = :user')
+            ->setParameter('DoW',$DoW)
+            ->setParameter('hour',$hour)
+            ->setParameter('user',$UserId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return DefaultTennisPlayerAvailabilityHours[] Returns an array of DefaultTennisPlayerAvailabilityHours objects
     //  */

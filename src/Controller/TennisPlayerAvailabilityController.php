@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\TennisPlayerAvailability;
 use App\Form\TennisPlayerAvailabilityType;
+use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
 use App\Repository\TennisCourtAvailabilityRepository;
 use App\Repository\TennisCourtPreferencesRepository;
 use App\Repository\TennisPlayerAvailabilityRepository;
@@ -24,13 +25,12 @@ class TennisPlayerAvailabilityController extends AbstractController
     /**
      * @Route("/", name="tennis_player_availability_index", methods={"GET"})
      */
-    public function index(Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository,TennisCourtPreferencesRepository $tennisCourtPreferencesRepository,UserRepository $userRepository, TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
+    public function index(Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository, TennisCourtPreferencesRepository $tennisCourtPreferencesRepository, UserRepository $userRepository, TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
     {
         $hours = [];
-        for ($i= 7; $i<=23; $i++)
-        {
-            $hours[$i]['hour']=$i.':00';
-            $hours[$i]['sort']=$i;
+        for ($i = 7; $i <= 23; $i++) {
+            $hours[$i]['hour'] = $i . ':00';
+            $hours[$i]['sort'] = $i;
         }
 
         $minDate = $request->query->get('minDate');
@@ -63,19 +63,19 @@ class TennisPlayerAvailabilityController extends AbstractController
                     $dates[$i] = $next_date;
                 }
             }
-        }else {
-            $dates=[];
-            for($i=0;$i<$daysRemainingThisWeek ;$i++){
+        } else {
+            $dates = [];
+            for ($i = 0; $i < $daysRemainingThisWeek; $i++) {
                 $next_date = new \DateTime($today->format('Y-m-d'));
-                $next_date->modify($i .'days');
-                $dates[$i]=$next_date;
+                $next_date->modify($i . 'days');
+                $dates[$i] = $next_date;
             }
         }
 
-        $monday2=new \DateTime($lastMonday->format('Y-m-d'));
-        $monday3=new \DateTime($lastMonday->format('Y-m-d'));
-        $sunday2=new \DateTime($nextSunday->format('Y-m-d'));
-        $sunday3=new \DateTime($nextSunday->format('Y-m-d'));
+        $monday2 = new \DateTime($lastMonday->format('Y-m-d'));
+        $monday3 = new \DateTime($lastMonday->format('Y-m-d'));
+        $sunday2 = new \DateTime($nextSunday->format('Y-m-d'));
+        $sunday3 = new \DateTime($nextSunday->format('Y-m-d'));
 
         $monday2->modify('+7 days');
         $monday3->modify('+14 days');
@@ -84,8 +84,8 @@ class TennisPlayerAvailabilityController extends AbstractController
 
         return $this->render('tennis_player_availability/index.html.twig', [
             'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
-            'tennis_court_availabilities'=> $tennisCourtAvailabilityRepository->findAll(),
-            'tennis_court_preferences'=> $tennisCourtPreferencesRepository->findAll(),
+            'tennis_court_availabilities' => $tennisCourtAvailabilityRepository->findAll(),
+            'tennis_court_preferences' => $tennisCourtPreferencesRepository->findAll(),
             'dates' => $dates,
             'hours' => $hours,
             'tennis_players' => $userRepository->findAll(),
@@ -100,16 +100,88 @@ class TennisPlayerAvailabilityController extends AbstractController
             'sunday3' => $sunday3,
         ]);
     }
-     /**
+
+    /**
+     * @Route("/reset/", name="tennis_player_availability_reset_or_defaults", methods={"GET"})
+     */
+    public function editResetOrDefault(UserRepository $userRepository, DefaultTennisPlayerAvailabilityHoursRepository $defaultTennisPlayerAvailabilityHoursRepository, Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository, EntityManagerInterface $entityManager)
+    {
+        $resetOrDefault = $request->query->get('resetOrDefault');
+        $startDate = $request->query->get('startDate');
+        $endDate = $request->query->get('endDate');
+        $userId = $request->query->get('userID');
+
+        $relevantValues = $tennisPlayerAvailabilityRepository->ByPlayerAndDateRange($userId, $startDate, $endDate);
+
+        $defaultHourSettingsWeekday = $defaultTennisPlayerAvailabilityHoursRepository->findBy([
+            'user'=>$userId,
+            'WeekdayOrWeekend' => 'Weekday'
+        ]);
+        $defaultHourSettingsWeekend = $defaultTennisPlayerAvailabilityHoursRepository->findBy([
+            'user'=>$userId,
+            'WeekdayOrWeekend' => 'Weekend'
+        ]);
+
+        if ($resetOrDefault == 'reset') {
+            foreach ($relevantValues as $relevantValue) {
+                $this->getDoctrine()->getManager()->remove($relevantValue);
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
+        if ($resetOrDefault == 'default') {
+            foreach ($relevantValues as $relevantValue) {
+                $this->getDoctrine()->getManager()->remove($relevantValue);
+                $this->getDoctrine()->getManager()->flush();
+            }
+
+            $minDate = new \DateTime($startDate);
+            $maxDate = new \DateTime($endDate);
+            $range = $maxDate->format('N') - $minDate->format('N');
+
+            for ($count = 0; $count <= $range; $count++) {
+                $date = new \DateTime($startDate);
+                $date = $date->modify('+' . $count . 'day');
+                $dayName = $date->format('D');
+
+                if($dayName=='Sat'|| $dayName=='Sun'){
+                    foreach ( $defaultHourSettingsWeekend as $defaultHourSetting){
+                        $tennisPlayerAvailability = new TennisPlayerAvailability();
+                        $tennisPlayerAvailability->setUser($defaultHourSetting->getUser());
+                        $tennisPlayerAvailability->setDate($date);
+                        $tennisPlayerAvailability->setHour($defaultHourSetting->getHour());
+                        $tennisPlayerAvailability->setAvailable($defaultHourSetting->getDefaultAvailable());
+                        $entityManager->persist($tennisPlayerAvailability);
+                        $entityManager->flush();
+                    }
+                }
+                else{
+                    foreach ( $defaultHourSettingsWeekday as $defaultHourSetting){
+                        $tennisPlayerAvailability = new TennisPlayerAvailability();
+                        $tennisPlayerAvailability->setUser($defaultHourSetting->getUser());
+                        $tennisPlayerAvailability->setDate($date);
+                        $tennisPlayerAvailability->setHour($defaultHourSetting->getHour());
+                        $tennisPlayerAvailability->setAvailable($defaultHourSetting->getDefaultAvailable());
+                        $entityManager->persist($tennisPlayerAvailability);
+                        $entityManager->flush();
+                    }
+                }
+            }
+        }
+
+
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
+    /**
      * @Route("/tennisplayerandcourt", name="tennis_player_and_courtavailability_index", methods={"GET"})
      */
-    public function indexPlayerAndCourt(Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository,TennisCourtPreferencesRepository $tennisCourtPreferencesRepository,UserRepository $userRepository, TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
+    public function indexPlayerAndCourt(Request $request, TennisPlayerAvailabilityRepository $tennisPlayerAvailabilityRepository, TennisCourtPreferencesRepository $tennisCourtPreferencesRepository, UserRepository $userRepository, TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository): Response
     {
         $hours = [];
-        for ($i= 7; $i<=23; $i++)
-        {
-            $hours[$i]['hour']=$i.':00';
-            $hours[$i]['sort']=$i;
+        for ($i = 7; $i <= 23; $i++) {
+            $hours[$i]['hour'] = $i . ':00';
+            $hours[$i]['sort'] = $i;
         }
 
         $minDate = $request->query->get('minDate');
@@ -142,19 +214,19 @@ class TennisPlayerAvailabilityController extends AbstractController
                     $dates[$i] = $next_date;
                 }
             }
-        }else {
-            $dates=[];
-            for($i=0;$i<$daysRemainingThisWeek ;$i++){
+        } else {
+            $dates = [];
+            for ($i = 0; $i < $daysRemainingThisWeek; $i++) {
                 $next_date = new \DateTime($today->format('Y-m-d'));
-                $next_date->modify($i .'days');
-                $dates[$i]=$next_date;
+                $next_date->modify($i . 'days');
+                $dates[$i] = $next_date;
             }
         }
 
-        $monday2=new \DateTime($lastMonday->format('Y-m-d'));
-        $monday3=new \DateTime($lastMonday->format('Y-m-d'));
-        $sunday2=new \DateTime($nextSunday->format('Y-m-d'));
-        $sunday3=new \DateTime($nextSunday->format('Y-m-d'));
+        $monday2 = new \DateTime($lastMonday->format('Y-m-d'));
+        $monday3 = new \DateTime($lastMonday->format('Y-m-d'));
+        $sunday2 = new \DateTime($nextSunday->format('Y-m-d'));
+        $sunday3 = new \DateTime($nextSunday->format('Y-m-d'));
 
         $monday2->modify('+7 days');
         $monday3->modify('+14 days');
@@ -163,8 +235,8 @@ class TennisPlayerAvailabilityController extends AbstractController
 
         return $this->render('tennis_player_availability/playerandcourtindex.html.twig', [
             'tennis_player_availabilities' => $tennisPlayerAvailabilityRepository->findAll(),
-            'tennis_court_availabilities'=> $tennisCourtAvailabilityRepository->findAll(),
-            'tennis_court_preferences'=> $tennisCourtPreferencesRepository->findAll(),
+            'tennis_court_availabilities' => $tennisCourtAvailabilityRepository->findAll(),
+            'tennis_court_preferences' => $tennisCourtPreferencesRepository->findAll(),
             'dates' => $dates,
             'hours' => $hours,
             'tennis_players' => $userRepository->findAll(),
@@ -242,18 +314,16 @@ class TennisPlayerAvailabilityController extends AbstractController
     public function edit(Request $request, TennisPlayerAvailability $tennisPlayerAvailability, EntityManagerInterface $entityManager): Response
     {
         $available = $request->query->get('available');
-
         if ($available == '1') {
             $tennisPlayerAvailability->setAvailable('0');
         } else {
             $tennisPlayerAvailability->setAvailable('1');
         }
         $this->getDoctrine()->getManager()->flush();
-
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);
-
     }
+
 
     /**
      * @Route("/{id}", name="tennis_player_availability_delete", methods={"POST"})

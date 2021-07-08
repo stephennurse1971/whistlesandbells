@@ -34,6 +34,20 @@ class TennisPlayerAvailabilityRepository extends ServiceEntityRepository
             ;
     }
 
+    public function ByPlayerAndDateRange(int $UserId, ?string $startDate, ?string $endDate )
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.date >= :startDate')
+            ->andWhere('t.date <= :endDate')
+            ->andWhere('t.user = :user')
+            ->setParameter('startDate',$startDate)
+            ->setParameter('endDate',$endDate)
+            ->setParameter('user',$UserId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function UniqueHour()
     {
         return $this->createQueryBuilder('t')

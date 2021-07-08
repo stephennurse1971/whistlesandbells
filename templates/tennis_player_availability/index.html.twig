@@ -54,6 +54,11 @@
         </div>
     </div>
 
+    {% if minDate is null %}
+        {% set minDate = today |date('Y-m-d') %}
+        {% set maxDate = nextSunday |date('Y-m-d') %}
+    {% endif %}
+
     <hr>
 
     {% for date in dates %}
@@ -64,14 +69,12 @@
             <thead>
             <tr>
                 <th style="text-align: right">Hour</th>
-{#                <th style="text-align: left">Court(s) Available</th>#}
-{#                <th style="text-align: right">Court Available & Match criteria for 2+</th>#}
                 {% for tennis_player in tennis_players %}
 
                     {% for matchrole in tennis_player.roles %}
                         {% if matchrole == 'ROLE_TENNIS_PLAYER' %}
 
-                            <th title={{ tennis_player.email }};{{ tennis_player.mobile }}>
+                            <th title={{ tennis_player.id }};{{ tennis_player.email }};{{ tennis_player.mobile }}>
                                 <a target="_blank"
                                    href= {{ path('user_edit', {'id': tennis_player.id}) }}> {{ tennis_player.fullName }}</a>
                                 <br>
@@ -79,6 +82,16 @@
                                                                               style="color:#d7cccc;font-size:16px ; text-align: center"></i></a>
                                 <a href="https://wa.me/{{ tennis_player.mobile }}"> <i class="fa fa-whatsapp"
                                                                                        style="color:green; text-align: center"></i></a>
+                                <br>
+                                {% if date.date|date ('Y-m-d') == minDate %}
+
+                                    {% if is_granted('ROLE_SUPER_ADMIN') or tennis_player.id ==app.user.id %}
+                                        <a class="btn btn-outline-primary btn-sm"
+                                           href="{{ path('tennis_player_availability_reset_or_defaults',{'startDate': minDate , 'endDate': maxDate, 'userID' : tennis_player.id, 'resetOrDefault': 'reset'}) }}">Reset</a>
+                                        <a class="btn btn-outline-success btn-sm"
+                                           href="{{ path('tennis_player_availability_reset_or_defaults',{'startDate': minDate , 'endDate': maxDate, 'userID' : tennis_player.id, 'resetOrDefault': 'default'}) }}">Defaults</a>
+                                    {% endif %}
+                                {% endif %}
                             </th>
                         {% endif %}
                     {% endfor %}
@@ -91,66 +104,7 @@
             {% for hour in hours %}
                 {% set i = hour.sort %}
                 <tr>
-
                     <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
-
-{#                    <td style="text-align:left">#}
-{#                        {% set flag = 0 %}#}
-{#                        {% for tennis_court_availability in tennis_court_availabilities %}#}
-{#                            {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}#}
-{#                                {% if tennis_court_availability.available|first == '£' %}#}
-{#                                    {{ tennis_court_availability.venue.venue }} ({{ tennis_court_availability.available }})#}
-{#                                    <br>#}
-{#                                {% endif %}#}
-{#                            {% endif %}#}
-{#                        {% endfor %}#}
-{#                    </td>#}
-
-
-{#                    <td style="text-align:left">#}
-{#                        {% set flag = 0 %}#}
-{#                        {% for tennis_court_availability in tennis_court_availabilities %}#}
-{#                            {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}#}
-{#                                {% if tennis_court_availability.available|first=='£' %}#}
-
-{#                                    {% for tennis_player_availability in tennis_player_availabilities %}#}
-
-{#                                        {% for tennis_court_preference in tennis_court_preferences %}#}
-
-{#                                            {% if date.date|date('l')  == 'Saturday' or date.date|date('l') == 'Sunday' %}#}
-
-{#                                                {% if tennis_player_availability.hour == hour.sort and#}
-{#                                                    tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and#}
-{#                                                    tennis_player_availability.available=='1' and#}
-{#                                                    tennis_court_preference.user.id == tennis_player_availability.user.id and#}
-{#                                                    tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and#}
-{#                                                    tennis_court_preference.weekendElection == 1 %}#}
-{#                                                    {{ tennis_player_availability.user.fullName }};#}
-{#                                                {% endif %}#}
-{#                                            {% else %}#}
-{#                                                {% if tennis_player_availability.hour == hour.sort and#}
-{#                                                    tennis_player_availability.date|date('Y-m-d') == date.date|date('Y-m-d') and#}
-{#                                                    tennis_player_availability.available=='1' and#}
-{#                                                    tennis_court_preference.user.id == tennis_player_availability.user.id and#}
-{#                                                    tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and#}
-{#                                                    tennis_court_preference.weekdayElection == 1 %}#}
-{#                                                    {{ tennis_player_availability.user.fullName }}; #}
-{#                                                {% endif %}#}
-
-{#                                            {% endif %}#}
-
-{#                                        {% endfor %}#}
-{#                                    {% endfor %}#}
-{#                                    <br>#}
-{#                                {% endif %}#}
-
-{#                            {% endif %}#}
-
-{#                        {% endfor %}#}
-
-{#                    </td>#}
-
-
                     {% for tennis_player in tennis_players %}
                         {% for matchrole in tennis_player.roles %}
                             {% if matchrole == 'ROLE_TENNIS_PLAYER' %}
