@@ -40,7 +40,7 @@ class ImportController extends AbstractController
 
                     $userImportService->import($newFilename);
 
-                    return $this->redirectToRoute('app_home');
+                    return $this->redirectToRoute('user_index');
                 }
             }
 //        }
