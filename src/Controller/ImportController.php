@@ -15,7 +15,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 /**
- * @Route("admin")
+ * @Route("/admin")
  */
 class ImportController extends AbstractController
 {
