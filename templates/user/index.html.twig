@@ -166,7 +166,7 @@
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
-        <a class="btn btn-primary mt-3" href="{{ path('admin_import') }}">Import users</a>
+        <a class="btn btn-primary mt-3" href="{{ path('import') }}">Import users</a>
     {% endif %}
 
 {% endblock %}
