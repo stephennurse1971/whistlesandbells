@@ -37,20 +37,16 @@ class ImportController extends AbstractController
                     } catch (FileException $e) {
                         die('Import failed');
                     }
-
                     $userImportService->import($newFilename);
-
-
                 }
-            return $this->redirectToRoute('user_index');
+            return new response(null);
+          //  return $this->redirectToRoute('user_index');
             }
 //        }
 
 
         return $this->render('admin/import/index.html.twig', [
-
             'form' => $form->createView(),
-
         ]);
     }
 
