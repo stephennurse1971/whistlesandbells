@@ -13,10 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+
+/**
+ * @Route("admin/")
+ */
 class ImportController extends AbstractController
 {
     /**
-     * @Route("/import", name="admin_import")
+     * @Route("/import", name="import")
      */
     public function index(Request $request, EntityManagerInterface $manager,SluggerInterface $slugger, UserImportService $userImportService): Response
     {
