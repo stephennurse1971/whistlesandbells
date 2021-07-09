@@ -26,26 +26,26 @@ class ImportController extends AbstractController
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $importFile = $form->get('File')->getData();
-//            if ($importFile) {
-//                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
-//                $safeFilename = $slugger->slug($originalFilename);
-//                $newFilename = $safeFilename .'.'. $importFile->guessExtension();
-////                if ($import->getImportType() == 'users') {
-//                    try {
-//                        $importFile->move(
-//                            $this->getParameter('import_user_directory'),
-//                            $newFilename
-//                        );
-//                    } catch (FileException $e) {
-//                        die('Import failed');
-//                    }
-//                    $userImportService->import($newFilename);
-//                }
-//            return new response(null);
-//          //  return $this->redirectToRoute('user_index');
-//            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('File')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename .'.'. $importFile->guessExtension();
+//                if ($import->getImportType() == 'users') {
+                    try {
+                        $importFile->move(
+                            $this->getParameter('import_user_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        die('Import failed');
+                    }
+                    $userImportService->import($newFilename);
+                return $this->redirectToRoute('user_index');
+                }
+
+            }
 //        }
 
 
