@@ -109,6 +109,11 @@ class User implements UserInterface
      */
     private $tennisBookings2;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Payments::class, mappedBy="user")
+     */
+    private $paymentamount;
+
 
 
 
@@ -124,6 +129,7 @@ class User implements UserInterface
         $this->tennisBookings3 = new ArrayCollection();
         $this->tennisBookings4 = new ArrayCollection();
         $this->tennisBookings2 = new ArrayCollection();
+        $this->paymentamount = new ArrayCollection();
 
 
 
@@ -482,6 +488,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($tennisBookings2->getPlayer2() === $this) {
                 $tennisBookings2->setPlayer2(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Payments[]
+     */
+    public function getPaymentamount(): Collection
+    {
+        return $this->paymentamount;
+    }
+
+    public function addPaymentamount(Payments $paymentamount): self
+    {
+        if (!$this->paymentamount->contains($paymentamount)) {
+            $this->paymentamount[] = $paymentamount;
+            $paymentamount->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaymentamount(Payments $paymentamount): self
+    {
+        if ($this->paymentamount->removeElement($paymentamount)) {
+            // set the owning side to null (unless already changed)
+            if ($paymentamount->getUser() === $this) {
+                $paymentamount->setUser(null);
             }
         }
 

@@ -30,19 +30,27 @@ class TennisBookingsType extends AbstractType
                 ])
             ->add('player1',EntityType::class,[
                 'class'=> User::class,
-                'choice_label'=> 'fullName'
+                'choice_label'=> 'fullName',
+                'required' => false,
+                'empty_data' => null,
             ])
             ->add('player2',EntityType::class,[
                 'class'=> User::class,
-                'choice_label'=> 'fullName'
+                'choice_label'=> 'fullName',
+                'required' => false,
+                'empty_data' => null,
             ])
             ->add('player3',EntityType::class,[
                 'class'=> User::class,
-                'choice_label'=> 'fullName'
+                'choice_label'=> 'fullName',
+                'required' => false,
+                'empty_data' => null,
             ])
             ->add('player4',EntityType::class,[
                 'class'=> User::class,
-                'choice_label'=> 'fullName'
+                'choice_label'=> 'fullName',
+                'required' => false,
+                'empty_data' => null,
             ])        ;
     }
 

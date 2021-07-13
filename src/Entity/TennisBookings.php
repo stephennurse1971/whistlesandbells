@@ -44,11 +44,13 @@ class TennisBookings
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tennisBookings3")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $player3;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tennisBookings4")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $player4;
 

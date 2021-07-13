@@ -12,6 +12,7 @@
             <th>Time</th>
             <th>Venue</th>
             <th>Cost</th>
+            <th>Cost/player</th>
             <th>Player 1</th>
             <th>Player 2</th>
             <th>Player 3</th>
@@ -27,10 +28,27 @@
                 <td>{{ tennis_booking.date ? tennis_booking.date|date('Y-m-d H:i')|date('H:i') : '' }}h</td>
                 <td>{{ tennis_booking.venue.venue }}</td>
                 <td>{{ tennis_booking.cost|number_format(2, '.', ',') }}</td>
-                <td>{{ tennis_booking.player1.fullName }}</td>
-                <td>{{ tennis_booking.player2.fullName }}</td>
-                <td>{{ tennis_booking.player3.fullName }}</td>
-                <td>{{ tennis_booking.player4.fullName }}</td>
+                <td>{{ (tennis_booking.cost/3)|number_format(2, '.', ',') }}</td>
+                <td>
+                    {% if tennis_booking.player1 is not null %}
+                        {{  tennis_booking.player1.fullName }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if tennis_booking.player2 is not null %}
+                        {{  tennis_booking.player2.fullName }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if tennis_booking.player3 is not null %}
+                    {{  tennis_booking.player3.fullName }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if tennis_booking.player4 is not null %}
+                        {{  tennis_booking.player4.fullName }}
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -46,7 +64,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'desc'], [1, 'desc'],],
+                "order": [[0, 'desc'], [1, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
