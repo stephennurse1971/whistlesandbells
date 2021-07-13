@@ -4,6 +4,13 @@
 {% block body %}
 
     <h1 style="color: red">Tennis Player & Court Availability</h1>
+    {% for message in app.flashes('emailNotify') %}
+        <div id="emailNotify" data-email="{{ message }}">
+        </div>
+    {% endfor %}
+    <div id="modal" class=" bg-success text-white border rounded">
+        <div id="message-container" class="m-auto">hello</div>
+    </div>
 
 
     <div class="row">
@@ -66,11 +73,10 @@
                 <th style="text-align: right">Hour</th>
                 <th style="text-align: left">Court(s) Available</th>
                 <th style="text-align: right">Court Available & Match criteria for 2+</th>
+{#                <th style="text-align: right">Book & email</th>#}
                 {% for tennis_player in tennis_players %}
-
                     {% for matchrole in tennis_player.roles %}
                         {% if matchrole == 'ROLE_TENNIS_PLAYER' %}
-
                             <th title={{ tennis_player.email }};{{ tennis_player.mobile }}>
                                 <a target="_blank"
                                    href= {{ path('user_edit', {'id': tennis_player.id}) }}> {{ tennis_player.fullName }}</a>
@@ -90,6 +96,7 @@
             <tbody>
             {% for hour in hours %}
                 {% set i = hour.sort %}
+                {% set tennis_court_availability_id = '' %}
                 <tr>
 
                     <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
@@ -98,7 +105,7 @@
                         {% set flag = 0 %}
                         {% for tennis_court_availability in tennis_court_availabilities %}
                             {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}
-                                {% if tennis_court_availability.available|first == '£' %}
+                                {% if tennis_court_availability.available|first == '£' or tennis_court_availability.available == 1 %}
                                     {{ tennis_court_availability.venue.venue }} ({{ tennis_court_availability.available }})
                                     <br>
                                 {% endif %}
@@ -109,9 +116,11 @@
 
                     <td style="text-align:left">
                         {% set flag = 0 %}
+
                         {% for tennis_court_availability in tennis_court_availabilities %}
+                            {% set tennis_court_availability_id = tennis_court_availability.id %}
                             {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}
-                                {% if tennis_court_availability.available|first=='£' %}
+                                {% if tennis_court_availability.available|first=='£'or tennis_court_availability.available == 1 %}
 
                                     {% for tennis_player_availability in tennis_player_availabilities %}
 
@@ -141,15 +150,14 @@
 
                                         {% endfor %}
                                     {% endfor %}
+                                    <a class="btn btn-outline-success" href="{{ path('tennis_player_availability_book_and_email',{'tennis_court_availability_id': tennis_court_availability_id, 'player1':'1', 'player2': '21', 'player3' :'23', 'player4' :'25'  }) }}">Book and Email</a>
+
                                     <br>
                                 {% endif %}
-
                             {% endif %}
-
                         {% endfor %}
 
                     </td>
-
 
                     {% for tennis_player in tennis_players %}
                         {% for matchrole in tennis_player.roles %}
@@ -227,6 +235,21 @@
 
 {% block datatable %}
     <script>
+$(document).ready(function () {
+    var notify = $('#emailNotify').attr('data-email');
+    if (notify) {
+
+        //alert(notify);
+        $('#message-container').html(notify);
+        $('#modal').css('display', 'flex');
+
+
+        setTimeout(function() {$('#modal').hide();}, 8000);
+    }
+});
+
+
+
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
@@ -235,6 +258,8 @@
                 "searching": false,
                 "bInfo": false
             });
+
+
         });
     </script>
 {% endblock datatable %}

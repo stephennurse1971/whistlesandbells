@@ -175,19 +175,19 @@ class TennisCourtAvailabilityController extends AbstractController
     /**
      * @Route("/{id}", name="tennis_court_availability_show", methods={"GET"})
      */
-    public function show(TennisCourtAvailability $tennisAvailability): Response
+    public function show(TennisCourtAvailability $tennisCourtAvailability): Response
     {
         return $this->render('tennis_court_availability/show.html.twig', [
-            'tennis_court_availability' => $tennisAvailability,
+            'tennis_court_availability' => $tennisCourtAvailability,
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="tennis_court_availability_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, TennisCourtAvailability $tennisAvailability): Response
+    public function edit(Request $request, TennisCourtAvailability $tennisCourtAvailability): Response
     {
-        $form = $this->createForm(TennisCourtAvailabilityType::class, $tennisAvailability);
+        $form = $this->createForm(TennisCourtAvailabilityType::class, $tennisCourtAvailability);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -197,7 +197,7 @@ class TennisCourtAvailabilityController extends AbstractController
         }
 
         return $this->render('tennis_court_availability/edit.html.twig', [
-            'tennis_court_availability' => $tennisAvailability,
+            'tennis_court_availability' => $tennisCourtAvailability,
             'form' => $form->createView(),
         ]);
     }

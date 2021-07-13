@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TennisBookings{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tennis Bookings</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tennis_booking.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ tennis_booking.date ? tennis_booking.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Cost</th>
+                <td>{{ tennis_booking.cost }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary bt-sm" href="{{ path('tennis_bookings_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-danger btn-sm" href="{{ path('tennis_bookings_edit', {'id': tennis_booking.id}) }}">Edit</a>
+
+    {{ include('tennis_bookings/_delete_form.html.twig') }}
+{% endblock %}

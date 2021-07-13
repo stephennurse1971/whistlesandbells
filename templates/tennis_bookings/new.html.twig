@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Tennis Bookings{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Tennis Booking</h1>
+
+    {{ include('tennis_bookings/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('tennis_bookings_index') }}">Return to list</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+    <script>
+
+        $("input.datetime").flatpickr({
+            altInput: true,
+            altFormat: "D j F Y, H:i",
+            {#defaultDate: "{{ date.format('Y-m-d H:i') }}",#}
+            time_24hr: true,
+            enableTime: true,
+            noCalendar: false,
+            dateFormat: "Y-m-d H:i",
+            minuteIncrement: 15
+            //minDate: "today",
+        });
+
+    </script>
+{% endblock javascripts %}

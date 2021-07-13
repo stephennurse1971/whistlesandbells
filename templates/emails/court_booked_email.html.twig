@@ -1,0 +1,23 @@
+<div>
+
+    <h2 style="color: red"> Court Booked</h2>
+
+    <li>
+        The following court and players are booked:
+    </li>
+    <li>
+        <b>Court:</b> {{ courtBookedVenue }}
+    </li>
+    <li>
+        <b>Address:</b> {{ courtBookedVenueAddress }}
+    </li>
+    <li>
+        <b>Players:</b>
+        {{ fullName1 }} ;
+        {{ fullName2 }} ;
+        {{ fullName3 }} ;
+        {{ fullName4 }} ;
+    </li>
+</div>
+
+{{ include('emails/footerLoginAndEmail.html.twig') }}

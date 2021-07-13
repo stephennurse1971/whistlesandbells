@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\TennisCourtAvailability;
 use App\Entity\TennisPlayerAvailability;
+use App\Form\TennisCourtAvailabilityType;
 use App\Form\TennisPlayerAvailabilityType;
 use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
 use App\Repository\TennisCourtAvailabilityRepository;
@@ -15,6 +17,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -114,11 +119,11 @@ class TennisPlayerAvailabilityController extends AbstractController
         $relevantValues = $tennisPlayerAvailabilityRepository->ByPlayerAndDateRange($userId, $startDate, $endDate);
 
         $defaultHourSettingsWeekday = $defaultTennisPlayerAvailabilityHoursRepository->findBy([
-            'user'=>$userId,
+            'user' => $userId,
             'WeekdayOrWeekend' => 'Weekday'
         ]);
         $defaultHourSettingsWeekend = $defaultTennisPlayerAvailabilityHoursRepository->findBy([
-            'user'=>$userId,
+            'user' => $userId,
             'WeekdayOrWeekend' => 'Weekend'
         ]);
 
@@ -143,8 +148,8 @@ class TennisPlayerAvailabilityController extends AbstractController
                 $date = $date->modify('+' . $count . 'day');
                 $dayName = $date->format('D');
 
-                if($dayName=='Sat'|| $dayName=='Sun'){
-                    foreach ( $defaultHourSettingsWeekend as $defaultHourSetting){
+                if ($dayName == 'Sat' || $dayName == 'Sun') {
+                    foreach ($defaultHourSettingsWeekend as $defaultHourSetting) {
                         $tennisPlayerAvailability = new TennisPlayerAvailability();
                         $tennisPlayerAvailability->setUser($defaultHourSetting->getUser());
                         $tennisPlayerAvailability->setDate($date);
@@ -153,9 +158,8 @@ class TennisPlayerAvailabilityController extends AbstractController
                         $entityManager->persist($tennisPlayerAvailability);
                         $entityManager->flush();
                     }
-                }
-                else{
-                    foreach ( $defaultHourSettingsWeekday as $defaultHourSetting){
+                } else {
+                    foreach ($defaultHourSettingsWeekday as $defaultHourSetting) {
                         $tennisPlayerAvailability = new TennisPlayerAvailability();
                         $tennisPlayerAvailability->setUser($defaultHourSetting->getUser());
                         $tennisPlayerAvailability->setDate($date);
@@ -251,6 +255,66 @@ class TennisPlayerAvailabilityController extends AbstractController
             'sunday3' => $sunday3,
         ]);
     }
+
+
+    /**
+     * @Route("/bookAndEmail", name="tennis_player_availability_book_and_email", methods={"GET","POST"})
+     */
+    public function bookAndEmail(TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository, UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer)
+    {
+        $tennisCourtAvailabilityID = $request->query->get('tennis_court_availability_id');
+        $player1_ID = $request->query->get('player1');
+        $player2_ID = $request->query->get('player2');
+        $player3_ID = $request->query->get('player3');
+        $player4_ID = $request->query->get('player4');
+
+        $player1 = $userRepository->find($player1_ID);
+        $player2 = $userRepository->find($player2_ID);
+        $player3 = $userRepository->find($player3_ID);
+        $player4 = $userRepository->find($player4_ID);
+        $email1 = $player1->getEmail();
+        $email2 = $player2->getEmail();
+        $email3 = $player3->getEmail();
+        $email4 = $player4->getEmail();
+        $fullName1 = $player1->getFullName();
+        $fullName2 = $player2->getFullName();
+        $fullName3 = $player3->getFullName();
+        $fullName4 = $player4->getFullName();
+
+        $tennisCourtAvailability = $tennisCourtAvailabilityRepository->find($tennisCourtAvailabilityID);
+        $tennisCourtAvailability->setCourtBooked('1');
+        $entityManager->flush();
+        $courtBookedVenueID =  $tennisCourtAvailability->getVenue('1');
+        $tennisVenuesRepository = $tennisVenuesRepository->find($courtBookedVenueID);
+
+        $courtBookedVenue=  $tennisVenuesRepository->getVenue();
+        $courtBookedVenueAddress=  $tennisVenuesRepository->getAddress();
+
+
+        $html = $this->renderView('emails/court_booked_email.html.twig', [
+                'fullName1' => $fullName1,
+                'fullName2' => $fullName2,
+                'fullName3' => $fullName3,
+                'fullName4' => $fullName4,
+                'courtBookedVenue' =>$courtBookedVenue,
+                'courtBookedVenueAddress' =>$courtBookedVenueAddress,
+            ]
+        );
+        $email = (new Email())
+            ->from('sjwn71@gmail.com')
+            ->to($email1)
+            //->to($email1.','.$email2.','.$email3.','.$email4)
+            ->subject("Tennis Court Booked")
+            ->html($html);
+        $mailer->send($email);
+        if ($email) {
+            $this->addFlash('emailNotify', 'Email sent successfully');
+        }
+
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
 
     /**
      * @Route("/new", name="tennis_player_availability_new", methods={"GET","POST"})

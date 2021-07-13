@@ -79,11 +79,17 @@ class TennisVenues
      */
     private $towerHamletsId;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TennisBookings::class, mappedBy="venue", orphanRemoval=true)
+     */
+    private $tennisBookings;
+
     
     public function __construct()
     {
         $this->tennisAvailabilities = new ArrayCollection();
         $this->tennisCourtPreferences = new ArrayCollection();
+        $this->tennisBookings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -267,6 +273,36 @@ class TennisVenues
     public function setTowerHamletsId(?string $towerHamletsId): self
     {
         $this->towerHamletsId = $towerHamletsId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TennisBookings[]
+     */
+    public function getTennisBookings(): Collection
+    {
+        return $this->tennisBookings;
+    }
+
+    public function addTennisBooking(TennisBookings $tennisBooking): self
+    {
+        if (!$this->tennisBookings->contains($tennisBooking)) {
+            $this->tennisBookings[] = $tennisBooking;
+            $tennisBooking->setVenue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTennisBooking(TennisBookings $tennisBooking): self
+    {
+        if ($this->tennisBookings->removeElement($tennisBooking)) {
+            // set the owning side to null (unless already changed)
+            if ($tennisBooking->getVenue() === $this) {
+                $tennisBooking->setVenue(null);
+            }
+        }
 
         return $this;
     }

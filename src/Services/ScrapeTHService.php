@@ -32,7 +32,7 @@ class   ScrapeTHService
         $sel_date ='2459394';
         $the_very_first_monday = '2021-06-28';
 
-        $moveDate = 7;
+        $moveDate = 14;
         $sel_date = $sel_date+$moveDate;
 
 
