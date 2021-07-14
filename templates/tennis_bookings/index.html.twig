@@ -31,7 +31,7 @@
                 <td>{{ tennis_booking.venue.venue }}</td>
                 <td style="text-align: right">{{ tennis_booking.cost|number_format(2, '.', ',') }}</td>
                 <td style="text-align: right">{{ tennis_booking.numberOfPlayers|number_format(0, '.', ',') }}</td>
-                <td style="text-align: right">{{ (tennis_booking.cost/tennis_booking.numberOfPlayers)|number_format(2, '.', ',') }}</td>
+                <td style="text-align: right">{{ (tennis_booking.cost/max(1,tennis_booking.numberOfPlayers))|number_format(2, '.', ',') }}</td>
                 <td> </td>
                 <td>
                     {% if tennis_booking.player1 is not null %}
