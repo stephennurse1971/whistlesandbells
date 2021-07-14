@@ -59,6 +59,11 @@ class TennisBookings
      */
     private $player2;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $numberOfPlayers;
+
 
 
 
@@ -155,6 +160,18 @@ class TennisBookings
     public function setPlayer2(?User $player2): self
     {
         $this->player2 = $player2;
+
+        return $this;
+    }
+
+    public function getNumberOfPlayers(): ?int
+    {
+        return $this->numberOfPlayers;
+    }
+
+    public function setNumberOfPlayers(?int $numberOfPlayers): self
+    {
+        $this->numberOfPlayers = $numberOfPlayers;
 
         return $this;
     }

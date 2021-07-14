@@ -23,7 +23,7 @@ class PaymentsController extends AbstractController
     {
         return $this->render('payments/index.html.twig', [
             'payments' => $paymentsRepository->findAll(),
-            'players' => $userRepository->findAll()
+            'players' => $userRepository->findByRole('ROLE_TENNIS_PLAYER')
         ]);
     }
 

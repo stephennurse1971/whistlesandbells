@@ -35,6 +35,16 @@ class TennisBookingsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $count =0;
+            if($tennisBooking->getPlayer1() != '')
+            {$count=$count+1;}
+            if($tennisBooking->getPlayer2() != '')
+            {$count=$count+1;}
+            if($tennisBooking->getPlayer3() != '')
+            {$count=$count+1;}
+            if($tennisBooking->getPlayer4() != '')
+            {$count=$count+1;}
+            $tennisBooking->setNumberOfPlayers($count);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($tennisBooking);
             $entityManager->flush();
@@ -67,6 +77,16 @@ class TennisBookingsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $count =0;
+            if($tennisBooking->getPlayer1() != '')
+            {$count=$count+1;}
+            if($tennisBooking->getPlayer2() != '')
+            {$count=$count+1;}
+            if($tennisBooking->getPlayer3() != '')
+            {$count=$count+1;}
+            if($tennisBooking->getPlayer4() != '')
+            {$count=$count+1;}
+            $tennisBooking->setNumberOfPlayers($count);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('tennis_bookings_index');

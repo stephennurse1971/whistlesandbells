@@ -51,7 +51,8 @@ class TennisBookingsType extends AbstractType
                 'choice_label'=> 'fullName',
                 'required' => false,
                 'empty_data' => null,
-            ])        ;
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

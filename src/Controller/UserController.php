@@ -38,13 +38,7 @@ class UserController extends AbstractController
      */
     public function indexRole(string $role, UserRepository $userRepository): Response
     {
-        $role_title = '';
-        if ($role == 'ROLE_TENNIS_PLAYER') {
-            $role_title = "Tennis Player";
-        }
-        if ($role == 'ROLE_FAMILY') {
-            $role_title = "Family";
-        }
+
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => $role,
