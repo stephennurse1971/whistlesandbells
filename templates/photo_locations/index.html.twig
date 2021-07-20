@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PhotoLocations index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Photo Locations index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for photo_location in photo_locations %}
+            <tr>
+                <td><a href="{{ path('photo_locations_edit', {'id': photo_location.id}) }}">{{ photo_location.location }}</a></td>
+            </tr>
+        {% else %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm mt-2" href="{{ path('photo_locations_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+
+{% endblock datatable %}

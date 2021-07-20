@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
 
+
+
     <!-- Custom styles for this template-->
     <link href="{{ asset('/css/sb-admin-2.css') }}" rel="stylesheet">
 
@@ -106,7 +108,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            bsCustomFileInput.init();
+        });
+    </script>
     <script>
         $("input.datetime").flatpickr({
             altInput: true,

@@ -25,7 +25,7 @@
         </a>
         <div id="collapsePhotos" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item text" href="">Photos</a>
+                <a class="collapse-item text" href="{{ path('photos_index') }}">Photos</a>
             </div>
         </div>
     </li>
@@ -91,6 +91,8 @@
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
                 <hr>
                 <a class="collapse-item" href="{{ path('credit_card_details_index') }}">Credit Cards</a>
+                <a class="collapse-item" href="{{ path('photo_locations_index') }}">Photo locations</a>
+                <a class="collapse-item" href="{{ path('tennis_scrape') }}">Scrape</a>
             </div>
         </div>
     </li>
