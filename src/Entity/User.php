@@ -114,6 +114,16 @@ class User implements UserInterface
      */
     private $paymentamount;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tennisRank;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tennisRankScore;
+
 
 
 
@@ -520,6 +530,30 @@ class User implements UserInterface
                 $paymentamount->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTennisRank(): ?int
+    {
+        return $this->tennisRank;
+    }
+
+    public function setTennisRank(?int $tennisRank): self
+    {
+        $this->tennisRank = $tennisRank;
+
+        return $this;
+    }
+
+    public function getTennisRankScore(): ?int
+    {
+        return $this->tennisRankScore;
+    }
+
+    public function setTennisRankScore(?int $tennisRankScore): self
+    {
+        $this->tennisRankScore = $tennisRankScore;
 
         return $this;
     }

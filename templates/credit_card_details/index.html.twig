@@ -1,28 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Credit Card Details index{% endblock %}
+{% block title %}TH Logins{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Credit Card Details index</h1>
+    <h1 style="color: red">Tower Hamlets logins</h1>
 
     <table class="table">
         <thead>
             <tr>
+                <th>Cardholder</th>
+                <th>TH Login</th>
+                <th>TH Password</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Cardtype</th>
                 <th>CardNumber</th>
-                <th>CardExpiry</th>
                 <th>CardCVC</th>
-                <th>actions</th>
+                <th>CardExpiry (Month)</th>
+                <th>CardExpiry (Year)</th>
+                <th>Address1</th>
+                <th>Address2</th>
+                <th>Town</th>
+                <th>County</th>
+                <th>Telephone</th>
+                <th>#</th>
             </tr>
         </thead>
         <tbody>
         {% for credit_card_detail in credit_card_details %}
             <tr>
-                <td>{{ credit_card_detail.cardNumber }}</td>
-                <td>{{ credit_card_detail.cardExpiry }}</td>
-                <td>{{ credit_card_detail.cardCVC }}</td>
+                <td> {{ credit_card_detail.cardholder.fullName }}</td>
+                <td> {{ credit_card_detail.thLogin }}</td>
+                <td> {{ credit_card_detail.firstName }}</td>
+                <td> {{ credit_card_detail.lastName }}</td>
+                <td> {{ credit_card_detail.cardType }}</td>
+                <td> {{ credit_card_detail.cardNumber }}</td>
+                <td> {{ credit_card_detail.cardCVC }}</td>
+                <td> {{ credit_card_detail.cardExpiry }}</td>
+                <td> {{ credit_card_detail.cardExpiry }}</td>
+                <td> {{ credit_card_detail.cardExpiry }}</td>
+                <td> {{ credit_card_detail.address1 }}</td>
+                <td> {{ credit_card_detail.address2 }}</td>
+                <td> {{ credit_card_detail.town }}</td>
+                <td> {{ credit_card_detail.county }}</td>
+                <td> {{ credit_card_detail.telephone }}</td>
+                <td class="btn btn-outline-danger btn-sm"><a href="{{ path('credit_card_details_edit', {'id': credit_card_detail.id}) }}">Edit</a> </td>
                 <td>
-                    <a href="{{ path('credit_card_details_show', {'id': credit_card_detail.id}) }}">show</a>
-                    <a href="{{ path('credit_card_details_edit', {'id': credit_card_detail.id}) }}">edit</a>
+
                 </td>
             </tr>
 
@@ -30,5 +54,5 @@
         </tbody>
     </table>
 
-    <a class="btn btn-outline-success btn-sm mt-2" href="{{ path('credit_card_details_new') }}">Create new</a>
+    <a class="btn btn-success mt-2" href="{{ path('credit_card_details_new') }}">New</a>
 {% endblock %}

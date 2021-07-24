@@ -17,33 +17,33 @@
         <div class="col-md-7">
             {% if minDate == today|date('Y-m-d') %}
                 <a class="btn btn-primary btn-sm mt-2"
-                   href="{{ path('tennis_player_availability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
+                   href="{{ path('tennis_player_and_courtavailability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
                     week </a>
             {% else %}
                 <a class="btn btn-outline-primary btn-sm mt-2"
-                   href="{{ path('tennis_player_availability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
+                   href="{{ path('tennis_player_and_courtavailability_index', {'minDate': today|date('Y-m-d'), 'maxDate': nextSunday|date('Y-m-d')}) }}">This
                     week</a>
             {% endif %}
 
 
             {% if minDate == monday2|date('Y-m-d') %}
                 <a class="btn btn-primary btn-sm mt-2"
-                   href="{{ path('tennis_player_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next
+                   href="{{ path('tennis_player_and_courtavailability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next
                     week</a>
             {% else %}
                 <a class="btn btn-outline-primary btn-sm mt-2"
-                   href="{{ path('tennis_player_availability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next
+                   href="{{ path('tennis_player_and_courtavailability_index', {'minDate': monday2|date('Y-m-d'), 'maxDate': sunday2|date('Y-m-d')}) }}">Next
                     week</a>
             {% endif %}
 
 
             {% if minDate == monday3|date('Y-m-d') %}
                 <a class="btn btn-primary btn-sm mt-2"
-                   href="{{ path('tennis_player_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
+                   href="{{ path('tennis_player_and_courtavailability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
                     week</a>
             {% else %}
                 <a class="btn btn-outline-primary btn-sm mt-2"
-                   href="{{ path('tennis_player_availability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
+                   href="{{ path('tennis_player_and_courtavailability_index', {'minDate': monday3|date('Y-m-d'), 'maxDate': sunday3|date('Y-m-d')}) }}">Following
                     week</a>
             {% endif %}
         </div>
@@ -73,13 +73,14 @@
                 <th style="text-align: right">Hour</th>
                 <th style="text-align: left">Court(s) Available</th>
                 <th style="text-align: right">Court Available & Match criteria for 2+</th>
-{#                <th style="text-align: right">Book & email</th>#}
                 {% for tennis_player in tennis_players %}
                     {% for matchrole in tennis_player.roles %}
                         {% if matchrole == 'ROLE_TENNIS_PLAYER' %}
                             <th title={{ tennis_player.email }};{{ tennis_player.mobile }}>
                                 <a target="_blank"
                                    href= {{ path('user_edit', {'id': tennis_player.id}) }}> {{ tennis_player.fullName }}</a>
+                                {% if is_granted ('ROLE_SUPER_ADMIN') %} ({{ tennis_player.tennisRank }})
+                                {% endif %}
                                 <br>
                                 <a href="mailto:{{ tennis_player.email }}"><i class="fa fa-envelope"
                                                                               style="color:#d7cccc;font-size:16px ; text-align: center"></i></a>
@@ -115,9 +116,12 @@
 
 
                     <td style="text-align:left">
+
                         {% set flag = 0 %}
 
                         {% for tennis_court_availability in tennis_court_availabilities %}
+                            {% set playerContainer = [] %}
+                            {% set playerContainer1= [] %}
                             {% set tennis_court_availability_id = tennis_court_availability.id %}
                             {% if  tennis_court_availability.hour == hour.sort and tennis_court_availability.date|date('Y-m-d') == date.date|date('Y-m-d') %}
                                 {% if tennis_court_availability.available|first=='£'or tennis_court_availability.available == 1 %}
@@ -135,6 +139,8 @@
                                                     tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and
                                                     tennis_court_preference.weekendElection == 1 %}
                                                     {{ tennis_player_availability.user.fullName }};
+                                                    {% set playerContainer1 = playerContainer1|merge({(0~tennis_player_availability.user.tennisRankScore):tennis_player_availability.user.id}) %}
+                                                    {% set playerContainer = playerContainer|merge({(0~tennis_player_availability.user.id):tennis_player_availability.user.tennisRankScore}) %}
                                                 {% endif %}
                                             {% else %}
                                                 {% if tennis_player_availability.hour == hour.sort and
@@ -144,14 +150,37 @@
                                                     tennis_court_preference.tennisVenue.id == tennis_court_availability.venue.id and
                                                     tennis_court_preference.weekdayElection == 1 %}
                                                     {{ tennis_player_availability.user.fullName }};
+                                                    {% set playerContainer1 = playerContainer1|merge({(0~tennis_player_availability.user.tennisRank):tennis_player_availability.user.id}) %}
+                                                    {% set playerContainer = playerContainer|merge({(0~tennis_player_availability.user.id):tennis_player_availability.user.tennisRank}) %}
                                                 {% endif %}
 
                                             {% endif %}
 
                                         {% endfor %}
                                     {% endfor %}
-                                    <a class="btn btn-outline-success" href="{{ path('tennis_player_availability_book_and_email',{'tennis_court_availability_id': tennis_court_availability_id, 'player1':'1', 'player2': '21', 'player3' :'23', 'player4' :'25'  }) }}">Book and Email</a>
+                                    {% if tennis_court_availability.courtBooked ==1 %} Booked
+                                    {% else %}
+                                        {% set myArray=[] %}
+                                        {% for player in playerContainer|sort %}
+                                            {% set myArray = myArray|merge([player]) %}
+                                        {% endfor %}
 
+                                        {% if playerContainer|length == 2 %}
+
+                                            <a class="btn btn-outline-success"
+                                               href="{{ path('tennis_player_availability_book_and_email',{'tennis_court_availability_id': tennis_court_availability_id, 'player1':playerContainer1['0'~myArray[0]], 'player2':playerContainer1['0'~myArray[1]]  }) }}">Book
+                                                and Email</a>
+                                        {% elseif playerContainer|length==3 %}
+                                            <a class="btn btn-outline-success"
+                                               href="{{ path('tennis_player_availability_book_and_email',{'tennis_court_availability_id': tennis_court_availability_id, 'player1':playerContainer1['0'~myArray[0]], 'player2':playerContainer1['0'~myArray[1]], 'player3' :playerContainer1['0'~myArray[2]] }) }}">Book
+                                                and Email</a>
+                                        {% elseif playerContainer|length>=4 %}
+                                            <a class="btn btn-outline-success"
+                                               href="{{ path('tennis_player_availability_book_and_email',{'tennis_court_availability_id': tennis_court_availability_id, 'player1':playerContainer1['0'~myArray[0]], 'player2': playerContainer1['0'~myArray[1]], 'player3':playerContainer1['0'~myArray[2]], 'player4':playerContainer1['0'~myArray[3]] }) }}">Book
+                                                and Email</a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% set playerContainer = [] %}
                                     <br>
                                 {% endif %}
                             {% endif %}
@@ -235,19 +264,20 @@
 
 {% block datatable %}
     <script>
-$(document).ready(function () {
-    var notify = $('#emailNotify').attr('data-email');
-    if (notify) {
+        $(document).ready(function () {
+            var notify = $('#emailNotify').attr('data-email');
+            if (notify) {
 
-        //alert(notify);
-        $('#message-container').html(notify);
-        $('#modal').css('display', 'flex');
+                //alert(notify);
+                $('#message-container').html(notify);
+                $('#modal').css('display', 'flex');
 
 
-        setTimeout(function() {$('#modal').hide();}, 8000);
-    }
-});
-
+                setTimeout(function () {
+                    $('#modal').hide();
+                }, 8000);
+            }
+        });
 
 
         $(document).ready(function () {

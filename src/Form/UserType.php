@@ -38,6 +38,9 @@ class UserType extends AbstractType
                 ],
                 'mapped'=>false
             ])
+
+            ->add('tennisRankScore')
+            ->add('tennisRank')
             ->add('password',PasswordType::class,[
                 'mapped'=>false,
             ])

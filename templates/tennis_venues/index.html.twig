@@ -15,8 +15,8 @@
             <th>Telephone</th>
             <th>Booking engine</th>
             <th>TH WebID</th>
-            <th>Map</th>
-            <th>Booking site</th>
+            <th style="text-align: center">Map</th>
+            <th style="text-align: center">Booking site</th>
             <th>Comment</th>
         </tr>
         </thead>
@@ -37,9 +37,9 @@
                 <td>{{ tennis_venue.telNumber }}</td>
                 <td>{{ tennis_venue.bookingEngine }}</td>
                 <td>{{ tennis_venue.towerHamletsId }}</td>
-                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.mapLink }}"> <i
+                <td style="text-align: center"><a target="_blank" href="{{ tennis_venue.mapLink }}"> <i
                                 style="font-size: 20px" class="fas fa-map-marker"></i> </a></td>
-                <td style="text-align: right"><a target="_blank" href="{{ tennis_venue.weblink }}"> <i
+                <td style="text-align: center"><a target="_blank" href="{{ tennis_venue.weblink }}"> <i
                                 style="font-size: 20px" class="fas fa-link"></i> </a></td>
                 <td>{{ tennis_venue.comment }}</td>
             </tr>

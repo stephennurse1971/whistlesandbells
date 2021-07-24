@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\TennisBookings;
 use App\Entity\TennisCourtAvailability;
 use App\Entity\TennisPlayerAvailability;
+use App\Form\TennisBookingsType;
 use App\Form\TennisCourtAvailabilityType;
 use App\Form\TennisPlayerAvailabilityType;
 use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
@@ -262,33 +264,82 @@ class TennisPlayerAvailabilityController extends AbstractController
      */
     public function bookAndEmail(TennisCourtAvailabilityRepository $tennisCourtAvailabilityRepository, TennisVenuesRepository $tennisVenuesRepository, UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer)
     {
+        $player3=null;
+        $player4=null;
+        $fullName3='';
+        $fullName4='';
         $tennisCourtAvailabilityID = $request->query->get('tennis_court_availability_id');
         $player1_ID = $request->query->get('player1');
         $player2_ID = $request->query->get('player2');
-        $player3_ID = $request->query->get('player3');
-        $player4_ID = $request->query->get('player4');
+        if($request->query->get('player3')) {
+            $player3_ID = $request->query->get('player3');
+            $player3 = $userRepository->find($player3_ID);
+            $email3 = $player3->getEmail();
+            $fullName3 = $player3->getFullName();
+        }
+        if($request->query->get('player4')) {
+            $player4_ID = $request->query->get('player4');
+            $player4 = $userRepository->find($player4_ID);
+            $email4 = $player4->getEmail();
+            $fullName4 = $player4->getFullName();
+        }
 
         $player1 = $userRepository->find($player1_ID);
         $player2 = $userRepository->find($player2_ID);
-        $player3 = $userRepository->find($player3_ID);
-        $player4 = $userRepository->find($player4_ID);
+
         $email1 = $player1->getEmail();
         $email2 = $player2->getEmail();
-        $email3 = $player3->getEmail();
-        $email4 = $player4->getEmail();
         $fullName1 = $player1->getFullName();
         $fullName2 = $player2->getFullName();
-        $fullName3 = $player3->getFullName();
-        $fullName4 = $player4->getFullName();
 
         $tennisCourtAvailability = $tennisCourtAvailabilityRepository->find($tennisCourtAvailabilityID);
         $tennisCourtAvailability->setCourtBooked('1');
+        $bookedCourtVenue = $tennisCourtAvailability->getVenue();
+        $bookedCourtCost = $tennisCourtAvailability->getAvailable();
+        $get_cost = explode('£',$bookedCourtCost);
+        $cost = $get_cost[1];
+        $bookedCourtDate = $tennisCourtAvailability->getDate()->format("Y-m-d");
+        $bookedCourtHour = $tennisCourtAvailability->getHour();
+
+        $bookedCourtDateHour = new \DateTime($bookedCourtDate . ' ' . $bookedCourtHour . ':00:00');
         $entityManager->flush();
-        $courtBookedVenueID =  $tennisCourtAvailability->getVenue('1');
+
+        $tennisBooking = new TennisBookings();
+        $tennisBooking->setDate($bookedCourtDateHour);
+        $tennisBooking->setVenue($tennisVenuesRepository->find($bookedCourtVenue));
+        $tennisBooking->setPlayer1($player1);
+        $tennisBooking->setPlayer2($player2);
+        if($player3){ $tennisBooking->setPlayer3($player3);}
+       if($player4){ $tennisBooking->setPlayer4($player4);}
+
+        $tennisBooking->setCost($cost);
+
+        $count = 0;
+        if ($tennisBooking->getPlayer1() != '') {
+            $count = $count + 1;
+        }
+        if ($tennisBooking->getPlayer2() != '') {
+            $count = $count + 1;
+        }
+        if ($tennisBooking->getPlayer3() != '') {
+            $count = $count + 1;
+        }
+        if ($tennisBooking->getPlayer4() != '') {
+            $count = $count + 1;
+        }
+        $tennisBooking->setNumberOfPlayers($count);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($tennisBooking);
+        $entityManager->flush();
+
+
+
+        $courtBookedVenueID = $tennisCourtAvailability->getVenue('1');
         $tennisVenuesRepository = $tennisVenuesRepository->find($courtBookedVenueID);
 
-        $courtBookedVenue=  $tennisVenuesRepository->getVenue();
-        $courtBookedVenueAddress=  $tennisVenuesRepository->getAddress();
+        $courtBookedVenue = $tennisVenuesRepository->getVenue();
+        $courtBookedVenueAddress = $tennisVenuesRepository->getAddress();
 
 
         $html = $this->renderView('emails/court_booked_email.html.twig', [
@@ -296,20 +347,56 @@ class TennisPlayerAvailabilityController extends AbstractController
                 'fullName2' => $fullName2,
                 'fullName3' => $fullName3,
                 'fullName4' => $fullName4,
-                'courtBookedVenue' =>$courtBookedVenue,
-                'courtBookedVenueAddress' =>$courtBookedVenueAddress,
+                'courtBookedDate' => $bookedCourtDate,
+                'courtBookedHour' => $bookedCourtHour,
+                'courtBookedVenue' => $courtBookedVenue,
+                'courtBookedVenueAddress' => $courtBookedVenueAddress,
             ]
         );
+        if ($player3 == null && $player4 == null) {
         $email = (new Email())
             ->from('sjwn71@gmail.com')
             ->to($email1)
-            //->to($email1.','.$email2.','.$email3.','.$email4)
+            ->addTo($email2)
             ->subject("Tennis Court Booked")
             ->html($html);
         $mailer->send($email);
-        if ($email) {
-            $this->addFlash('emailNotify', 'Email sent successfully');
+            if ($email) {
+                $this->addFlash('emailNotify', 'Email sent successfully');
+            }
         }
+
+        if ($player3 != null && $player4 == null) {
+            $email = (new Email())
+                ->from('sjwn71@gmail.com')
+                ->to($email1)
+                ->addTo($email2)
+                ->addTo($email3)
+                ->subject("Tennis Court Booked")
+                ->html($html);
+            $mailer->send($email);
+            if ($email) {
+                $this->addFlash('emailNotify', 'Email sent successfully');
+            }
+        }
+
+        if ($player4 != null) {
+            $email = (new Email())
+                ->from('sjwn71@gmail.com')
+                ->to($email1)
+                ->addTo($email2)
+                ->addTo($email3)
+                ->addTo($email4)
+                ->subject("Tennis Court Booked")
+                ->html($html);
+            $mailer->send($email);
+            if ($email) {
+                $this->addFlash('emailNotify', 'Email sent successfully');
+            }
+        }
+
+
+
 
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);

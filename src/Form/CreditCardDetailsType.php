@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\CreditCardDetails;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,10 +14,26 @@ class CreditCardDetailsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cardNumber')
+            ->add('thLogin')
+            ->add('thPassword')
+            ->add('firstName')
+            ->add('lastName')
+            ->add('cardType')
             ->add('cardExpiry')
             ->add('cardCVC')
-            ->add('cardholder')
+            ->add('address1')
+            ->add('address2')
+            ->add('town')
+            ->add('county')
+            ->add('postCode')
+            ->add('postCode')
+            ->add('telephone')
+
+
+            ->add('cardholder',EntityType::class,[
+                'class' => User::class,
+                'choice_label'=> 'fullName'
+            ])
         ;
     }
 

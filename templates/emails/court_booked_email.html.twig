@@ -6,6 +6,12 @@
         The following court and players are booked:
     </li>
     <li>
+        <b>Date:</b> {{ courtBookedDate | date('D d-M-Y') }}
+    </li>
+    <li>
+        <b>Time:</b> {{ courtBookedHour }}:00h
+    </li>
+    <li>
         <b>Court:</b> {{ courtBookedVenue }}
     </li>
     <li>
@@ -14,9 +20,13 @@
     <li>
         <b>Players:</b>
         {{ fullName1 }} ;
-        {{ fullName2 }} ;
-        {{ fullName3 }} ;
-        {{ fullName4 }} ;
+        {{ fullName2 }}
+        {% if fullName3 is not empty %} ;
+        {% endif %}
+        {{ fullName3 }}
+        {% if fullName4 is not empty %} ;
+        {% endif %}
+        {{ fullName4 }}
     </li>
 </div>
 
