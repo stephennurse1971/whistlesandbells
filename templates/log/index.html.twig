@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">Log index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Additional Info Key</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr>
+                <td><a href="{{ path('log_edit', {'id': log.id}) }}">{{ log.id }}</a></td>
+                <td>{{ log.createdAt ? log.createdAt|date('d-M-Y H:i') : '' }}</td>
+                <td>{{ log.additionalInfo    }}</td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('log_new') }}">New</a>
+{% endblock %}

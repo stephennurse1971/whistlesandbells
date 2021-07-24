@@ -8,6 +8,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>Active</th>
             <th>London Region</th>
             <th>Venue</th>
             <th>Address</th>
@@ -23,6 +24,7 @@
         <tbody>
         {% for tennis_venue in tennis_venues %}
             <tr>
+                <td>{{ tennis_venue.isActive? 'Y': 'N' }}</td>
                 <td>{{ tennis_venue.londonRegion }}</td>
                 <td>
                     {% if is_granted ('ROLE_SUPER_ADMIN') %}

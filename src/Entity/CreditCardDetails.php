@@ -93,6 +93,11 @@ class CreditCardDetails
      */
     private $telephone;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $cardExpiry2;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -274,6 +279,18 @@ class CreditCardDetails
     public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getCardExpiry2(): ?string
+    {
+        return $this->cardExpiry2;
+    }
+
+    public function setCardExpiry2(string $cardExpiry2): self
+    {
+        $this->cardExpiry2 = $cardExpiry2;
 
         return $this;
     }

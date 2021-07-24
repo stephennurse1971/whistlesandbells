@@ -20,6 +20,7 @@ class CreditCardDetailsType extends AbstractType
             ->add('lastName')
             ->add('cardType')
             ->add('cardExpiry')
+            ->add('cardExpiry2')
             ->add('cardCVC')
             ->add('address1')
             ->add('address2')

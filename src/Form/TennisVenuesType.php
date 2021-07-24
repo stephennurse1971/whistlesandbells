@@ -41,6 +41,7 @@ class TennisVenuesType extends AbstractType
                 ]
             ])
             ->add('comment')
+            ->add('isActive')
         ;
     }
 

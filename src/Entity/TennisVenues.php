@@ -84,6 +84,11 @@ class TennisVenues
      */
     private $tennisBookings;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isActive;
+
     
     public function __construct()
     {
@@ -303,6 +308,18 @@ class TennisVenues
                 $tennisBooking->setVenue(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(?bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

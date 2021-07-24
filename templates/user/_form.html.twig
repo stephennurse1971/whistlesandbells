@@ -23,15 +23,16 @@
             {{ form_row(form.role) }}
             {{ form_row(form.tennisRankScore) }}
             {{ form_row(form.tennisRank) }}
-
         {% endif %}
     </div>
 </div>
 <hr>
 
+
+{% if is_granted('ROLE_TENNIS_PLAYER') %}
 <div class="row">
     <div class="col-md-4">
-        <h3 style="color: blue;">Weekend</h3>
+        <h3><b>Default Tennis Availability</b></h3>
         <table class="table">
             <thead>
             <tr>
@@ -114,7 +115,7 @@
 
 </div>
 <hr>
-
+{% endif %}
 
 <button id="save" class="btn btn-primary btn-sm">{{ button_label|default('Save (no welcome email)') }}</button>
 <button id="sendEmail" class="btn-success btn-sm">Save & send welcome e-mail</button>

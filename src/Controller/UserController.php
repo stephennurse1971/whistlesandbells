@@ -132,6 +132,8 @@ class UserController extends AbstractController
             $logged_user_roles = $this->getUser()->getRoles();
             if (!in_array('ROLE_SUPER_ADMIN',$logged_user_roles)) {
                 $form->remove('role');
+                $form->remove('tennisRank');
+                $form->remove('tennisRankScore');
             }
             $form->handleRequest($request);
 
