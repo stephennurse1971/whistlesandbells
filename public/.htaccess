@@ -65,3 +65,7 @@ DirectoryIndex index.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^stephennurse.atts-systems.com [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://www.stephennurse.atts-systems.com/$1 [R,L]
