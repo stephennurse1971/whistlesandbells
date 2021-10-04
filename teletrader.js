@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 async function run() {
-    const browser = await puppeteer.launch({ headless: false, args:[
+    const browser = await puppeteer.launch({ headless: true, args:[
             '--start-maximized' // you can also use '--start-fullscreen'
         ]});
     const page = await browser.newPage();
