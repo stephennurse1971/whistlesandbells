@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Chavey Down{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: Chavey Down Bill</h1>
+
+    {{ include('chavey_down/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-info bt-sm mt-2" href="{{ path('chavey_down_index') }}">Return to list</a>
+
+    {{ include('chavey_down/_delete_form.html.twig') }}
+{% endblock %}

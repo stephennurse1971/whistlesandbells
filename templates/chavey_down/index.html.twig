@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chavey Down Index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Chavey Down index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Vendor</th>
+            <th>Amount</th>
+            <th>Attachment</th>
+            <th> </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for chavey_down in chavey_downs %}
+            <tr>
+                <td>{{ chavey_down.id }}</td>
+                <td>{{ chavey_down.date ? chavey_down.date|date('d-M-Y') : '' }}</td>
+                <td>{{ chavey_down.vendor }}</td>
+                <td>{{ chavey_down.amount }}</td>
+                <td>
+                    {% if chavey_down.attachments is not empty %}
+                       <a target="_blank" href="{{ path('show_attachment',{id : chavey_down.id}) }}" > {{ chavey_down.attachments }} </a>
+                    {% endif %}
+                </td>
+
+
+                <td>
+                    <a class="btn btn-outline-success btn-sm mt-2"
+                       href="{{ path('chavey_down_show', {'id': chavey_down.id}) }}">Show</a>
+                    <a class="btn btn-outline-primary btn-sm mt-2"
+                       href="{{ path('chavey_down_edit', {'id': chavey_down.id}) }}">Edit</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('chavey_down_new') }}">New</a>
+{% endblock %}

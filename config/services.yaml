@@ -6,6 +6,7 @@
 parameters:
     import_user_directory: '%kernel.project_dir%/public/administration/import/'
     import_photo_directory: '%kernel.project_dir%/public/administration/img/photogallery/'
+    attachments_directory: '%kernel.project_dir%/public/administration/attachments/ChaveyDown'
 services:
     # default configuration for services in *this* file
     _defaults:

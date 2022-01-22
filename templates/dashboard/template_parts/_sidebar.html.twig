@@ -81,6 +81,26 @@
     {% endif %}
 
 
+    {% if is_granted('ROLE_HMRC') %}
+        <!-- Nav Item #3 - Settings -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHMRC"
+               aria-expanded="true" aria-controls="collapseHMRC">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>HMRC</span>
+            </a>
+            <div id="collapseFamily" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_FAMILY'}) }}">HMRC</a>
+                    <hr>
+                    <a  style="color: darkgray" class="collapse-item" href="{{ path('chavey_down_index') }}">Chavey Down</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
+
+
     {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Nav Item #3 - Settings -->
     <li class="nav-item">

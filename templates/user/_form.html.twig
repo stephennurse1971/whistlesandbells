@@ -29,93 +29,93 @@
 <hr>
 
 
-{% if is_granted('ROLE_TENNIS_PLAYER') %}
-<div class="row">
-    <div class="col-md-4">
-        <h3><b>Default Tennis Availability</b></h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Hour</th>
-                <th> Weekday</th>
-                <th> Weekend</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for hour in hours %}
-                {% set i = hour.sort %}
-                <tr>
-                    <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>
+{#{% if is_granted('ROLE_TENNIS_PLAYER') %}#}
+{#<div class="row">#}
+{#    <div class="col-md-4">#}
+{#        <h3><b>Default Tennis Availability</b></h3>#}
+{#        <table class="table">#}
+{#            <thead>#}
+{#            <tr>#}
+{#                <th>Hour</th>#}
+{#                <th> Weekday</th>#}
+{#                <th> Weekend</th>#}
+{#            </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#            {% for hour in hours %}#}
+{#                {% set i = hour.sort %}#}
+{#                <tr>#}
+{#                    <td style="text-align: right" data-sort="{{ hour.sort }}"><b>{{ hour.hour }}</b></td>#}
 
-                    {% set availabilityWeekday = '' %}
-                    {% set availabilityWeekend = '' %}
-                    {% set idWeekday = 0 %}
-                    {% set idWeekend = 0 %}
+{#                    {% set availabilityWeekday = '' %}#}
+{#                    {% set availabilityWeekend = '' %}#}
+{#                    {% set idWeekday = 0 %}#}
+{#                    {% set idWeekend = 0 %}#}
 
 {#--------------------Weekday----------------------#}
-                    <td style="text-align: center">
-                        {% for default_tennis_player_availability_hour in default_tennis_player_availability_hours %}
-                            {% if
-                                default_tennis_player_availability_hour.hour == i and
-                                default_tennis_player_availability_hour.weekdayOrWeekend == 'Weekday' and
-                                default_tennis_player_availability_hour.user.id == user.id %}
-                                {% set flag = 1 %}
-                                {% set availabilityWeekday = default_tennis_player_availability_hour.defaultAvailable %}
-                                {% set idWeekday = default_tennis_player_availability_hour.id %}
-                            {% endif %}
-                        {% endfor %}
+{#                    <td style="text-align: center">#}
+{#                        {% for default_tennis_player_availability_hour in default_tennis_player_availability_hours %}#}
+{#                            {% if#}
+{#                                default_tennis_player_availability_hour.hour == i and#}
+{#                                default_tennis_player_availability_hour.weekdayOrWeekend == 'Weekday' and#}
+{#                                default_tennis_player_availability_hour.user.id == user.id %}#}
+{#                                {% set flag = 1 %}#}
+{#                                {% set availabilityWeekday = default_tennis_player_availability_hour.defaultAvailable %}#}
+{#                                {% set idWeekday = default_tennis_player_availability_hour.id %}#}
+{#                            {% endif %}#}
+{#                        {% endfor %}#}
 
-                            {% if availabilityWeekday == 1 or availabilityWeekday == 0 %}
-                                {% if availabilityWeekday == 1 %}
-                                    <a href={{ path('default_tennis_player_availability_hours_edit', {'id' : idWeekday, 'available':availabilityWeekday}) }}><i
-                                                class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                                {% else %}
-                                    <a href={{ path('default_tennis_player_availability_hours_edit', {'id' : idWeekday, 'available':availabilityWeekday} ) }}><i
-                                                class="fa fa-circle" style="color: red"></i> </a>
-                                {% endif %}
-                            {% else %}
-                                <a href={{ path('default_tennis_player_availability_hours_add', {'hour': i, 'player' : user.id, 'day' : 'Weekday'}) }}><i
-                                            class="fa fa-circle" style="color: orange; text-align: right"></i></a>
-                            {% endif %}
-                    </td>
+{#                            {% if availabilityWeekday == 1 or availabilityWeekday == 0 %}#}
+{#                                {% if availabilityWeekday == 1 %}#}
+{#                                    <a href={{ path('default_tennis_player_availability_hours_edit', {'id' : idWeekday, 'available':availabilityWeekday}) }}><i#}
+{#                                                class="fa fa-circle" style="color: green; text-align: right"></i></a>#}
+{#                                {% else %}#}
+{#                                    <a href={{ path('default_tennis_player_availability_hours_edit', {'id' : idWeekday, 'available':availabilityWeekday} ) }}><i#}
+{#                                                class="fa fa-circle" style="color: red"></i> </a>#}
+{#                                {% endif %}#}
+{#                            {% else %}#}
+{#                                <a href={{ path('default_tennis_player_availability_hours_add', {'hour': i, 'player' : user.id, 'day' : 'Weekday'}) }}><i#}
+{#                                            class="fa fa-circle" style="color: orange; text-align: right"></i></a>#}
+{#                            {% endif %}#}
+{#                    </td>#}
 
 
 {#--------------------Weekend-----------------------#}
-                    <td style="text-align: center">
-                        {% for default_tennis_player_availability_hour in default_tennis_player_availability_hours %}
-                            {% if
-                                default_tennis_player_availability_hour.hour == i and
-                                default_tennis_player_availability_hour.weekdayOrWeekend == 'Weekend' and
-                                default_tennis_player_availability_hour.user.id == user.id %}
-                                {% set flag = 1 %}
-                                {% set availabilityWeekend = default_tennis_player_availability_hour.defaultAvailable %}
-                                {% set idWeekend = default_tennis_player_availability_hour.id %}
-                            {% endif %}
-                        {% endfor %}
+{#                    <td style="text-align: center">#}
+{#                        {% for default_tennis_player_availability_hour in default_tennis_player_availability_hours %}#}
+{#                            {% if#}
+{#                                default_tennis_player_availability_hour.hour == i and#}
+{#                                default_tennis_player_availability_hour.weekdayOrWeekend == 'Weekend' and#}
+{#                                default_tennis_player_availability_hour.user.id == user.id %}#}
+{#                                {% set flag = 1 %}#}
+{#                                {% set availabilityWeekend = default_tennis_player_availability_hour.defaultAvailable %}#}
+{#                                {% set idWeekend = default_tennis_player_availability_hour.id %}#}
+{#                            {% endif %}#}
+{#                        {% endfor %}#}
 
-                            {% if availabilityWeekend == 1 or availabilityWeekend == 0 %}
-                                {% if availabilityWeekend == 1 %}
-                                    <a href={{ path('default_tennis_player_availability_hours_edit', {'id' : idWeekend, 'available':availabilityWeekend}) }}><i
-                                                class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                                {% else %}
-                                    <a href={{ path('default_tennis_player_availability_hours_edit', {'id' : idWeekend, 'available':availabilityWeekend} ) }}><i
-                                                class="fa fa-circle" style="color: red"></i> </a>
-                                {% endif %}
-                            {% else %}
-                                <a href={{ path('default_tennis_player_availability_hours_add', {'hour': i, 'player' : user.id, 'day' : 'Weekend'}) }}><i
-                                            class="fa fa-circle" style="color: orange; text-align: right"></i></a>
-                            {% endif %}
-                    </td>
-                </tr>
+{#                            {% if availabilityWeekend == 1 or availabilityWeekend == 0 %}#}
+{#                                {% if availabilityWeekend == 1 %}#}
+{#                                    <a href={{ path('default_tennis_player_availability_hours_edit', {'id' : idWeekend, 'available':availabilityWeekend}) }}><i#}
+{#                                                class="fa fa-circle" style="color: green; text-align: right"></i></a>#}
+{#                                {% else %}#}
+{#                                    <a href={{ path('default_tennis_player_availability_hours_edit', {'id' : idWeekend, 'available':availabilityWeekend} ) }}><i#}
+{#                                                class="fa fa-circle" style="color: red"></i> </a>#}
+{#                                {% endif %}#}
+{#                            {% else %}#}
+{#                                <a href={{ path('default_tennis_player_availability_hours_add', {'hour': i, 'player' : user.id, 'day' : 'Weekend'}) }}><i#}
+{#                                            class="fa fa-circle" style="color: orange; text-align: right"></i></a>#}
+{#                            {% endif %}#}
+{#                    </td>#}
+{#                </tr>#}
 
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+{#            {% endfor %}#}
+{#            </tbody>#}
+{#        </table>#}
+{#    </div>#}
 
-</div>
-<hr>
-{% endif %}
+{#</div>#}
+{#<hr>#}
+{#{% endif %}#}
 
 <button id="save" class="btn btn-primary btn-sm">{{ button_label|default('Save (no welcome email)') }}</button>
 <button id="sendEmail" class="btn-success btn-sm">Save & send welcome e-mail</button>
