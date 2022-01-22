@@ -42,7 +42,7 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => $role,
-            'role_title' => $role_title
+            'role_title' => $role
         ]);
     }
 
