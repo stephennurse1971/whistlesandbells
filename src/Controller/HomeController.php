@@ -27,7 +27,7 @@ class HomeController extends AbstractController
         ]);
     }
 
- /**
+     /**
      * @Route("/instructions/tennis", name="instructionsTennis", methods={"GET"})
      */
     public function instructionsTennis(): Response
@@ -36,13 +36,25 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-/**
- *
+
+
+    /**
      * @Route("/webdesign", name="webdesign", methods={"GET"})
      */
     public function webDesign(): Response
     {
         return $this->render('template_parts/webdesign.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+
+    /**
+     * @Route("/chaveyDownBackground", name="chaveyDownBackground", methods={"GET"})
+     */
+    public function chaveyDownBackground(): Response
+    {
+        return $this->render('chavey_down/chaveyDownBackground.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

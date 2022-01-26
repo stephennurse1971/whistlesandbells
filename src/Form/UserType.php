@@ -35,7 +35,9 @@ class UserType extends AbstractType
                     'Admin'=>'ROLE_ADMIN',
                     'Tennis player'=>'ROLE_TENNIS_PLAYER',
                     'Family'=>'ROLE_FAMILY',
-                    'HMRC' =>'ROLE_HMRC'
+                    'HMRC' =>'ROLE_HMRC',
+                    'Serpentine' =>'ROLE_SERPENTINE',
+                    'Accountant' =>'ROLE_ACCOUNTANT'
                 ],
                 'mapped'=>false
             ])

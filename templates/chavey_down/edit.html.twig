@@ -1,13 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Chavey Down{% endblock %}
+{% block title %}Chavey Down Receipt: {{ chavey_down.vendor }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Chavey Down Bill</h1>
+{#    <div id="user-role" data-role="{{ app.user.roles }}"></div>#}
+    <h1 style="color: red">Edit: Chavey Down Audit</h1>
 
     {{ include('chavey_down/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a class="btn btn-outline-info bt-sm mt-2" href="{{ path('chavey_down_index') }}">Return to list</a>
 
+    {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
     {{ include('chavey_down/_delete_form.html.twig') }}
+    {% endif %}
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        // var roles = $("#user")
+    </script>
 {% endblock %}

@@ -37,6 +37,16 @@ class ChaveyDown
      */
     private $attachments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $serpentimeComments;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $hmrcComments;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +96,30 @@ class ChaveyDown
     public function setAttachments(?string $attachments): self
     {
         $this->attachments = $attachments;
+
+        return $this;
+    }
+
+    public function getSerpentimeComments(): ?string
+    {
+        return $this->serpentimeComments;
+    }
+
+    public function setSerpentimeComments(?string $serpentimeComments): self
+    {
+        $this->serpentimeComments = $serpentimeComments;
+
+        return $this;
+    }
+
+    public function getHmrcComments(): ?string
+    {
+        return $this->hmrcComments;
+    }
+
+    public function setHmrcComments(?string $hmrcComments): self
+    {
+        $this->hmrcComments = $hmrcComments;
 
         return $this;
     }

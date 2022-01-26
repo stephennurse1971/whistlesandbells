@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Investments{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Investments</h1>
+
+    {{ include('investments/_form.html.twig') }}
+
+    <a class="btn btn-outline-info btn-sm mt-2 " href="{{ path('investments_index') }}">Return to list</a>
+    <br>
+    <br>
+    <br>
+{% endblock %}

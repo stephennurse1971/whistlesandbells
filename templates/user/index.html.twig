@@ -13,6 +13,8 @@
             <th>Admin</th>
             <th>Tennis</th>
             <th>Family</th>
+            <th>HMRC</th>
+            <th>Serpendtime</th>
 
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <th style="color: red;">Plain Password</th>
@@ -75,6 +77,33 @@
                     </td>
 
 
+                    <td style="text-align: center">
+                        {% set flag = 0 %}
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_HMRC' %}
+                                {% set flag = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if flag == 1 %}
+                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                        {% else %}
+                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                        {% endif %}
+                    </td>
+
+                    <td style="text-align: center">
+                        {% set flag = 0 %}
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_SERPENTIME' %}
+                                {% set flag = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if flag == 1 %}
+                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                        {% else %}
+                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                        {% endif %}
+                    </td>
 
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <td>{{ user.plainPassword }}</td>

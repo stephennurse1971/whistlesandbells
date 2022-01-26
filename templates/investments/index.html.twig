@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Investments index{% endblock %}
+
+{% block body %}
+    <h1>Investments index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>InvestmentName</th>
+                <th>InvestmentDate</th>
+                <th>InvestmentAmount</th>
+                <th>InvestmentEIS</th>
+                <th>InvestmentSoldPrice</th>
+                <th>InvestmentSaleDate</th>
+                <th>ShareCert</th>
+                <th>EisCert</th>
+                <th>OtherDocs</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for investment in investments %}
+            <tr>
+                <td>{{ investment.id }}</td>
+                <td>{{ investment.investmentName }}</td>
+                <td>{{ investment.investmentDate ? investment.investmentDate|date('Y-m-d') : '' }}</td>
+                <td>{{ investment.investmentAmount }}</td>
+                <td>{{ investment.investmentEIS ? 'Yes' : 'No' }}</td>
+                <td>{{ investment.investmentSoldPrice }}</td>
+                <td>{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('Y-m-d') : '' }}</td>
+                <td>{{ investment.shareCert }}</td>
+                <td>{{ investment.eisCert }}</td>
+                <td>{{ investment.otherDocs }}</td>
+                <td>
+                    <a href="{{ path('investments_show', {'id': investment.id}) }}">show</a>
+                    <a href="{{ path('investments_edit', {'id': investment.id}) }}">edit</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm mt-2" href="{{ path('investments_new') }}">New</a>
+{% endblock %}

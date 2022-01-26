@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>Investment Details</h2>
+        {{ form_row(form.investmentName) }}
+        {{ form_row(form.investmentAmount) }}
+        {{ form_row(form.investmentDate) }}
+        {{ form_row(form.investmentEIS) }}
+        {{ form_row(form.investmentSaleDate) }}
+        {{ form_row(form.investmentSoldPrice) }}
+    </div>
+
+    <div class="col-md-3">
+        <h2>Documents</h2>
+        {{ form_row(form.shareCert) }}
+        {{ form_row(form.eisCert) }}
+        {{ form_row(form.otherDocs) }}
+    </div>
+</div>
+
+
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
