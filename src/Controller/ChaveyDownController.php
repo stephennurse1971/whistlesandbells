@@ -36,10 +36,27 @@ class ChaveyDownController extends AbstractController
 
 
         $filepath = $this->getParameter('attachments_directory')."/".$filename;
+//
+//
+//        header('Content-Disposition: inline; filename="' . $filename . '"');
+//       return  new BinaryFileResponse($filepath);
+//        header('Content-type: application/pdf');
+//
+//        header('Content-Disposition: inline; filename="' . $filepath . '"');
+//
+//        header('Content-Transfer-Encoding: binary');
+//
+//        header('Accept-Ranges: bytes');
+//
+//// Read the file
+//        @readfile($filepath);
+       // return new Response(null);
+        return $this->file($filepath, 'sample.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
 
-
-        header('Content-Disposition: inline; filename="' . $filename . '"');
-       return  new BinaryFileResponse($filepath);
+//        return new Response($filepath, 200, [
+//            'Content-Type' => 'application/pdf',
+//            'Content-Disposition' => 'inline; filename="file.pdf"'
+//        ]);
 
     }
 

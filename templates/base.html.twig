@@ -17,12 +17,11 @@
     <!-- Custom fonts for this template-->
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('admin/css/font.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-
 
 
     <!-- Custom styles for this template-->
@@ -97,45 +96,51 @@
 </div>
 {{ include('dashboard/template_parts/_footer.html.twig') }}
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.compatibility.min.js" integrity="sha256-5ZrdaeOQG3t2uVEkC6FxsGF2y3taTxhdjyGLXi3RUDk=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
-    <script>
-        $('table').addClass('table-responsive');
-    </script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.compatibility.min.js"
+        integrity="sha256-5ZrdaeOQG3t2uVEkC6FxsGF2y3taTxhdjyGLXi3RUDk=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
+<script>
+    $('table').addClass('table-responsive');
+</script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            bsCustomFileInput.init();
-        });
-    </script>
-    <script>
-        $("input.datetime").flatpickr({
-            altInput: true,
-            altFormat: "D j F Y",
-            time_24hr: true,
-            enableTime: false,
-            noCalendar: false,
-            dateFormat: "Y-m-d H:i:s",
-            minuteIncrement: 15
-            //minDate: "today",
-        });
-    </script>
+<script>
+    $(document).ready(function () {
+        bsCustomFileInput.init();
+    });
+</script>
+<script>
+    $("input.datetime").flatpickr({
+        altInput: true,
+        altFormat: "D j F Y",
+        time_24hr: true,
+        enableTime: false,
+        noCalendar: false,
+        dateFormat: "Y-m-d H:i:s",
+        minuteIncrement: 15
+        //minDate: "today",
+    });
+</script>
 {% block javascripts %}
 {% endblock javascripts %}
 {% block datatable %}
     <script>
         $(document).ready(function () {
-
             function detectMob() {
                 return ((window.innerWidth <= 800) && (window.innerHeight <= 600));
             }
@@ -145,14 +150,11 @@
                 $('body').addClass('mobile');
             }
         });
-
     </script>
-
 
 {% endblock datatable %}
 {% block additionaljs %}
 {% endblock additionaljs %}
-
 
 
 </body>
