@@ -3,6 +3,11 @@
 {% block title %}New: Chavey Down Receipt{% endblock %}
 
 {% block body %}
+    <style>
+        #chavey_down_attachments{
+            overflow: hidden;
+        }
+    </style>
     <h1 style="color: red">New: Chavey Down Receipt</h1>
 
     {{ include('chavey_down/_form.html.twig') }}
