@@ -1,0 +1,31 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}TaxDocuments index{% endblock %}
+
+{% block body %}
+    <h1>TaxDocuments index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>P11D</th>
+                <th>P60</th>
+                <th>SelfAssessment</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tax_document in tax_documents %}
+            <tr>
+                <td><a href="{{ path('tax_documents_edit', {'id': tax_document.id}) }}">{{ tax_document.year }}</a></td>
+                <td>{{ tax_document.p11D }}</td>
+                <td>{{ tax_document.p60 }}</td>
+                <td>{{ tax_document.selfAssessment }}</td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm mt-2" href="{{ path('tax_documents_new') }}">New</a>
+{% endblock %}

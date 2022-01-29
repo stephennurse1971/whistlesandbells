@@ -8,7 +8,13 @@
     <meta name="description" content="Stephen Nurse personal website">
 
     <meta name="author" content="Stephen Nurse">
-    <link rel="icon" href="{{ asset('admin/img/beer-glass.png') }}">
+    <link rel="icon" href="{{ asset('administration/img/tennis.png') }}">
+
+    {% if app.environment=='dev' %}
+        <link rel="icon" href="{{ asset('administration/img/tennisdev.png') }}">
+    {% else %}
+        <link rel="icon" href="{{ asset('administration/img/tennis.png') }}">
+    {% endif %}
     <title>{% block title %}Stephen Nurse{% endblock %}</title>
 
     <!-- Custom fonts for this template-->
