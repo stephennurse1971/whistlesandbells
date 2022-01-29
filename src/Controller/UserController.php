@@ -26,6 +26,7 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
+
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => 'All',
@@ -126,6 +127,7 @@ class UserController extends AbstractController
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
         if ($this->getUser()->getId() == $id || $hasAccess)
         {
+            $logged_user_id = $this->getUser()->getId();
             $plainPassword = $user->getPlainPassword();
             $roles = $user->getRoles();
             $form = $this->createForm(UserType::class, $user, ['email1'=>$user->getEmail(),'email2'=>$user->getEmail2()]);
@@ -166,7 +168,12 @@ class UserController extends AbstractController
                         ->html($html);
                     $mailer->send($email);
                 }
-                return $this->redirectToRoute('user_index');
+                if($logged_user_id != $id) {
+                    return $this->redirectToRoute('user_index');
+                }
+                else{
+                    $this->redirectToRoute('app_login');
+                }
             }
 
             return $this->render('user/edit.html.twig', [
@@ -179,14 +186,14 @@ class UserController extends AbstractController
                 'hours' => $hours
             ]);
         }
-        $referer = $request->server->get('HTTP_REFERER');
-        if($referer){
-            return $this->redirect($referer);
-
-        }
-        else{
-            return $this->redirectToRoute('user_index');
-        }
+//        $referer = $request->server->get('HTTP_REFERER');
+//        if($referer){
+//            return $this->redirect($referer);
+//
+//        }
+//        else{
+//            return $this->redirectToRoute('user_index');
+//        }
     }
 
 

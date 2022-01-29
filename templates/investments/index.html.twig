@@ -1,43 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Investments index{% endblock %}
+{% block title %}Investments{% endblock %}
 
 {% block body %}
-    <h1>Investments index</h1>
+    <h1 style="color: red">Investments</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>InvestmentName</th>
-                <th>InvestmentDate</th>
-                <th>InvestmentAmount</th>
-                <th>InvestmentEIS</th>
-                <th>InvestmentSoldPrice</th>
-                <th>InvestmentSaleDate</th>
-                <th>ShareCert</th>
-                <th>EisCert</th>
-                <th>OtherDocs</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>InvestmentName</th>
+            <th>Investment Date</th>
+            <th>Amount</th>
+            <th>EIS</th>
+            <th>Sold Price</th>
+            <th>Sale Date</th>
+            <th>Share Cert</th>
+            <th>EIS Cert</th>
+            <th>Other Docs</th>
+        </tr>
         </thead>
         <tbody>
         {% for investment in investments %}
             <tr>
-                <td>{{ investment.id }}</td>
-                <td>{{ investment.investmentName }}</td>
-                <td>{{ investment.investmentDate ? investment.investmentDate|date('Y-m-d') : '' }}</td>
-                <td>{{ investment.investmentAmount }}</td>
+                <td><a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentName }}</a></td>
+                <td data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
+                <td>{{ investment.investmentAmount| number_format (0, '.')}}</td>
                 <td>{{ investment.investmentEIS ? 'Yes' : 'No' }}</td>
-                <td>{{ investment.investmentSoldPrice }}</td>
-                <td>{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('Y-m-d') : '' }}</td>
+                <td>{{ investment.investmentSoldPrice| number_format (2, '.') }}</td>
+                <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
                 <td>{{ investment.shareCert }}</td>
                 <td>{{ investment.eisCert }}</td>
                 <td>{{ investment.otherDocs }}</td>
-                <td>
-                    <a href="{{ path('investments_show', {'id': investment.id}) }}">show</a>
-                    <a href="{{ path('investments_edit', {'id': investment.id}) }}">edit</a>
-                </td>
             </tr>
 
         {% endfor %}

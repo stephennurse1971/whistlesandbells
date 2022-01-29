@@ -27,14 +27,17 @@ class ChaveyDownType extends AbstractType
             ->add('amount')
             ->add('serpentimeComments', TextType::class, [
                 'label' =>'Developer comments',
+                'required' => false
             ])
             ->add('hmrcComments',TextType::class, [
-                'label' =>'HMRC comments'
+                'label' =>'HMRC comments',
+                'required' => false
             ])
             ->add('attachments',FileType::class,[
                 'label'=>'Document',
                 'mapped'=>false,
-                'required'=>false
+                'required'=>false,
+                'multiple'=>true
             ])
         ;
     }

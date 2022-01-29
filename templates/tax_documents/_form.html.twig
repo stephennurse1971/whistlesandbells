@@ -1,4 +1,14 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="row">
+    <div class="col-md-3">
+        <h2> </h2>
+        {{ form_row(form.year) }}
+        {{ form_row(form.p11D) }}
+        {{ form_row(form.p60) }}
+        {{ form_row(form.selfAssessment) }}
+        {{ form_row(form.comments) }}
+    </div>
+
+</div>
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

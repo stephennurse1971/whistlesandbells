@@ -14,12 +14,11 @@
             <th>Tennis</th>
             <th>Family</th>
             <th>HMRC</th>
-            <th>Serpendtime</th>
-
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <th>Serpendtine</th>
+            {% if is_granted('ROLE_ADMIN') %}
                 <th style="color: red;">Plain Password</th>
+                <th>#</th>
             {% endif %}
-            <th>Edit</th>
         </tr>
         </thead>
 
@@ -94,7 +93,7 @@
                     <td style="text-align: center">
                         {% set flag = 0 %}
                         {% for role in user.roles %}
-                            {% if role == 'ROLE_SERPENTIME' %}
+                            {% if role == 'ROLE_SERPENTINE' %}
                                 {% set flag = 1 %}
                             {% endif %}
                         {% endfor %}

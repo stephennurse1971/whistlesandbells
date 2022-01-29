@@ -1,26 +1,40 @@
-{% extends 'base_admin.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}TaxDocuments index{% endblock %}
+{% block title %}Tax Documents{% endblock %}
 
 {% block body %}
-    <h1>TaxDocuments index</h1>
+    <h1 style="color: red">Tax Documents</h1>
 
-    <table class="table">
+    <table class="table table-responsive table-sm">
         <thead>
             <tr>
                 <th>Year</th>
-                <th>P11D</th>
-                <th>P60</th>
-                <th>SelfAssessment</th>
+                <th style="text-align: center;display: inline-block;width: 150px">P11D</th>
+                <th style="text-align: center;display: inline-block;width: 150px">P60</th>
+                <th style="text-align: center;display: inline-block;width: 150px">Self-Assessment</th>
+                <th style="text-align: left;display: inline-block;width: 150px">Comments</th>
             </tr>
         </thead>
         <tbody>
         {% for tax_document in tax_documents %}
             <tr>
                 <td><a href="{{ path('tax_documents_edit', {'id': tax_document.id}) }}">{{ tax_document.year }}</a></td>
-                <td>{{ tax_document.p11D }}</td>
-                <td>{{ tax_document.p60 }}</td>
-                <td>{{ tax_document.selfAssessment }}</td>
+                <td  style="text-align: center;display: inline-block;width: 150px">
+                    {% if tax_document.p11D is not empty %}
+                        <a title= {{ tax_document.p11D }} target="_blank" href="{{ path('show_tax_attachment',{id : tax_document.id, type: 'P11D'}) }}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td  style="text-align: center;display: inline-block;width: 150px">
+                    {% if tax_document.p60 is not empty %}
+                        <a title= {{ tax_document.p60 }} target="_blank" href="{{ path('show_tax_attachment',{id : tax_document.id, type: 'P60'}) }}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: center;display: inline-block;width: 150px">
+                    {% if tax_document.selfAssessment is not empty %}
+                        <a title= {{ tax_document.selfAssessment }} target="_blank" href="{{ path('show_tax_attachment',{id : tax_document.id, type: 'selfassessment'}) }}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: left;display:inline-block;width: 150px">Comments</td>
             </tr>
 
         {% endfor %}
@@ -28,4 +42,17 @@
     </table>
 
     <a class="btn btn-success btn-sm mt-2" href="{{ path('tax_documents_new') }}">New</a>
-{% endblock %}
+{% endblock body %}
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

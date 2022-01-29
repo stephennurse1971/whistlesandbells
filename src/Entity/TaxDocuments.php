@@ -37,6 +37,11 @@ class TaxDocuments
      */
     private $selfAssessment;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comments;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class TaxDocuments
     public function setSelfAssessment(?string $selfAssessment): self
     {
         $this->selfAssessment = $selfAssessment;
+
+        return $this;
+    }
+
+    public function getComments(): ?string
+    {
+        return $this->comments;
+    }
+
+    public function setComments(?string $comments): self
+    {
+        $this->comments = $comments;
 
         return $this;
     }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ChaveyDown;
 use App\Form\ChaveyDownType;
 use App\Repository\ChaveyDownRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,38 +29,18 @@ class ChaveyDownController extends AbstractController
     }
 
     /**
-     * @Route("show/attachment/{id}", name="show_attachment")
+     * @Route("show/attachment/{id}/{filename}", name="show_attachment")
      */
-    public function showAttachment(int $id,ChaveyDownRepository $chaveyDownRepository)
+    public function showAttachment(string $filename,int $id,ChaveyDownRepository $chaveyDownRepository)
     {
-        $filename = $chaveyDownRepository->find($id)->getAttachments();
+
 
         $filepath = $this->getParameter('attachments_directory')."/".$filename;
-//        $extension = pathinfo($filename, PATHINFO_EXTENSION);
-//        $response = new Response();
-//        $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
-//        $response->headers->set('Content-Disposition', $disposition);
-//
-//        if($extension =='pdf')
-//        {
-//            $response->headers->set('Content-Type', 'application/pdf');
-//        }
-//        else{
-//            $response->headers->set('Content-Type', 'image/png');
-//        }
-//        $response->setContent(file_get_contents($filepath));
-//        $response = $this->render($filepath);
-//        $response->headers->set('Content-Type', 'application/pdf');
-//
-//        return $response;
 
 
         header('Content-Disposition: inline; filename="' . $filename . '"');
        return  new BinaryFileResponse($filepath);
 
-
-
-        //return $response;
     }
 
     /**
@@ -72,17 +53,24 @@ class ChaveyDownController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $attachment = $form['attachments']->getData();
-            if($attachment)
-            {
-                $attachment_directory = $this->getParameter('attachments_directory');
+            $attachments = $form['attachments']->getData();
 
-                $fileName = pathinfo($attachment->getClientOriginalName(),PATHINFO_FILENAME);
-                $file_extension = $attachment->guessExtension();
-                $newFileName = $fileName.".".$file_extension;
-                $attachment->move($attachment_directory,$newFileName);
-                $chaveyDown->setAttachments($newFileName);
-            }
+
+            if($attachments)
+            {
+                $files_name=[];
+
+                $attachment_directory = $this->getParameter('attachments_directory');
+                foreach($attachments as $attachment) {
+                    $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                    $file_extension = $attachment->guessExtension();
+                    $newFileName = $fileName . "." . $file_extension;
+                    $attachment->move($attachment_directory, $newFileName);
+
+                    $files_name[] = $newFileName;
+                }
+           }
+                $chaveyDown->setAttachments($files_name);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($chaveyDown);
             $entityManager->flush();
@@ -116,16 +104,21 @@ class ChaveyDownController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $attachment = $form['attachments']->getData();
-            if($attachment)
+            $attachments = $form['attachments']->getData();
+            if($attachments)
             {
+                $files_name=[];
+                $count = 1;
                 $attachment_directory = $this->getParameter('attachments_directory');
+                foreach($attachments as $attachment) {
+                    $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                    $file_extension = $attachment->guessExtension();
+                    $newFileName = $fileName . "." . $file_extension;
+                    $attachment->move($attachment_directory, $newFileName);
+                    $files_name[] = $newFileName;
 
-                $fileName = pathinfo($attachment->getClientOriginalName(),PATHINFO_FILENAME);
-                $file_extension = $attachment->guessExtension();
-                $newFileName = $fileName.".".$file_extension;
-                $attachment->move($attachment_directory,$newFileName);
-                $chaveyDown->setAttachments($newFileName);
+                }
+                $chaveyDown->setAttachments($files_name);
             }
             $this->getDoctrine()->getManager()->flush();
 
@@ -138,6 +131,19 @@ class ChaveyDownController extends AbstractController
 
         ]);
     }
+
+
+    /**
+     * @Route("/{id}/{comment}/editComment", name="chavey_down_edit_comment", methods={"GET","POST"})
+     */
+    public function editComment(string $comment,Request $request, ChaveyDown $chaveyDown,EntityManagerInterface $entityManager): Response
+    {
+      $chaveyDown->setHmrcComments($comment);
+      $entityManager->flush();
+     return $this->redirectToRoute('chavey_down_index');
+    }
+    
+
 
     /**
      * @Route("/{id}", name="chavey_down_delete", methods={"POST"})

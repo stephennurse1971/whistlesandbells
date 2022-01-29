@@ -29,6 +29,7 @@ class TaxDocumentsType extends AbstractType
                 'mapped'=>false,
                 'required'=>false
             ])
+            ->add('comments')
         ;
     }
 

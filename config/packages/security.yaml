@@ -35,16 +35,11 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/user/admin,   roles: ROLE_SUPER_ADMIN }
+#    - { path: ^/user/admin,   roles: ROLE_SUPER_ADMIN }
 #    - { path: /admin/tennis/venues/[]/edit,  roles: ROLE_SUPER_ADMIN }
   # - { path: ^/profile, roles: ROLE_USER }
 
   role_hierarchy:
-    ROLE_ADMIN:       ROLE_USER
-    ROLE_SUPER_ADMIN: [ROLE_ADMIN,ROLE_USER, ROLE_TENNIS_PLAYER, ROLE_FAMILY, ROLE_SERPENTINE, ROLE_HMRC, ROLE_ACCOUNTANT]
-    ROLE_TENNIS_PLAYER: ROLE_USER
-    ROLE_HMRC: ROLE_USER
-    ROLE_SERPENTINE: ROLE_USER
-    ROLE_ACCOUNTANT: ROLE_USER
-    ROLE_FAMILY: ROLE_USER
+        ROLE_ADMIN:       [ROLE_TENNIS_PLAYER, ROLE_FAMILY, ROLE_SERPENTINE, ROLE_HMRC, ROLE_ACCOUNTANT]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
 

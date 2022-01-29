@@ -33,9 +33,9 @@ class ChaveyDown
     private $amount;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="json")
      */
-    private $attachments;
+    private $attachments = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -88,12 +88,13 @@ class ChaveyDown
         return $this;
     }
 
-    public function getAttachments(): ?string
+    public function getAttachments(): ?array
     {
-        return $this->attachments;
+        $attachments = $this->attachments;
+        return $attachments;
     }
 
-    public function setAttachments(?string $attachments): self
+    public function setAttachments(?array $attachments): self
     {
         $this->attachments = $attachments;
 

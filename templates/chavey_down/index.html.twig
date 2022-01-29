@@ -5,9 +5,10 @@
 {% block body %}
     <h1 style="color: red">Chavey Down - HMRC Audit</h1>
 
-    <a title="Investgation reference: CP- " target="_blank" href="{{ path('chaveyDownBackground')}}"><i style="font-size: large" class="fa fa-info-circle"></i></a>
+    <a title="Investgation reference: CP- " target="_blank" href="{{ path('chaveyDownBackground') }}"><i
+                style="font-size: large" class="fa fa-info-circle"></i></a>
 
-{% set total = 0 %}
+    {% set total = 0 %}
     <table class="table">
         <thead>
         <tr>
@@ -16,38 +17,46 @@
             <th>Amount</th>
             <th>Attachment</th>
             <th>Developer comments</th>
-            <th>HMRC comments</th>
-            <th># </th>
+            <th>HMRC Comments</th>
+            <th>#</th>
+            <th>#</th>
         </tr>
         </thead>
         <tbody>
         {% for chavey_down in chavey_downs %}
             <tr>
-                <td data-sort='{{chavey_down.date|date('Y-m-d')  }}'>{{ chavey_down.date ? chavey_down.date|date('d-M-Y') : '' }}</td>
+                <td data-sort='{{ chavey_down.date|date('Y-m-d') }}'>{{ chavey_down.date ? chavey_down.date|date('d-M-Y') : '' }}</td>
                 <td>{{ chavey_down.vendor }}</td>
                 <td style="text-align: right">{{ chavey_down.amount|number_format (2, '.') }}</td>
                 <td style="text-align: center">
                     {% if chavey_down.attachments is not empty %}
-                       <a title= {{ chavey_down.attachments }} target="_blank" href="{{ path('show_attachment',{id : chavey_down.id}) }}"><i class="fa fa-paperclip"></i> </a>
-                    {% endif %}
+                          {% for attachment in chavey_down.attachments %}
+                        <a title= {{ attachment }} target="_blank"
+                           href="{{ path('show_attachment',{id : chavey_down.id,'filename':attachment}) }}"><i class="fa fa-paperclip"></i>
+                        </a>
+                        {% endfor %}
+                    {% endif %}u
                 </td>
                 <td>{{ chavey_down.serpentimeComments }}</td>
                 <td>{{ chavey_down.hmrcComments }}</td>
-
-                <td>
-                    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('chavey_down_edit', {'id': chavey_down.id}) }}">Edit</a>
-                </td>
+                <td><a class="btn btn-outline-success btn-sm mt-2"
+                       href="{{ path('chavey_down_edit_comment', {'id': chavey_down.id, 'comment': 'OK'}) }}">HMRC-OK</a>
+                    <a class="btn btn-outline-danger btn-sm mt-2"
+                       href="{{ path('chavey_down_edit_comment', {'id': chavey_down.id, 'comment' : 'Please review'}) }}">HMRC-Review</a></td>
+                <td><a class="btn btn-outline-primary btn-sm mt-2"
+                       href="{{ path('chavey_down_edit', {'id': chavey_down.id}) }}">Edit</a></td>
             </tr>
             {% set total = total +  chavey_down.amount %}
         {% endfor %}
         </tbody>
     </table>
     <hr>
-<p><b>Total:</b> {{ total |number_format (2, '.') }}</p>
+    <p><b>Total:</b> {{ total |number_format (2, '.') }}</p>
     <hr>
 
     {% if is_granted('ROLE_ADMIN') %}
-    <a class="btn btn-success mt-2" href="{{ path('chavey_down_new') }}">Add</a>
+        <a class="btn btn-success mt-2" href="{{ path('chavey_down_new') }}">Add</a>
+        <a class="btn btn-danger mt-2" href="{{ path('import') }}">Import xls</a>
     {% endif %}
 {% endblock %}
 

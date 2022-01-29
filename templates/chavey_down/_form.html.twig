@@ -18,13 +18,13 @@
     <div class="col-md-6">
         <h2>Comments</h2>
 
-        {% if 'ROLE_SERPENTINE' in app.user.roles %}
+        {% if is_granted ('ROLE_SERPENTINE')%}
             {{ form_row(form.serpentimeComments) }}
         {% else %}
             {{ form_row(form.serpentimeComments,{'attr':{'readonly':'true'}}) }}
         {% endif %}
 
-        {% if 'ROLE_HMRC' in app.user.roles %}
+        {% if is_granted ('ROLE_HMRC')%}
             {{ form_row(form.hmrcComments) }}
         {% else %}
             {{ form_row(form.hmrcComments,{'attr':{'readonly':'true'}}) }}
