@@ -19,7 +19,7 @@
             <th>Developer comments</th>
             <th>HMRC Comments</th>
             <th>#</th>
-            <th>#</th>
+            <th width="150px">##</th>
         </tr>
         </thead>
         <tbody>
@@ -40,11 +40,17 @@
                 <td>{{ chavey_down.serpentimeComments }}</td>
                 <td>{{ chavey_down.hmrcComments }}</td>
                 <td><a class="btn btn-outline-success btn-sm mt-2"
-                       href="{{ path('chavey_down_edit_comment', {'id': chavey_down.id, 'comment': 'OK'}) }}">HMRC-OK</a>
+                       href="{{ path('chavey_down_edit_comment', {'id': chavey_down.id, 'comment': 'OK'}) }}">HMRC: OK</a>
                     <a class="btn btn-outline-danger btn-sm mt-2"
-                       href="{{ path('chavey_down_edit_comment', {'id': chavey_down.id, 'comment' : 'Please review'}) }}">HMRC-Review</a></td>
-                <td><a class="btn btn-outline-primary btn-sm mt-2"
-                       href="{{ path('chavey_down_edit', {'id': chavey_down.id}) }}">Edit</a></td>
+                       href="{{ path('chavey_down_edit_comment', {'id': chavey_down.id, 'comment' : 'Please review'}) }}">HMRC: Review</a></td>
+                <td width="150px"><a class="btn btn-outline-primary btn-sm mt-2"
+                       href="{{ path('chavey_down_edit', {'id': chavey_down.id}) }}">Edit</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <form class="d-inline" method="post" action="{{ path('chavey_down_delete', {'id': chavey_down.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chavey_down.id) }}">
+                        <button class="btn btn-danger btn-sm mt-2"><i style="color: white;" class="fa fa-trash"></i></button>
+                    {% endif %}
+                </td>
             </tr>
             {% set total = total +  chavey_down.amount %}
         {% endfor %}
