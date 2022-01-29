@@ -97,9 +97,9 @@ class ChaveyDownController extends AbstractController
     /**
      * @Route("/{id}/edit", name="chavey_down_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, ChaveyDown $chaveyDown): Response
+    public function edit(int $id,Request $request, ChaveyDown $chaveyDown): Response
     {
-        $form = $this->createForm(ChaveyDownType::class, $chaveyDown);
+        $form = $this->createForm(ChaveyDownType::class, $chaveyDown,['id'=>$id]);
 
         $form->handleRequest($request);
 

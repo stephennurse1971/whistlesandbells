@@ -33,12 +33,14 @@
     </div>
 
 </div>
-<div class="col-8">
+<div class="col-8 mb-1">
     {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
         {{ form_row(form.attachments) }}
     {% else %}
         {{ form_row(form.attachments,{'attr':{'readonly':'true'}}) }}
     {% endif %}
 </div>
+
+
 <button class="btn btn-success">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
