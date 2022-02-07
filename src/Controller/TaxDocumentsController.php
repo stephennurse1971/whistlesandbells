@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -37,6 +38,39 @@ class TaxDocumentsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $p11D = $form['p11D']->getData();
+            if($p11D)
+            {
+                $p11D_directory = $this->getParameter('attachments_directory');
+                $fileName = pathinfo($p11D->getClientOriginalName(),PATHINFO_FILENAME);
+                $file_extension = $p11D->guessExtension();
+                $newFileName = $fileName.".".$file_extension;
+                $p11D->move($p11D_directory,$newFileName);
+                $taxDocument->setP11D($newFileName);
+            }
+            $p60 = $form['p60']->getData();
+            if($p60)
+            {
+                $p60_directory = $this->getParameter('attachments_directory');
+
+                $fileName = pathinfo($p60->getClientOriginalName(),PATHINFO_FILENAME);
+                $file_extension = $p60->guessExtension();
+                $newFileName = $fileName.".".$file_extension;
+                $p60->move($p60_directory,$newFileName);
+                $taxDocument->setP60($newFileName);
+            }
+            $selfAssessment = $form['selfAssessment']->getData();
+            if($selfAssessment)
+            {
+                $selfAssessment_directory = $this->getParameter('attachments_directory');
+
+                $fileName = pathinfo($selfAssessment->getClientOriginalName(),PATHINFO_FILENAME);
+                $file_extension = $selfAssessment->guessExtension();
+                $newFileName = $fileName.".".$file_extension;
+                $selfAssessment->move($selfAssessment_directory,$newFileName);
+                $taxDocument->setSelfAssessment($newFileName);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($taxDocument);
             $entityManager->flush();
@@ -65,7 +99,15 @@ class TaxDocumentsController extends AbstractController
      */
     public function edit(Request $request, TaxDocuments $taxDocument): Response
     {
-        $form = $this->createForm(TaxDocumentsType::class, $taxDocument);
+        $P11D_file_name = $taxDocument->getP11D() ;
+        $p60_file_name = $taxDocument->getP60();
+        $selfAssessment_file_name = $taxDocument->getSelfAssessment();
+        $form = $this->createForm(TaxDocumentsType::class, $taxDocument,[
+            'p11d_file_name'=>$P11D_file_name,
+            'p60_file_name'=>$p60_file_name,
+            'selfAssessment_file_name'=>$selfAssessment_file_name
+
+        ]);
         $form->handleRequest($request);
 
 
@@ -74,7 +116,6 @@ class TaxDocumentsController extends AbstractController
             if($p11D)
             {
                 $p11D_directory = $this->getParameter('attachments_directory');
-
                 $fileName = pathinfo($p11D->getClientOriginalName(),PATHINFO_FILENAME);
                 $file_extension = $p11D->guessExtension();
                 $newFileName = $fileName.".".$file_extension;
@@ -136,27 +177,29 @@ class TaxDocumentsController extends AbstractController
         }
 
         $filepath = $this->getParameter('attachments_directory')."/".$filename;
-//        $extension = pathinfo($filename, PATHINFO_EXTENSION);
-//        $response = new Response();
-//        $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
-//        $response->headers->set('Content-Disposition', $disposition);
-//
-//        if($extension =='pdf')
-//        {
-//            $response->headers->set('Content-Type', 'application/pdf');
-//        }
-//        else{
-//            $response->headers->set('Content-Type', 'image/png');
-//        }
-//        $response->setContent(file_get_contents($filepath));
-//        $response = $this->render($filepath);
-//        $response->headers->set('Content-Type', 'application/pdf');
-//
-//        return $response;
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $response = new Response();
+        $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
+        $response->headers->set('Content-Disposition', $disposition);
+
+        if($extension =='pdf')
+        {
+            $response->headers->set('Content-Type', 'application/pdf');
+        }
+        elseif($extension ==  'docx')
+        {
+            $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        }
+        else{
+            $response->headers->set('Content-Type', 'image/png');
+        }
+        $response->setContent(file_get_contents($filepath));
+        $response = $this->file($filepath);
+        return $response;
 
 
-        header('Content-Disposition: inline; filename="' . $filename . '"');
-        return  new BinaryFileResponse($filepath);
+//        header('Content-Disposition: inline; filename="' . $filename . '"');
+//        return  new BinaryFileResponse($filepath);
         //return $response;
     }
 

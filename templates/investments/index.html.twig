@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th>InvestmentName</th>
+            <th>Investment</th>
             <th>Investment Date</th>
             <th>Amount</th>
             <th>EIS</th>
@@ -22,13 +22,20 @@
         <tbody>
         {% for investment in investments %}
             <tr>
-                <td><a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentName }}</a></td>
+                <td><a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentName }}</a>
+                </td>
                 <td data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
-                <td>{{ investment.investmentAmount| number_format (0, '.')}}</td>
+                <td>{{ investment.investmentAmount| number_format (0, '.') }}</td>
                 <td>{{ investment.investmentEIS ? 'Yes' : 'No' }}</td>
                 <td>{{ investment.investmentSoldPrice| number_format (2, '.') }}</td>
                 <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
-                <td>{{ investment.shareCert }}</td>
+                <td>
+                    {% if investment.shareCert is not empty %}
+                        <a title= {{ investment.shareCert }} target="_blank"
+                           href="{{ path('investments_show',{id : investment.id, type: 'ShareCert'}) }}"><i
+                                    class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
                 <td>{{ investment.eisCert }}</td>
                 <td>{{ investment.otherDocs }}</td>
             </tr>

@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Investments;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,8 +24,10 @@ class InvestmentsType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('investmentAmount')
-            ->add('investmentEIS', TextType::class, [
-                'label' =>'Is the investment EIS?',
+            ->add('investmentEIS', CheckboxType::class, [
+                'label' => 'Is the investment EIS?',
+
+                'required' => false
             ])
             ->add('investmentSoldPrice')
             ->add('investmentSaleDate', DateType::class, [
@@ -31,22 +35,21 @@ class InvestmentsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
             ])
-            ->add('shareCert',FileType::class,[
-                'label'=>'Share Certificate',
-                'mapped'=>false,
-                'required'=>false
+            ->add('shareCert', FileType::class, [
+                'label' => 'Share Certificate',
+                'mapped' => false,
+                'required' => false
             ])
-            ->add('eisCert',FileType::class,[
-                'label'=>'EIS Form 3',
-                'mapped'=>false,
-                'required'=>false
+            ->add('eisCert', FileType::class, [
+                'label' => 'EIS Form 3',
+                'mapped' => false,
+                'required' => false
             ])
-            ->add('otherDocs',FileType::class,[
-                'label'=>'Other Docs',
-                'mapped'=>false,
-                'required'=>false
-            ])
-        ;
+            ->add('otherDocs', FileType::class, [
+                'label' => 'Other Docs',
+                'mapped' => false,
+                'required' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
