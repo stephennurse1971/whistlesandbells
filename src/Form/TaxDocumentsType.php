@@ -21,7 +21,6 @@ class TaxDocumentsType extends AbstractType
                 'attr'=>[
                     'placeholder'=>$options['p11d_file_name']
                 ]
-
             ])
             ->add('p60',FileType::class,[
                 'label'=>'P60',

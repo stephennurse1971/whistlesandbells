@@ -26,7 +26,6 @@ class InvestmentsType extends AbstractType
             ->add('investmentAmount')
             ->add('investmentEIS', CheckboxType::class, [
                 'label' => 'Is the investment EIS?',
-
                 'required' => false
             ])
             ->add('investmentSoldPrice')
@@ -38,17 +37,26 @@ class InvestmentsType extends AbstractType
             ->add('shareCert', FileType::class, [
                 'label' => 'Share Certificate',
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'placeholder' => $options['share_cert']
+                ]
             ])
             ->add('eisCert', FileType::class, [
                 'label' => 'EIS Form 3',
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'placeholder' => $options['eis_cert']
+                ]
             ])
             ->add('otherDocs', FileType::class, [
                 'label' => 'Other Docs',
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'placeholder' => $options['other_docs']
+                ]
             ]);
     }
 
@@ -56,6 +64,10 @@ class InvestmentsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Investments::class,
+            'share_cert' => null,
+            'eis_cert' => null,
+            'other_docs' => null
+
         ]);
     }
 }

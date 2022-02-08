@@ -17,6 +17,7 @@
             <th>Share Cert</th>
             <th>EIS Cert</th>
             <th>Other Docs</th>
+            <th>Hstory</th>
         </tr>
         </thead>
         <tbody>
@@ -31,13 +32,28 @@
                 <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
                 <td>
                     {% if investment.shareCert is not empty %}
-                        <a title= {{ investment.shareCert }} target="_blank"
+                        <a title= "{{ investment.shareCert }}" target="_blank"
                            href="{{ path('investments_show',{id : investment.id, type: 'ShareCert'}) }}"><i
                                     class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
-                <td>{{ investment.eisCert }}</td>
-                <td>{{ investment.otherDocs }}</td>
+                <td>
+                    {% if investment.eisCert is not empty %}
+                        <a title= "{{ investment.eisCert }}" target="_blank"
+                           href="{{ path('investments_show',{id : investment.id, type: 'EISCert'}) }}"><i
+                                    class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if investment.otherDocs is not empty %}
+                        <a title= "{{ investment.otherDocs }}" target="_blank"
+                           href="{{ path('investments_show',{id : investment.id, type: 'OtherDocs'}) }}"><i
+                                    class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                xxx
+                </td>
             </tr>
 
         {% endfor %}
