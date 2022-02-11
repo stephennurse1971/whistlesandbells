@@ -1,6 +1,6 @@
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-md-3">
+       <div class="col-md-3">
         <h2>Receipt Upload</h2>
 
         {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
@@ -12,51 +12,60 @@
             {{ form_row(form.date,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.vendor,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.amount,{'attr':{'readonly':'true'}}) }}
+            {{ form_row(form.description,{'attr':{'readonly':'true'}}) }}
         {% endif %}
     </div>
+
     <div class="col-md-6">
         <h2>Comments</h2>
-
-        {% if is_granted ('ROLE_SERPENTINE')%}
+        {% if is_granted ('ROLE_SERPENTINE') %}
             {{ form_row(form.serpentimeComments) }}
         {% else %}
             {{ form_row(form.serpentimeComments,{'attr':{'readonly':'true'}}) }}
         {% endif %}
 
-        {% if is_granted ('ROLE_HMRC')%}
+        {% if is_granted ('ROLE_HMRC') %}
             {{ form_row(form.hmrcComments) }}
         {% else %}
             {{ form_row(form.hmrcComments,{'attr':{'readonly':'true'}}) }}
         {% endif %}
     </div>
-</div>
 
 
-{% if 'ROLE_SERPENTIME' in app.user.roles %}
-<div class="row">
-    <div class="col-md-3">
-        <h2>Cash/Deposit</h2>
-            {{ form_row(form.receipt) }}
-            {{ form_row(form.cashOrDebit) }}
-            {{ form_row(form.barclays) }}
-            {{ form_row(form.caxton) }}
-         </div>
-   </div>
-{% endif %}
-
-
-
-
-
-
-
-<div class="col-8 mb-1">
+<div class="col-12">
+    <div class="col-3" style="padding-left: 0px">
     {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
         {{ form_row(form.attachments) }}
     {% else %}
         {{ form_row(form.attachments,{'attr':{'readonly':'true'}}) }}
     {% endif %}
+    </div>
 </div>
+
+
+
+    <div class="col-md-12 ">
+        <div class="w-25">
+        {% if is_granted ('ROLE_SERPENTINE') %}
+        <h2>Cash/Deposit</h2>
+        {{ form_row(form.receipt) }}
+        {{ form_row(form.cashOrDebit) }}
+        {{ form_row(form.barclays) }}
+        {{ form_row(form.caxton) }}
+            {% else %}
+                <div class="hide-form-field">
+                {{ form_row(form.receipt,{'attr':{'class':'hide-form-field'}}) }}
+                {{ form_row(form.cashOrDebit,{'attr':{'class':'hide-form-field'}}) }}
+                {{ form_row(form.barclays,{'attr':{'class':'hide-form-field'}}) }}
+                {{ form_row(form.caxton,{'attr':{'class':'hide-form-field'}}) }}
+                </div>
+        {% endif%}
+    </div>
+    </div>
+</div>
+
+
+
 
 
 <button class="btn btn-success">{{ button_label|default('Save') }}</button>
