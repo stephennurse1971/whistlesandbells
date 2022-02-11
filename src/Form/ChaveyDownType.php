@@ -6,6 +6,7 @@ use App\Entity\ChaveyDown;
 
 use App\Repository\ChaveyDownRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,16 +26,18 @@ class ChaveyDownType extends AbstractType
         if($options['id']) {
             $chaveyDown = $this->chaveyDownRepository->find($options['id']);
             $attachments = $chaveyDown->getAttachments();
-            $fileName = '';
-            $count = 1;
-            foreach ($attachments as $attachment) {
-                $fileName = $fileName . $attachment;
-                if ($count < count($attachments)) {
-                    $fileName = $fileName . ", ";
+            if ($attachments) {
+                $fileName = '';
+                $count = 1;
+                foreach ($attachments as $attachment) {
+                    $fileName = $fileName . $attachment;
+                    if ($count < count($attachments)) {
+                        $fileName = $fileName . ", ";
+                    }
+                    $count++;
                 }
-                $count++;
+                $placeholder = $fileName;
             }
-            $placeholder = $fileName;
         }
         $builder
             ->add('date', DateType::class, [
@@ -67,6 +70,12 @@ class ChaveyDownType extends AbstractType
                 'attr'=>[
                     'placeholder'=> $placeholder
                 ]
+            ])
+            ->add('clearAttachment',CheckboxType::class,[
+                'label'=>'clear attachment',
+                'mapped'=>false,
+                'required'=>false
+
             ])
         ;
     }

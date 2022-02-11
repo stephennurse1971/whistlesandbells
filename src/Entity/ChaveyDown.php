@@ -33,7 +33,7 @@ class ChaveyDown
     private $amount;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="json", nullable=true)
      */
     private $attachments = [];
 

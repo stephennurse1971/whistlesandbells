@@ -117,10 +117,22 @@ class ChaveyDownController extends AbstractController
     public function edit(int $id,Request $request, ChaveyDown $chaveyDown): Response
     {
         $form = $this->createForm(ChaveyDownType::class, $chaveyDown,['id'=>$id]);
-
+//        $attachments = true;
+//        if(!$chaveyDown->getAttachments())
+//
+//        {
+//            $form->remove('clearAttachment');
+//            $attachments = false;
+//        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+//            if($form['clearAttachment']) {
+                $clearAttachment = $form['clearAttachment']->getData();
+                if ($clearAttachment) {
+                    $chaveyDown->setAttachments(null);
+                }
+//            }
             $attachments = $form['attachments']->getData();
             if($attachments)
             {
@@ -145,6 +157,7 @@ class ChaveyDownController extends AbstractController
         return $this->render('chavey_down/edit.html.twig', [
             'chavey_down' => $chaveyDown,
             'form' => $form->createView(),
+//            'attachments'=>$attachments
 
         ]);
     }

@@ -47,6 +47,8 @@
                        href="{{ path('chavey_down_edit_comment', {'id': chavey_down.id, 'comment' : 'Please review'}) }}">HMRC:Review</a></td>
                 <td width="150px"><a class="btn btn-outline-primary btn-sm mt-2"
                        href="{{ path('chavey_down_edit', {'id': chavey_down.id}) }}">Edit</a>
+
+
                     {% if is_granted('ROLE_ADMIN') %}
                     <form class="d-inline" method="post" action="{{ path('chavey_down_delete', {'id': chavey_down.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chavey_down.id) }}">
