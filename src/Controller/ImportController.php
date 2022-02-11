@@ -41,7 +41,7 @@ class ImportController extends AbstractController
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-$chaveyDownImportService->importCD($newFilename);
+                $chaveyDownImportService->importCD($newFilename);
                 return $this->redirectToRoute('chavey_down_index');
             }
         }

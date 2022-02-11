@@ -47,6 +47,31 @@ class ChaveyDown
      */
     private $hmrcComments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $receipt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cashOrDebit;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $barclays;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $caxton;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +146,66 @@ class ChaveyDown
     public function setHmrcComments(?string $hmrcComments): self
     {
         $this->hmrcComments = $hmrcComments;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getReceipt(): ?string
+    {
+        return $this->receipt;
+    }
+
+    public function setReceipt(?string $receipt): self
+    {
+        $this->receipt = $receipt;
+
+        return $this;
+    }
+
+    public function getCashOrDebit(): ?string
+    {
+        return $this->cashOrDebit;
+    }
+
+    public function setCashOrDebit(?string $cashOrDebit): self
+    {
+        $this->cashOrDebit = $cashOrDebit;
+
+        return $this;
+    }
+
+    public function getBarclays(): ?float
+    {
+        return $this->barclays;
+    }
+
+    public function setBarclays(?float $barclays): self
+    {
+        $this->barclays = $barclays;
+
+        return $this;
+    }
+
+    public function getCaxton(): ?float
+    {
+        return $this->caxton;
+    }
+
+    public function setCaxton(?float $caxton): self
+    {
+        $this->caxton = $caxton;
 
         return $this;
     }

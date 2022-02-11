@@ -17,7 +17,7 @@
             <th>Share Cert</th>
             <th>EIS Cert</th>
             <th>Other Docs</th>
-            <th>Hstory</th>
+            <th>History</th>
         </tr>
         </thead>
         <tbody>
@@ -26,25 +26,25 @@
                 <td><a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentName }}</a>
                 </td>
                 <td data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
-                <td>{{ investment.investmentAmount| number_format (0, '.') }}</td>
+                <td style="text-align: right">{{ investment.investmentAmount| number_format (0, '.') }}</td>
                 <td>{{ investment.investmentEIS ? 'Yes' : 'No' }}</td>
-                <td>{{ investment.investmentSoldPrice| number_format (2, '.') }}</td>
+                <td style="text-align: right">{{ investment.investmentSoldPrice| number_format (0, '.') }}</td>
                 <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
-                <td>
+                <td style="text-align: center">
                     {% if investment.shareCert is not empty %}
                         <a title= "{{ investment.shareCert }}" target="_blank"
                            href="{{ path('investments_show',{id : investment.id, type: 'ShareCert'}) }}"><i
                                     class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
-                <td>
+                <td style="text-align: center">
                     {% if investment.eisCert is not empty %}
                         <a title= "{{ investment.eisCert }}" target="_blank"
                            href="{{ path('investments_show',{id : investment.id, type: 'EISCert'}) }}"><i
                                     class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
-                <td>
+                <td style="text-align: center">
                     {% if investment.otherDocs is not empty %}
                         <a title= "{{ investment.otherDocs }}" target="_blank"
                            href="{{ path('investments_show',{id : investment.id, type: 'OtherDocs'}) }}"><i

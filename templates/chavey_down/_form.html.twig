@@ -7,12 +7,11 @@
             {{ form_row(form.date) }}
             {{ form_row(form.vendor) }}
             {{ form_row(form.amount) }}
-
+            {{ form_row(form.description) }}
         {% else %}
             {{ form_row(form.date,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.vendor,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.amount,{'attr':{'readonly':'true'}}) }}
-
         {% endif %}
     </div>
     <div class="col-md-6">
@@ -29,10 +28,28 @@
         {% else %}
             {{ form_row(form.hmrcComments,{'attr':{'readonly':'true'}}) }}
         {% endif %}
-
     </div>
-
 </div>
+
+
+{% if 'ROLE_SERPENTIME' in app.user.roles %}
+<div class="row">
+    <div class="col-md-3">
+        <h2>Cash/Deposit</h2>
+            {{ form_row(form.receipt) }}
+            {{ form_row(form.cashOrDebit) }}
+            {{ form_row(form.barclays) }}
+            {{ form_row(form.caxton) }}
+         </div>
+   </div>
+{% endif %}
+
+
+
+
+
+
+
 <div class="col-8 mb-1">
     {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
         {{ form_row(form.attachments) }}

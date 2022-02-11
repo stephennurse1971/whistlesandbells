@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaxSupportingDocs{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tax Supporting Docs</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tax_supporting_doc.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ tax_supporting_doc.date ? tax_supporting_doc.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Comments</th>
+                <td>{{ tax_supporting_doc.comments }}</td>
+            </tr>
+            <tr>
+                <th>Attachment</th>
+                <td>{{ tax_supporting_doc.attachment }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tax_supporting_docs_index') }}">Return to list</a>
+
+    <a class="btn btn btn-outline-danger btn-sm mt-2" href="{{ path('tax_supporting_docs_edit', {'id': tax_supporting_doc.id}) }}">edit</a>
+
+    {{ include('tax_supporting_docs/_delete_form.html.twig') }}
+{% endblock %}

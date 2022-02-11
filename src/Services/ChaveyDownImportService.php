@@ -37,12 +37,23 @@ class ChaveyDownImportService
             $date = trim($oneLineFromCsv[0]);
             $amount = trim($oneLineFromCsv[1]);
             $vendor = trim($oneLineFromCsv[2]);
+            $description = trim($oneLineFromCsv[3]);
+            $receipt = trim($oneLineFromCsv[4]);
+            $cashorDebit = trim($oneLineFromCsv[5]);
+            $barclays = trim($oneLineFromCsv[6]);
+            $caxton = trim($oneLineFromCsv[7]);
 
             {
                 $cdexpense = new ChaveyDown();
                 $cdexpense->setDate(new \DateTime($date))
                     ->setAmount($amount)
-                    ->setVendor($vendor);
+                    ->setVendor($vendor)
+                    ->setDescription($description)
+                    ->setReceipt($receipt)
+                    ->setCashOrDebit($cashorDebit)
+                    ->setBarclays($barclays)
+                    ->setCaxton($caxton)
+                ;
                 $this->manager->persist($cdexpense);
                 $this->manager->flush();
             }

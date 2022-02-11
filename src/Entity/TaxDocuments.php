@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TaxDocumentsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,16 @@ class TaxDocuments
      * @ORM\Column(type="text", nullable=true)
      */
     private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TaxSupportingDocs::class, mappedBy="taxYear", orphanRemoval=true)
+     */
+    private $taxSupportingDocs;
+
+    public function __construct()
+    {
+        $this->taxSupportingDocs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +115,36 @@ class TaxDocuments
     public function setComments(?string $comments): self
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TaxSupportingDocs[]
+     */
+    public function getTaxSupportingDocs(): Collection
+    {
+        return $this->taxSupportingDocs;
+    }
+
+    public function addTaxSupportingDoc(TaxSupportingDocs $taxSupportingDoc): self
+    {
+        if (!$this->taxSupportingDocs->contains($taxSupportingDoc)) {
+            $this->taxSupportingDocs[] = $taxSupportingDoc;
+            $taxSupportingDoc->setTaxYear($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaxSupportingDoc(TaxSupportingDocs $taxSupportingDoc): self
+    {
+        if ($this->taxSupportingDocs->removeElement($taxSupportingDoc)) {
+            // set the owning side to null (unless already changed)
+            if ($taxSupportingDoc->getTaxYear() === $this) {
+                $taxSupportingDoc->setTaxYear(null);
+            }
+        }
 
         return $this;
     }

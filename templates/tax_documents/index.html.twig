@@ -8,37 +8,42 @@
     <table class="table table-responsive table-sm">
         <thead>
             <tr>
-                <th style="text-align: center;display: inline-block;width: 50px">Year</th>
+                <th style="text-align: center;display: inline-block;width: 100px">Year</th>
                 <th style="text-align: center;display: inline-block;width: 50px">P11D</th>
                 <th style="text-align: center;display: inline-block;width: 50px">P60</th>
                 <th style="text-align: center;display: inline-block;width: 150px">Self-Assessment</th>
                 <th style="text-align: center;display: inline-block;width: 350px">Comments</th>
+                <th>Supporting Docs</th>
             </tr>
         </thead>
         <tbody>
         {% for tax_document in tax_documents %}
             <tr>
-                <td style="text-align: center;display: inline-block;width: 50px"><a href="{{ path('tax_documents_edit', {'id': tax_document.id}) }}">{{ tax_document.year }}</a></td>
+                <td style="text-align: center;display: inline-block;width: 100px"><a href="{{ path('tax_documents_edit', {'id': tax_document.id}) }}">{{ tax_document.year }}</a></td>
 
-                <td  style="text-align: center;display: inline-block;width: 50px">
+                <td  style="text-align: right;display: inline-block;width: 50px">
                     {% if tax_document.p11D is not empty %}
                         <a title= "{{ tax_document.p11D }}" target="_blank" href="{{ path('show_tax_attachment',{id : tax_document.id, type: 'P11D'}) }}"><i class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
 
-                <td  style="text-align: center;display: inline-block;width: 50px">
+                <td  style="text-align: right;display: inline-block;width: 50px">
                     {% if tax_document.p60 is not empty %}
                         <a title= "{{ tax_document.p60 }}" target="_blank" href="{{ path('show_tax_attachment',{id : tax_document.id, type: 'P60'}) }}"><i class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
 
-                <td style="text-align: center;display: inline-block;width: 150px">
+                <td style="text-align: right;display: inline-block;width: 150px">
                     {% if tax_document.selfAssessment is not empty %}
                         <a title= "{{ tax_document.selfAssessment }}" target="_blank" href="{{ path('show_tax_attachment',{id : tax_document.id, type: 'selfassessment'}) }}"><i class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
 
                 <td style="text-align: center;display:inline-block;width: 350px">{{tax_document.comments}}</td>
+
+                <td>
+                    <a class="btn btn-success btn-sm mt-2" href="{{ path('tax_supporting_docs_new', {id: tax_document.id}) }}">Supporting Docs</a>
+                </td>
             </tr>
 
         {% endfor %}

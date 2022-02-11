@@ -46,6 +46,11 @@ class ChaveyDownType extends AbstractType
                 'label' =>'Supplier/contractor',
             ])
             ->add('amount')
+            ->add('description')
+            ->add('receipt')
+            ->add('cashOrDebit')
+            ->add('barclays')
+            ->add('caxton')
             ->add('serpentimeComments', TextType::class, [
                 'label' =>'Developer comments',
                 'required' => false
