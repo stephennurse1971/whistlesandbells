@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Investments;
 use App\Form\InvestmentsType;
+use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +19,11 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/", name="investments_index", methods={"GET"})
      */
-    public function index(InvestmentsRepository $investmentsRepository): Response
+    public function index(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository): Response
     {
         return $this->render('investments/index.html.twig', [
             'investments' => $investmentsRepository->findAll(),
+            'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
         ]);
     }
 
@@ -74,8 +76,6 @@ class InvestmentsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             $share_cert = $form['shareCert']->getData();
             if($share_cert)
             {
@@ -104,7 +104,6 @@ class InvestmentsController extends AbstractController
             if($other_docs)
             {
                 $other_docs_directory = $this->getParameter('attachments_directory');
-
                 $fileName = pathinfo($other_docs->getClientOriginalName(),PATHINFO_FILENAME);
                 $file_extension = $other_docs->guessExtension();
                 $newFileName = $fileName.".".$file_extension;

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Investments - Additional History{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Investments - Additional History</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Investment</th>
+                <th>Date</th>
+                <th>Attachment</th>
+                <th width="550px">Comment</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for investment_future_comm in investment_future_comms %}
+            <tr>
+                <td>{{ investment_future_comm.investment.investmentName }}</td>
+                <td>
+                    <a href="{{ path('investment_future_comms_edit', {'id': investment_future_comm.id}) }}">{{ investment_future_comm.date ? investment_future_comm.date|date('d-M-Y') : '' }}</a>
+                </td>
+                <td> {% if investment_future_comm.attachment is not empty %}
+                        {% for singleAttachment in investment_future_comm.attachment %}
+                            <a title= "{{ singleAttachment }}" target="_blank"
+                               href=""><i class="fa fa-paperclip"></i>
+                            </a>
+                        {% endfor %}
+                    {% endif %}</td>
+                <td>{{ investment_future_comm.comment }}</td>
+                <td>
+
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table> 
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc'],[1, 'asc'],],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

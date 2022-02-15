@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Investments;
+use App\Entity\TaxDocuments;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -57,7 +59,35 @@ class InvestmentsType extends AbstractType
                 'attr' => [
                     'placeholder' => $options['other_docs']
                 ]
-            ]);
+            ])
+            ->add('eISPurchaseYear1', EntityType::class,[
+                'class'=>TaxDocuments::class,
+                'choice_label'=>'Year',
+                'label' => 'EIS Purchase Tax Year 1',
+                'required' => false
+            ])
+            ->add('eISPurchaseYear2', EntityType::class,[
+                'class'=>TaxDocuments::class,
+                'choice_label'=>'Year',
+                'label' => 'EIS Purchase Tax Year 2',
+                'required' => false
+            ])
+            ->add('eISPurchaseYear1Percentage',TextType::class,[
+                'label' =>'%'
+            ])
+            ->add('eISPurchaseYear2Percentage',TextType::class,[
+                'label' =>'%'
+            ])
+
+            ->add('eISSaleYear1', EntityType::class,[
+                'class'=>TaxDocuments::class,
+                'choice_label'=>'Year',
+                'label' => 'EIS Sale Tax Year',
+                'required' => false
+            ])
+
+
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

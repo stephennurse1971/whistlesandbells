@@ -33,31 +33,8 @@ class ChaveyDownController extends AbstractController
      */
     public function showAttachment(string $filename,int $id,ChaveyDownRepository $chaveyDownRepository)
     {
-
-
-        $filepath = $this->getParameter('attachments_directory')."/".$filename;
-//
-//
-//        header('Content-Disposition: inline; filename="' . $filename . '"');
-//       return  new BinaryFileResponse($filepath);
-//        header('Content-type: application/pdf');
-//
-//        header('Content-Disposition: inline; filename="' . $filepath . '"');
-//
-//        header('Content-Transfer-Encoding: binary');
-//
-//        header('Accept-Ranges: bytes');
-//
-//// Read the file
-//        @readfile($filepath);
-       // return new Response(null);
+        $filepath = $this->getParameter('chavey_down_attachments_directory')."/".$filename;
         return $this->file($filepath, 'sample.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
-
-//        return new Response($filepath, 200, [
-//            'Content-Type' => 'application/pdf',
-//            'Content-Disposition' => 'inline; filename="file.pdf"'
-//        ]);
-
     }
 
     /**
@@ -77,13 +54,12 @@ class ChaveyDownController extends AbstractController
             {
                 $files_name=[];
 
-                $attachment_directory = $this->getParameter('attachments_directory');
+                $attachment_directory = $this->getParameter('chavey_down_attachments_directory');
                 foreach($attachments as $attachment) {
                     $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                     $file_extension = $attachment->guessExtension();
                     $newFileName = $fileName . "." . $file_extension;
                     $attachment->move($attachment_directory, $newFileName);
-
                     $files_name[] = $newFileName;
                 }
            }
@@ -91,7 +67,6 @@ class ChaveyDownController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($chaveyDown);
             $entityManager->flush();
-
             return $this->redirectToRoute('chavey_down_index');
         }
 
@@ -117,28 +92,20 @@ class ChaveyDownController extends AbstractController
     public function edit(int $id,Request $request, ChaveyDown $chaveyDown): Response
     {
         $form = $this->createForm(ChaveyDownType::class, $chaveyDown,['id'=>$id]);
-//        $attachments = true;
-//        if(!$chaveyDown->getAttachments())
-//
-//        {
-//            $form->remove('clearAttachment');
-//            $attachments = false;
-//        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            if($form['clearAttachment']) {
                 $clearAttachment = $form['clearAttachment']->getData();
                 if ($clearAttachment) {
                     $chaveyDown->setAttachments(null);
                 }
-//            }
             $attachments = $form['attachments']->getData();
             if($attachments)
             {
                 $files_name=[];
                 $count = 1;
-                $attachment_directory = $this->getParameter('attachments_directory');
+                $attachment_directory = $this->getParameter('chavey_down_attachments_directory');
                 foreach($attachments as $attachment) {
                     $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                     $file_extension = $attachment->guessExtension();
@@ -157,8 +124,6 @@ class ChaveyDownController extends AbstractController
         return $this->render('chavey_down/edit.html.twig', [
             'chavey_down' => $chaveyDown,
             'form' => $form->createView(),
-//            'attachments'=>$attachments
-
         ]);
     }
 
@@ -185,7 +150,6 @@ class ChaveyDownController extends AbstractController
             $entityManager->remove($chaveyDown);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('chavey_down_index');
     }
 }

@@ -7,8 +7,6 @@
         {{ form_row(form.investmentAmount) }}
         {{ form_row(form.investmentDate) }}
         {{ form_row(form.investmentEIS) }}
-        {{ form_row(form.investmentSaleDate) }}
-        {{ form_row(form.investmentSoldPrice) }}
     </div>
 
     <div class="col-md-3">
@@ -17,6 +15,29 @@
         {{ form_row(form.eisCert) }}
         {{ form_row(form.otherDocs) }}
     </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <h2>EIS Purchase</h2>
+        {{ form_row(form.eISPurchaseYear1) }}
+        {{ form_row(form.eISPurchaseYear2) }}
+    </div>
+    <div class="col-md-1">
+        <h2>%</h2>
+        {{ form_row(form.eISPurchaseYear1Percentage) }}
+        {{ form_row(form.eISPurchaseYear2Percentage) }}
+    </div>
+    <div class="col-md-2">
+        <h2>EIS Sale</h2>
+        {{ form_row(form.eISSaleYear1) }}
+{#        {{ form_row(form.eISSaleYear2) }}#}
+        {{ form_row(form.investmentSaleDate) }}
+        {{ form_row(form.investmentSoldPrice) }}
+    </div>
+    <div class="col-md-1">
+        <h2>%</h2>
+    </div>
+
 </div>
 
 
