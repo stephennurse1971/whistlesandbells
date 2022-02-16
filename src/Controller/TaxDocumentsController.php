@@ -40,7 +40,7 @@ class TaxDocumentsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $p11D = $form['p11D']->getData();
             if ($p11D) {
-                $p11D_directory = $this->getParameter('attachments_directory');
+                $p11D_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($p11D->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p11D->guessExtension();
                 $newFileName = $fileName . "." . $file_extension;
@@ -49,7 +49,7 @@ class TaxDocumentsController extends AbstractController
             }
             $p60 = $form['p60']->getData();
             if ($p60) {
-                $p60_directory = $this->getParameter('attachments_directory');
+                $p60_directory = $this->getParameter('tax_documents_attachments_directory');
 
                 $fileName = pathinfo($p60->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p60->guessExtension();
@@ -59,7 +59,7 @@ class TaxDocumentsController extends AbstractController
             }
             $selfAssessment = $form['selfAssessment']->getData();
             if ($selfAssessment) {
-                $selfAssessment_directory = $this->getParameter('attachments_directory');
+                $selfAssessment_directory = $this->getParameter('tax_documents_attachments_directory');
 
                 $fileName = pathinfo($selfAssessment->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $selfAssessment->guessExtension();
@@ -110,7 +110,7 @@ class TaxDocumentsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $p11D = $form['p11D']->getData();
             if ($p11D) {
-                $p11D_directory = $this->getParameter('attachments_directory');
+                $p11D_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($p11D->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p11D->guessExtension();
                 $newFileName = $fileName . "." . $file_extension;
@@ -119,7 +119,7 @@ class TaxDocumentsController extends AbstractController
             }
             $p60 = $form['p60']->getData();
             if ($p60) {
-                $p60_directory = $this->getParameter('attachments_directory');
+                $p60_directory = $this->getParameter('tax_documents_attachments_directory');
 
                 $fileName = pathinfo($p60->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p60->guessExtension();
@@ -129,7 +129,7 @@ class TaxDocumentsController extends AbstractController
             }
             $selfAssessment = $form['selfAssessment']->getData();
             if ($selfAssessment) {
-                $selfAssessment_directory = $this->getParameter('attachments_directory');
+                $selfAssessment_directory = $this->getParameter('tax_documents_attachments_directory');
 
                 $fileName = pathinfo($selfAssessment->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $selfAssessment->guessExtension();
@@ -163,7 +163,7 @@ class TaxDocumentsController extends AbstractController
             $filename = $taxDocumentsRepository->find($id)->getSelfAssessment();
         }
 
-        $filepath = $this->getParameter('attachments_directory') . "/" . $filename;
+        $filepath = $this->getParameter('tax_documents_attachments_directory') . "/" . $filename;
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         $response = new Response();
         $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);

@@ -6,8 +6,9 @@
 parameters:
     import_user_directory: '%kernel.project_dir%/public/administration/import/'
     import_photo_directory: '%kernel.project_dir%/public/administration/img/photogallery/'
-    chavey_down_attachments_directory: '%kernel.project_dir%/public/administration/attachments/ChaveyDown'
     temporary_attachment_directory: '%kernel.project_dir%/public/temporary/'
+    chavey_down_attachments_directory: '%kernel.project_dir%/public/administration/attachments/ChaveyDown'
+    tax_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments'
     investments_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments'
     investments_future_comms_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments/InvestmentsFutureComms'
 
