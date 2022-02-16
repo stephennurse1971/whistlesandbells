@@ -17,7 +17,7 @@
         <tbody>
         {% for tax_supporting_doc in tax_supporting_docs %}
             <tr>
-                <td>{{ tax_supporting_doc.date ? tax_supporting_doc.date|date('Y-m-d') : '' }}</td>
+                <td>{{ tax_supporting_doc.date ? tax_supporting_doc.date|date('d-M-Y') : '' }}</td>
                 <td>{{ tax_supporting_doc.comments }}</td>
                 <td>{{ tax_supporting_doc.attachment }}</td>
                 <td>
@@ -30,5 +30,5 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm mt-2" href="{{ path('tax_supporting_docs_new') }}">New</a>
+    <a class="btn btn-success btn-sm mt-2" href="{{ path('tax_supporting_docs_new', {id: '1'})}}">New</a>
 {% endblock %}

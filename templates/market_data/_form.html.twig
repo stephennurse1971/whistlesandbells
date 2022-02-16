@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        <h2>Share Price Details</h2>
+        {{ form_row(form.shareCompany) }}
+        {{ form_row(form.sharePrice) }}
+    </div>
+</div>
+
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

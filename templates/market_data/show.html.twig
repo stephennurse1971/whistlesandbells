@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Share Price{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Share Price</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ market_datum.id }}</td>
+            </tr>
+            <tr>
+                <th>SharePrice</th>
+                <td>{{ market_datum.sharePrice }}</td>
+            </tr>
+            <tr>
+                <th>ShareCompany</th>
+                <td>{{ market_datum.shareCompany }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('market_data_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-warning btn-sm mt-2" href="{{ path('market_data_edit', {'id': market_datum.id}) }}">Edit</a>
+
+    {{ include('market_data/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,4 +1,13 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+<div class="row">
+    <div class="col-md-6">
+        <h2> </h2>
+        {{ form_row(form.taxYear) }}
+        {{ form_row(form.date) }}
+        {{ form_row(form.comments) }}
+        {{ form_row(form.attachment) }}
+    </div>
+
+</div>
     <button class="btn btn-outline-success">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Market Data{% endblock %}
+
+{% block body %}
+    <h1>Edit Market Data</h1>
+
+    {{ include('market_data/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('market_data_index') }}">Return to list</a>
+
+    {{ include('market_data/_delete_form.html.twig') }}
+{% endblock %}

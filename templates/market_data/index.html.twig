@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MarketData index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">Share prices</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Share  Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for market_datum in market_datas %}
+            <tr>
+                <td> <a href="{{ path('market_data_edit', {'id': market_datum.id}) }}">{{ market_datum.shareCompany }}</a></td>
+                <td>{{ market_datum.sharePrice }}</td>
+                <td>
+
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm mt-2" href="{{ path('market_data_new') }}">New</a>
+{% endblock %}
