@@ -69,15 +69,7 @@ class Investments
      */
     private $investmentFutureComms;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
-     */
-    private $EISPurchaseYear1;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
-     */
-    private $EISPurchaseYear2;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -92,12 +84,34 @@ class Investments
     /**
      * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
      */
+    private $EISPurchaseYear1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
+     */
+    private $EISPurchaseYear2;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
+     */
     private $EISSaleYear1;
 
     /**
      * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
      */
     private $EISSaleYear2;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $EISSaleYear1Percentage;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $EISSaleYear2Percentage;
+
+
 
 
 
@@ -249,29 +263,7 @@ class Investments
         return $this;
     }
 
-    public function getEISPurchaseYear1(): ?TaxDocuments
-    {
-        return $this->EISPurchaseYear1;
-    }
 
-    public function setEISPurchaseYear1(?TaxDocuments $EISPurchaseYear1): self
-    {
-        $this->EISPurchaseYear1 = $EISPurchaseYear1;
-
-        return $this;
-    }
-
-    public function getEISPurchaseYear2(): ?TaxDocuments
-    {
-        return $this->EISPurchaseYear2;
-    }
-
-    public function setEISPurchaseYear2(?TaxDocuments $EISPurchaseYear2): self
-    {
-        $this->EISPurchaseYear2 = $EISPurchaseYear2;
-
-        return $this;
-    }
 
     public function getEISPurchaseYear1Percentage(): ?float
     {
@@ -293,6 +285,30 @@ class Investments
     public function setEISPurchaseYear2Percentage(?float $EISPurchaseYear2Percentage): self
     {
         $this->EISPurchaseYear2Percentage = $EISPurchaseYear2Percentage;
+
+        return $this;
+    }
+
+    public function getEISPurchaseYear1(): ?TaxDocuments
+    {
+        return $this->EISPurchaseYear1;
+    }
+
+    public function setEISPurchaseYear1(?TaxDocuments $EISPurchaseYear1): self
+    {
+        $this->EISPurchaseYear1 = $EISPurchaseYear1;
+
+        return $this;
+    }
+
+    public function getEISPurchaseYear2(): ?TaxDocuments
+    {
+        return $this->EISPurchaseYear2;
+    }
+
+    public function setEISPurchaseYear2(?TaxDocuments $EISPurchaseYear2): self
+    {
+        $this->EISPurchaseYear2 = $EISPurchaseYear2;
 
         return $this;
     }
@@ -320,6 +336,34 @@ class Investments
 
         return $this;
     }
+
+    public function getEISSaleYear1Percentage(): ?float
+    {
+        return $this->EISSaleYear1Percentage;
+    }
+
+    public function setEISSaleYear1Percentage(?float $EISSaleYear1Percentage): self
+    {
+        $this->EISSaleYear1Percentage = $EISSaleYear1Percentage;
+
+        return $this;
+    }
+
+    public function getEISSaleYear2Percentage(): ?float
+    {
+        return $this->EISSaleYear2Percentage;
+    }
+
+    public function setEISSaleYear2Percentage(?float $EISSaleYear2Percentage): self
+    {
+        $this->EISSaleYear2Percentage = $EISSaleYear2Percentage;
+
+        return $this;
+    }
+
+
+
+
 
 
 }

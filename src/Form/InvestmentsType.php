@@ -60,29 +60,45 @@ class InvestmentsType extends AbstractType
                     'placeholder' => $options['other_docs']
                 ]
             ])
-            ->add('eISPurchaseYear1', EntityType::class,[
+            ->add('EISPurchaseYear1', EntityType::class,[
                 'class'=>TaxDocuments::class,
                 'choice_label'=>'Year',
                 'label' => 'EIS Purchase Tax Year 1',
                 'required' => false
             ])
-            ->add('eISPurchaseYear2', EntityType::class,[
+            ->add('EISPurchaseYear2', EntityType::class,[
                 'class'=>TaxDocuments::class,
                 'choice_label'=>'Year',
                 'label' => 'EIS Purchase Tax Year 2',
                 'required' => false
             ])
             ->add('eISPurchaseYear1Percentage',TextType::class,[
-                'label' =>'%'
+                'label' =>'%',
+                'required'=>false
             ])
             ->add('eISPurchaseYear2Percentage',TextType::class,[
-                'label' =>'%'
+                'label' =>'%',
+                'required'=>false
+            ])
+            ->add('eISSaleYear1Percentage',TextType::class,[
+                'label' =>'%',
+                'required'=>false
+            ])
+            ->add('eISSaleYear2Percentage',TextType::class,[
+                'label' =>'%',
+                'required'=>false
             ])
 
             ->add('eISSaleYear1', EntityType::class,[
                 'class'=>TaxDocuments::class,
                 'choice_label'=>'Year',
-                'label' => 'EIS Sale Tax Year',
+                'label' => 'EIS Sale Tax Year1',
+                'required' => false
+            ])
+            ->add('eISSaleYear2', EntityType::class,[
+                'class'=>TaxDocuments::class,
+                'choice_label'=>'Year',
+                'label' => 'EIS Sale Tax Year2',
                 'required' => false
             ])
 
