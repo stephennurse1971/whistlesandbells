@@ -16,3 +16,42 @@
 
 {% endblock %}
 
+{% block additionaljs %}
+    <script>
+    var numberOfShares = $("#investments_numberOfShares").val();
+    var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
+    var investmentAmount = parseInt(numberOfShares) * parseInt(purchaseSharePrice);
+    $("#investments_investmentAmount").val(investmentAmount).change();
+
+    $("#investments_numberOfShares").change(function () {
+        var numberOfShares = $("#investments_numberOfShares").val();
+        var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
+        var investmentAmount = parseInt(numberOfShares) * parseInt(purchaseSharePrice);
+        $("#investments_investmentAmount").val(investmentAmount).change();
+    });
+
+    $("#investments_purchaseSharePrice").change(function () {
+        var numberOfShares = $("#investments_numberOfShares").val();
+        var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
+        var investmentAmount = parseInt(numberOfShares) * parseInt(purchaseSharePrice);
+        $("#investments_investmentAmount").val(investmentAmount).change();
+    });
+
+    var currency = $("#investments_currency option:selected").text();
+   if(currency == 'GBP')
+   {
+       $('.initial-amount-GBP').css('display','none');
+   }
+   $("#investments_currency").change(function () {
+       var selectedCurrency = $("#investments_currency option:selected").text();
+       if(selectedCurrency == 'GBP')
+       {
+           $('.initial-amount-GBP').css('display','none');
+       }
+       else{
+           $('.initial-amount-GBP').css('display','block');
+       }
+   });
+
+        </script>
+{% endblock additionaljs %}

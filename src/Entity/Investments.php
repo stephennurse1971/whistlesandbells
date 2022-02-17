@@ -19,10 +19,7 @@ class Investments
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $investmentName;
+
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -111,6 +108,31 @@ class Investments
      */
     private $EISSaleYear2Percentage;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $numberOfShares;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $purchaseSharePrice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=FxRates::class, inversedBy="investments")
+     */
+    private $currency;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=MarketData::class)
+     */
+    private $investmentCompany;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $initialInvestmentAmountGBP;
+
 
 
 
@@ -123,18 +145,6 @@ class Investments
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getInvestmentName(): ?string
-    {
-        return $this->investmentName;
-    }
-
-    public function setInvestmentName(string $investmentName): self
-    {
-        $this->investmentName = $investmentName;
-
-        return $this;
     }
 
     public function getInvestmentDate(): ?\DateTimeInterface
@@ -357,6 +367,66 @@ class Investments
     public function setEISSaleYear2Percentage(?float $EISSaleYear2Percentage): self
     {
         $this->EISSaleYear2Percentage = $EISSaleYear2Percentage;
+
+        return $this;
+    }
+
+    public function getNumberOfShares(): ?float
+    {
+        return $this->numberOfShares;
+    }
+
+    public function setNumberOfShares(?float $numberOfShares): self
+    {
+        $this->numberOfShares = $numberOfShares;
+
+        return $this;
+    }
+
+    public function getPurchaseSharePrice(): ?float
+    {
+        return $this->purchaseSharePrice;
+    }
+
+    public function setPurchaseSharePrice(?float $purchaseSharePrice): self
+    {
+        $this->purchaseSharePrice = $purchaseSharePrice;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?FxRates
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?FxRates $currency): self
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function getInvestmentCompany(): ?MarketData
+    {
+        return $this->investmentCompany;
+    }
+
+    public function setInvestmentCompany(?MarketData $investmentCompany): self
+    {
+        $this->investmentCompany = $investmentCompany;
+
+        return $this;
+    }
+
+    public function getInitialInvestmentAmountGBP(): ?float
+    {
+        return $this->initialInvestmentAmountGBP;
+    }
+
+    public function setInitialInvestmentAmountGBP(?float $initialInvestmentAmountGBP): self
+    {
+        $this->initialInvestmentAmountGBP = $initialInvestmentAmountGBP;
 
         return $this;
     }

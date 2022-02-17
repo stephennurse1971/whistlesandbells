@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FX Rates{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">FX Rates</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>FX</th>
+                <th>Current Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fx_rate in fx_rates %}
+            <tr>
+                <td>{{ fx_rate.fx }}</td>
+                <td style="text-align: right">
+                    <a href="{{ path('fx_rates_edit', {'id': fx_rate.id}) }}">{{ fx_rate.currentFxRate |number_format(4) }}</a>
+                </td>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm mt-2" href="{{ path('fx_rates_new') }}">New</a>
+{% endblock %}
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+    <script>
+{% endblock datatable %}

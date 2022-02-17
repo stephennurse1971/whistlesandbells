@@ -3,13 +3,19 @@
 <div class="row">
     <div class="col-md-3">
         <h2>Investment Details</h2>
-        {{ form_row(form.investmentName) }}
-        {{ form_row(form.investmentAmount) }}
+        {{ form_row(form.investmentCompany) }}
         {{ form_row(form.investmentDate) }}
+        {{ form_row(form.currency) }}
+        {{ form_row(form.numberOfShares) }}
+        {{ form_row(form.purchaseSharePrice) }}
+        {{ form_row(form.investmentAmount) }}
         {{ form_row(form.investmentEIS) }}
+        <div class="initial-amount-GBP">
+        {{ form_row(form.initialInvestmentAmountGBP) }}
+        </div>
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
     </div>
 
     <div class="col-md-3">
@@ -33,7 +39,7 @@
         {{ form_row(form.eISPurchaseYear2Percentage) }}
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
     </div>
 
     <div class="col-md-2">

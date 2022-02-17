@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\FxRates;
 use App\Entity\Investments;
+use App\Entity\MarketData;
 use App\Entity\TaxDocuments;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -19,7 +21,25 @@ class InvestmentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('investmentName')
+            ->add('investmentCompany',  EntityType::class,[
+                'class'=>MarketData::class,
+                'choice_label'=>'shareCompany',
+                'label' => 'Company',
+                'required' => false
+            ])
+            ->add('numberOfShares')
+            ->add('initialInvestmentAmountGBP',TextType::class,[
+                'attr'=>[
+                    'class'=>'initial-amount-GBP'
+                ]
+            ])
+            ->add('currency',  EntityType::class,[
+                'class'=>FxRates::class,
+                'choice_label'=>'fx',
+                'label' => 'Currency',
+                'required' => false
+            ])
+            ->add('purchaseSharePrice')
             ->add('investmentDate', DateType::class, [
                 'label' => 'Date',
                 'required' => false,

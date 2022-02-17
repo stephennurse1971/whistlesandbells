@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FX Rates{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">Edit: Fx Rates</h1>
+
+    {{ include('fx_rates/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('fx_rates_index') }}">Return to list</a>
+
+    {{ include('fx_rates/_delete_form.html.twig') }}
+{% endblock %}

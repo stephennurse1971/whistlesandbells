@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FX Rates{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">FX Rates</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fx_rate.id }}</td>
+            </tr>
+            <tr>
+                <th>Fx</th>
+                <td>{{ fx_rate.fx }}</td>
+            </tr>
+            <tr>
+                <th>CurrentFxRate</th>
+                <td>{{ fx_rate.currentFxRate }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('fx_rates_index') }}">Return to list</a>
+
+    <a href="{{ path('fx_rates_edit', {'id': fx_rate.id}) }}">Edit</a>
+
+    {{ include('fx_rates/_delete_form.html.twig') }}
+{% endblock %}
