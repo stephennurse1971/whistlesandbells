@@ -27,7 +27,7 @@
             {% set investmentChildID = 'investment'~investment.id %}
             <tr>
                 <td>
-                    <a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany }}</a>
+                    <a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany }} --</a>
                     <button class="toggle-investment-child btn btn-outline-warning"
                             data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
                     </button>
