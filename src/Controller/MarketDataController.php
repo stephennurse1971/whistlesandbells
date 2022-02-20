@@ -61,9 +61,9 @@ class MarketDataController extends AbstractController
     /**
      * @Route("/{id}/edit", name="market_data_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, MarketData $marketDatum): Response
+    public function edit(Request $request, MarketData $marketData): Response
     {
-        $form = $this->createForm(MarketDataType::class, $marketDatum);
+        $form = $this->createForm(MarketDataType::class, $marketData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -73,7 +73,7 @@ class MarketDataController extends AbstractController
         }
 
         return $this->render('market_data/edit.html.twig', [
-            'market_datum' => $marketDatum,
+            'market_data' => $marketData,
             'form' => $form->createView(),
         ]);
     }

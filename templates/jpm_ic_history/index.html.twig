@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JPM IC History{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">JPM IC History</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Base Salary (GBP)</th>
+                <th>Total Comp (USD)</th>
+                <th>IC Total (USD)</th>
+                <th>IC Cash (USD)</th>
+                <th>IC Shares (USD)</th>
+                <th>Share Price</th>
+                <th>IC Shares #1</th>
+                <th>IC Shares #2</th>
+                <th>Vesting Date #1</th>
+                <th>Vesting Date #2</th>
+                <th><i class="fa fa-paperclip"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for jpm_ic_history in jpm_ic_histories %}
+            <tr>
+                <td> <a href="{{ path('jpm_ic_history_edit', {'id': jpm_ic_history.id}) }}"> {{ jpm_ic_history.year }}</a>
+                   </td>
+                <td style="text-align: right">{{ jpm_ic_history.baseSalaryGBP |number_format(0)}}</td>
+                <td style="text-align: right">{{ jpm_ic_history.totalCompUSD|number_format(0) }}</td>
+                <td style="text-align: right">{{ jpm_ic_history.icTotal|number_format(0) }}</td>
+                <td style="text-align: right">{{ jpm_ic_history.icCash|number_format(0) }}</td>
+                <td style="text-align: right">{{ jpm_ic_history.icShares|number_format(0) }}</td>
+                <td style="text-align: right">{{ jpm_ic_history.icSharePrice|number_format(0) }}</td>
+                <td style="text-align: right">{{ jpm_ic_history.icShares1|number_format(0) }}</td>
+                <td style="text-align: right">{{ jpm_ic_history.icShares2 |number_format(0)}}</td>
+                <td style="text-align: right">{{ jpm_ic_history.vestingDate1 |date('d-M-Y') }}</td>
+                <td style="text-align: right">{{ jpm_ic_history.vestingDate2 |date('d-M-Y') }}</td>
+                <td style="text-align: center">
+                    {% if jpm_ic_history.attachmentICFile is not empty %}
+                            <a title="{{ jpm_ic_history.attachmentICFile }}" target="_blank"
+                               href=""><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn mt-2" href="{{ path('jpm_ic_history_new') }}">New</a>
+{% endblock %}

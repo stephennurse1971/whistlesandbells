@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Market Data{% endblock %}
+{% block title %}Edit: {{market_data.shareCompany}}{% endblock %}
 
 {% block body %}
-    <h1>Edit Market Data</h1>
+    <h1 style="color: red">Edit: {{market_data.shareCompany}}</h1>
 
     {{ include('market_data/_form.html.twig', {'button_label': 'Update'}) }}
 

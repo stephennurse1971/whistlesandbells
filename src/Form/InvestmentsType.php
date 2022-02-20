@@ -6,6 +6,7 @@ use App\Entity\FxRates;
 use App\Entity\Investments;
 use App\Entity\MarketData;
 use App\Entity\TaxDocuments;
+use App\Repository\FxRatesRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -17,9 +18,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvestmentsType extends AbstractType
+
 {
+    public function __construct(FxRatesRepository $fxRatesRepository)
+    {
+       $this->fxRatesRepository = $fxRatesRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $currency = $this->fxRatesRepository->findOneBy([
+            'fx'=>'GBP'
+        ]);
         $builder
             ->add('investmentCompany',  EntityType::class,[
                 'class'=>MarketData::class,
@@ -29,14 +39,14 @@ class InvestmentsType extends AbstractType
             ])
             ->add('numberOfShares')
             ->add('initialInvestmentAmountGBP',TextType::class,[
-                'attr'=>[
-                    'class'=>'initial-amount-GBP'
-                ]
+               'label'=> 'Initial investment in GBP',
+                'required'=>false
             ])
             ->add('currency',  EntityType::class,[
                 'class'=>FxRates::class,
                 'choice_label'=>'fx',
                 'label' => 'Currency',
+                'data'=> $currency,
                 'required' => false
             ])
             ->add('purchaseSharePrice')

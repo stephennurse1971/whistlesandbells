@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JpmIcHistory{% endblock %}
+
+{% block body %}
+    <h1>JpmIcHistory</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ jpm_ic_history.id }}</td>
+            </tr>
+            <tr>
+                <th>Year</th>
+                <td>{{ jpm_ic_history.year }}</td>
+            </tr>
+            <tr>
+                <th>BaseSalaryGBP</th>
+                <td>{{ jpm_ic_history.baseSalaryGBP }}</td>
+            </tr>
+            <tr>
+                <th>TotalCompUSD</th>
+                <td>{{ jpm_ic_history.totalCompUSD }}</td>
+            </tr>
+            <tr>
+                <th>IcTotal</th>
+                <td>{{ jpm_ic_history.icTotal }}</td>
+            </tr>
+            <tr>
+                <th>IcCash</th>
+                <td>{{ jpm_ic_history.icCash }}</td>
+            </tr>
+            <tr>
+                <th>IcShares</th>
+                <td>{{ jpm_ic_history.icShares }}</td>
+            </tr>
+            <tr>
+                <th>IcSharePrice</th>
+                <td>{{ jpm_ic_history.icSharePrice }}</td>
+            </tr>
+            <tr>
+                <th>IcShares1</th>
+                <td>{{ jpm_ic_history.icShares1 }}</td>
+            </tr>
+            <tr>
+                <th>IcShares2</th>
+                <td>{{ jpm_ic_history.icShares2 }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('jpm_ic_history_index') }}">back to list</a>
+
+    <a href="{{ path('jpm_ic_history_edit', {'id': jpm_ic_history.id}) }}">edit</a>
+
+    {{ include('jpm_ic_history/_delete_form.html.twig') }}
+{% endblock %}

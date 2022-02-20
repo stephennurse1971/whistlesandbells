@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit JpmIcHistory{% endblock %}
+
+{% block body %}
+    <h1>Edit JpmIcHistory</h1>
+
+    {{ include('jpm_ic_history/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('jpm_ic_history_index') }}">Return to list</a>
+
+    {{ include('jpm_ic_history/_delete_form.html.twig') }}
+{% endblock %}

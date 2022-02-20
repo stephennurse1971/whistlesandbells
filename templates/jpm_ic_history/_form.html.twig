@@ -1,0 +1,22 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-4">
+        {{ form_row(form.year) }}
+        {{ form_row(form.baseSalaryGBP) }}
+        {{ form_row(form.totalCompUSD) }}
+        {{ form_row(form.icTotal) }}
+        {{ form_row(form.icCash) }}
+        {{ form_row(form.icShares) }}
+    </div>
+    <div class="col-4">
+
+        {{ form_row(form.icSharePrice) }}
+        {{ form_row(form.icShares1) }}
+        {{ form_row(form.icShares2) }}
+        {{ form_row(form.vestingDate1) }}
+        {{ form_row(form.vestingDate2) }}
+        {{ form_row(form.attachmentICFile) }}
+    </div>
+</div>
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
