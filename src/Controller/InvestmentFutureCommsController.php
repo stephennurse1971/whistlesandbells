@@ -6,6 +6,7 @@ use App\Entity\InvestmentFutureComms;
 use App\Form\InvestmentFutureCommsType;
 use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
+use App\Repository\MarketDataRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,12 +31,14 @@ class InvestmentFutureCommsController extends AbstractController
     /**
      * @Route("/new/{id}", name="investment_future_comms_new", methods={"GET","POST"})
      */
-    public function new(int $id,Request $request, InvestmentsRepository $investmentsRepository): Response
+    public function new(int $id,Request $request, InvestmentsRepository $investmentsRepository,MarketDataRepository $marketDataRepository): Response
     {
-        $investment = $investmentsRepository->find($id);
+//        $investment = $investmentsRepository->find($id);
+        $marketData = $marketDataRepository->find($id);
         $investmentFutureComm = new InvestmentFutureComms();
         $form = $this->createForm(InvestmentFutureCommsType::class, $investmentFutureComm, [
-            'investment'=>$investment
+           // 'investment'=>$investment,
+            'marketData'=>$marketData
         ]);
         $form->handleRequest($request);
 
@@ -66,7 +69,8 @@ class InvestmentFutureCommsController extends AbstractController
         return $this->render('investment_future_comms/new.html.twig', [
             'investment_future_comm' => $investmentFutureComm,
             'form' => $form->createView(),
-            'investment' => $investment
+           // 'investment' => $investment,
+            'marketData'=>$marketData
         ]);
     }
 

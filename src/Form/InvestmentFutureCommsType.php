@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\InvestmentFutureComms;
 use App\Entity\Investments;
+use App\Entity\MarketData;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -31,10 +32,15 @@ class InvestmentFutureCommsType extends AbstractType
 //                ]
             ])
             ->add('comment')
-            ->add('investment', EntityType::class, [
-                'class' => Investments::class,
-                'choice_label' => 'investmentName',
-                'data' => $options['investment']
+//            ->add('investment', EntityType::class, [
+//                'class' => Investments::class,
+//                'choice_label' => 'investmentCompany',
+//                'data' => $options['investment']
+//            ]);
+        ->add('marketData',EntityType::class,[
+            'class'=>MarketData::class,
+                'choice_label'=>'shareCompany',
+                'data'=>$options['marketData']
             ]);
     }
 
@@ -42,7 +48,8 @@ class InvestmentFutureCommsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => InvestmentFutureComms::class,
-            'investment' => null
+           // 'investment' => null,
+            'marketData'=>null
         ]);
     }
 }

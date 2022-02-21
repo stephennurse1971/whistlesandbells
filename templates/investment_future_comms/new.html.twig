@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ investment.investmentName }} {% endblock %}
+{% block title %} {{ marketData.shareCompany }} {% endblock %}
 
 {% block body %}
-    <h1 style="color: red">{{ investment.investmentName }}</h1>
+    <h1 style="color: red">{{ marketData.shareCompany }}</h1>
 
     {{ include('investment_future_comms/_form.html.twig') }}
 

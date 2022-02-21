@@ -40,6 +40,12 @@ class InvestmentFutureComms
      */
     private $attachment = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity=MarketData::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $marketData;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +97,18 @@ class InvestmentFutureComms
     public function setAttachment(?array $attachment): self
     {
         $this->attachment = $attachment;
+
+        return $this;
+    }
+
+    public function getMarketData(): ?MarketData
+    {
+        return $this->marketData;
+    }
+
+    public function setMarketData(?MarketData $marketData): self
+    {
+        $this->marketData = $marketData;
 
         return $this;
     }
