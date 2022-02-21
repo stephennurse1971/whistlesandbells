@@ -27,6 +27,11 @@ class MarketData
      */
     private $shareCompany;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $companiesHouse;
+
 
 
 
@@ -56,6 +61,18 @@ class MarketData
     public function setShareCompany(?string $shareCompany): self
     {
         $this->shareCompany = $shareCompany;
+
+        return $this;
+    }
+
+    public function getCompaniesHouse(): ?string
+    {
+        return $this->companiesHouse;
+    }
+
+    public function setCompaniesHouse(?string $companiesHouse): self
+    {
+        $this->companiesHouse = $companiesHouse;
 
         return $this;
     }

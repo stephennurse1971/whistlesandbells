@@ -15,9 +15,9 @@ class MarketDataType extends AbstractType
         $builder
             ->add('sharePrice')
             ->add('shareCompany')
-//            ->add('companiesHouse')
+            ->add('companiesHouse')
 //            ->add('weblink')
-//            ->add('grouping', ChoiceType::class, [
+//            ->add('assetClass', ChoiceType::class, [
 //                'choices' => [
 //                    'Pubs' => 'Pubs',
 //                    'Storage' => 'Storage',
