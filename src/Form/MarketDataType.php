@@ -17,7 +17,7 @@ class MarketDataType extends AbstractType
             ->add('shareCompany')
             ->add('companiesHouse')
             ->add('weblink')
-            ->add('grouping', ChoiceType::class, [
+            ->add('assetClass', ChoiceType::class, [
                 'choices' => [
                     'Pubs' => 'Pubs',
                     'Storage' => 'Storage',

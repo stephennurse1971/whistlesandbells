@@ -40,7 +40,7 @@ class MarketData
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $grouping;
+    private $assetClass;
 
 
 
@@ -99,17 +99,19 @@ class MarketData
         return $this;
     }
 
-    public function getGrouping(): ?string
+    public function getAssetClass(): ?string
     {
-        return $this->grouping;
+        return $this->assetClass;
     }
 
-    public function setGrouping(?string $grouping): self
+    public function setAssetClass(?string $assetClass): self
     {
-        $this->grouping = $grouping;
+        $this->assetClass = $assetClass;
 
         return $this;
     }
+
+
 
 
 
