@@ -27,20 +27,6 @@ class MarketData
      */
     private $shareCompany;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $companiesHouse;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $weblink;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $grouping;
 
 
 
@@ -74,41 +60,7 @@ class MarketData
         return $this;
     }
 
-    public function getCompaniesHouse(): ?string
-    {
-        return $this->companiesHouse;
-    }
 
-    public function setCompaniesHouse(?string $companiesHouse): self
-    {
-        $this->companiesHouse = $companiesHouse;
-
-        return $this;
-    }
-
-    public function getWeblink(): ?string
-    {
-        return $this->weblink;
-    }
-
-    public function setWeblink(?string $weblink): self
-    {
-        $this->weblink = $weblink;
-
-        return $this;
-    }
-
-    public function getGrouping(): ?string
-    {
-        return $this->grouping;
-    }
-
-    public function setGrouping(?string $grouping): self
-    {
-        $this->grouping = $grouping;
-
-        return $this;
-    }
 
 
 
