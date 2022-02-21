@@ -37,6 +37,11 @@ class MarketData
      */
     private $weblink;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $grouping;
+
 
 
 
@@ -90,6 +95,18 @@ class MarketData
     public function setWeblink(?string $weblink): self
     {
         $this->weblink = $weblink;
+
+        return $this;
+    }
+
+    public function getGrouping(): ?string
+    {
+        return $this->grouping;
+    }
+
+    public function setGrouping(?string $grouping): self
+    {
+        $this->grouping = $grouping;
 
         return $this;
     }
