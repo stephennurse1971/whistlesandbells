@@ -10,9 +10,9 @@
         <tr>
             <th>Investment</th>
             <th>Investment Date</th>
-            <th>Amount</th>
+            <th style="text-align: center">£</th>
             <th>EIS</th>
-            <th>Sold Price</th>
+            <th style="text-align: right">MTM</th>
             <th>Sale Date</th>
             <th>Share Cert</th>
             <th>EIS Cert</th>
@@ -24,29 +24,54 @@
         </thead>
         <tbody>
         {% for investment in investments %}
+            {% for fxRate in fxRates %}
+                {% if investment.currency.fx == fxRate.fx %}
+                    {% set currentFX = fxRate.currentFXRate %}
+                {% endif %}
+            {% endfor %}
             {% set investmentChildID = 'investment'~investment.id %}
             <tr>
                 <td>
+                    <button class="toggle-investment-child btn btn-outline-warning btn-sm"
+                            data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
+                    </button>
                     {% if investment.investmentCompany is not null %}
                         <a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
                     {% else %}
                         <a href="{{ path('investments_edit', {'id': investment.id}) }}">--</a>
                     {% endif %}
-                    <button class="toggle-investment-child btn btn-outline-warning"
-                            data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
-                    </button>
+
                 </td>
                 <td data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
+
                 <td style="text-align: right">
-                    {% if investment.currency == 'GBP' %}
-                        {{ investment.investmentAmount| number_format (0, '.') }}
+                    {% if investment.currency.fx == 'GBP' %}
+                        {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }}
                     {% else %}
-                        xxx
+
+                        <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }} ">*{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>
                     {% endif %}
                 </td>
-                <td>{{ investment.investmentEIS ? 'Yes' : 'No' }}</td>
-                <td style="text-align: right">{{ investment.investmentSoldPrice| number_format (0, '.') }}</td>
-                <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
+
+                <td>
+                    {% if investment.investmentEIS == 1 %}
+                        <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                    {% else %}
+                        <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                    {% endif %}
+
+
+                </td>
+
+                <td style="text-align: right">
+                    {% if investment.currency.fx == 'GBP' %}
+                        {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }}
+                    {% else %}
+                        {{ currentFXRate }}
+{#                        {{ (investment.numberOfShares*investment.investmentCompany.sharePrice /1.3)| number_format (0, '.') }}#}
+                    {% endif %}
+                </td>
+                <td data-sort="{{ investment.currency.fx }}{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
                 <td style="text-align: center">
                     {% if investment.shareCert is not empty %}
                         <a title="{{ investment.shareCert }}" target="_blank"

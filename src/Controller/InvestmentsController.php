@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Investments;
 use App\Form\InvestmentsType;
+use App\Repository\FxRatesRepository;
 use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +20,12 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/", name="investments_index", methods={"GET"})
      */
-    public function index(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository): Response
+    public function index(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, FxRatesRepository $fxRatesRepository): Response
     {
         return $this->render('investments/index.html.twig', [
             'investments' => $investmentsRepository->findAll(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
+            'fxRates' => $fxRatesRepository->findAll(),
         ]);
     }
 
