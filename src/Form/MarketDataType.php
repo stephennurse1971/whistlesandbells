@@ -15,20 +15,20 @@ class MarketDataType extends AbstractType
         $builder
             ->add('sharePrice')
             ->add('shareCompany')
-            ->add('companiesHouse')
-            ->add('weblink')
-            ->add('grouping', ChoiceType::class, [
-                'choices' => [
-                    'Pubs' => 'Pubs',
-                    'Storage' => 'Storage',
-                    'EIS' => 'EIS',
-                    'Pension' => 'Pension',
-                    'Shares' => 'Shares',
-                    'Bank Account' => 'Bank Account',
-                    'EBT' => 'EBT',
-                    'Loans' => 'Loans'
-                ]
-            ])
+//            ->add('companiesHouse')
+//            ->add('weblink')
+//            ->add('grouping', ChoiceType::class, [
+//                'choices' => [
+//                    'Pubs' => 'Pubs',
+//                    'Storage' => 'Storage',
+//                    'EIS' => 'EIS',
+//                    'Pension' => 'Pension',
+//                    'Shares' => 'Shares',
+//                    'Bank Account' => 'Bank Account',
+//                    'EBT' => 'EBT',
+//                    'Loans' => 'Loans'
+//                ]
+//            ])
         ;
     }
 
