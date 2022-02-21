@@ -8,35 +8,35 @@
     <table class="table">
         <thead>
         <tr>
-{#            <th>Grouping</th>#}
+            <th>Grouping</th>
             <th>Company</th>
             <th>Share Price</th>
-{#            <th>Link</th>#}
-{#            <th>Companies House</th>#}
+            <th>Link</th>
+            <th>Companies House</th>
         </tr>
         </thead>
         <tbody>
         {% for market_data in market_datas %}
             <tr>
-{#                <td>{{ market_data.grouping }}</td>#}
+                <td>{{ market_data.grouping }}</td>
                 <td>
                     <a href="{{ path('market_data_edit', {'id': market_data.id}) }}">{{ market_data.shareCompany }}</a>
                 </td>
                 <td style="text-align: right">{{ market_data.sharePrice|number_format(2) }}</td>
-{#                <td style="text-align: center">#}
-{#                    {% if market_data.weblink is not empty %}#}
-{#                        <a title={{ market_data.weblink}} target="_blank"#}
-{#                           href={{ market_data.weblink}}><i class="fas fa-globe"#}
-{#                                                                        style="color:blue; text-align: center"></i></a>#}
-{#                    {% endif %}#}
-{#                </td>#}
+                <td style="text-align: center">
+                    {% if market_data.weblink is not empty %}
+                        <a title={{ market_data.weblink}} target="_blank"
+                           href={{ market_data.weblink}}><i class="fas fa-globe"
+                                                                        style="color:blue; text-align: center"></i></a>
+                    {% endif %}
+                </td>
 
-{#                <td style="text-align: center">#}
-{#                    {% if market_data.companiesHouse is not empty %}#}
-{#                        <a title={{ market_data.companiesHouse }} target="_blank"#}
-{#                           href={{ market_data.companiesHouse }}><i class="fas fa-link" style="color:blue; text-align: center"></i></a>#}
-{#                    {% endif %}#}
-{#                </td>#}
+                <td style="text-align: center">
+                    {% if market_data.companiesHouse is not empty %}
+                        <a title={{ market_data.companiesHouse }} target="_blank"
+                           href={{ market_data.companiesHouse }}><i class="fas fa-link" style="color:blue; text-align: center"></i></a>
+                    {% endif %}
+                </td>
             </tr>
 
         {% endfor %}
