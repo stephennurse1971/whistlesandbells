@@ -32,6 +32,11 @@ class MarketData
      */
     private $companiesHouse;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $weblink;
+
 
 
 
@@ -73,6 +78,18 @@ class MarketData
     public function setCompaniesHouse(?string $companiesHouse): self
     {
         $this->companiesHouse = $companiesHouse;
+
+        return $this;
+    }
+
+    public function getWeblink(): ?string
+    {
+        return $this->weblink;
+    }
+
+    public function setWeblink(?string $weblink): self
+    {
+        $this->weblink = $weblink;
 
         return $this;
     }
