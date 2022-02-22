@@ -30,6 +30,10 @@ class InvestmentsType extends AbstractType
         $currency = $this->fxRatesRepository->findOneBy([
             'fx'=>'GBP'
         ]);
+        if($options['edit']==true)
+        {
+            $currency = $options['currency'];
+        }
         $builder
             ->add('investmentCompany',  EntityType::class,[
                 'class'=>MarketData::class,
@@ -142,7 +146,9 @@ class InvestmentsType extends AbstractType
             'data_class' => Investments::class,
             'share_cert' => null,
             'eis_cert' => null,
-            'other_docs' => null
+            'other_docs' => null,
+            'currency'=>null,
+            'edit'=>null
 
         ]);
     }

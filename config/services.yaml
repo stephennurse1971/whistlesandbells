@@ -9,6 +9,7 @@ parameters:
     temporary_attachment_directory: '%kernel.project_dir%/public/temporary/'
     chavey_down_attachments_directory: '%kernel.project_dir%/public/administration/attachments/ChaveyDown'
     tax_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments'
+    tax_supporting_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments/TaxSupportingDocuments'
     investments_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments'
     investments_future_comms_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments/InvestmentsFutureComms'
 

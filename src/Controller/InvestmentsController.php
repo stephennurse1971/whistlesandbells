@@ -35,7 +35,7 @@ class InvestmentsController extends AbstractController
     public function new(Request $request): Response
     {
         $investment = new Investments();
-        $form = $this->createForm(InvestmentsType::class, $investment);
+        $form = $this->createForm(InvestmentsType::class, $investment,['edit'=>false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -67,13 +67,16 @@ class InvestmentsController extends AbstractController
      */
     public function edit(Request $request, Investments $investment): Response
     {
+        $currency = $investment->getCurrency();
         $share_cert = $investment->getShareCert() ;
         $eis_cert = $investment->getEisCert();
         $other_docs = $investment->getOtherDocs();
         $form = $this->createForm(InvestmentsType::class, $investment,[
             'share_cert'=>$share_cert,
             'eis_cert'=>$eis_cert,
-            'other_docs'=>$other_docs
+            'other_docs'=>$other_docs,
+            'currency'=>$currency,
+            'edit'=>true
         ]);
         $form->handleRequest($request);
 
@@ -81,7 +84,7 @@ class InvestmentsController extends AbstractController
             $share_cert = $form['shareCert']->getData();
             if($share_cert)
             {
-                $share_cert_directory = $this->getParameter('attachments_directory');
+                $share_cert_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($share_cert->getClientOriginalName(),PATHINFO_FILENAME);
                 $file_extension = $share_cert->guessExtension();
                 $newFileName = $fileName.".".$file_extension;
@@ -93,7 +96,7 @@ class InvestmentsController extends AbstractController
             $eisCert = $form['eisCert']->getData();
             if($eisCert)
             {
-                $eis_cert_directory = $this->getParameter('attachments_directory');
+                $eis_cert_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($eisCert->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $eisCert->guessExtension();
                 $newFileName = $fileName.".".$file_extension;
@@ -105,7 +108,7 @@ class InvestmentsController extends AbstractController
             $other_docs = $form['otherDocs']->getData();
             if($other_docs)
             {
-                $other_docs_directory = $this->getParameter('attachments_directory');
+                $other_docs_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($other_docs->getClientOriginalName(),PATHINFO_FILENAME);
                 $file_extension = $other_docs->guessExtension();
                 $newFileName = $fileName.".".$file_extension;

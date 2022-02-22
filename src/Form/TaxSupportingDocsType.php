@@ -7,6 +7,7 @@ use App\Entity\TaxSupportingDocs;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,7 +23,15 @@ class TaxSupportingDocsType extends AbstractType
                 ]
             ])
             ->add('comments')
-            ->add('attachment')
+            ->add('detailedComments')
+            ->add('attachment',FileType::class,[
+                'label'=>'Attachments',
+                'mapped'=>false,
+                'required'=>false,
+                'attr'=>[
+                    'placeholder'=>$options['tax_supporting_doc']
+                ]
+            ])
             ->add('taxYear',EntityType::class,[
                 'class'=>TaxDocuments::class,
                 'choice_label'=>'year'
@@ -34,6 +43,7 @@ class TaxSupportingDocsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => TaxSupportingDocs::class,
+            'tax_supporting_doc'=>null
         ]);
     }
 }

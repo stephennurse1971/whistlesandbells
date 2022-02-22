@@ -38,6 +38,11 @@ class TaxSupportingDocs
      */
     private $attachment;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $detailedComments;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class TaxSupportingDocs
     public function setAttachment(?string $attachment): self
     {
         $this->attachment = $attachment;
+
+        return $this;
+    }
+
+    public function getDetailedComments(): ?string
+    {
+        return $this->detailedComments;
+    }
+
+    public function setDetailedComments(?string $detailedComments): self
+    {
+        $this->detailedComments = $detailedComments;
 
         return $this;
     }

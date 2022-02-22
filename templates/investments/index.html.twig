@@ -24,10 +24,12 @@
         </tr>
         </thead>
         <tbody>
+
         {% for investment in investments %}
+            {% set currentFXRate = 0 %}
             {% for fxRate in fxRates %}
                 {% if investment.currency.fx == fxRate.fx %}
-                    {% set currentFX = fxRate.currentFXRate %}
+                    {% set currentFXRate = fxRate.currentFxRate %}
                 {% endif %}
             {% endfor %}
             {% set investmentChildID = 'investment'~investment.id %}
@@ -66,14 +68,22 @@
 
                 </td>
 
+
+
                 <td style="text-align: right">
                     {% if investment.currency.fx == 'GBP' %}
                         {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }}
                     {% else %}
-{#                        {{ currentFXRate }}#}
-                        {{ (investment.numberOfShares*investment.investmentCompany.sharePrice /1.3)| number_format (0, '.') }}
+                        {{ (investment.numberOfShares*investment.investmentCompany.sharePrice/currentFXRate )| number_format (0, '.') }}
                     {% endif %}
                 </td>
+
+
+
+
+
+
+
                 <td data-sort="{{ investment.currency.fx }}{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
                 <td style="text-align: center">
                     {% if investment.shareCert is not empty %}
@@ -116,7 +126,7 @@
                 <td colspan="10">
                     <div>
                         {% for investmentFutureComms in investmentsFutureComms %}
-                            {% if investmentFutureComms.investment.id == investment.id %}
+                            {% if investmentFutureComms.marketData.id == investment.investmentCompany.id %}
                                 <div>
                                     <div class="d-flex">
                                         <div><a target="_blank"

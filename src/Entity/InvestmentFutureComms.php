@@ -19,7 +19,7 @@ class InvestmentFutureComms
 
     /**
      * @ORM\ManyToOne(targetEntity=Investments::class, inversedBy="investmentFutureComms")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $investment;
 

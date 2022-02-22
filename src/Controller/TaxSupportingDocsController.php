@@ -8,6 +8,7 @@ use App\Repository\TaxSupportingDocsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -26,6 +27,16 @@ class TaxSupportingDocsController extends AbstractController
     }
 
     /**
+     * @Route("show/attachment/{id}/", name="tax_supporting_attachment_show")
+     */
+    public function showAttachment(int $id,TaxSupportingDocsRepository $taxSupportingDocsRepository)
+    {
+        $taxSupportingDoc = $taxSupportingDocsRepository->find($id);
+        $attachment = $taxSupportingDoc->getAttachment();
+        $filepath = $this->getParameter('tax_supporting_documents_attachments_directory')."/".$attachment;
+        return $this->file($filepath, $attachment, ResponseHeaderBag::DISPOSITION_INLINE);
+    }
+    /**
      * @Route("/new/{id}", name="tax_supporting_docs_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -34,7 +45,17 @@ class TaxSupportingDocsController extends AbstractController
         $form = $this->createForm(TaxSupportingDocsType::class, $taxSupportingDoc);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $attachment = $form['attachment']->getData();
+                if ($attachment) {
+                    $taxSupportingDoc_directory = $this->getParameter('tax_supporting_documents_attachments_directory');
+                    $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                    $file_extension = $attachment->guessExtension();
+                    $newFileName = $fileName . "." . $file_extension;
+                    $attachment->move($taxSupportingDoc_directory, $newFileName);
+                    $taxSupportingDoc->setAttachment($newFileName);
+                }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($taxSupportingDoc);
             $entityManager->flush();
@@ -63,11 +84,24 @@ class TaxSupportingDocsController extends AbstractController
      */
     public function edit(Request $request, TaxSupportingDocs $taxSupportingDoc): Response
     {
-        $form = $this->createForm(TaxSupportingDocsType::class, $taxSupportingDoc);
+        $attachment = $taxSupportingDoc->getAttachment();
+        $form = $this->createForm(TaxSupportingDocsType::class, $taxSupportingDoc,[
+            'tax_supporting_doc'=>$attachment]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $attachment = $form['attachment']->getData();
+            if ($attachment) {
+                $taxSupportingDoc_directory = $this->getParameter('tax_supporting_documents_attachments_directory');
+                $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                $file_extension = $attachment->guessExtension();
+                $newFileName = $fileName . "." . $file_extension;
+                $attachment->move($taxSupportingDoc_directory, $newFileName);
+                $taxSupportingDoc->setAttachment($newFileName);
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($taxSupportingDoc);
+            $entityManager->flush();
 
             return $this->redirectToRoute('tax_supporting_docs_index');
         }

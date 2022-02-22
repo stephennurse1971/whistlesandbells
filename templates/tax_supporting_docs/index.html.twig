@@ -1,28 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tax Supporting Docs index{% endblock %}
+{% block title %}Tax Supporting Docs{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Tax Supporting Docs index</h1>
+    <h1 style="color: red">Tax Supporting Docs</h1>
 
     <table class="table">
         <thead>
             <tr>
+                <th>Tax Year</th>
                 <th>Date</th>
                 <th>Comments</th>
                 <th>Attachment</th>
-                <th>actions</th>
+                <th>#</th>
             </tr>
         </thead>
         <tbody>
         {% for tax_supporting_doc in tax_supporting_docs %}
             <tr>
-                <td>{{ tax_supporting_doc.date ? tax_supporting_doc.date|date('d-M-Y') : '' }}</td>
+                <td>{{ tax_supporting_doc.taxYear.year }}</td>
+                <td><a href="{{ path('tax_supporting_docs_show', {'id': tax_supporting_doc.id}) }}">{{ tax_supporting_doc.date ? tax_supporting_doc.date|date('d-M-Y') : '' }}</a></td>
                 <td>{{ tax_supporting_doc.comments }}</td>
-                <td>{{ tax_supporting_doc.attachment }}</td>
                 <td>
-                    <a href="{{ path('tax_supporting_docs_show', {'id': tax_supporting_doc.id}) }}">show</a>
-                    <a href="{{ path('tax_supporting_docs_edit', {'id': tax_supporting_doc.id}) }}">edit</a>
+                    {% if tax_supporting_doc.attachment is not empty %}
+                        <a title= "{{ tax_supporting_doc.attachment }}" href="{{ path('tax_supporting_attachment_show', {id: tax_supporting_doc.id})}}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm mt-2" href="{{ path('tax_supporting_docs_edit', {'id': tax_supporting_doc.id}) }}">Edit</a>
                 </td>
             </tr>
 

@@ -7,17 +7,18 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ tax_supporting_doc.id }}</td>
-            </tr>
+
             <tr>
                 <th>Date</th>
-                <td>{{ tax_supporting_doc.date ? tax_supporting_doc.date|date('Y-m-d') : '' }}</td>
+                <td>{{ tax_supporting_doc.date ? tax_supporting_doc.date|date('d-M-Y') : '' }}</td>
             </tr>
             <tr>
                 <th>Comments</th>
                 <td>{{ tax_supporting_doc.comments }}</td>
+            </tr>
+            <tr>
+                <th>Comments</th>
+                <td>{{ tax_supporting_doc.detailedComments }}</td>
             </tr>
             <tr>
                 <th>Attachment</th>
@@ -28,7 +29,7 @@
 
     <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tax_supporting_docs_index') }}">Return to list</a>
 
-    <a class="btn btn btn-outline-danger btn-sm mt-2" href="{{ path('tax_supporting_docs_edit', {'id': tax_supporting_doc.id}) }}">edit</a>
+    <a class="btn btn btn-outline-danger btn-sm mt-2" href="{{ path('tax_supporting_docs_edit', {'id': tax_supporting_doc.id}) }}">Edit</a>
 
     {{ include('tax_supporting_docs/_delete_form.html.twig') }}
 {% endblock %}
