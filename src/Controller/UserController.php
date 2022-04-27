@@ -112,89 +112,89 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
-     */
-    public function edit(int $id, MailerInterface $mailer, Request $request, User $user,DefaultTennisPlayerAvailabilityHoursRepository $defaultTennisPlayerAvailabilityHoursRepository ,UserPasswordEncoderInterface $passwordEncoder): Response
-    {
-        $hours = [];
-        for ($i= 7; $i<=23; $i++)
-        {
-            $hours[$i]['hour']=$i.':00';
-            $hours[$i]['sort']=$i;
-        }
-
-        $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
-        if ($this->getUser()->getId() == $id || $hasAccess)
-        {
-            $logged_user_id = $this->getUser()->getId();
-            $plainPassword = $user->getPlainPassword();
-            $roles = $user->getRoles();
-            $form = $this->createForm(UserType::class, $user, ['email1'=>$user->getEmail(),'email2'=>$user->getEmail2()]);
-            $logged_user_roles = $this->getUser()->getRoles();
-            if (!in_array('ROLE_SUPER_ADMIN',$logged_user_roles)) {
-                $form->remove('role');
-                $form->remove('tennisRank');
-                $form->remove('tennisRankScore');
-            }
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                if($form->has('role')){
-                $get_roles = $form->get('role')->getData();
-
-                $roles = $get_roles;
-                $user->setRoles($roles);
-                }
-                $password = $form->get('password')->getData();
-                if ($password != '') {
-                    $user->setPassword($passwordEncoder->encodePassword($user, $password));
-                    $user->setPlainPassword($password);
-                }
-
-                $firstName = $user->getFirstName();
-                $lastName = $user->getLastName();
-                $user->setFullName($firstName . ' '.$lastName);
-
-                $this->getDoctrine()->getManager()->flush();
-
-                if ($form['sendEmail']->getData() == 1) {
-                    $html = $this->renderView('emails/welcome_email.html.twig');
-                    $email = (new Email())
-                        ->from('nurse_stephen@hotmail.com')
-                        ->to($user->getEmail())
-                        ->cc('nurse_stephen@hotmail.com')
-                        ->subject("Welcome to SN's personal website")
-                        ->html($html);
-                    $mailer->send($email);
-                }
-                if($logged_user_id != $id) {
-                    return $this->redirectToRoute('user_index');
-                }
-                else{
-                    $this->redirectToRoute('app_login');
-                }
-            }
-
-            return $this->render('user/edit.html.twig', [
-
-                'default_tennis_player_availability_hours' => $defaultTennisPlayerAvailabilityHoursRepository->findAll(),
-                'user' => $user,
-                'form' => $form->createView(),
-                'password' => $plainPassword,
-                'roles' => $roles,
-                'hours' => $hours
-            ]);
-        }
-//        $referer = $request->server->get('HTTP_REFERER');
-//        if($referer){
-//            return $this->redirect($referer);
+//    /**
+//     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+//     */
+//    public function edit(int $id, MailerInterface $mailer, Request $request, User $user,DefaultTennisPlayerAvailabilityHoursRepository $defaultTennisPlayerAvailabilityHoursRepository ,UserPasswordEncoderInterface $passwordEncoder): Response
+//    {
+//        $hours = [];
+//        for ($i= 7; $i<=23; $i++)
+//        {
+//            $hours[$i]['hour']=$i.':00';
+//            $hours[$i]['sort']=$i;
+//        }
 //
+//        $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
+//        if ($this->getUser()->getId() == $id || $hasAccess)
+//        {
+//            $logged_user_id = $this->getUser()->getId();
+//            $plainPassword = $user->getPlainPassword();
+//            $roles = $user->getRoles();
+//            $form = $this->createForm(UserType::class, $user, ['email1'=>$user->getEmail(),'email2'=>$user->getEmail2()]);
+//            $logged_user_roles = $this->getUser()->getRoles();
+//            if (!in_array('ROLE_SUPER_ADMIN',$logged_user_roles)) {
+//                $form->remove('role');
+//                $form->remove('tennisRank');
+//                $form->remove('tennisRankScore');
+//            }
+//            $form->handleRequest($request);
+//
+//            if ($form->isSubmitted() && $form->isValid()) {
+//                if($form->has('role')){
+//                $get_roles = $form->get('role')->getData();
+//
+//                $roles = $get_roles;
+//                $user->setRoles($roles);
+//                }
+//                $password = $form->get('password')->getData();
+//                if ($password != '') {
+//                    $user->setPassword($passwordEncoder->encodePassword($user, $password));
+//                    $user->setPlainPassword($password);
+//                }
+//
+//                $firstName = $user->getFirstName();
+//                $lastName = $user->getLastName();
+//                $user->setFullName($firstName . ' '.$lastName);
+//
+//                $this->getDoctrine()->getManager()->flush();
+//
+//                if ($form['sendEmail']->getData() == 1) {
+//                    $html = $this->renderView('emails/welcome_email.html.twig');
+//                    $email = (new Email())
+//                        ->from('nurse_stephen@hotmail.com')
+//                        ->to($user->getEmail())
+//                        ->cc('nurse_stephen@hotmail.com')
+//                        ->subject("Welcome to SN's personal website")
+//                        ->html($html);
+//                    $mailer->send($email);
+//                }
+//                if($logged_user_id != $id) {
+//                    return $this->redirectToRoute('user_index');
+//                }
+//                else{
+//                    $this->redirectToRoute('app_login');
+//                }
+//            }
+//
+//            return $this->render('user/edit.html.twig', [
+//
+//                'default_tennis_player_availability_hours' => $defaultTennisPlayerAvailabilityHoursRepository->findAll(),
+//                'user' => $user,
+//                'form' => $form->createView(),
+//                'password' => $plainPassword,
+//                'roles' => $roles,
+//                'hours' => $hours
+//            ]);
 //        }
-//        else{
-//            return $this->redirectToRoute('user_index');
-//        }
-    }
+////        $referer = $request->server->get('HTTP_REFERER');
+////        if($referer){
+////            return $this->redirect($referer);
+////
+////        }
+////        else{
+////            return $this->redirectToRoute('user_index');
+////        }
+//    }
 
 
 

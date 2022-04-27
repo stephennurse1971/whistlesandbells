@@ -5,7 +5,7 @@ namespace App\Services;
 
 
 use App\Repository\PaymentsRepository;
-use App\Repository\TennisBookingsRepository;
+//use App\Repository\TennisBookingsRepository;
 use App\Repository\UserRepository;
 
 class PaymentsMade
@@ -59,9 +59,9 @@ class PaymentsMade
     }
 
 
-    public function __construct(PaymentsRepository $paymentsRepository, TennisBookingsRepository $tennisBookingsRepository)
-    {
-        $this->paymentsRepository = $paymentsRepository;
-        $this->tennisBookingsRepository = $tennisBookingsRepository;
-    }
+//    public function __construct(PaymentsRepository $paymentsRepository, TennisBookingsRepository $tennisBookingsRepository)
+//    {
+//        $this->paymentsRepository = $paymentsRepository;
+//       // $this->tennisBookingsRepository = $tennisBookingsRepository;
+//    }
 }

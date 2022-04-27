@@ -33,33 +33,6 @@
     {% endif %}
 
 
-    <!-- Nav Item #2 - Tennis -->
-    {% if is_granted('ROLE_TENNIS_PLAYER') %}
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTennis"
-           aria-expanded="true" aria-controls="collapseTennis">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Tennis </span>
-        </a>
-        <div id="collapseTennis" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item text" href="{{ path('tennis_court_availability_index') }}">Court Availability</a>
-                <a class="collapse-item text" href="{{ path('tennis_player_availability_index')}}">Player Availability</a>
-                <a class="collapse-item text" href="{{ path('tennis_player_and_courtavailability_index')}}">Player & Court Availability</a>
-                <a class="collapse-item text" href="{{ path('tennis_bookings_index')}}">Live Bookings</a>
-                <a class="collapse-item text" href="{{ path('payments_index')}}">Accounts</a>
-                <hr>
-                <a style="color: darkgray" class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_TENNIS_PLAYER'}) }}">Players</a>
-                <a style="color: darkgray" class="collapse-item" href="{{ path('tennis_court_preferences_index') }}">Venue Preferences</a>
-                <a style="color: darkgray" class="collapse-item" href="{{ path('default_tennis_player_availability_hours_index') }}">Hours Preferences</a>
-                <a style="color: darkgray" class="collapse-item" href="{{ path('tennis_venues_index') }}">Tennis Venues</a>
-                <a style="color: darkgray" class="collapse-item" href="{{ path('credit_card_details_index') }}">TH logins</a>
-            </div>
-        </div>
-    </li>
-    <hr class="sidebar-divider">
-    {% endif %}
-
 
 
         <!-- Nav Item #3 - Settings -->
@@ -142,7 +115,6 @@
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
                 <a class="collapse-item" href="{{ path('log_index') }}">User log</a>
                 <hr>
-                <a class="collapse-item" href="{{ path('tennis_scrape') }}">Scrape</a>
             </div>
         </div>
     </li>

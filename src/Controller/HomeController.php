@@ -27,15 +27,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-     /**
-     * @Route("/instructions/tennis", name="instructionsTennis", methods={"GET"})
-     */
-    public function instructionsTennis(): Response
-    {
-        return $this->render('template_parts/tennisinstructions.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
+
 
 
     /**

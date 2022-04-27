@@ -53,10 +53,7 @@ class User implements UserInterface
      */
     private $plainPassword;
 
-    /**
-     * @ORM\OneToMany(targetEntity=TennisCourtPreferences::class, mappedBy="user")
-     */
-    private $tennisCourtPreferences;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -83,46 +80,13 @@ class User implements UserInterface
      */
     private $LastName;
 
-    /**
-     * @ORM\OneToMany(targetEntity=DefaultTennisPlayerAvailabilityHours::class, mappedBy="user")
-     */
-    private $defaultTennisPlayerAvailabilityHours;
-
-    /**
-     * @ORM\OneToMany(targetEntity=TennisBookings::class, mappedBy="player1")
-     */
-    private $tennisBookings;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity=TennisBookings::class, mappedBy="player3")
-     */
-    private $tennisBookings3;
-
-    /**
-     * @ORM\OneToMany(targetEntity=TennisBookings::class, mappedBy="player4")
-     */
-    private $tennisBookings4;
-
-    /**
-     * @ORM\OneToMany(targetEntity=TennisBookings::class, mappedBy="player2")
-     */
-    private $tennisBookings2;
 
     /**
      * @ORM\OneToMany(targetEntity=Payments::class, mappedBy="user")
      */
     private $paymentamount;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $tennisRank;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $tennisRankScore;
 
     /**
      * @ORM\OneToMany(targetEntity=Log::class, mappedBy="user")
@@ -137,18 +101,8 @@ class User implements UserInterface
 
     public function __construct()
     {
-
-        $this->tennisCourtPreferences = new ArrayCollection();
-        $this->defaultTennisPlayerAvailabilityHours = new ArrayCollection();
-        $this->tennisBookings = new ArrayCollection();
-        $this->tennisBookings3 = new ArrayCollection();
-        $this->tennisBookings4 = new ArrayCollection();
-        $this->tennisBookings2 = new ArrayCollection();
         $this->paymentamount = new ArrayCollection();
         $this->logs = new ArrayCollection();
-
-
-
     }
 
     public function getId(): ?int
@@ -268,35 +222,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|TennisCourtPreferences[]
-     */
-    public function getTennisCourtPreferences(): Collection
-    {
-        return $this->tennisCourtPreferences;
-    }
-
-    public function addTennisCourtPreference(TennisCourtPreferences $tennisCourtPreference): self
-    {
-        if (!$this->tennisCourtPreferences->contains($tennisCourtPreference)) {
-            $this->tennisCourtPreferences[] = $tennisCourtPreference;
-            $tennisCourtPreference->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTennisCourtPreference(TennisCourtPreferences $tennisCourtPreference): self
-    {
-        if ($this->tennisCourtPreferences->removeElement($tennisCourtPreference)) {
-            // set the owning side to null (unless already changed)
-            if ($tennisCourtPreference->getUser() === $this) {
-                $tennisCourtPreference->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getEmail2(): ?string
     {
@@ -358,211 +283,7 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|DefaultTennisPlayerAvailabilityHours[]
-     */
-    public function getDefaultTennisPlayerAvailabilityHours(): Collection
-    {
-        return $this->defaultTennisPlayerAvailabilityHours;
-    }
 
-    public function addDefaultTennisPlayerAvailabilityHour(DefaultTennisPlayerAvailabilityHours $defaultTennisPlayerAvailabilityHour): self
-    {
-        if (!$this->defaultTennisPlayerAvailabilityHours->contains($defaultTennisPlayerAvailabilityHour)) {
-            $this->defaultTennisPlayerAvailabilityHours[] = $defaultTennisPlayerAvailabilityHour;
-            $defaultTennisPlayerAvailabilityHour->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDefaultTennisPlayerAvailabilityHour(DefaultTennisPlayerAvailabilityHours $defaultTennisPlayerAvailabilityHour): self
-    {
-        if ($this->defaultTennisPlayerAvailabilityHours->removeElement($defaultTennisPlayerAvailabilityHour)) {
-            // set the owning side to null (unless already changed)
-            if ($defaultTennisPlayerAvailabilityHour->getUser() === $this) {
-                $defaultTennisPlayerAvailabilityHour->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|TennisBookings[]
-     */
-    public function getTennisBookings(): Collection
-    {
-        return $this->tennisBookings;
-    }
-
-    public function addTennisBooking(TennisBookings $tennisBooking): self
-    {
-        if (!$this->tennisBookings->contains($tennisBooking)) {
-            $this->tennisBookings[] = $tennisBooking;
-            $tennisBooking->setPlayer1($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTennisBooking(TennisBookings $tennisBooking): self
-    {
-        if ($this->tennisBookings->removeElement($tennisBooking)) {
-            // set the owning side to null (unless already changed)
-            if ($tennisBooking->getPlayer1() === $this) {
-                $tennisBooking->setPlayer1(null);
-            }
-        }
-
-        return $this;
-    }
-
-
-
-    /**
-     * @return Collection|TennisBookings[]
-     */
-    public function getTennisBookings3(): Collection
-    {
-        return $this->tennisBookings3;
-    }
-
-    public function addTennisBookings3(TennisBookings $tennisBookings3): self
-    {
-        if (!$this->tennisBookings3->contains($tennisBookings3)) {
-            $this->tennisBookings3[] = $tennisBookings3;
-            $tennisBookings3->setPlayer3($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTennisBookings3(TennisBookings $tennisBookings3): self
-    {
-        if ($this->tennisBookings3->removeElement($tennisBookings3)) {
-            // set the owning side to null (unless already changed)
-            if ($tennisBookings3->getPlayer3() === $this) {
-                $tennisBookings3->setPlayer3(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|TennisBookings[]
-     */
-    public function getTennisBookings4(): Collection
-    {
-        return $this->tennisBookings4;
-    }
-
-    public function addTennisBookings4(TennisBookings $tennisBookings4): self
-    {
-        if (!$this->tennisBookings4->contains($tennisBookings4)) {
-            $this->tennisBookings4[] = $tennisBookings4;
-            $tennisBookings4->setPlayer4($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTennisBookings4(TennisBookings $tennisBookings4): self
-    {
-        if ($this->tennisBookings4->removeElement($tennisBookings4)) {
-            // set the owning side to null (unless already changed)
-            if ($tennisBookings4->getPlayer4() === $this) {
-                $tennisBookings4->setPlayer4(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|TennisBookings[]
-     */
-    public function getTennisBookings2(): Collection
-    {
-        return $this->tennisBookings2;
-    }
-
-    public function addTennisBookings2(TennisBookings $tennisBookings2): self
-    {
-        if (!$this->tennisBookings2->contains($tennisBookings2)) {
-            $this->tennisBookings2[] = $tennisBookings2;
-            $tennisBookings2->setPlayer2($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTennisBookings2(TennisBookings $tennisBookings2): self
-    {
-        if ($this->tennisBookings2->removeElement($tennisBookings2)) {
-            // set the owning side to null (unless already changed)
-            if ($tennisBookings2->getPlayer2() === $this) {
-                $tennisBookings2->setPlayer2(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Payments[]
-     */
-    public function getPaymentamount(): Collection
-    {
-        return $this->paymentamount;
-    }
-
-    public function addPaymentamount(Payments $paymentamount): self
-    {
-        if (!$this->paymentamount->contains($paymentamount)) {
-            $this->paymentamount[] = $paymentamount;
-            $paymentamount->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePaymentamount(Payments $paymentamount): self
-    {
-        if ($this->paymentamount->removeElement($paymentamount)) {
-            // set the owning side to null (unless already changed)
-            if ($paymentamount->getUser() === $this) {
-                $paymentamount->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getTennisRank(): ?int
-    {
-        return $this->tennisRank;
-    }
-
-    public function setTennisRank(?int $tennisRank): self
-    {
-        $this->tennisRank = $tennisRank;
-
-        return $this;
-    }
-
-    public function getTennisRankScore(): ?int
-    {
-        return $this->tennisRankScore;
-    }
-
-    public function setTennisRankScore(?int $tennisRankScore): self
-    {
-        $this->tennisRankScore = $tennisRankScore;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Log[]
