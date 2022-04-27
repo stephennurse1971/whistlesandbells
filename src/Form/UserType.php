@@ -33,7 +33,6 @@ class UserType extends AbstractType
                 'choices'=>[
                     'Super-Admin'=>'ROLE_SUPER_ADMIN',
                     'Admin'=>'ROLE_ADMIN',
-                    'Tennis player'=>'ROLE_TENNIS_PLAYER',
                     'Family'=>'ROLE_FAMILY',
                     'HMRC' =>'ROLE_HMRC',
                     'Serpentine' =>'ROLE_SERPENTINE',
@@ -42,8 +41,6 @@ class UserType extends AbstractType
                 'mapped'=>false
             ])
 
-            ->add('tennisRankScore')
-            ->add('tennisRank')
             ->add('password',PasswordType::class,[
                 'mapped'=>false,
             ])

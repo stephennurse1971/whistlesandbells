@@ -11,7 +11,6 @@
             <th>Mobile1</th>
             <th>Mobile2</th>
             <th>Admin</th>
-            <th>Tennis</th>
             <th>Family</th>
             <th>Accountant</th>
             <th>HMRC</th>
@@ -48,19 +47,7 @@
                         {% endif %}
                     </td>
 
-                    <td data-sort="{{ user.tennisRank }}" style="text-align: center">
-                        {% set flag = 0 %}
-                        {% for role in user.roles %}
-                            {% if role == 'ROLE_TENNIS_PLAYER' %}
-                                {% set flag = 1 %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if flag == 1 %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>    ({{user.tennisRank}})
-                        {% else %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                        {% endif %}
-                    </td>
+
 
                     <td style="text-align: center">
                         {% set flag = 0 %}
