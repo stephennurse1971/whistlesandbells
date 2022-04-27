@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/tax/documents")
+ * @Route("/admin/taxdocuments")
  */
 class TaxDocumentsController extends AbstractController
 {

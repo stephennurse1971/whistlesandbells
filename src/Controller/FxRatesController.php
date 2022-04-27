@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/fx/rates")
+ * @Route("/admin/fxrates")
  */
 class FxRatesController extends AbstractController
 {

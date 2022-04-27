@@ -18,7 +18,9 @@
         <tbody>
         {% for investment_future_comm in investment_future_comms %}
             <tr>
-                <td>{{ investment_future_comm.investment.investmentName }}</td>
+                <td>
+                    {{ investment_future_comm.id }}
+                </td>
                 <td>
                     <a href="{{ path('investment_future_comms_edit', {'id': investment_future_comm.id}) }}">{{ investment_future_comm.date ? investment_future_comm.date|date('d-M-Y') : '' }}</a>
                 </td>

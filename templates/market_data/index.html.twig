@@ -17,8 +17,7 @@
         </thead>
         <tbody>
         {% for market_data in market_datas %}
-            {% set weblink = 'https://find-and-update.company-information.service.gov.uk/company/'~"09320540" %}
-            {{market_data.companiesHouse}}
+            {% set weblink = 'https://find-and-update.company-information.service.gov.uk/company/'~market_data.companiesHouse %}
             <tr>
                 <td>{{ market_data.assetClass }}</td>
                 <td>
@@ -26,15 +25,17 @@
                 </td>
                 <td style="text-align: right">{{ market_data.sharePrice|number_format(2) }}</td>
                 <td style="text-align: center">
-                    {% if market_data.weblink is not empty %}
-                        <a title={{ market_data.weblink }} target="_blank"
-                           href={{ market_data.weblink }}><i class="fas fa-globe" style="color:blue; text-align: center"></i></a>
+                    {% if market_data.weblink is not empty%}
+                        <a title="{{ market_data.weblink }}" target="_blank"
+                           href="{{ market_data.weblink }}"><i class="fas fa-globe"
+                                                             style="color:blue; text-align: center"></i></a>
                     {% endif %}
                 </td>
 
                 <td style="text-align: center">
-                    {% if market_data.companiesHouse is not empty %}
-                        <a title={{ weblink }} target="_blank" href={{ weblink }}><i class="fas fa-link" style="color:blue; text-align: center"></i></a>
+                    {% if market_data.companiesHouse != "NA" %}
+                        <a title={{ weblink }} target="_blank" href={{ weblink }}><i class="fas fa-link"
+                                                                                     style="color:blue; text-align: center"></i></a>
                     {% endif %}
                 </td>
             </tr>

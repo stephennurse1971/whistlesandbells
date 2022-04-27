@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/chavey/down")
+ * @Route("/admin/chaveydown")
  */
 class ChaveyDownController extends AbstractController
 {

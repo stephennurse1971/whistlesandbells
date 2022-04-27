@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/investment/future/comms")
+ * @Route("/admin/investment/futurecomms")
  */
 class InvestmentFutureCommsController extends AbstractController
 {

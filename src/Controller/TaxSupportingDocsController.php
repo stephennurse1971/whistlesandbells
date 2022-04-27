@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/tax/supporting/docs")
+ * @Route("/admin/taxsupportingdocs")
  */
 class TaxSupportingDocsController extends AbstractController
 {
