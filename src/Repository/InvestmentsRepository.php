@@ -19,22 +19,21 @@ class InvestmentsRepository extends ServiceEntityRepository
         parent::__construct($registry, Investments::class);
     }
 
-    // /**
-    //  * @return Investments[] Returns an array of Investments objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+     * @return Investments[] Returns an array of Investments objects
+      */
+
+    public function findByInvestmentSold()
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('i.investmentSaleDate != :val')
+            ->setParameter('val', "NULL")
             ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Investments

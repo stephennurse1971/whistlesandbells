@@ -23,7 +23,10 @@ class InvestmentsController extends AbstractController
     public function index(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, FxRatesRepository $fxRatesRepository): Response
     {
         return $this->render('investments/index.html.twig', [
-            'investments' => $investmentsRepository->findAll(),
+            'investmentsCurrent' => $investmentsRepository->findBy([
+                'investmentSaleDate' =>null
+            ]),
+            'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
         ]);
