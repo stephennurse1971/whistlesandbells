@@ -26,8 +26,7 @@ class InvestmentsRepository extends ServiceEntityRepository
     public function findByInvestmentSold()
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.investmentSaleDate != :val')
-            ->setParameter('val', "NULL")
+            ->where('i.investmentSaleDate IS NOT NULL')
             ->orderBy('i.id', 'ASC')
             ->getQuery()
             ->getResult()
