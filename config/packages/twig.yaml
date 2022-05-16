@@ -2,5 +2,5 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
-        paymentsMadeService: '@App\Services\PaymentsMade'
+        Investment: '@App\Services\Investment'
 
