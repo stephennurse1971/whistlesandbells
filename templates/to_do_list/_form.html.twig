@@ -1,0 +1,29 @@
+<style>
+    .ck-editor__editable {min-height: 600px;}
+</style>
+
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        <h2></h2>
+        {{ form_row(form.task) }}
+        {{ form_row(form.assignedTo) }}
+        {{ form_row(form.completionDate) }}
+    </div>
+    <div class="col-md-8">
+        <h2></h2>
+        {{ form_row(form.description) }}
+    </div>
+</div>
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#to_do_list_description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+{% endblock %}

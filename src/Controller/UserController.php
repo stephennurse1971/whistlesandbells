@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -117,12 +119,6 @@ class UserController extends AbstractController
      */
     public function edit(int $id, MailerInterface $mailer, Request $request, User $user ,UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $hours = [];
-        for ($i= 7; $i<=23; $i++)
-        {
-            $hours[$i]['hour']=$i.':00';
-            $hours[$i]['sort']=$i;
-        }
 
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
         if ($this->getUser()->getId() == $id || $hasAccess)
@@ -179,8 +175,7 @@ class UserController extends AbstractController
                 'user' => $user,
                 'form' => $form->createView(),
                 'password' => $plainPassword,
-                'roles' => $roles,
-                'hours' => $hours
+                'roles' => $roles
             ]);
         }
         $referer = $request->server->get('HTTP_REFERER');
@@ -193,7 +188,25 @@ class UserController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/{id}/{role}/{active}/edit", name="user_edit_button", methods={"GET","POST"})
+     */
+    public function editAuto(string $role,Request $request, User $user,EntityManagerInterface $entityManager): Response
+    {
 
+         $get_roles = $user->getRoles();
+         if(!in_array($role,$get_roles))
+         {
+             $get_roles[] = $role;
+         }
+         else{
+             $get_roles = array_merge(array_diff($get_roles, [$role]));
+         }
+         $user->setRoles($get_roles);
+        $entityManager->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
 
     /**
      * @Route("/admin/{id}", name="user_delete", methods={"POST"})

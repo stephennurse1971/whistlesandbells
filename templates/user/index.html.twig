@@ -5,6 +5,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>id</th>
             <th>Name</th>
             <th>Email</th>
             <th>Email2</th>
@@ -15,6 +16,8 @@
             <th>Accountant</th>
             <th>HMRC</th>
             <th>Serpentine</th>
+            <th>Contact</th>
+            <th>Guest</th>
             {% if is_granted('ROLE_ADMIN') %}
                 <th style="color: red;">Plain Password</th>
                 <th>#</th>
@@ -26,6 +29,7 @@
         {% if role=='All' %}
             {% for user in users %}
                 <tr>
+                    <td><b>{{ user.id }}</b></td>
                     <td><b>{{ user.fullName }}</b></td>
                     <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
                     <td><a href="mailto:{{ user.email2 }}">{{ user.email2 }}</a></td>
@@ -48,7 +52,6 @@
                     </td>
 
 
-
                     <td style="text-align: center">
                         {% set flag = 0 %}
                         {% for role in user.roles %}
@@ -57,11 +60,28 @@
                             {% endif %}
                         {% endfor %}
                         {% if flag == 1 %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% if app.user.id == user.id %}
+                                 <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                            {% endif %}
                         {% else %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+
+
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                            {% endif %}
                         {% endif %}
                     </td>
+
+
+
+
+
+
+
 
                     <td style="text-align: center">
                         {% set flag = 0 %}
@@ -71,11 +91,23 @@
                             {% endif %}
                         {% endfor %}
                         {% if flag == 1 %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ACCOUNTANT", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                            {% endif %}
                         {% else %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+
+
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ACCOUNTANT", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                            {% endif %}
                         {% endif %}
                     </td>
+
+
 
 
                     <td style="text-align: center">
@@ -86,23 +118,100 @@
                             {% endif %}
                         {% endfor %}
                         {% if flag == 1 %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_HMRC", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                            {% endif %}
                         {% else %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+
+
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_HMRC", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                            {% endif %}
                         {% endif %}
                     </td>
+
+
+
+
+
+
+
 
                     <td style="text-align: center">
                         {% set flag = 0 %}
                         {% for role in user.roles %}
-                            {% if role == 'ROLE_SERPENTINE' %}
+                            {% if role == 'ROLE_SERPENTIME' %}
                                 {% set flag = 1 %}
                             {% endif %}
                         {% endfor %}
                         {% if flag == 1 %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_SERPENTIME", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                            {% endif %}
                         {% else %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+
+
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_SERPENTIME", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+
+
+                    <td style="text-align: center">
+                        {% set flag = 0 %}
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_CONTACT' %}
+                                {% set flag = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if flag == 1 %}
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                            {% endif %}
+                        {% else %}
+
+
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+
+
+                    <td style="text-align: center">
+                        {% set flag = 0 %}
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_GUEST' %}
+                                {% set flag = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if flag == 1 %}
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: green; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                            {% endif %}
+                        {% else %}
+
+
+                            {% if app.user.id == user.id %}
+                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                            {% else %}
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                            {% endif %}
                         {% endif %}
                     </td>
 
@@ -130,7 +239,6 @@
                             <td><a href="mailto:{{ user.email2 }}">{{ user.email2 }}</a></td>
                             <td>{{ user.mobile }}</td>
                             <td>{{ user.mobile2 }}</td>
-
 
 
                             <td style="text-align: center">
@@ -174,7 +282,6 @@
                                     <i class="fa fa-circle" style="color: red; text-align: right"></i>
                                 {% endif %}
                             </td>
-
 
 
                             {% if is_granted('ROLE_SUPER_ADMIN') %}

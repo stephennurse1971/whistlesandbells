@@ -15,10 +15,12 @@
     <div id="pw" data="{{ password }}"></div>
     {% set count=0 %}
     {% for role in roles %}
-        {% set count=count + 1 %}
-        {% set id = 'role'~count %}
-        <div id="{{ id }}" data-role{{ count }}="{{ role }}"></div>
+        {% if role != "ROLE_USER" %}
 
+            {% set count=count + 1 %}
+            {% set id = 'role'~count %}
+            <div id="{{ id }}" data-role{{ count }}="{{ role }}"></div>
+        {% endif %}
     {% endfor %}
     <div id="counter" data-count="{{ count }}"></div>
 {% endblock %}
@@ -26,16 +28,20 @@
 
 {% block additionaljs %}
     <script>
-        var pw = $('#pw').attr('data');
-        $('#user_password').val(pw).change();
-        var counter = $('#counter').attr('data-count');
+        $('document').ready(function () {
+            var pw = $('#pw').attr('data');
+            $('#user_password').val(pw).change();
+            var counter = $('#counter').attr('data-count');
 
-        for (let i = 1; i < counter; i++) {
+            for (let i = 1; i <= counter; i++) {
 
-            var role = $("#role" + i).attr("data-role" + i);
+                var role = $("#role" + i).attr("data-role" + i);
 
-            $('input[value="' + role + '"]').prop('checked', true);
-        }
+                $('input[value="' + role + '"]').prop('checked', true);
+
+            }
+
+        })
 
 
     </script>

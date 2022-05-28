@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ToDoList{% endblock %}
+
+{% block body %}
+    <h1>ToDoList</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ to_do_list.id }}</td>
+            </tr>
+            <tr>
+                <th>Task</th>
+                <td>{{ to_do_list.task }}</td>
+            </tr>
+            <tr>
+                <th>AssignedTo</th>
+                <td>{{ to_do_list.assignedTo }}</td>
+            </tr>
+            <tr>
+                <th>CompletionDate</th>
+                <td>{{ to_do_list.completionDate ? to_do_list.completionDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ to_do_list.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('to_do_list_index') }}">back to list</a>
+
+    <a href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">edit</a>
+
+    {{ include('to_do_list/_delete_form.html.twig') }}
+{% endblock %}

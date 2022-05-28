@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\StaticTextRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,9 +12,14 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(): Response
+    public function index(StaticTextRepository $staticTextRepository): Response
     {
+
+        $get_all_static_texts = $staticTextRepository->findAll();
+        $first_static_text = $get_all_static_texts[0];
+
         return $this->render('home/index.html.twig', [
+            'staticText' => $first_static_text,
             'controller_name' => 'HomeController',
         ]);
     }
@@ -50,12 +56,6 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-
-
-
-
-
-
 
 
 }

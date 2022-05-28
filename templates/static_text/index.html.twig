@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StaticText index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CMS Editor</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Homepage1</th>
+            <th>Homepage2</th>
+            <th>Email Family</th>
+            <th>Email Accountant</th>
+            <th>Email Contact</th>
+            <th>Email Guest</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for static_text in static_texts %}
+            <tr>
+                <td>
+                    <a href="{{ path('static_text_edit', {'id': static_text.id}) }}">{{ static_text.id }}</a>
+                </td>
+                <td>{{ static_text.homepage1 |raw }}</td>
+                <td>{{ static_text.homepage2 |raw }}</td>
+                <td>{{ static_text.emailFamily |raw  }}</td>
+                <td>{{ static_text.emailAccountant |raw }}</td>
+                <td>{{ static_text.emailContact |raw }}</td>
+                <td>{{ static_text.emailGuest |raw }}</td>
+                <td>
+                    <form method="post" action="{{ path('static_text_delete', {'id': static_text.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ static_text.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('static_text_new') }}">New</a>
+{% endblock %}

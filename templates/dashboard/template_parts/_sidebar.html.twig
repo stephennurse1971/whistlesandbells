@@ -11,8 +11,6 @@
     <hr class="sidebar-divider my-0">
 
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
 
 
     <!-- Nav Item #1 - Photos -->
@@ -33,30 +31,7 @@
     {% endif %}
 
 
-
-
-        <!-- Nav Item #3 - Settings -->
-    {% if is_granted('ROLE_FAMILY') %}
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFamily"
-               aria-expanded="true" aria-controls="collapseFamily">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Family</span>
-            </a>
-            <div id="collapseFamily" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ path('user_role_index',{role: 'ROLE_FAMILY'}) }}">Family</a>
-                    <hr>
-                    <a  style="color: darkgray" class="collapse-item" href="{{ path('photo_locations_index') }}">Photo locations</a>
-                </div>
-            </div>
-        </li>
-        <hr class="sidebar-divider">
-    {% endif %}
-
-
-
-    <!-- Nav Item #4 - HMRC -->
+    <!-- Nav Item #2 - HMRC -->
     {% if is_granted('ROLE_HMRC') or is_granted('ROLE_SERPENTINE') %}
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHMRC"
@@ -75,7 +50,7 @@
 
 
 
-    <!-- Nav Item #5 - Investments -->
+    <!-- Nav Item #3 - Investments -->
     {% if is_granted('ROLE_ACCOUNTANT') %}
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInvestments"
@@ -102,8 +77,28 @@
     {% endif %}
 
 
+
+    {% if is_granted('ROLE_ADMIN') %}
+    <!-- Nav Item #4 - ToDoList -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseToDoList"
+           aria-expanded="true" aria-controls="collapseToDoList">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>To Do List</span>
+        </a>
+        <div id="collapseToDoList" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ path('to_do_list_index') }}">To Do List</a>
+            </div>
+        </div>
+    </li>
+    <hr class="sidebar-divider">
+    {% endif %}
+
+
+
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <!-- Nav Item #3 - Settings -->
+    <!-- Nav Item #5 - Settings -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings"
            aria-expanded="true" aria-controls="collapseSettings">
@@ -114,7 +109,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
                 <a class="collapse-item" href="{{ path('log_index') }}">User log</a>
-                <hr>
+                <a class="collapse-item" href="{{ path('static_text_index') }}">CMS</a>
             </div>
         </div>
     </li>

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}To Do List{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">To Do List <a href="{{ path('to_do_list_new') }}">+</a></h1>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Task</th>
+            <th>Assigned To</th>
+            <th>Completion Date</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for to_do_list in to_do_lists %}
+            <tr>
+                <td><a href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.task }}</a></td>
+                <td>{{ to_do_list.assignedTo }}</td>
+                <td>{{ to_do_list.completionDate ? to_do_list.completionDate|date('d-M-Y') : '' }}</td>
+                <td>{{ to_do_list.description|raw }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a class="btn btn-outline-success btn-sm" href="{{ path('to_do_list_new') }}">New</a>
+    <br>
+    <br>
+{% endblock %}
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}
+

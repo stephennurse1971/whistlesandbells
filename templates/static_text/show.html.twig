@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StaticText{% endblock %}
+
+{% block body %}
+    <h1>StaticText</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ static_text.id }}</td>
+            </tr>
+            <tr>
+                <th>Homepage1</th>
+                <td>{{ static_text.homepage1 }}</td>
+            </tr>
+            <tr>
+                <th>Homepage2</th>
+                <td>{{ static_text.homepage2 }}</td>
+            </tr>
+            <tr>
+                <th>EmailFamily</th>
+                <td>{{ static_text.emailFamily }}</td>
+            </tr>
+            <tr>
+                <th>EmailAccountant</th>
+                <td>{{ static_text.emailAccountant }}</td>
+            </tr>
+            <tr>
+                <th>EmailContact</th>
+                <td>{{ static_text.emailContact }}</td>
+            </tr>
+            <tr>
+                <th>EmailGuest</th>
+                <td>{{ static_text.emailGuest }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('static_text_index') }}">back to list</a>
+
+    <a href="{{ path('static_text_edit', {'id': static_text.id}) }}">edit</a>
+
+    {{ include('static_text/_delete_form.html.twig') }}
+{% endblock %}

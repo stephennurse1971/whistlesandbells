@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New StaticText{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New: CMS</h1>
+
+    {{ include('static_text/_form.html.twig') }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('static_text_index') }}">Return to list</a>
+{% endblock %}
