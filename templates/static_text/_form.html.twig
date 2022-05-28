@@ -1,20 +1,33 @@
 <style>
-    .ck-editor__editable {min-height: 600px;}
+    .ck-editor__editable {
+        min-height: 600px;
+    }
 </style>
 
 {{ form_start(form) }}
 <div class="row">
     <div class="col-md-6">
-        <h2>Homepage</h2>
+        <h2 style="color: red">Homepage</h2>
         {{ form_row(form.homepage1) }}
         {{ form_row(form.homepage2) }}
     </div>
     <div class="col-md-6">
-        <h2>Emails</h2>
-        {{ form_row(form.emailAccountant) }}
+        <h2 style="color: red;">Sub Pages</h2>
+        {{ form_row(form.webDesign) }}
+        {{ form_row(form.aboutSN) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 style="color: red">Introduction/Emails</h2>
         {{ form_row(form.emailContact) }}
-        {{ form_row(form.emailFamily) }}
         {{ form_row(form.emailGuest) }}
+    </div>
+    <div class="col-md-6">
+        <h2 style="color: red;">Introduction/Emails</h2>
+        {{ form_row(form.emailAccountant) }}
+        {{ form_row(form.emailFamily) }}
     </div>
 </div>
 <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
@@ -33,12 +46,26 @@
             .catch(error => {
                 console.error(error);
             });
+
+        ClassicEditor
+            .create(document.querySelector('#static_text_webDesign'))
+            .catch(error => {
+                console.error(error);
+            });
+
+
+        ClassicEditor
+            .create(document.querySelector('#static_text_aboutSN'))
+            .catch(error => {
+                console.error(error);
+            });
+
         ClassicEditor
             .create(document.querySelector('#static_text_emailAccountant'))
             .catch(error => {
                 console.error(error);
             });
-        //
+
         ClassicEditor
             .create(document.querySelector('#static_text_emailContact'))
             .catch(error => {

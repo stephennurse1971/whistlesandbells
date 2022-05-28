@@ -19,6 +19,8 @@ class StaticTextType extends AbstractType
             ->add('emailAccountant')
             ->add('emailContact')
             ->add('emailGuest')
+            ->add('webDesign')
+            ->add('aboutSN')
         ;
     }
 

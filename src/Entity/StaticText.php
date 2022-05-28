@@ -47,6 +47,16 @@ class StaticText
      */
     private $emailGuest;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $webDesign;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $aboutSN;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +130,30 @@ class StaticText
     public function setEmailGuest(?string $emailGuest): self
     {
         $this->emailGuest = $emailGuest;
+
+        return $this;
+    }
+
+    public function getWebDesign(): ?string
+    {
+        return $this->webDesign;
+    }
+
+    public function setWebDesign(?string $webDesign): self
+    {
+        $this->webDesign = $webDesign;
+
+        return $this;
+    }
+
+    public function getAboutSN(): ?string
+    {
+        return $this->aboutSN;
+    }
+
+    public function setAboutSN(?string $aboutSN): self
+    {
+        $this->aboutSN = $aboutSN;
 
         return $this;
     }
