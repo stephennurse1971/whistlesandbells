@@ -5,9 +5,9 @@
 {% block body %}
     <h1 style="color: red">Chavey Down - HMRC Audit</h1>
 
-    <a title="Investgation reference: CP- " target="_blank" href="{{ path('chaveyDownBackground') }}"><i
-                style="font-size: large" class="fa fa-info-circle"></i></a>
-
+{#    <a title="Investgation reference: CP- " target="_blank" href="{{ path('chaveyDownBackground') }}"><i#}
+{#                style="font-size: large" class="fa fa-info-circle"></i></a>#}
+{{ StaticText.content.mobileNumber }}
     {% set total = 0 %}
     <table class="table">
         <thead>

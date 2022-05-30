@@ -8,33 +8,30 @@
                     <div class="">
                         <div id="zoom-social-icons-widget-2" class=" widget clearfix zoom-social-icons-widget">
 
-                            <a href="https://www.linkedin.com/in/stephen-nurse-2b05b41/" target="_blank">
+                            <a href="https://www.linkedin.com/in/{{StaticText.content.linkedIn}}/" target="_blank">
                                 <span class="zoom-social_icons-list-span social-icon socicon socicon-linkedin"
                                       data-hover-rule="color" data-hover-color="red"
-                                      style="color : #0077B5; font-size: 16px; padding:6px"><i class="fa fa-linkedin"
-                                                                                               style="font-size:24px"></i></span></a>
+                                      style="color : #0077B5; font-size: 16px; padding:6px"><i class="fa fa-linkedin" style="font-size:24px"></i></span></a>
 
-                            <a href="https://find-and-update.company-information.service.gov.uk/officers/IOMz9FOHszeMImwrBtAx6k4PcYg/appointments"
-                               target="_blank">
+                            <a target="_blank" href="https://find-and-update.company-information.service.gov.uk/officers/{{StaticText.content.companiesHouseLink}}/appointments">
                                 <span class="zoom-social_icons-list-span social-icon socicon socicon-ch rounded border"
                                       data-hover-rule="color" data-hover-color="red"
-                                      style="color : black; background-color: black; font-size: 16px; padding:6px"><img
-                                            src="https://d109b4smb8id36.cloudfront.net/images/royal-coat-of-arms-white.svg"
+                                      style="color : black; background-color: black; font-size: 16px; padding:6px"><img src="https://d109b4smb8id36.cloudfront.net/images/royal-coat-of-arms-white.svg"
                                             style="height: 28px; width: 24px;color: black"></span></a>
 
-                            <a href="https://github.com/stephennurse1971" target="_blank">
+                            <a href="https://github.com/{{StaticText.content.github}}" target="_blank">
                                 <span class="zoom-social_icons-list-span social-icon socicon socicon-github"
                                       data-hover-rule="color" data-hover-color="#dd3333"
                                       style="color : black; font-size: 16px; padding:6px"><i class="fa fa-github"
                                                                                              style="font-size:24px"></i></span></a>
 
-                            <a href="https://facebook.com/stephen.nurse.14" target="_blank">
+                            <a href="https://facebook.com/{{StaticText.content.facebookLink}}" target="_blank">
                                 <span class="zoom-social_icons-list-span social-icon socicon socicon-facebook"
                                       data-hover-rule="color" data-hover-color="#dd3333"
                                       style="color : #1877F2; font-size: 16px; padding:6px"><i
                                             class="fa fa-facebook-square" style="font-size:24px"></i> </span></a>
 
-                            <a href="https://twitter.com/" target="_blank">
+                            <a href="https://twitter.com/{{StaticText.content.twitter}}" target="_blank">
                                 <span class="zoom-social_icons-list-span social-icon socicon socicon-twitter"
                                       data-hover-rule="color" data-hover-color="#dd3333"
                                       style="color : #1da1f2; font-size: 16px; padding:6px"><i class="fa fa-twitter"
@@ -51,18 +48,13 @@
                                     <p>Contact info</p>
                                     <hr>
                                     <p>
-                                        <a target="_blank"
-                                           href="https://www.google.com/maps/place/London+E14+9UE/@51.4978955,-0.0179594,17z/data=!3m1!4b1!4m5!3m4!1s0x487602bc41f90943:0xb248ab856e844c5e!8m2!3d51.4977219!4d-0.0155446">3708
-                                            Arena Tower<br>25 Crossharbour Plaza<br>London E14 9UE</a>
+                                        <a target="_blank" href={{StaticText.content.gpsCoordinates}}>{{StaticText.content.address}}</a>
                                     </p>
 
                                     <p>
-                                        <a href="mailto:nurse_stephen@hotmail.com"><i class="fa fa-envelope"
-                                                                                      style="color:black;font-size:16px"></i></a>
-                                        <a target="_blank" href="https://wa.me/447588717515"> <i style="color: #0f6848"
-                                                                                 class="fa fa-whatsapp"></i></a>
-                                        <a href="skype:stephennurse?call"><i style="color: royalblue"
-                                                                             class="fa fa-skype"></i></a>
+                                        <a href="mailto:{{StaticText.content.emailAddress}}"><i class="fa fa-envelope" style="color:black;font-size:16px"></i></a>
+                                        <a target="_blank" href="https://wa.me/{{StaticText.content.mobileNumber | replace({' ': ''})}}"> <i style="color: #0f6848" class="fa fa-whatsapp"></i></a>
+                                        <a href="skype:{{StaticText.content.skype}}?call"><i style="color: royalblue" class="fa fa-skype"></i></a>
                                     </p>
                                 </div>
                             </div>
@@ -92,7 +84,7 @@
                                         </div>
                                         <div class="col-6">
                                             <li>
-                                                <a title="Stephen's CV" href="/administration/attachments/CV/CV%20-%20Stephen%20Nurse%20(2022).pdf">CV</a>
+                                                <a title="Stephen's CV" target="_blank" href="/administration/attachments/CV/CV%20-%20Stephen%20Nurse%20(2022).pdf">CV</a>
                                             </li>
                                             <li>
                                                 <a title="" href="{{ path('webdesign') }}">Web design</a>
