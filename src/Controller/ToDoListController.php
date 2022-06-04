@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Photos;
 use App\Entity\ToDoList;
 use App\Form\ToDoListType;
 use App\Repository\ToDoListRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,12 +37,24 @@ class ToDoListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if($form->get('file')->getData()) {
+                $file = $form->get('file')->getData();
+
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . "." . $file->guessExtension();
+                $file->move(
+                    $this->getParameter('files_upload_default_directory'),
+                    $newFilename
+                );
+                $toDoList->setFile($newFilename);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($toDoList);
             $entityManager->flush();
 
             return $this->redirectToRoute('to_do_list_index');
         }
+
 
         return $this->render('to_do_list/new.html.twig', [
             'to_do_list' => $toDoList,
@@ -67,7 +81,20 @@ class ToDoListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if($form->get('file')->getData()) {
+                $file = $form->get('file')->getData();
+
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . "." . $file->guessExtension();
+                $file->move(
+                    $this->getParameter('files_upload_default_directory'),
+                    $newFilename
+                );
+                $toDoList->setFile($newFilename);
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($toDoList);
+            $entityManager->flush();
 
             return $this->redirectToRoute('to_do_list_index');
         }
@@ -78,12 +105,26 @@ class ToDoListController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/view/file/{fileName}", name="to_do_list_viewfile", methods={"GET"})
+     */
+    public function toDoListFileLaunch(string $fileName): Response
+    {
+
+        $publicResourcesFolderPath = $this->getParameter('files_upload_default_directory');
+        return new BinaryFileResponse($publicResourcesFolderPath."/".$fileName);
+
+    }
+
+
+
     /**
      * @Route("/{id}", name="to_do_list_delete", methods={"POST"})
      */
     public function delete(Request $request, ToDoList $toDoList): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$toDoList->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $toDoList->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($toDoList);
             $entityManager->flush();

@@ -12,6 +12,7 @@
             <th>Task</th>
             <th>Assigned To</th>
             <th>Completion Date</th>
+            <th>File</th>
             <th>Description</th>
         </tr>
         </thead>
@@ -21,6 +22,14 @@
                 <td><a href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.task }}</a></td>
                 <td>{{ to_do_list.assignedTo }}</td>
                 <td>{{ to_do_list.completionDate ? to_do_list.completionDate|date('d-M-Y') : '' }}</td>
+                <td>
+                    {% if to_do_list.file is empty %}
+                        -
+                    {% else %}
+                        <a title="{{ to_do_list.file }}" target="_blank" href="{{ path('to_do_list_viewfile',{fileName:to_do_list.file}) }}"><i class="fa fa-paperclip"></i> </a>
+                    {% endif %}
+
+                </td>
                 <td>{{ to_do_list.description|raw }}</td>
             </tr>
         {% endfor %}

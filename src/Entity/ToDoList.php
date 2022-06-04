@@ -37,6 +37,11 @@ class ToDoList
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $file;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class ToDoList
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    public function setFile(?string $file): self
+    {
+        $this->file = $file;
 
         return $this;
     }
