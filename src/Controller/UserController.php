@@ -57,10 +57,10 @@ class UserController extends AbstractController
     public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user, ['email1'=>$user->getEmail(),'email2'=>$user->getEmail2()]);
+        $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2()]);
         $roles = $this->getUser()->getRoles();
 
-        if (!in_array('ROLE_SUPER_ADMIN',$roles)) {
+        if (!in_array('ROLE_SUPER_ADMIN', $roles)) {
             $form->remove('role');
         }
         $form->handleRequest($request);
@@ -77,7 +77,7 @@ class UserController extends AbstractController
 
             $firstName = $user->getFirstName();
             $lastName = $user->getLastName();
-            $user->setFullName($firstName . ' '.$lastName);
+            $user->setFullName($firstName . ' ' . $lastName);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -117,28 +117,27 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(int $id, MailerInterface $mailer, Request $request, User $user ,UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(int $id, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
 
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
-        if ($this->getUser()->getId() == $id || $hasAccess)
-        {
+        if ($this->getUser()->getId() == $id || $hasAccess) {
             $logged_user_id = $this->getUser()->getId();
             $plainPassword = $user->getPlainPassword();
             $roles = $user->getRoles();
-            $form = $this->createForm(UserType::class, $user, ['email1'=>$user->getEmail(),'email2'=>$user->getEmail2()]);
+            $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2()]);
             $logged_user_roles = $this->getUser()->getRoles();
-            if (!in_array('ROLE_SUPER_ADMIN',$logged_user_roles)) {
+            if (!in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
                 $form->remove('role');
             }
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                if($form->has('role')){
-                $get_roles = $form->get('role')->getData();
+                if ($form->has('role')) {
+                    $get_roles = $form->get('role')->getData();
 
-                $roles = $get_roles;
-                $user->setRoles($roles);
+                    $roles = $get_roles;
+                    $user->setRoles($roles);
                 }
                 $password = $form->get('password')->getData();
                 if ($password != '') {
@@ -148,7 +147,7 @@ class UserController extends AbstractController
 
                 $firstName = $user->getFirstName();
                 $lastName = $user->getLastName();
-                $user->setFullName($firstName . ' '.$lastName);
+                $user->setFullName($firstName . ' ' . $lastName);
 
                 $this->getDoctrine()->getManager()->flush();
 
@@ -162,10 +161,9 @@ class UserController extends AbstractController
                         ->html($html);
                     $mailer->send($email);
                 }
-                if($logged_user_id != $id) {
+                if ($logged_user_id != $id) {
                     return $this->redirectToRoute('user_index');
-                }
-                else{
+                } else {
                     $this->redirectToRoute('app_login');
                 }
             }
@@ -179,11 +177,10 @@ class UserController extends AbstractController
             ]);
         }
         $referer = $request->server->get('HTTP_REFERER');
-        if($referer){
+        if ($referer) {
             return $this->redirect($referer);
 
-        }
-        else{
+        } else {
             return $this->redirectToRoute('user_index');
         }
     }
@@ -191,18 +188,16 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/{role}/{active}/edit", name="user_edit_button", methods={"GET","POST"})
      */
-    public function editAuto(string $role,Request $request, User $user,EntityManagerInterface $entityManager): Response
+    public function editAuto(string $role, Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
 
-         $get_roles = $user->getRoles();
-         if(!in_array($role,$get_roles))
-         {
-             $get_roles[] = $role;
-         }
-         else{
-             $get_roles = array_merge(array_diff($get_roles, [$role]));
-         }
-         $user->setRoles($get_roles);
+        $get_roles = $user->getRoles();
+        if (!in_array($role, $get_roles)) {
+            $get_roles[] = $role;
+        } else {
+            $get_roles = array_merge(array_diff($get_roles, [$role]));
+        }
+        $user->setRoles($get_roles);
         $entityManager->flush();
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);
@@ -219,9 +214,27 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('user_index');
     }
 
 
+    /**
+     * @Route("/{userid}/invite-email", name="user_invite", methods={"GET"})
+     */
+    public function inviteEmail(int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->find($userid);
+        $html = $this->renderView('emails/welcome_email.html.twig', [
+            'user'=> $user
+        ]);
+        $email = (new Email())
+            ->from('nurse_stephen@hotmail.com')
+            ->to($user->getEmail())
+            ->cc('nurse_stephen@hotmail.com')
+            ->subject("Welcome to SN's personal website")
+            ->html($html);
+        $mailer->send($email);
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
 }

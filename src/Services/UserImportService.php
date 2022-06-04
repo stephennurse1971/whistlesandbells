@@ -12,9 +12,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class UserImportService
 {
-    public function import(String $fileName)
+    public function importUser(String $fileName)
     {
-        $filepath = $this->container->getParameter('import_user_directory');
+        $filepath = $this->container->getParameter('user_attachments_directory');
         $fullpath = $filepath  . $fileName;
         $alldatatsFromCsv = [];
         $row = 0;
@@ -34,13 +34,11 @@ class UserImportService
         }
 
         foreach ($alldatatsFromCsv as $oneLineFromCsv) {
-            $fullName = trim($oneLineFromCsv[0]);
-            $mobile1 = trim($oneLineFromCsv[1]);
-            $mobile2 = trim($oneLineFromCsv[2]);
-            $email1 = trim(strtolower($oneLineFromCsv[3]));
-            $email2 = trim(strtolower($oneLineFromCsv[4]));
-            $firstName = trim($oneLineFromCsv[5]);
-            $lastName = trim($oneLineFromCsv[6]);
+            $firstName = trim($oneLineFromCsv[0]);
+            $lastName = trim($oneLineFromCsv[1]);
+            $email1 = trim(strtolower($oneLineFromCsv[2]));
+            $mobile1 = trim($oneLineFromCsv[3]);
+            $mobile2 = trim($oneLineFromCsv[4]);
 
             if (!$email1) {
                 continue;
@@ -50,11 +48,10 @@ class UserImportService
 
             if (!$user) {
                 $user = new User();
-                $user->setFullName($fullName)
-                    ->setFirstName($firstName)
+                $user->setFirstName($firstName)
                     ->setLastName($lastName)
+                    ->setFullName($firstName . ' ' .$lastName)
                     ->setEmail($email1)
-                    ->setEmail2($email2)
                     ->setMobile($mobile1)
                     ->setMobile2($mobile2)
                     ->setPlainPassword('password')
@@ -62,7 +59,6 @@ class UserImportService
                 $this->manager->persist($user);
                 $this->manager->flush();
             }
-
         }
 
 return null;

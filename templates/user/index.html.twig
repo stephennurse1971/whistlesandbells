@@ -21,6 +21,7 @@
             {% if is_granted('ROLE_ADMIN') %}
                 <th style="color: red;">Plain Password</th>
                 <th>#</th>
+                <th>Invite email</th>
             {% endif %}
         </tr>
         </thead>
@@ -77,12 +78,6 @@
                     </td>
 
 
-
-
-
-
-
-
                     <td style="text-align: center">
                         {% set flag = 0 %}
                         {% for role in user.roles %}
@@ -133,12 +128,6 @@
                             {% endif %}
                         {% endif %}
                     </td>
-
-
-
-
-
-
 
 
                     <td style="text-align: center">
@@ -220,9 +209,16 @@
                     {% endif %}
                     <td>
                         {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
-                            <a class="btn btn-outline-danger btn-sm"
-                               href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
+                            <a class="btn btn-outline-danger btn-sm" href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
+                            <form class="d-inline" method="post" action="{{ path('user_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></button>
+                            </form>
+                            <a class="btn btn-success btn-sm" href="{{ path('user_invite', {'userid':user.id}) }}">Invite email</a>
                         {% endif %}
+                    </td>
+                    <td>
+                        Date
                     </td>
                 </tr>
             {% endfor %}
@@ -303,7 +299,7 @@
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
-        <a class="btn btn-primary mt-3" href="{{ path('import') }}">Import users</a>
+        <a class="btn btn-primary mt-3" href="{{ path('userimport') }}">Import users</a>
     {% endif %}
 
 {% endblock %}

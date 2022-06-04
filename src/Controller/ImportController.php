@@ -21,9 +21,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ImportController extends AbstractController
 {
     /**
-     * @Route("/import", name="import")
+     * @Route("/import", name="chaveydownimport")
      */
-    public function index(Request $request, SluggerInterface $slugger, ChaveyDownImportService $chaveyDownImportService): Response
+    public function chaveyDownImport(Request $request, SluggerInterface $slugger, ChaveyDownImportService $chaveyDownImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -35,7 +35,7 @@ class ImportController extends AbstractController
                 $newFilename = $safeFilename . '.' . $importFile->guessExtension();
                 try {
                     $importFile->move(
-                        $this->getParameter('temporary_attachment'),
+                        $this->getParameter(' chavey_down_attachments_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
@@ -50,4 +50,37 @@ class ImportController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/importContacts", name="userimport")
+     */
+    public function userImport(Request $request, SluggerInterface $slugger, UserImportService $userImportService): Response
+    {
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('File')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . 'csv';
+                try {
+                    $importFile->move(
+                        $this->getParameter('user_attachments_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+                $userImportService->importUser($newFilename);
+                return $this->redirectToRoute('user_index');
+            }
+        }
+
+        return $this->render('admin/import/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
 }

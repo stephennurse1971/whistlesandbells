@@ -3,25 +3,19 @@
     <h2> Welcome to SN's personal website</h2>
     {{ include('template_parts/objectives.html.twig') }}
 
-    {{ include('template_parts/tennisplayer.html.twig') }}
+    {% if 'ROLE_FAMILY' in user.roles %}
+        {{ include('template_parts/family.html.twig') }}
+    {% endif %}
 
-    {{ include('template_parts/family.html.twig') }}
+    {% if 'ROLE_GUEST' in user.roles %}
+        {{ include('template_parts/guest.html.twig') }}
+    {% endif %}
 
+    {% if 'ROLE_ACCOUNTANT'in user.roles %}
+        {{ include('template_parts/accountant.html.twig') }}
+    {% endif %}
 
     {{ include('emails/footerLoginAndEmail.html.twig') }}
 
-
-    <h3>Website: Your login and password details</h3>
-    <li>
-        The URL for the News Scrapper website is <a href="{{ absolute_url(path('app_home')) }}">{{ absolute_url(path('app_home')) }}</a>
-    </li>
-    <li>
-        Your login is your email address.
-    </li>
-    <li>
-        You can set a new password, or reset a forgotten password, from the login screen.
-    </li>
-
-    <br>
 
 </div>

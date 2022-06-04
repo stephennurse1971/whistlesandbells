@@ -34,27 +34,23 @@
             var counter = $('#counter').attr('data-count');
 
             for (let i = 1; i <= counter; i++) {
-
                 var role = $("#role" + i).attr("data-role" + i);
-
                 $('input[value="' + role + '"]').prop('checked', true);
-
             }
-
         })
 
 
     </script>
-{% endblock additionaljs %}
 
-{% block javascripts %}
-    {{ parent() }}
     <script>
         $('#sendEmail').click(function (e) {
             e.preventDefault();
-            $('#user_sendEmail').val(1).change();/*
-            e.unbind();*/
+            $('#user_sendEmail').val(1).change();
+            /*  e.unbind();*/
             $('#save').trigger('click');
         });
     </script>
-{% endblock javascripts %}
+{% endblock additionaljs %}
+
+
+
