@@ -14,14 +14,14 @@
 
 
     <!-- Nav Item #1 - Photos -->
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    {% if is_granted('ROLE_FAMILY') or is_granted('ROLE_GUEST')%}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePhotos"
            aria-expanded="true" aria-controls="collapsePhotos">
             <i class="fas fa-fw fa-cog"></i>
             <span>Photos</span>
         </a>
-        <div id="collapsePhotos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapsePhotos" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item text" href="{{ path('photos_index') }}">Photos</a>
             </div>
@@ -48,6 +48,23 @@
         <hr class="sidebar-divider">
     {% endif %}
 
+    <!-- Nav Item #3 - House Guest -->
+    {% if is_granted('ROLE_GUEST')  %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHouseGuests"
+               aria-expanded="true" aria-controls="collapseHouseGuests">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>House Guest</span>
+            </a>
+            <div id="collapseHouseGuests" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('house_guests_index') }}">House Guest</a>
+                    <a class="collapse-item" href="{{ path('house_guests_index_simple') }}">House Guest (simple)</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
 
 
     <!-- Nav Item #3 - Investments -->
@@ -60,16 +77,17 @@
             </a>
             <div id="collapseInvestments" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ path('tax_documents_index') }}">Tax documents</a>
                     <a class="collapse-item" href="{{ path('investments_index') }}">Investments</a>
                     <hr>
-                    <a class="collapse-item" href="{{ path('tax_supporting_docs_index') }}">Tax Supporting Docs</a>
-                    <a class="collapse-item" href="{{ path('investment_future_comms_index') }}">Investment other comm</a>
+                    <a class="collapse-item" href="{{ path('tax_supporting_docs_index') }}">Supporting Tax Docs</a>
+                    <a class="collapse-item" href="{{ path('investment_future_comms_index') }}">Investment Other Docs</a>
                     <hr>
-                    <a class="collapse-item" href="{{ path('market_data_index') }}">Share prices</a>
+                    <a class="collapse-item" href="{{ path('market_data_index') }}">Share Prices</a>
                     <a class="collapse-item" href="{{ path('fx_rates_index') }}">FX Rates</a>
                     <hr>
-                    <a class="collapse-item" href="{{ path('jpm_ic_history_index') }}">IC record</a>
+                    <a class="collapse-item" href="{{ path('tax_documents_index') }}">Tax Filings</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('jpm_ic_history_index') }}">IC Record</a>
                 </div>
             </div>
         </li>
@@ -105,10 +123,13 @@
             <i class="fas fa-fw fa-cog"></i>
             <span>Settings</span>
         </a>
-        <div id="collapseSettings" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseSettings" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ path('user_index') }}">Users</a>
                 <a class="collapse-item" href="{{ path('log_index') }}">User log</a>
+                <hr>
+                <a class="collapse-item" href="{{ path('photo_locations_index') }}">Photo locations</a>
+                <hr>
                 <a class="collapse-item" href="{{ path('static_text_index') }}">CMS</a>
             </div>
         </div>

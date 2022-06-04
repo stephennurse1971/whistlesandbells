@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+
+
+<div class="row">
+    <div class="col-md-3">
+        <h2 style="color: blue">Dates</h2>
+        {{ form_row(form.guestName) }}
+        {{ form_row(form.dateArrival) }}
+        {{ form_row(form.dateDeparture) }}
+        {{ form_row(form.roomCount) }}
+    </div>
+    <div class="col-md-9">
+        <h2 style="color: blue">Notes</h2>
+            {{ form_row(form.notes) }}
+    </div>
+</div>
+
+
+{{ form_widget(form) }}
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

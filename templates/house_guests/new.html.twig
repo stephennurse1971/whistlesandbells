@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New House Guest{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">New House Guest</h1>
+
+    {{ include('house_guests/_form.html.twig') }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('house_guests_index') }}">Return to list</a>
+{% endblock %}

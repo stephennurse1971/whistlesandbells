@@ -4,23 +4,31 @@
 
 {% block body %}
     <h1 style="color: red;">FX Rates</h1>
-
+    <h3 style="color: red;">Base currency: <a target="_blank" href="{{ path('static_text_edit', {'id': '3'}) }}">{{ StaticText.content.baseCurrency }}</h3></a>
     <table class="table">
         <thead>
-            <tr>
-                <th>FX</th>
-                <th>Current Rate</th>
-            </tr>
+        <tr>
+            <th>FX</th>
+            <th>Current Rate</th>
+            <th>Live FX Rate link</th>
+            <th>#</th>
+        </tr>
         </thead>
         <tbody>
         {% for fx_rate in fx_rates %}
-            <tr>
-                <td>{{ fx_rate.fx }}</td>
-                <td style="text-align: right">
-                    <a href="{{ path('fx_rates_edit', {'id': fx_rate.id}) }}">{{ fx_rate.currentFxRate |number_format(4) }}</a>
-                </td>
+        <tr>
 
-        {% endfor %}
+            <td>{{ fx_rate.fx }}</td>
+            <td style="text-align: right">
+                <a href="{{ path('fx_rates_edit', {'id': fx_rate.id}) }}">{{ fx_rate.currentFxRate |number_format(4) }}</a>
+            </td>
+            <td style="text-align: center"><a
+                        title="https://www.xe.com/currencyconverter/convert/?Amount=1&From={{ fx_rate.fx }}&To={{ StaticText.content.baseCurrency }}"><i
+                            class="fas fa-link" style="color:blue; text-align: center"></i></a></td>
+            <td style="text-align: right"><button onclick="currencyConverter('USD','{{ fx_rate.fx }}','{{ fx_rate.id }}')">Update</button>
+            </td>
+        </tr>
+            {% endfor %}
         </tbody>
     </table>
 
@@ -38,5 +46,43 @@
             });
         });
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+
+        function currencyConverter(currencyA,currencyB,fxRate_id) {
+            var myHeaders = new Headers();
+            myHeaders.append("apikey", "m9sVlPq1KZbHw2vvsWMYSiM70usViZ5A");
+
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow',
+                headers: myHeaders
+            };
+            var url = "https://api.apilayer.com/currency_data/convert?to="+currencyA+"&from="+currencyB+"&amount=1";
+            fetch(url, requestOptions)
+                .then(response => response.json())
+                .then(result => test(result.result,fxRate_id))
+                .catch(error => console.log('error', error));
+
+        }
+        function test(fxRate,fxRate_id) {
+            $.post("/admin/fxrates/ajax/update/currency/rate",
+                {
+                    fx_rate: fxRate,
+                    fxRate_id: fxRate_id
+                },
+                function(data, status){
+                    location.reload();
+                });
+        }
+
+       //alert(result);
+        </script>
 {% endblock datatable %}
+{% block additionaljs %}
+
+
+
+
+
+{% endblock %}

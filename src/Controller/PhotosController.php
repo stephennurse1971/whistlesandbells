@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Photos;
 use App\Form\PhotosType;
+use App\Repository\PhotoLocationsRepository;
 use App\Repository\PhotosRepository;
+use App\Services\ImageResize;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,27 +21,75 @@ class PhotosController extends AbstractController
     /**
      * @Route("/", name="photos_index", methods={"GET"})
      */
-    public function index(PhotosRepository $photosRepository): Response
+    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository): Response
     {
         return $this->render('photos/index.html.twig', [
             'photos' => $photosRepository->findAll(),
+            'locations' => $locationsRepository->findAll()
         ]);
+    }
+
+    /**
+     * @Route("/location-{locationName}", name="show_photos_by_location")
+     */
+    public function showPhotosByLocation(string $locationName, PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository)
+    {
+        $photos = $photosRepository->findBy([
+            'location' => $locationsRepository->findOneBy([
+                'location'=>$locationName
+            ])
+        ]);
+        return $this->render('photos/showByLocation.html.twig', [
+            'photos' => $photos,
+             'location'=>$locationsRepository->findOneBy(['location'=>$locationName])->getLocation()
+        ]);
+    }
+
+    /**
+     * @Route("/rotate/photo/{photoID}", name="rotate_photo")
+     */
+    public function rotatePhoto(Request $request, int $photoID, PhotosRepository $photosRepository, EntityManagerInterface $manager)
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $photo = $photosRepository->find($photoID);
+        if ($photo->getRotate() == null or $photo->getRotate() == 0) {
+            $photo->setRotate(1);
+            $manager->flush();
+        } else {
+            $photo->setRotate(0);
+            $manager->flush();
+        }
+
+        return $this->redirect($referer);
     }
 
     /**
      * @Route("/new", name="photos_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $photo = new Photos();
         $form = $this->createForm(PhotosType::class, $photo);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($photo);
-            $entityManager->flush();
-
+            $photos = $form->get('photos')->getData();
+            foreach ($photos as $single_photo) {
+                $photo_single = new Photos();
+                $originalFilename = pathinfo($single_photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . '.' . $single_photo->guessExtension();
+                $single_photo->move(
+                    $this->getParameter('photos_upload_default_directory'),
+                    $newFilename
+                );
+                foreach ($photo->getPerson() as $person) {
+                    $photo_single->setPhotoFile($newFilename)
+                        ->setLocation($photo->getLocation())
+                        ->setDate($photo->getDate())
+                        ->addPerson($person);
+                    $manager->persist($photo_single);
+                    $manager->flush();
+                }
+            }
             return $this->redirectToRoute('photos_index');
         }
 
@@ -61,17 +112,19 @@ class PhotosController extends AbstractController
     /**
      * @Route("/{id}/edit", name="photos_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Photos $photo): Response
+    public function edit(Request $request, Photos $photo, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(PhotosType::class, $photo);
+        $form->remove('photos');
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            foreach ($photo->getPerson() as $person) {
+                $photo->addPerson($person);
+            }
 
+            $manager->flush();
             return $this->redirectToRoute('photos_index');
         }
-
         return $this->render('photos/edit.html.twig', [
             'photo' => $photo,
             'form' => $form->createView(),
@@ -79,16 +132,34 @@ class PhotosController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/switchPublicPrivate", name="photos_public_private", methods={"GET","POST"})
+     */
+    public function switchPublicPrivate(Request $request, Photos $photo, EntityManagerInterface $manager): Response
+    {
+        $publicPrivate = $request->query->get('action');
+        if ($publicPrivate == '1') {
+            $photo->setPublic('0');
+        }
+        else {
+            $photo->setPublic('1');
+        }
+        $this->getDoctrine()->getManager()->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
+
+    /**
      * @Route("/{id}", name="photos_delete", methods={"POST"})
      */
     public function delete(Request $request, Photos $photo): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$photo->getId(), $request->request->get('_token'))) {
+        $referer = $request->server->get('HTTP_REFERER');
+        if ($this->isCsrfTokenValid('delete' . $photo->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($photo);
             $entityManager->flush();
         }
-
-        return $this->redirectToRoute('photos_index');
+        return $this->redirect($referer);
     }
 }

@@ -107,6 +107,11 @@ class StaticText
      */
     private $skype;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $baseCurrency;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -324,6 +329,18 @@ class StaticText
     public function setSkype(?string $skype): self
     {
         $this->skype = $skype;
+
+        return $this;
+    }
+
+    public function getBaseCurrency(): ?string
+    {
+        return $this->baseCurrency;
+    }
+
+    public function setBaseCurrency(?string $baseCurrency): self
+    {
+        $this->baseCurrency = $baseCurrency;
 
         return $this;
     }

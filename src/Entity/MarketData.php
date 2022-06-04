@@ -42,6 +42,21 @@ class MarketData
      */
     private $assetClass;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $login;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $investorSite;
+
 
 
 
@@ -107,6 +122,42 @@ class MarketData
     public function setAssetClass(?string $assetClass): self
     {
         $this->assetClass = $assetClass;
+
+        return $this;
+    }
+
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(?string $login): self
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getInvestorSite(): ?string
+    {
+        return $this->investorSite;
+    }
+
+    public function setInvestorSite(?string $investorSite): self
+    {
+        $this->investorSite = $investorSite;
 
         return $this;
     }

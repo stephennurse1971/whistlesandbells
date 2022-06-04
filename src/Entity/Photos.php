@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PhotosRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,26 @@ class Photos
      * @ORM\ManyToOne(targetEntity=PhotoLocations::class, inversedBy="photos")
      */
     private $location;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $rotate;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="photos")
+     */
+    private $person;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $public;
+
+    public function __construct()
+    {
+        $this->person = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +91,54 @@ class Photos
     public function setLocation(?PhotoLocations $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getRotate(): ?bool
+    {
+        return $this->rotate;
+    }
+
+    public function setRotate(?bool $rotate): self
+    {
+        $this->rotate = $rotate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getPerson(): Collection
+    {
+        return $this->person;
+    }
+
+    public function addPerson(User $person): self
+    {
+        if (!$this->person->contains($person)) {
+            $this->person[] = $person;
+        }
+
+        return $this;
+    }
+
+    public function removePerson(User $person): self
+    {
+        $this->person->removeElement($person);
+
+        return $this;
+    }
+
+    public function getPublic(): ?bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(?bool $public): self
+    {
+        $this->public = $public;
 
         return $this;
     }

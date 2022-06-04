@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\PhotoLocations;
 use App\Entity\Photos;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -28,7 +29,18 @@ class PhotosType extends AbstractType
                 'required' => false,
                 'empty_data' => null,
             ])
-            ->add('photoFile', FileType::class);
+            ->add('photos', FileType::class, [
+                'multiple' => true,
+                'mapped' => false
+            ])
+            ->add('person', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'fullName',
+                'required' => false,
+                'empty_data' => null,
+                'multiple'=>true
+            ])
+            ->add('public');
     }
 
     public function configureOptions(OptionsResolver $resolver)

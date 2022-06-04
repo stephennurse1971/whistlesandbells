@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: House Guests{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: House Guests</h1>
+
+    {{ include('house_guests/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('house_guests_index') }}">Return to list</a>
+
+    {{ include('house_guests/_delete_form.html.twig') }}
+{% endblock %}

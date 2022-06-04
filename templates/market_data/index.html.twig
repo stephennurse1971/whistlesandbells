@@ -11,8 +11,12 @@
             <th>Grouping</th>
             <th>Company</th>
             <th>Share Price</th>
-            <th>Link</th>
+            <th>Corporate website</th>
             <th>Companies House</th>
+            <th>Investor site</th>
+            <th>Login</th>
+            <th>Password</th>
+            <th>#</th>
         </tr>
         </thead>
         <tbody>
@@ -23,21 +27,31 @@
                 <td>
                     <a href="{{ path('market_data_edit', {'id': market_data.id}) }}">{{ market_data.shareCompany }}</a>
                 </td>
-                <td style="text-align: right">{{ market_data.sharePrice|number_format(2) }}</td>
+                <td style="text-align: right">
+                    {% if market_data.sharePrice<5 %}
+                        {{ market_data.sharePrice|number_format(2) }}
+                    {% else %}
+                        {{ market_data.sharePrice|number_format(0) }}
+                    {% endif %}
+                </td>
                 <td style="text-align: center">
-                    {% if market_data.weblink is not empty%}
+                    {% if market_data.weblink is not empty %}
                         <a title="{{ market_data.weblink }}" target="_blank"
                            href="{{ market_data.weblink }}"><i class="fas fa-globe"
-                                                             style="color:blue; text-align: center"></i></a>
+                                                               style="color:blue; text-align: center"></i></a>
                     {% endif %}
                 </td>
 
                 <td style="text-align: center">
                     {% if market_data.companiesHouse != "NA" %}
-                        <a title={{ weblink }} target="_blank" href={{ weblink }}><i class="fas fa-link"
-                                                                                     style="color:blue; text-align: center"></i></a>
+                        <a title={{ weblink }} target="_blank" href={{ weblink }}>
+                            <i class="fas fa-link" style="color:blue; text-align: center"></i></a>
                     {% endif %}
                 </td>
+                <td>{{ market_data.investorSite }}</td>
+                <td>{{ market_data.login }}</td>
+                <td>{{ market_data.password }}</td>
+                <td><a class="btn btn-success btn-sm" target="_blank" href="{{ market_data.investorSite }}">Login</a></td>
             </tr>
 
         {% endfor %}

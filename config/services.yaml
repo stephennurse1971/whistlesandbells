@@ -12,6 +12,7 @@ parameters:
     tax_supporting_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments/TaxSupportingDocuments'
     investments_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments'
     investments_future_comms_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments/InvestmentsFutureComms'
+    photos_upload_default_directory: '%kernel.project_dir%/public/photos'
 
 services:
     # default configuration for services in *this* file

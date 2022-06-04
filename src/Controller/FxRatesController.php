@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\FxRates;
 use App\Form\FxRatesType;
 use App\Repository\FxRatesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,5 +91,21 @@ class FxRatesController extends AbstractController
         }
 
         return $this->redirectToRoute('fx_rates_index');
+    }
+
+    /**
+     * @Route("/ajax/update/currency/rate", name="ajax_update_currency_rate",methods={"POST"})
+     */
+    public function fxRateUpdate(FxRatesRepository $fxRatesRepository,EntityManagerInterface $manager)
+    {
+        if(isset($_POST['fx_rate']))
+        {
+            $rate = $_POST['fx_rate'];
+            $fxRate_id = $_POST['fxRate_id'];
+            $getFxRateById = $fxRatesRepository->find($fxRate_id);
+            $getFxRateById->setCurrentFxRate($rate);
+            $manager->flush();
+        }
+        return new Response(null);
     }
 }

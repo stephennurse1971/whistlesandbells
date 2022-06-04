@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}House Guests Calendar{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">House Guests Calendar</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Room 1</th>
+            <th>Room 2</th>
+            <th>Room 3</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for date in dates %}
+
+            {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
+                <tr style="background-color: #bac8f3">
+            {% else %}
+                <tr>
+            {% endif %}
+
+
+            <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
+            <td>
+                {% set flag = 0 %}
+                {% for house_guest in house_guests %}
+                    {% if house_guest['roomCount']==1 and house_guest['date'] == date|date('d-m-y') %}
+                        {{ house_guest['guest'].fullName }}
+                        {% set flag = 1 %}
+                    {% endif %}
+                {% endfor %}
+                {% if flag==0 %}
+                    N/a
+                {% endif %}
+            </td>
+            <td>
+                {% set flag = 0 %}
+                {% for house_guest in house_guests %}
+                    {% if house_guest['roomCount']==2 and house_guest['date'] == date|date('d-m-y') %}
+                        {{ house_guest['guest'].fullName }}
+                        {% set flag = 1 %}
+                    {% endif %}
+                {% endfor %}
+                {% if flag==0 %}
+                    N/a
+                {% endif %}
+            </td>
+            <td>
+                {% for house_guest in house_guests %}
+                    {% if house_guest['roomCount']==3 and house_guest['date'] == date|date('d-m-y') %}
+                        {{ house_guest['guest'].fullName }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a class="btn btn-success btn-sm" href="{{ path('house_guests_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

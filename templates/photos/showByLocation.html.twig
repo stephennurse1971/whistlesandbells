@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+
+
+        .image-container {
+            display: flex;
+            max-height: 500px;
+            max-width: 500px;
+            height: 500px;
+            align-items: center;
+        }
+
+        img {
+            max-width: 100%;
+            object-fit: contain;
+            max-height: 100%;
+        }
+
+    </style>
+    <div>
+        <h1 style="color: red">{{ location }}</h1> <br><br>
+    </div>
+
+
+    <div class="row my-2 border p-2 bg-white">
+        {% for photo in photos %}
+            {% set loc = asset('photos')~"/"~photo.photoFile %}
+            <div class=" p-1 mb-1 ">
+
+                {% if photo.rotate==1 %}
+                    <div class="image-container">
+                        <img src="{{ loc }}" class=" rotate-90">
+                    </div>
+                    <div class="text-center py-2                              ">
+                        {% if photo.public %}
+                            <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 1} ) }}"><i
+                                        class="fas fa-circle text-success"></i> </a>
+                        {% else %}
+                            <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 0} ) }}"><i
+                                        class="fas fa-circle text-danger"></i> </a>
+                        {% endif %}
+                        <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"> <i class="fa fa-shield"></i></a>
+                        <form class="d-inline" method="post" action="{{ path('photos_delete', {'id': photo.id}) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
+                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            {% set individuals ='' %}
+                            {% for person in photo.person %}
+                                {% set individuals = individuals~person.fullName~', ' %}
+                            {% endfor %}
+                            <i title="{{ individuals }}" class="fas fa-info"></i>
+                    </div>
+                {% else %}
+                    <div class="image-container">
+                        <img src="{{ loc }}">
+                    </div>
+                    <div class="text-center py-1">
+                        {% if photo.public %}
+                            <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 1} ) }}"><i
+                                        class="fas fa-circle text-success"></i> </a>
+                        {% else %}
+                            <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 0} ) }}"><i
+                                        class="fas fa-circle text-danger"></i> </a>
+                        {% endif %}
+                        <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"> <i class="fa fa-shield"></i></a>
+                        <form class="d-inline" method="post" action="{{ path('photos_delete', {'id': photo.id}) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
+                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            {% set individuals ='' %}
+                            {% for person in photo.person %}
+                                {% set individuals = individuals~person.fullName~', ' %}
+                            {% endfor %}
+                            <i title="{{ individuals }}" class="fas fa-info"></i>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+
+    {#    .div {#}
+    {#    background-image: url(../images/your-image.png);#}
+    {#    background-size:cover;#}
+    {#    background-position:center;#}
+    {#    background-repeat:no-repeat;#}
+
+    {#    }#}
+
+{% endblock %}

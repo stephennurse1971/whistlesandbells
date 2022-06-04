@@ -93,6 +93,16 @@ class User implements UserInterface
      */
     private $logs;
 
+    /**
+     * @ORM\OneToMany(targetEntity=HouseGuests::class, mappedBy="guestName", orphanRemoval=true)
+     */
+    private $houseGuests;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Photos::class, mappedBy="person")
+     */
+    private $photos;
+
 
 
 
@@ -103,6 +113,8 @@ class User implements UserInterface
     {
         $this->paymentamount = new ArrayCollection();
         $this->logs = new ArrayCollection();
+        $this->houseGuests = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -310,6 +322,63 @@ class User implements UserInterface
             if ($log->getUser() === $this) {
                 $log->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HouseGuests[]
+     */
+    public function getHouseGuests(): Collection
+    {
+        return $this->houseGuests;
+    }
+
+    public function addHouseGuest(HouseGuests $houseGuest): self
+    {
+        if (!$this->houseGuests->contains($houseGuest)) {
+            $this->houseGuests[] = $houseGuest;
+            $houseGuest->setGuestName($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHouseGuest(HouseGuests $houseGuest): self
+    {
+        if ($this->houseGuests->removeElement($houseGuest)) {
+            // set the owning side to null (unless already changed)
+            if ($houseGuest->getGuestName() === $this) {
+                $houseGuest->setGuestName(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Photos[]
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photos $photo): self
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos[] = $photo;
+            $photo->addPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photos $photo): self
+    {
+        if ($this->photos->removeElement($photo)) {
+            $photo->removePerson($this);
         }
 
         return $this;

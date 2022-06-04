@@ -42,11 +42,10 @@
                 <td>{{ investment.investmentCompany.assetClass }}</td>
 
                 <td>
-
                     {% if Investment.findFutureComms(investment.id) == 1 %}
-                    <button class="toggle-investment-child btn btn-outline-warning btn-sm"
-                            data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
-                    </button>
+                        <button class="toggle-investment-child btn btn-outline-warning btn-sm"
+                                data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
+                        </button>
                     {% endif %}
                     {% if investment.investmentCompany is not null %}
                         <a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
@@ -67,6 +66,7 @@
                     {% endif %}
                 </td>
 
+                <!-- Is EIS -->
                 <td style="text-align: center">
                     {% if investment.investmentEIS == 1 %}
                         <i class="fa fa-circle" style="color: green; text-align: right"></i>
@@ -75,9 +75,10 @@
                     {% endif %}
                 </td>
 
+                <!-- MTM (£) -->
                 <td style="text-align: right">
                     {% if investment.currency.fx == 'GBP' %}
-                       <a>title = {{ investment.investmentCompany.sharePrice }}</a> {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }}
+                        <a title="{{ investment.investmentCompany.sharePrice | number_format (2, '.') }}"</a> {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }}
 
                         {% set MTMAdd = (investment.numberOfShares*investment.investmentCompany.sharePrice) %}
                         {% set MTMTotal = MTMTotal + MTMAdd %}
@@ -89,7 +90,7 @@
                     {% endif %}
                 </td>
 
-
+                <!-- PnL (£) -->
                 <td style="text-align: right">
                     {% if investment.currency.fx == 'GBP' %}
                         {{ ( (investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice))  | number_format (0, '.') }}
@@ -104,11 +105,17 @@
                     {% endif %}
                 </td>
 
-
+                <!-- CGT (£) -->
                 <td style="text-align: right">
-                    {% if investment.currency.fx == 'GBP' %}
-                        {{ ( (investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice)) *0.2 | number_format (0, '.') }}
 
+                    {% if investment.currency.fx == 'GBP' %}
+                        {% if investment.investmentEIS == 1 %}
+
+                            {{ ( (investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice)) * 0.2 | number_format (0, '.') }}
+                        {% else %}
+                            11
+                        {% endif %}
+                    {% else %}
                         <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }} ">
                             {{ ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate ) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate)) *0.2 | number_format (0, '.') }} </a>
                         {% set CGTAdd =  ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate))*0.2 %}
@@ -116,8 +123,10 @@
                     {% endif %}
                 </td>
 
-
+                <!-- Sale Date -->
                 <td data-sort="{{ investment.currency.fx }}{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
+
+                <!-- Share cert and other docs -->
                 <td style="text-align: center">
                     {% if investment.shareCert is not empty %}
                         <a title="{{ investment.shareCert }}" target="_blank"
@@ -140,17 +149,18 @@
                     {% endif %}
                 </td>
 
+                <!-- EIS Year -->
                 <td>
                     {% if investment.eISPurchaseYear1 is not empty %}
                         {{ investment.eISPurchaseYear1.year }}
                     {% endif %}
                     {% if investment.eISPurchaseYear2 is not empty %}
-                        {{ investment.eISPurchaseYear2.year }}
+                        ; {{ investment.eISPurchaseYear2.year }}
                     {% endif %}
                 </td>
 
 
-                <td>
+                <td style="text-align: center">
                     <a class="btn btn-success btn-sm mt-2"
                        href="{{ path('investment_future_comms_new', {'id': investment.investmentCompany.id}) }}">+</a>
                 </td>
@@ -158,31 +168,31 @@
 
             <div id="{{ investmentChildID }}" class="investmentsChildren">
 
-{#                <td colspan="12">#}
-                    <div>
-                        {% for investmentFutureComms in investmentsFutureComms %}
-                            {% if investmentFutureComms.marketData.id == investment.investmentCompany.id %}
-                                <div>
-                                    <div class="d-flex">
-                                        <div><a target="_blank"
-                                                href="{{ path('investment_future_comms_edit', {'id': investmentFutureComms.id}) }}"> {{ investmentFutureComms.date |date('d-M-Y') }}</a>
-                                        </div>
-                                        <div class="mx-2">
-                                            {% if investmentFutureComms.attachment is not empty %}
-                                                {% for attachment in investmentFutureComms.attachment %}
-                                                    <a title="{{ attachment }}" target="_blank"
-                                                       href="{{ path('investment_future_comms_edit',{id : investmentFutureComms.id}) }}"><i
-                                                                class="fa fa-paperclip"></i></a>
-                                                {% endfor %}
-                                            {% endif %}
-                                        </div>
-                                        <div class="mx-2">{{ investmentFutureComms.comment }}</div>
+                {#                <td colspan="12">#}
+                <div>
+                    {% for investmentFutureComms in investmentsFutureComms %}
+                        {% if investmentFutureComms.marketData.id == investment.investmentCompany.id %}
+                            <div>
+                                <div class="d-flex">
+                                    <div><a target="_blank"
+                                            href="{{ path('investment_future_comms_edit', {'id': investmentFutureComms.id}) }}"> {{ investmentFutureComms.date |date('d-M-Y') }}</a>
                                     </div>
+                                    <div class="mx-2">
+                                        {% if investmentFutureComms.attachment is not empty %}
+                                            {% for attachment in investmentFutureComms.attachment %}
+                                                <a title="{{ attachment }}" target="_blank"
+                                                   href="{{ path('investment_future_comms_edit',{id : investmentFutureComms.id}) }}"><i
+                                                            class="fa fa-paperclip"></i></a>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="mx-2">{{ investmentFutureComms.comment }}</div>
                                 </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-{#                </td>#}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {#                </td>#}
             </div>
         {% endfor %}
         </tbody>
@@ -228,9 +238,9 @@
 
                 <td>
                     {% if Investment.findFutureComms(investment.id) == 1 %}
-                    <button class="toggle-investment-child btn btn-outline-warning btn-sm"
-                            data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
-                    </button>
+                        <button class="toggle-investment-child btn btn-outline-warning btn-sm"
+                                data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
+                        </button>
                     {% endif %}
                     {% if investment.investmentCompany is not null %}
                         <a href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
@@ -239,9 +249,8 @@
                     {% endif %}
 
 
-
-                    <div class="mt-2 p-2 investmentsChildren" id="{{ investmentChildID }}" >
-<hr>
+                    <div class="mt-2 p-2 investmentsChildren" id="{{ investmentChildID }}">
+                        <hr>
                         {#                <td colspan="12">#}
                         <div>
                             {% for investmentFutureComms in investmentsFutureComms %}
@@ -268,8 +277,6 @@
                         </div>
                         {#                </td>#}
                     </div>
-
-
 
 
                 </td>

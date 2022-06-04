@@ -31,6 +31,15 @@
         display: none;
     }
 </style>
+    <style>
+        .rotate-90 {
+            -moz-transform: rotate(90deg);
+            -webkit-transform: rotate(90deg);
+            -o-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+
+    </style>
 </head>
 
 <body id="page-top">
@@ -122,7 +131,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 <script>
     $(document).ready(function () {
         bsCustomFileInput.init();
@@ -154,6 +163,47 @@
                 $('body').addClass('mobile');
             }
         });
+
+
+
+
+        function fixedImageOrientation()
+        {
+
+         //  var img = document.getElementsByClassName('image');
+           $('.image').each(function () {
+
+               EXIF.getData(this, function() {
+                   console.log('Exif=', EXIF.getTag(this, "Width"));
+                   switch (parseInt(EXIF.getTag(this, "Orientation"))) {
+                       case 1:
+                           $(this).addClass('rotate-90');
+                           break;
+                       case 2:
+                           $(this).addClass('flip');
+                           break;
+                       case 3:
+                           $(this).addClass('rotate-180');
+                           break;
+                       case 4:
+                           $(this).addClass('flip-and-rotate-180');
+                           break;
+                       case 5:
+                           $(this).addClass('flip-and-rotate-270');
+                           break;
+                       case 6:
+                           $(this).addClass('flip-and-rotate-90');
+                           break;
+                       case 7:
+                           $(this).addClass('rotate-270');
+                           break;
+                   }});
+           })
+
+
+        }
+
+
     </script>
 
 {% endblock datatable %}

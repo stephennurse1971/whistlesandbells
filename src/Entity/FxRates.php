@@ -34,6 +34,11 @@ class FxRates
      */
     private $investments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $liveRateLink;
+
     public function __construct()
     {
         $this->investments = new ArrayCollection();
@@ -94,6 +99,18 @@ class FxRates
                 $investment->setCurrency(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLiveRateLink(): ?string
+    {
+        return $this->liveRateLink;
+    }
+
+    public function setLiveRateLink(?string $liveRateLink): self
+    {
+        $this->liveRateLink = $liveRateLink;
 
         return $this;
     }
