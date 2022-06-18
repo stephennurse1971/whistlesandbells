@@ -103,6 +103,61 @@ class User implements UserInterface
      */
     private $photos;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $company;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $businessAddress;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $homeAddress;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $businessPhone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $homePhone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $homePhone2;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $birthday;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email3;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $webPage;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $notes;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $inviteDate;
+
 
 
 
@@ -380,6 +435,138 @@ class User implements UserInterface
         if ($this->photos->removeElement($photo)) {
             $photo->removePerson($this);
         }
+
+        return $this;
+    }
+
+    public function getCompany(): ?string
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?string $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    public function getBusinessAddress(): ?string
+    {
+        return $this->businessAddress;
+    }
+
+    public function setBusinessAddress(?string $businessAddress): self
+    {
+        $this->businessAddress = $businessAddress;
+
+        return $this;
+    }
+
+    public function getHomeAddress(): ?string
+    {
+        return $this->homeAddress;
+    }
+
+    public function setHomeAddress(?string $homeAddress): self
+    {
+        $this->homeAddress = $homeAddress;
+
+        return $this;
+    }
+
+    public function getBusinessPhone(): ?string
+    {
+        return $this->businessPhone;
+    }
+
+    public function setBusinessPhone(?string $businessPhone): self
+    {
+        $this->businessPhone = $businessPhone;
+
+        return $this;
+    }
+
+    public function getHomePhone(): ?string
+    {
+        return $this->homePhone;
+    }
+
+    public function setHomePhone(?string $homePhone): self
+    {
+        $this->homePhone = $homePhone;
+
+        return $this;
+    }
+
+    public function getHomePhone2(): ?string
+    {
+        return $this->homePhone2;
+    }
+
+    public function setHomePhone2(?string $homePhone2): self
+    {
+        $this->homePhone2 = $homePhone2;
+
+        return $this;
+    }
+
+    public function getBirthday(): ?\DateTimeInterface
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(?\DateTimeInterface $birthday): self
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    public function getEmail3(): ?string
+    {
+        return $this->email3;
+    }
+
+    public function setEmail3(?string $email3): self
+    {
+        $this->email3 = $email3;
+
+        return $this;
+    }
+
+    public function getWebPage(): ?string
+    {
+        return $this->webPage;
+    }
+
+    public function setWebPage(?string $webPage): self
+    {
+        $this->webPage = $webPage;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getInviteDate(): ?\DateTimeInterface
+    {
+        return $this->inviteDate;
+    }
+
+    public function setInviteDate(?\DateTimeInterface $inviteDate): self
+    {
+        $this->inviteDate = $inviteDate;
 
         return $this;
     }

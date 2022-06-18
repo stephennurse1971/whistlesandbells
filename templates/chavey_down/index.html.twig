@@ -66,7 +66,7 @@
 
     {% if is_granted('ROLE_ADMIN') %}
         <a class="btn btn-success mt-2" href="{{ path('chavey_down_new') }}">Add</a>
-        <a class="btn btn-danger mt-2" href="{{ path('import') }}">Import xls</a>
+        <a class="btn btn-danger mt-2" href="{{ path('chaveydownimport') }}">Import xls</a>
     {% endif %}
 {% endblock %}
 

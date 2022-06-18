@@ -2,25 +2,41 @@
 
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <h3><b>Name</b></h3>
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
+        {{ form_row(form.company) }}
+        {{ form_row(form.birthday) }}
+    </div>
+    <div class="col-md-3">
+        <h3><b>Name</b></h3>
+        {{ form_row(form.homeAddress) }}
+        {{ form_row(form.businessAddress) }}
+        {{ form_row(form.mobile) }}
+        {{ form_row(form.mobile2) }}
+        {{ form_row(form.businessPhone) }}
+        {{ form_row(form.homePhone) }}
+        {{ form_row(form.homePhone2) }}
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <h3><b>Contact details</b></h3>
         {{ form_row(form.email) }}
         {{ form_row(form.email2) }}
+        {{ form_row(form.email3) }}
         {{ form_row(form.calendarInviteEmail) }}
-        {{ form_row(form.mobile) }}
-        {{ form_row(form.mobile2) }}
+        {{ form_row(form.webPage) }}
+        {{ form_row(form.notes) }}
+
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <h3><b>Access rights</b></h3>
         {{ form_row(form.password) }}
         {% if is_granted('ROLE_SUPER_ADMIN') %}
             {{ form_row(form.role) }}
+            {{ form_row(form.inviteDate) }}
+
         {% endif %}
     </div>
 </div>

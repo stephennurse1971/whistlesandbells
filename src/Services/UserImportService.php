@@ -36,24 +36,44 @@ class UserImportService
         foreach ($alldatatsFromCsv as $oneLineFromCsv) {
             $firstName = trim($oneLineFromCsv[0]);
             $lastName = trim($oneLineFromCsv[1]);
-            $email1 = trim(strtolower($oneLineFromCsv[2]));
-            $mobile1 = trim($oneLineFromCsv[3]);
-            $mobile2 = trim($oneLineFromCsv[4]);
+            $company = trim($oneLineFromCsv[2]);
+            $businessAddress = trim($oneLineFromCsv[3]);
+            $homeAddress = trim($oneLineFromCsv[4]);
+            $businessPhone = trim($oneLineFromCsv[5]);
+            $homePhone = trim($oneLineFromCsv[6]);
+            $homePhone2 = trim($oneLineFromCsv[7]);
+            $mobile1 = trim($oneLineFromCsv[8]);
+            $birthday = trim($oneLineFromCsv[9]);
+            $email = trim(strtolower($oneLineFromCsv[10]));
+            $email2 = trim(strtolower($oneLineFromCsv[11]));
+            $email3 = trim(strtolower($oneLineFromCsv[12]));
+            $webPage = trim(strtolower($oneLineFromCsv[13]));
+//            $notes = trim(strtolower($oneLineFromCsv[14]));
 
-            if (!$email1) {
+            if (!$email) {
                 continue;
             }
 
-            $user = $this->userRepository->findOneBy(['email' => $email1]);
+            $user = $this->userRepository->findOneBy(['email' => $email]);
 
             if (!$user) {
                 $user = new User();
                 $user->setFirstName($firstName)
                     ->setLastName($lastName)
                     ->setFullName($firstName . ' ' .$lastName)
-                    ->setEmail($email1)
+                    ->setCompany($company)
+                    ->setBusinessAddress($businessAddress)
+                    ->setHomeAddress($homeAddress)
+                    ->setBusinessPhone($businessPhone)
+                    ->setHomePhone($homePhone)
+                    ->setHomePhone2($homePhone2)
                     ->setMobile($mobile1)
-                    ->setMobile2($mobile2)
+//                    ->setBirthday($birthday)
+                    ->setEmail($email)
+                    ->setEmail2($email2)
+                    ->setEmail3($email3)
+                    ->setWebPage($webPage)
+//                    ->setNotes($notes)
                     ->setPlainPassword('password')
                     ->setPassword('password');
                 $this->manager->persist($user);

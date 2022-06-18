@@ -7,10 +7,17 @@
         <tr>
             <th>id</th>
             <th>Name</th>
-            <th>Email</th>
-            <th>Email2</th>
+            <th>Company</th>
+            <th>Address H/B</th>
             <th>Mobile1</th>
             <th>Mobile2</th>
+            <th>BusinessPhone</th>
+            <th>HomePhone x2</th>
+            <th>Email</th>
+            <th>Email2</th>
+            <th>Email3</th>
+            <th>Webpage</th>
+            <th>Notes</th>
             <th>Admin</th>
             <th>Family</th>
             <th>Accountant</th>
@@ -32,10 +39,18 @@
                 <tr>
                     <td><b>{{ user.id }}</b></td>
                     <td><b>{{ user.fullName }}</b></td>
-                    <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
-                    <td><a href="mailto:{{ user.email2 }}">{{ user.email2 }}</a></td>
+                    <td>{{ user.company }}</td>
+                    <td>{{ user.homeAddress }}/{{ user.businessAddress }}</td>
                     <td>{{ user.mobile }}</td>
                     <td>{{ user.mobile2 }}</td>
+                    <td>{{ user.businessPhone }}</td>
+                    <td>{{ user.homePhone }}</td>
+                    <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                    <td><a href="mailto:{{ user.email2 }}">{{ user.email2 }}</a></td>
+                    <td><a href="mailto:{{ user.email3 }}">{{ user.email3 }}</a></td>
+                    <td>{{ user.webPage }}</td>
+                    <td>{{ user.notes }}</td>
+
 
 
                     <td style="text-align: center">
@@ -217,9 +232,9 @@
                             <a class="btn btn-success btn-sm" href="{{ path('user_invite', {'userid':user.id}) }}">Invite email</a>
                         {% endif %}
                     </td>
-                    <td>
-                        Date
-                    </td>
+
+                    <td>{{ user.inviteDate|date('d-M-Y') }}</td>
+
                 </tr>
             {% endfor %}
         {% endif %}

@@ -17,10 +17,21 @@ class UserType extends AbstractType
         $builder
             ->add('firstName')
             ->add('lastName')
+            ->add('company')
+            ->add('businessAddress')
+            ->add('homeAddress')
             ->add('email')
             ->add('email2')
+            ->add('email3')
             ->add('mobile')
             ->add('mobile2')
+            ->add('businessPhone')
+            ->add('homePhone')
+            ->add('homePhone2')
+            ->add('birthday')
+            ->add('webPage')
+            ->add('notes')
+            ->add('inviteDate')
             ->add('calendarInviteEmail',ChoiceType::class,[
                 'choices'=>[
                     $options['email1']=>$options['email1'],

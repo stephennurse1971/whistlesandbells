@@ -3,14 +3,19 @@
 {% block title %}Photos index{% endblock %}
 
 {% block body %}
-
-    <h1 style="color: red">Photos index   <a href="{{ path('photos_new') }}">+</a></h1>
+    {% if is_granted ('ROLE_ADMIN') %}
+        <h1 style="color: red">Photos index <a href="{{ path('photos_new') }}">+</a></h1>
+    {% else %}
+        <h1 style="color: red">Photos index</h1>
+    {% endif %}
     <div class="mt-1 mb-1">
         {% for location in locations %}
             <a class="btn btn-outline-info ml-2"
                href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
         {% endfor %}
+        {% if is_granted ('ROLE_ADMIN') %}
         <a href="{{ path('photo_locations_new') }}">+</a>
+        {% endif %}
     </div>
     <table class="table">
         <thead>
@@ -36,8 +41,7 @@
                     {% endif %}
                 </td>
                 <td>{{ photo.location.location }}</td>
-                <td> {{ photo.date ? photo.date|date('d-M-Y') }}</a></td>
-
+                <td data-sort="{{photo.date|date('Y-m-d')}}">{{photo.date? photo.date|date('M-Y') }}</a></td>
                 <td style="text-align: center">
                     <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">
                         {% if photo.rotate==1 %}
@@ -53,9 +57,11 @@
                 </td>
                 <td style="text-align: center">
                     {% if photo.public %}
-                        <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 1} ) }}"><i class="fas fa-circle text-success"></i> </a>
+                        <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 1} ) }}"><i
+                                    class="fas fa-circle text-success"></i> </a>
                     {% else %}
-                        <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 0} ) }}"><i class="fas fa-circle text-danger"></i> </a>
+                        <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 0} ) }}"><i
+                                    class="fas fa-circle text-danger"></i> </a>
                     {% endif %}
                 </td>
                 <td width="100px"><a class="btn btn-outline-danger btn-sm"
@@ -84,7 +90,7 @@
                 'pageLength': 100,
                 "order": [[1, 'asc', 2, 'desc']],
                 "paging": false,
-                "searching": true,
+                "searching": false,
                 "bInfo": false
             });
         });
