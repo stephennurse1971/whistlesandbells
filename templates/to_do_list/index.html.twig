@@ -9,6 +9,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>Priority</th>
             <th>Task</th>
             <th>Assigned To</th>
             <th>Completion Date</th>
@@ -19,14 +20,18 @@
         <tbody>
         {% for to_do_list in to_do_lists %}
             <tr>
+                <td>{{ to_do_list.priority }}</td>
                 <td><a href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.task }}</a></td>
                 <td>{{ to_do_list.assignedTo }}</td>
-                <td>{{ to_do_list.completionDate ? to_do_list.completionDate|date('d-M-Y') : '' }}</td>
+                <td data-sort="{{ to_do_list.completionDate ? to_do_list.completionDate|date('Y-m-d') : '' }}">{{ to_do_list.completionDate ? to_do_list.completionDate|date('d-M-Y') : '' }}</td>
                 <td>
                     {% if to_do_list.file is empty %}
                         -
                     {% else %}
-                        <a title="{{ to_do_list.file }}" target="_blank" href="{{ path('to_do_list_viewfile',{fileName:to_do_list.file}) }}"><i class="fa fa-paperclip"></i> </a>
+                        {% for file in to_do_list.file %}
+                            <a title="{{ file }}" target="_blank"
+                               href="{{ path('to_do_list_viewfile',{fileName:file}) }}"><i class="fa fa-paperclip"></i> </a>
+                        {% endfor %}
                     {% endif %}
 
                 </td>
@@ -46,7 +51,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc']],
+                "order": [[0, 'asc', 1, 'dsc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

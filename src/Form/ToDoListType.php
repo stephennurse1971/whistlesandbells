@@ -16,6 +16,7 @@ class ToDoListType extends AbstractType
     {
         $builder
             ->add('task')
+            ->add('priority')
             ->add('assignedTo')
             ->add('completionDate', DateType::class, [
                 'widget' => 'single_text',
@@ -25,7 +26,7 @@ class ToDoListType extends AbstractType
             ])
             ->add('description')
             ->add('file', FileType::class, [
-              //  'multiple' => true,
+                'multiple'=>true,
                 'mapped' => false,
                 'required' =>false,
             ])

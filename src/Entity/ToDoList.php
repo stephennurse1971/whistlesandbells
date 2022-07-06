@@ -37,10 +37,17 @@ class ToDoList
      */
     private $description;
 
+
+
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $file;
+    private $priority;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $file = [];
 
     public function getId(): ?int
     {
@@ -95,12 +102,26 @@ class ToDoList
         return $this;
     }
 
-    public function getFile(): ?string
+
+
+    public function getPriority(): ?int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(?int $priority): self
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    public function getFile(): ?array
     {
         return $this->file;
     }
 
-    public function setFile(?string $file): self
+    public function setFile(?array $file): self
     {
         $this->file = $file;
 

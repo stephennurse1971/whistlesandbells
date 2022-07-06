@@ -6,14 +6,19 @@ use App\Entity\Photos;
 use App\Entity\ToDoList;
 use App\Form\ToDoListType;
 use App\Repository\ToDoListRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 /**
- * @Route("/to/do/list")
+ * @Route("/todolist")
+ * @IsGranted("ROLE_USER")
+ *
  */
 class ToDoListController extends AbstractController
 {
@@ -38,15 +43,20 @@ class ToDoListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if($form->get('file')->getData()) {
-                $file = $form->get('file')->getData();
+                $files = $form->get('file')->getData();
+                $file_names = [];
+                foreach($files as $file){
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename . "." . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('files_upload_default_directory'),
+                        $newFilename
+                    );
+                    $file_names[]=$newFilename;
+                }
 
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . "." . $file->guessExtension();
-                $file->move(
-                    $this->getParameter('files_upload_default_directory'),
-                    $newFilename
-                );
-                $toDoList->setFile($newFilename);
+
+                $toDoList->setFile($file_names);
             }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($toDoList);
@@ -82,15 +92,20 @@ class ToDoListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if($form->get('file')->getData()) {
-                $file = $form->get('file')->getData();
+                $files = $form->get('file')->getData();
+                $file_names = [];
+                foreach($files as $file){
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename . "." . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('files_upload_default_directory'),
+                        $newFilename
+                    );
+                    $file_names[]=$newFilename;
+                }
 
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . "." . $file->guessExtension();
-                $file->move(
-                    $this->getParameter('files_upload_default_directory'),
-                    $newFilename
-                );
-                $toDoList->setFile($newFilename);
+
+                $toDoList->setFile($file_names);
             }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($toDoList);

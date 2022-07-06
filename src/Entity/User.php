@@ -81,10 +81,7 @@ class User implements UserInterface
     private $LastName;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity=Payments::class, mappedBy="user")
-     */
-    private $paymentamount;
+
 
 
 
@@ -166,7 +163,6 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->paymentamount = new ArrayCollection();
         $this->logs = new ArrayCollection();
         $this->houseGuests = new ArrayCollection();
         $this->photos = new ArrayCollection();
@@ -572,8 +568,4 @@ class User implements UserInterface
     }
 
 
-
-
-
-    
 }

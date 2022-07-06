@@ -1,19 +1,28 @@
 <style>
-    .ck-editor__editable {min-height: 600px;}
+    .ck-editor__editable {min-height: 1100px;}
 </style>
 
 {{ form_start(form) }}
 <div class="row">
     <div class="col-md-3">
         <h2></h2>
+        {{ form_row(form.priority) }}
         {{ form_row(form.task) }}
-        {{ form_row(form.assignedTo) }}
         {{ form_row(form.completionDate) }}
+        {{ form_row(form.assignedTo) }}
+        {% for file in to_do_list.file %}
+          <strong>
+              <a target="_blank" href="{{ path('to_do_list_viewfile',{fileName:file}) }}"> {{ file }}  </a>
+          </strong>
+            <br>
+        {% endfor %}
+<div class="mt-1"></div>
+        {{ form_row(form.file) }}
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <h2></h2>
         {{ form_row(form.description) }}
-        {{ form_row(form.file) }}
+
     </div>
 </div>
 <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
