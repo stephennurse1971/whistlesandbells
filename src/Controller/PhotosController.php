@@ -23,8 +23,21 @@ class PhotosController extends AbstractController
      */
     public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository): Response
     {
+        if(!$this->getUser()){
+            $photos = $photosRepository->findBy([
+                'location' => $locationsRepository->findAll(),
+                'public'=>1
+            ]);
+        }
+        else{
+            $photos = $photosRepository->findBy([
+                'location' => $locationsRepository->findAll()
+            ]);
+        }
+
+
         return $this->render('photos/index.html.twig', [
-            'photos' => $photosRepository->findAll(),
+            'photos' => $photos,
             'locations' => $locationsRepository->findAll()
         ]);
     }
@@ -34,11 +47,22 @@ class PhotosController extends AbstractController
      */
     public function showPhotosByLocation(string $locationName, PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository)
     {
-        $photos = $photosRepository->findBy([
-            'location' => $locationsRepository->findOneBy([
-                'location'=>$locationName
-            ])
-        ]);
+        if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')){
+            $photos = $photosRepository->findBy([
+                'location' => $locationsRepository->findOneBy([
+                    'location'=>$locationName
+                ])
+            ]);
+        }
+       else{
+           $photos = $photosRepository->findBy([
+               'location' => $locationsRepository->findOneBy([
+                   'location'=>$locationName
+               ]),
+               'public'=>1
+           ]);
+       }
+
         return $this->render('photos/showByLocation.html.twig', [
             'photos' => $photos,
              'location'=>$locationsRepository->findOneBy(['location'=>$locationName])->getLocation()
@@ -72,9 +96,13 @@ class PhotosController extends AbstractController
         $form = $this->createForm(PhotosType::class, $photo);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $photos = $form->get('photos')->getData();
             foreach ($photos as $single_photo) {
                 $photo_single = new Photos();
+                if(!$photo->getPublic()){
+                    $photo_single->setPublic(0);
+                }
                 $originalFilename = pathinfo($single_photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $originalFilename . '.' . $single_photo->guessExtension();
                 $single_photo->move(
@@ -160,6 +188,21 @@ class PhotosController extends AbstractController
             $entityManager->remove($photo);
             $entityManager->flush();
         }
+        return $this->redirect($referer);
+    }
+
+
+    /**
+     * @Route("/deleteAll/photos", name="photos_delete_all",)
+     */
+    public function deleteAll(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        foreach ($photosRepository->findAll() as $photo){
+            $entityManager->remove($photo);
+
+        }
+        $entityManager->flush();
         return $this->redirect($referer);
     }
 }

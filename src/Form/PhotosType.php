@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\PhotoLocations;
 use App\Entity\Photos;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -35,6 +36,14 @@ class PhotosType extends AbstractType
             ])
             ->add('person', EntityType::class, [
                 'class' => User::class,
+                'query_builder'=> function (EntityRepository $er) {
+                   return $er->createQueryBuilder('u')
+                           -> where('u.roles LIKE :role')
+                           ->setParameter('role', "%ROLE_GUEST%")
+                           ->orderBy('u.fullName', 'ASC')
+                    ;
+
+                },
                 'choice_label' => 'fullName',
                 'required' => false,
                 'empty_data' => null,

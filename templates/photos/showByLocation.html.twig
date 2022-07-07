@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <style>
-
-
         .image-container {
             display: flex;
             max-height: 500px;
@@ -18,88 +16,98 @@
         }
 
     </style>
-    <div>
-        <h1 style="color: red">{{ location }}</h1> <br><br>
-    </div>
 
 
-    <div class="row my-2 border p-2 bg-white">
-        {% for photo in photos %}
-            {% set loc = asset('photos')~"/"~photo.photoFile %}
-            <div class=" p-1 mb-1 ">
+    {% if photos is empty %}
 
-                {% if photo.rotate==1 %}
-                    <div class="image-container">
-                        <img src="{{ loc }}" class=" rotate-90">
-                    </div>
-                    <div class="text-center py-2">
-                        {% if photo.public %}
-                            {% if is_granted ('ROLE_ADMIN') %}
-                                <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 1} ) }}"><i
-                                            class="fas fa-circle text-success"></i> </a>
-                            {% else %}
-                                <i class="fas fa-circle text-success"></i>
-                            {% endif %}
-                        {% else %}
-                            {% if is_granted ('ROLE_ADMIN') %}
-                                <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 0} ) }}"><i
-                                            class="fas fa-circle text-danger"></i> </a>
-                            {% else %}
-                                <i class="fas fa-circle text-danger"></i>
-                            {% endif %}
-                        {% endif %}
-                        {% if is_granted ('ROLE_ADMIN') %}
-                        <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"> <i class="fa fa-shield"></i></a>
-                        <form class="d-inline" method="post" action="{{ path('photos_delete', {'id': photo.id}) }}"
-                              onsubmit="return confirm('Are you sure you want to delete this item?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                            {% endif %}
-                            {% set individuals ='' %}
-                            {% for person in photo.person %}
-                                {% set individuals = individuals~person.fullName~', ' %}
-                            {% endfor %}
-                            <i title="{{ individuals }}" class="fas fa-info"></i>
-                    </div>
-                {% else %}
-                    <div class="image-container">
-                        <img src="{{ loc }}">
-                    </div>
-                    <div class="text-center py-1">
-                        {% if photo.public %}
-                            {% if is_granted ('ROLE_ADMIN') %}
-                                <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 1} ) }}"><i
-                                            class="fas fa-circle text-success"></i> </a>
-                            {% else %}
-                                <i class="fas fa-circle text-success"></i>
-                            {% endif %}
-                        {% else %}
-                            {% if is_granted ('ROLE_ADMIN') %}
-                                <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 0} ) }}"><i
-                                            class="fas fa-circle text-danger"></i> </a>
-                            {% else %}
-                                <i class="fas fa-circle text-danger"></i>
-                            {% endif %}
-                        {% endif %}
-
-                        {% if is_granted ('ROLE_ADMIN') %}
-                        <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"> <i class="fa fa-shield"></i></a>
-                        <form class="d-inline" method="post" action="{{ path('photos_delete', {'id': photo.id}) }}"
-                              onsubmit="return confirm('Are you sure you want to delete this item?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                            {% endif %}
-                            {% set individuals ='' %}
-                            {% for person in photo.person %}
-                                {% set individuals = individuals~person.fullName~', ' %}
-                            {% endfor %}
-                            <i title="{{ individuals }}" class="fas fa-info"></i>
-                    </div>
-                {% endif %}
+            <div>
+                <h1 class="mb-0" style="color: red">{{ location }}</h1>
             </div>
-        {% endfor %}
-    </div>
+            <div>
+                <h4>No photos</h4>
+            </div>
 
+    {% else %}
+        <div>
+            <h1 style="color: red">{{ location }}</h1> <br><br>
+        </div>
+        <div class="row my-2 border p-2 bg-white">
+            {% for photo in photos %}
+                {% set loc = asset('photos')~"/"~photo.photoFile %}
+                <div class=" p-1 mb-1 ">
+
+                    {% if photo.rotate==1 %}
+                        <div class="image-container">
+                            <img src="{{ loc }}" class=" rotate-90">
+                        </div>
+                        <div class="text-center py-2">
+                            {% if photo.public %}
+                                {% if is_granted ('ROLE_ADMIN') %}
+                                    <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 1} ) }}"><i
+                                                class="fas fa-circle text-success"></i> </a>
+                                {% else %}
+                                    <i class="fas fa-circle text-success"></i>
+                                {% endif %}
+                            {% else %}
+                                {% if is_granted ('ROLE_ADMIN') %}
+                                    <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 0} ) }}"><i
+                                                class="fas fa-circle text-danger"></i> </a>
+                                {% else %}
+                                    <i class="fas fa-circle text-danger"></i>
+                                {% endif %}
+                            {% endif %}
+                            {% if is_granted ('ROLE_ADMIN') %}
+                            <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"> <i class="fa fa-shield"></i></a>
+                            <form class="d-inline" method="post" action="{{ path('photos_delete', {'id': photo.id}) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                {% endif %}
+                                {% set individuals ='' %}
+                                {% for person in photo.person %}
+                                    {% set individuals = individuals~person.fullName~', ' %}
+                                {% endfor %}
+                                <i title="{{ individuals }}" class="fas fa-info"></i>
+                        </div>
+                    {% else %}
+                        <div class="image-container">
+                            <img src="{{ loc }}">
+                        </div>
+                        <div class="text-center py-1">
+                            {% if photo.public %}
+                                {% if is_granted ('ROLE_ADMIN') %}
+                                    <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 1} ) }}"><i
+                                                class="fas fa-circle text-success"></i> </a>
+                                {% else %}
+                                    <i class="fas fa-circle text-success"></i>
+                                {% endif %}
+                            {% else %}
+                                {% if is_granted ('ROLE_ADMIN') %}
+                                    <a href="{{ path('photos_public_private', {'id':photo.id, 'action': 0} ) }}"><i
+                                                class="fas fa-circle text-danger"></i> </a>
+                                {% else %}
+                                    <i class="fas fa-circle text-danger"></i>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if is_granted ('ROLE_ADMIN') %}
+                            <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"> <i class="fa fa-shield"></i></a>
+                            <form class="d-inline" method="post" action="{{ path('photos_delete', {'id': photo.id}) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                {% endif %}
+                                {% set individuals ='' %}
+                                {% for person in photo.person %}
+                                    {% set individuals = individuals~person.fullName~', ' %}
+                                {% endfor %}
+                                <i title="{{ individuals }}" class="fas fa-info"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {#    .div {#}
     {#    background-image: url(../images/your-image.png);#}
