@@ -48,6 +48,22 @@
         <hr class="sidebar-divider">
     {% endif %}
 
+    <!-- Nav Item #3 - UK Days -->
+    {% if is_granted('ROLE_ADMIN') %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUKDays"
+               aria-expanded="true" aria-controls="collapseUKDays">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>UK Days</span>
+            </a>
+            <div id="collapseUKDays" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('uk_days_index') }}">UK Days</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
     <!-- Nav Item #3 - House Guest -->
     {% if is_granted('ROLE_GUEST')  %}
         <li class="nav-item">

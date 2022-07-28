@@ -1,0 +1,36 @@
+<style>
+    .ck-editor__editable {min-height: 1100px;}
+</style>
+
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        <h2></h2>
+        {{ form_row(form.startDate) }}
+        {{ form_row(form.endDate) }}
+        {% if error is defined %}
+        <div class="text-danger">{{ error}} </div>
+        {% endif %}
+        {{ form_row(form.travelDocs) }}
+                {% for travelDocs in uk_day.travelDocs %}
+                    <strong>
+                        <a target="_blank" href="{{ path('to_do_list_viewfile',{fileName:travelDocs}) }}"> {{ travelDocs }}  </a>
+                    </strong>
+                    <br>
+                {% endfor %}
+        <div class="mt-1"></div>
+    </div>
+
+</div>
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#to_do_list_description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+{% endblock %}

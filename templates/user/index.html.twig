@@ -5,28 +5,22 @@
     <table class="table">
         <thead>
         <tr>
-            <th>id</th>
             <th>Name</th>
             <th>Company</th>
-            <th>Address H/B</th>
-            <th>Mobile1</th>
-            <th>Mobile2</th>
-            <th>BusinessPhone</th>
-            <th>HomePhone x2</th>
-            <th>Email</th>
-            <th>Email2</th>
-            <th>Email3</th>
-            <th>Webpage</th>
-            <th>Notes</th>
+            <th title="Home/Business">Address</th>
+            <th>Mobile(s)</th>
+            <th>Landlines</th>
+            <th>Email(s)</th>
+            <th>www</th>
+            <th>Birthday</th>
+            <th width="150px">Notes</th>
             <th>Admin</th>
             <th>Family</th>
-            <th>Accountant</th>
-            <th>HMRC</th>
-            <th>Serpentine</th>
             <th>Contact</th>
             <th>Guest</th>
             {% if is_granted('ROLE_ADMIN') %}
                 <th style="color: red;">Plain Password</th>
+                <th>#</th>
                 <th>#</th>
                 <th>Invite email</th>
             {% endif %}
@@ -37,20 +31,82 @@
         {% if role=='All' %}
             {% for user in users %}
                 <tr>
-                    <td><b>{{ user.id }}</b></td>
-                    <td><b>{{ user.fullName }}</b></td>
+                    <td>
+                        {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
+                            <b><a target="_blank"
+                                  href="{{ path('user_edit', {'id': user.id}) }}">  {{ user.fullName }}</a></b>
+                        {% else %}
+                            <b>{{ user.fullName }}</b>
+                        {% endif %}
+                    </td>
                     <td>{{ user.company }}</td>
-                    <td>{{ user.homeAddress }}/{{ user.businessAddress }}</td>
-                    <td>{{ user.mobile }}</td>
-                    <td>{{ user.mobile2 }}</td>
-                    <td>{{ user.businessPhone }}</td>
-                    <td>{{ user.homePhone }}</td>
-                    <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
-                    <td><a href="mailto:{{ user.email2 }}">{{ user.email2 }}</a></td>
-                    <td><a href="mailto:{{ user.email3 }}">{{ user.email3 }}</a></td>
-                    <td>{{ user.webPage }}</td>
-                    <td>{{ user.notes }}</td>
+                    <td align="center">
+                        {% if user.homeAddress is not empty %}
+                            <i class="fa fa-home" title="{{ user.homeAddress }}"></i>
+                        {% endif %}
 
+                        {% if user.homeAddress is not empty and user.businessAddress %} / {% endif %}
+
+                        {% if user.businessAddress is not empty %}
+                            <i class="fa fa-industry" title="{{ user.businessAddress }}"></i>
+                        {% endif %}
+                    </td>
+
+                    <td align="center">
+                        {% if user.mobile is not empty %}
+                            <i class="fa fa-phone" title="{{ user.mobile }}"></i>
+                        {% endif %}
+
+                        {% if user.mobile2 is not empty %} /
+                            <i class="fa fa-phone" title="{{ user.mobile2 }}"></i>
+                        {% endif %}
+                    </td>
+
+                    <td align="center">
+                        {% if user.businessPhone is not empty %}
+                            <i class="fa fa-phone" title="{{ user.businessPhone }}"></i>
+                        {% endif %}
+
+                        {% if user.homePhone is not empty %} /
+                            <i class="fa fa-phone" title="{{ user.homePhone }}"></i>
+                        {% endif %}
+                    </td>
+
+                    <td align="center">
+                        {% if user.email is not empty %}
+                            <a title="{{ user.email }}" href="mailto:{{ user.email }}">
+                                <i class="fa fa-envelope-open-o"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if user.email2 is not empty %}
+                            <a title="{{ user.email2 }}" href="mailto:{{ user.email2 }}">
+                                <i class="fa fa-envelope-open-o"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if user.email3 is not empty %} /
+                            <a title="{{ user.email3 }}" href="mailto:{{ user.email3 }}">
+                                <i class="fa fa-envelope-open-o"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+
+                    <td align="center">
+                        {% if user.webPage is not empty %}
+                            <a title="{{ user.webPage }}" href="{{ user.webPage }}">
+                                <i class="fa fa-globe"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+
+                    <td align="center" data-sort="{{ user.birthday|date('m-d') }}">
+                        {% if user.birthday is not empty %}
+                            {{ user.birthday |date('d-M-Y') }}
+                        {% endif %}
+                    </td>
+
+                    <td>{{ user.notes }}</td>
 
 
                     <td style="text-align: center">
@@ -77,34 +133,10 @@
                         {% endfor %}
                         {% if flag == 1 %}
                             {% if app.user.id == user.id %}
-                                 <i class="fa fa-circle" style="color: green; text-align: right"></i>
-                            {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                            {% endif %}
-                        {% else %}
-
-
-                            {% if app.user.id == user.id %}
-                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                            {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                            {% endif %}
-                        {% endif %}
-                    </td>
-
-
-                    <td style="text-align: center">
-                        {% set flag = 0 %}
-                        {% for role in user.roles %}
-                            {% if role == 'ROLE_ACCOUNTANT' %}
-                                {% set flag = 1 %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if flag == 1 %}
-                            {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: green; text-align: right"></i>
                             {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ACCOUNTANT", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '1'}) }}"><i
+                                            class="fa fa-circle" style="color: green; text-align: right"></i></a>
                             {% endif %}
                         {% else %}
 
@@ -112,59 +144,8 @@
                             {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: red; text-align: right"></i>
                             {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ACCOUNTANT", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                            {% endif %}
-                        {% endif %}
-                    </td>
-
-
-
-
-                    <td style="text-align: center">
-                        {% set flag = 0 %}
-                        {% for role in user.roles %}
-                            {% if role == 'ROLE_HMRC' %}
-                                {% set flag = 1 %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if flag == 1 %}
-                            {% if app.user.id == user.id %}
-                                <i class="fa fa-circle" style="color: green; text-align: right"></i>
-                            {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_HMRC", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                            {% endif %}
-                        {% else %}
-
-
-                            {% if app.user.id == user.id %}
-                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                            {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_HMRC", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                            {% endif %}
-                        {% endif %}
-                    </td>
-
-
-                    <td style="text-align: center">
-                        {% set flag = 0 %}
-                        {% for role in user.roles %}
-                            {% if role == 'ROLE_SERPENTIME' %}
-                                {% set flag = 1 %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if flag == 1 %}
-                            {% if app.user.id == user.id %}
-                                <i class="fa fa-circle" style="color: green; text-align: right"></i>
-                            {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_SERPENTIME", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                            {% endif %}
-                        {% else %}
-
-
-                            {% if app.user.id == user.id %}
-                                <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                            {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_SERPENTIME", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '1'}) }}"><i
+                                            class="fa fa-circle" style="color: red; text-align: right"></i></a>
                             {% endif %}
                         {% endif %}
                     </td>
@@ -181,7 +162,8 @@
                             {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: green; text-align: right"></i>
                             {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '1'}) }}"><i
+                                            class="fa fa-circle" style="color: green; text-align: right"></i></a>
                             {% endif %}
                         {% else %}
 
@@ -189,7 +171,8 @@
                             {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: red; text-align: right"></i>
                             {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '1'}) }}"><i
+                                            class="fa fa-circle" style="color: red; text-align: right"></i></a>
                             {% endif %}
                         {% endif %}
                     </td>
@@ -206,7 +189,8 @@
                             {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: green; text-align: right"></i>
                             {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '1'}) }}"><i class="fa fa-circle" style="color: green; text-align: right"></i></a>
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '1'}) }}"><i
+                                            class="fa fa-circle" style="color: green; text-align: right"></i></a>
                             {% endif %}
                         {% else %}
 
@@ -214,7 +198,8 @@
                             {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: red; text-align: right"></i>
                             {% else %}
-                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '1'}) }}"><i class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                                <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '1'}) }}"><i
+                                            class="fa fa-circle" style="color: red; text-align: right"></i></a>
                             {% endif %}
                         {% endif %}
                     </td>
@@ -224,12 +209,15 @@
                     {% endif %}
                     <td>
                         {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
-                            <a class="btn btn-outline-danger btn-sm" href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
-                            <form class="d-inline" method="post" action="{{ path('user_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i></button>
-                            </form>
-                            <a class="btn btn-success btn-sm" href="{{ path('user_invite', {'userid':user.id}) }}">Invite email</a>
+                        <form class="d-inline" method="post" action="{{ path('user_delete', {'id': user.id}) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                            <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                        </form>
+                    </td>
+                    <td>
+                        <a class="btn btn-success btn-sm" href="{{ path('user_invite', {'userid':user.id}) }}">Invite
+                            email</a>
                         {% endif %}
                     </td>
 
@@ -323,7 +311,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc']],
+                "order": [[7, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

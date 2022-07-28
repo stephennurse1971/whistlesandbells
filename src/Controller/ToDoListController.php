@@ -54,8 +54,6 @@ class ToDoListController extends AbstractController
                     );
                     $file_names[]=$newFilename;
                 }
-
-
                 $toDoList->setFile($file_names);
             }
             $entityManager = $this->getDoctrine()->getManager();
@@ -103,8 +101,6 @@ class ToDoListController extends AbstractController
                     );
                     $file_names[]=$newFilename;
                 }
-
-
                 $toDoList->setFile($file_names);
             }
             $entityManager = $this->getDoctrine()->getManager();

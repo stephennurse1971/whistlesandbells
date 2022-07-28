@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Show: Days in UK{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Days in UK</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ uk_day.id }}</td>
+            </tr>
+            <tr>
+                <th>StartDate</th>
+                <td>{{ uk_day.startDate ? uk_day.startDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndDate</th>
+                <td>{{ uk_day.endDate ? uk_day.endDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>TravelDocs</th>
+                <td>{{ uk_day.travelDocs }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('uk_days_index') }}">Return to list</a>
+
+    <a class="btn btn-danger btn-sm" href="{{ path('uk_days_edit', {'id': uk_day.id}) }}">Edit</a>
+
+    {{ include('uk_days/_delete_form.html.twig') }}
+{% endblock %}

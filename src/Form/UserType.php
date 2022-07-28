@@ -5,8 +5,10 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,15 +25,21 @@ class UserType extends AbstractType
             ->add('email')
             ->add('email2')
             ->add('email3')
-            ->add('mobile')
+            ->add('mobile',TextType::class,[
+                'required'=>false
+            ])
             ->add('mobile2')
             ->add('businessPhone')
             ->add('homePhone')
             ->add('homePhone2')
-            ->add('birthday')
+            ->add('birthday', DateType::class,[
+                'widget' => 'single_text'
+            ])
             ->add('webPage')
             ->add('notes')
-            ->add('inviteDate')
+            ->add('inviteDate', DateType::class,[
+                'widget' => 'single_text'
+            ])
             ->add('calendarInviteEmail',ChoiceType::class,[
                 'choices'=>[
                     $options['email1']=>$options['email1'],
