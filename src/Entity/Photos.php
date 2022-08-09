@@ -49,6 +49,11 @@ class Photos
      */
     private $public;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->person = new ArrayCollection();
@@ -139,6 +144,18 @@ class Photos
     public function setPublic(?bool $public): self
     {
         $this->public = $public;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

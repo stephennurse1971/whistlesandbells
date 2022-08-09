@@ -102,6 +102,7 @@
                                     {% set individuals = individuals~person.fullName~', ' %}
                                 {% endfor %}
                                 <i title="{{ individuals }}" class="fas fa-info"></i>
+                                <a href ="{{ path('photos_edit', {'id':photo.id}) }}">{{ photo.description }}..</a>
                         </div>
                     {% endif %}
                 </div>

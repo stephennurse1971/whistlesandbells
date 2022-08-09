@@ -49,6 +49,7 @@ class PhotosType extends AbstractType
                 'empty_data' => null,
                 'multiple'=>true
             ])
+            ->add('description')
             ->add('public');
     }
 
