@@ -41,4 +41,11 @@ class FileUploadController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/file/download", name="file_download")
+     */
+    public function fileDownload(){
+        $file_path = $this->getParameter('files_upload_default_directory')."/chaveydown.zip";
+        return $this->file($file_path);
+    }
 }
