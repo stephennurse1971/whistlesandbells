@@ -54,7 +54,6 @@ class UserType extends AbstractType
                     'Admin'=>'ROLE_ADMIN',
                     'Family'=>'ROLE_FAMILY',
                     'HMRC' =>'ROLE_HMRC',
-                    'Serpentine' =>'ROLE_SERPENTINE',
                     'Accountant' =>'ROLE_ACCOUNTANT',
                     'Contact' =>'ROLE_CONTACT',
                     'Guest' => 'ROLE_GUEST'

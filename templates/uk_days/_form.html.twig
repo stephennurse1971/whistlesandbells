@@ -1,5 +1,7 @@
 <style>
-    .ck-editor__editable {min-height: 1100px;}
+    .ck-editor__editable {
+        min-height: 1100px;
+    }
 </style>
 
 {{ form_start(form) }}
@@ -8,21 +10,46 @@
         <h2></h2>
         {{ form_row(form.startDate) }}
         {{ form_row(form.endDate) }}
-        {% if error is defined %}
-        <div class="text-danger">{{ error}} </div>
-        {% endif %}
+        {{ form_row(form.country) }}
+
+
+        {#        {% if error is defined %}#}
+        {#        <div class="text-danger">{{ error}} </div>#}
+        {#        {% endif %}#}
+
+
+        {{ form_row(form.travel1Description) }}
         {{ form_row(form.travelDocs) }}
-                {% for travelDocs in uk_day.travelDocs %}
-                    <strong>
-                        <a target="_blank" href="{{ path('to_do_list_viewfile',{fileName:travelDocs}) }}"> {{ travelDocs }}  </a>
-                    </strong>
-                    <br>
-                {% endfor %}
+        {% for travelDocs in uk_day.travelDocs %}
+            <strong>
+                <a target="_blank"
+                   href="{{ path('to_do_list_viewfile',{fileName:travelDocs}) }}"> {{ travelDocs }}  </a>
+            </strong>
+            <br>
+        {% endfor %}
+
+
+        <hr>
+
+        {{ form_row(form.travel2Description) }}
+        {{ form_row(form.travelDocs2) }}
+        {% for travelDocs2 in uk_day.travelDocs2 %}
+            <strong>
+                <a target="_blank"
+                   href="{{ path('to_do_list_viewfile',{fileName:travelDocs2}) }}"> {{ travelDocs2 }}  </a>
+            </strong>
+            <br>
+        {% endfor %}
         <div class="mt-1"></div>
+
+        {{ form_row(form.comment) }}
     </div>
 
 </div>
+
+
 <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+<br>
 {{ form_end(form) }}
 
 {% block additionaljs %}

@@ -1,0 +1,10 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        {{ form_widget(form) }}
+    </div>
+</div>
+
+
+<button class="btn btn-success bt-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

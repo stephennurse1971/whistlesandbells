@@ -4,4 +4,5 @@ twig:
     globals:
         Investment: '@App\Services\Investment'
         StaticText: '@App\Services\StaticText'
+        TaxYear: '@App\Services\TaxYear'
 

@@ -3,58 +3,94 @@
 {% block title %}UK Days{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Days in UK<a href="{{ path('uk_days_new') }}">+</a></h1>
+    <h1 style="color: red">Days in UK <a target="_blank" href="{{ path('uk_days_new') }}">+</a></h1>
+    <br>
 
 
 
     <table class="table">
         <thead>
         <tr>
-            <th>Tax year</th>
-            <th>#Days</th>
+            <th>Tax year     <a target="_blank" class="btn-outline-secondary btn-sm" href="{{ path('tax_year_new') }}">+</a></th>
+            {% for country in countries %}
+                <th> {{ country.country }}  </th>
+            {% endfor %}
         </tr>
         </thead>
         <tbody>
+
+        {% for taxyear in taxyears %}
+
             <tr>
                 <td>
-                    Tax year
+                    <b>{{ taxyear.taxYearRange }}</b>
                 </td>
-                <td>
-                    Days
-                </td>
-
+                {% for country in countries %}
+                    <td style="text-align: right">
+                        ??
+                    </td>
+                {% endfor %}
             </tr>
+        {% endfor %}
+
+
         </tbody>
     </table>
 
     <hr>
 
 
+
+
+
+
+
+
     <table class="table">
         <thead>
         <tr>
+            <th>test</th>
             <th>Start Date</th>
             <th>End Date</th>
             <th># days</th>
-            <th>Travel Docs</th>
+            <th>Country</th>
+            <th>Commentary</th>
+            <th>Outbound</th>
+            <th>Inbound</th>
             <th>#</th>
         </tr>
         </thead>
         <tbody>
         {% for uk_day in uk_days %}
             <tr>
-                <td>
+             <td>  {% set tax_year = TaxYear.findTaxYearAndDays(uk_day.startDate,uk_day.endDate) %}
+                   {% for year in tax_year %}
+                       {{ year }}
+                   {% endfor %}
+{#                <td>#}
+{#                 {{   TaxYear.findTaxYearAndDays(uk_day.startDate,uk_day.endDate) }}#}
+             </td>
+                <td data-sort="{{ uk_day.startDate ? uk_day.startDate|date('Y-m-d') : '' }}" >
                     <a href="{{ path('uk_days_edit', {'id': uk_day.id}) }}">{{ uk_day.startDate ? uk_day.startDate|date('d-M-Y') : '' }}</a>
                 </td>
                 <td>{{ uk_day.endDate ? uk_day.endDate|date('d-M-Y') : '' }}</td>
-                <td align="right">
-                    {{ uk_day.dayCount }}
-                </td>
+                <td align="right">{{ uk_day.dayCount }}</td>
+                <td align="right">{{ uk_day.country.country }}</td>
+                <td align="right">{{ uk_day.comment }}</td>
                 <td>
                     {% for travelDocs in uk_day.travelDocs %}
                         <strong>
                             <a target="_blank"
                                href="{{ path('to_do_list_viewfile',{fileName:travelDocs}) }}"> {{ travelDocs }}  </a>
+                        </strong>
+                        <br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for travelDocs2 in uk_day.travelDocs2 %}
+                        <strong>
+                            <a target="_blank"
+                               href="{{ path('to_do_list_viewfile',{fileName:travelDocs2}) }}"> {{ travelDocs2 }}  </a>
                         </strong>
                         <br>
                     {% endfor %}
@@ -79,7 +115,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'desc', 1, 'dsc']],
+                "order": [[0, 'dsc', 1, 'dsc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

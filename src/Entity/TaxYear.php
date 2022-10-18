@@ -28,15 +28,10 @@ class TaxYear
     private $end_date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $days;
+    private $taxYearRange;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=UkDays::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $ukDay;
 
     public function getId(): ?int
     {
@@ -67,27 +62,17 @@ class TaxYear
         return $this;
     }
 
-    public function getDays(): ?int
+    public function getTaxYearRange(): ?string
     {
-        return $this->days;
+        return $this->taxYearRange;
     }
 
-    public function setDays(int $days): self
+    public function setTaxYearRange(?string $taxYearRange): self
     {
-        $this->days = $days;
+        $this->taxYearRange = $taxYearRange;
 
         return $this;
     }
 
-    public function getUkDay(): ?UkDays
-    {
-        return $this->ukDay;
-    }
 
-    public function setUkDay(?UkDays $ukDay): self
-    {
-        $this->ukDay = $ukDay;
-
-        return $this;
-    }
 }
