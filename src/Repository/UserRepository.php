@@ -87,4 +87,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+    public function findByCompany($company)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.company LIKE :company')
+            ->setParameter('company', $company.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

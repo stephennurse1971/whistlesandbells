@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tax Years{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tax Years</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Tax Year</th>
+            <th>Start_date</th>
+            <th>End_date</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for tax_year in tax_years %}
+            <tr>
+                <td>
+                    <a href="{{ path('tax_year_edit', {'id': tax_year.id}) }}">{{ tax_year.taxYearRange}}</a>
+                </td>
+                <td>
+                    {{ tax_year.startDate ? tax_year.startDate|date('d-M-Y') : '' }}
+                </td>
+                <td>{{ tax_year.endDate ? tax_year.endDate|date('d-M-Y') : '' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-secondary btn-sm mt-2" href="{{ path('tax_year_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

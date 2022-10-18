@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Country;
 use App\Entity\UkDays;
 use App\Form\UkDaysType;
+use App\Repository\CountryRepository;
+use App\Repository\TaxYearRepository;
 use App\Repository\UkDaysRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +21,12 @@ class UkDaysController extends AbstractController
     /**
      * @Route("/", name="uk_days_index", methods={"GET"})
      */
-    public function index(UkDaysRepository $ukDaysRepository): Response
+    public function index(UkDaysRepository $ukDaysRepository, CountryRepository $countryRepository, TaxYearRepository $taxYearRepository): Response
     {
         return $this->render('uk_days/index.html.twig', [
             'uk_days' => $ukDaysRepository->findAll(),
+            'countries' => $countryRepository->findAll(),
+            'taxyears' => $taxYearRepository->findAll()
         ]);
     }
 

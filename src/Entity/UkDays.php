@@ -37,6 +37,31 @@ class UkDays
      */
     private $dayCount;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="ukDays")
+     */
+    private $country;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $travelDocs2;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $travel1Description;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $travel2Description;
+
 
 
     public function getId(): ?int
@@ -88,6 +113,66 @@ class UkDays
     public function setDayCount(?int $dayCount): self
     {
         $this->dayCount = $dayCount;
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getTravelDocs2(): ?string
+    {
+        return $this->travelDocs2;
+    }
+
+    public function setTravelDocs2(?string $travelDocs2): self
+    {
+        $this->travelDocs2 = $travelDocs2;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getTravel1Description(): ?string
+    {
+        return $this->travel1Description;
+    }
+
+    public function setTravel1Description(?string $travel1Description): self
+    {
+        $this->travel1Description = $travel1Description;
+
+        return $this;
+    }
+
+    public function getTravel2Description(): ?string
+    {
+        return $this->travel2Description;
+    }
+
+    public function setTravel2Description(?string $travel2Description): self
+    {
+        $this->travel2Description = $travel2Description;
 
         return $this;
     }

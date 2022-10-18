@@ -28,7 +28,6 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
-
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => 'All',
@@ -43,10 +42,63 @@ class UserController extends AbstractController
     {
 
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->findByRole($role),
             'role' => $role,
             'role_title' => $role
         ]);
+    }
+
+    /**
+     * @Route("/group/AX", name="user_ax", methods={"GET"})
+     */
+    public function indexAX(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findByCompany('AX'),
+            'role'=>"AX"
+        ]);
+    }
+
+    /**
+     * @Route("/group/Personal", name="user_personal", methods={"GET"})
+     */
+    public function indexPersonal(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findByCompany('Personal'),
+            'role'=>"Personal"
+        ]);
+    }
+
+
+    /**
+     * @Route("/delete_all_AX", name="/user/delete_all_AX")
+     */
+    public function deleteAllAXUsers(UserRepository $userRepository)
+    {
+        $allAXUser=$userRepository->findByCompany('AX');
+        foreach ($allAXUser as $AXUser)
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($AXUser);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route("/delete_all_Personal", name="/user/delete_all_Personal")
+     */
+    public function deleteAllPersonalUsers(UserRepository $userRepository)
+    {
+        $allAXUser=$userRepository->findByCompany('Personal');
+        foreach ($allAXUser as $AXUser)
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($AXUser);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('user_index');
     }
 
 
