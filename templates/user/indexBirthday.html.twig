@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+{% block title %}Users: Birthdays {% endblock %}
+{% block body %}
+    <h1><span class="text-danger">Birthdays</span></h1>
+
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_non_admin') }}">Delete All Users (excl
+            Admin)</a>
+        <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_AX') }}">Delete AX Users (excl Admin)</a>
+        <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_Personal') }}">Delete Personal Users (excl
+            Admin)</a>
+    {% endif %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Company</th>
+            <th title="Home/Business">Address</th>
+            <th>Mobile(s)</th>
+            <th>Landlines</th>
+            <th>Email(s)</th>
+            <th>Birthday</th>
+            <th width="950px">Notes</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>
+                    {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
+                        <b><a target="_blank" href="{{ path('user_edit', {'id': user.id}) }}">  {{ user.fullName }}</a></b>
+                    {% else %}
+                        <b><a target="_blank" href="{{ path('user_show', {'id': user.id}) }}">  {{ user.fullName }}</a></b>
+                    {% endif %}
+                </td>
+
+                <td>{{ user.company }}</td>
+                <td align="center">
+                    {% if user.homeStreet is not empty %}
+                        <i class="fa fa-home" title="{{ user.homeStreet }} {{ user.homeCity }} {{ user.homePostalCode }}"></i>
+                    {% endif %}
+
+                    {% if user.homeStreet is not empty and user.businessStreet is not empty%} / {% endif %}
+
+                    {% if user.businessStreet is not empty %}
+                        <i class="fa fa-industry" title="{{ user.businessStreet }} {{ user.businessCity }} {{ user.businessPostalCode }}"></i>
+                    {% endif %}
+                </td>
+
+                <td align="center">
+                    {% if user.mobile is not empty %}
+                        <i class="fa fa-phone" title="{{ user.mobile }}"></i>
+                    {% endif %}
+
+                    {% if user.mobile2 is not empty %} /
+                        <i class="fa fa-phone" title="{{ user.mobile2 }}"></i>
+                    {% endif %}
+                </td>
+
+                <td align="center">
+                    {% if user.businessPhone is not empty %}
+                        {{ user.businessPhone }}
+                    {% endif %}
+
+                    {% if user.homePhone is not empty %} /
+                        <i class="fa fa-phone" title="{{ user.homePhone }}"></i>
+                    {% endif %}
+                </td>
+
+                <td align="center">
+                    {% if user.email is not empty %}
+                        <a title="{{ user.email }}" href="mailto:{{ user.email }}">
+                            <i class="fa fa-envelope-open-o"></i>
+                        </a>
+                    {% endif %}
+
+                    {% if user.email2 is not empty %}
+                        <a title="{{ user.email2 }}" href="mailto:{{ user.email2 }}">
+                            <i class="fa fa-envelope-open-o"></i>
+                        </a>
+                    {% endif %}
+
+                    {% if user.email3 is not empty %} /
+                        <a title="{{ user.email3 }}" href="mailto:{{ user.email3 }}">
+                            <i class="fa fa-envelope-open-o"></i>
+                        </a>
+                    {% endif %}
+                </td>
+                <td align="center" data-sort="{{ user.birthday|date('m-d') }}">
+                    {% if user.birthday is not empty %}
+                        {{ user.birthday |date('d-M-Y') }}
+                    {% endif %}
+                </td>
+                <td>{{ user.notes }}</td>
+
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
+        <a class="btn btn-primary mt-3" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import from Outlook</a>
+        <a class="btn btn-secondary mt-3" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import from Grapevine
+            (Recruiters)</a>
+        <a href="https://www.datagrapevine.com/recruitment/welcome">Grapevine</a>
+    {% endif %}
+    <br>
+    <br>
+{% endblock %}
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[6, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": true
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -17,59 +17,92 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('salutation')
             ->add('firstName')
             ->add('lastName')
+            ->add('jobTitle')
+            ->add('linkedIn')
             ->add('company')
-            ->add('businessAddress')
-            ->add('homeAddress')
+
+            ->add('businessStreet')
+            ->add('businessCity')
+            ->add('businessPostalCode')
+            ->add('businessCountry')
+
+            ->add('homeStreet')
+            ->add('homeCity')
+            ->add('homePostalCode')
+            ->add('homeCountry')
+
+            ->add('recruitingArea')
+            ->add('areasOfInterestList', ChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => [
+                    'Asset Management' => 'AM',
+                    'Investment Banking' => 'IB',
+                    'Fixed Income' => 'FI',
+                    'Equities' => 'Eq',
+                    'Hedge Funds' => 'HF',
+                    'Risk' => 'Risk',
+                    'Private Equity' => 'PE',
+                    'CEOs' => 'CEOs',
+                    'Compliance' => 'Compl'
+                ], ])
+
+
             ->add('email')
             ->add('email2')
             ->add('email3')
-            ->add('mobile',TextType::class,[
-                'required'=>false
+            ->add('mobile', TextType::class, [
+                'required' => false
             ])
-            ->add('mobile2')
-            ->add('businessPhone')
-            ->add('homePhone')
-            ->add('homePhone2')
-            ->add('birthday', DateType::class,[
-                'widget' => 'single_text'
+            ->add('mobile2', TextType::class, [
+                'required' => false
+            ])
+            ->add('businessPhone', TextType::class, [
+                'required' => false
+            ])
+            ->add('homePhone', TextType::class, [
+                'required' => false
+            ])
+            ->add('homePhone2', TextType::class, [
+                'required' => false
+            ])
+            ->add('birthday', DateType::class, [
+                'widget' => 'single_text',
+                'required' => false
             ])
             ->add('webPage')
             ->add('notes')
-            ->add('inviteDate', DateType::class,[
+            ->add('inviteDate', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text'
             ])
-            ->add('calendarInviteEmail',ChoiceType::class,[
-                'choices'=>[
-                    $options['email1']=>$options['email1'],
-                    $options['email2']=>$options['email2']
-                ],
-            ])
-            ->add('role',ChoiceType::class,[
-                'multiple'=>true,
-                'expanded'=>true,
-                'choices'=>[
-                    'Super-Admin'=>'ROLE_SUPER_ADMIN',
-                    'Admin'=>'ROLE_ADMIN',
-                    'Family'=>'ROLE_FAMILY',
-                    'HMRC' =>'ROLE_HMRC',
-                    'Accountant' =>'ROLE_ACCOUNTANT',
-                    'Contact' =>'ROLE_CONTACT',
+
+            ->add('role', ChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => [
+                    'Super-Admin' => 'ROLE_SUPER_ADMIN',
+                    'Admin' => 'ROLE_ADMIN',
+                    'Family' => 'ROLE_FAMILY',
+                    'HMRC' => 'ROLE_HMRC',
+                    'Accountant' => 'ROLE_ACCOUNTANT',
+                    'Contact' => 'ROLE_CONTACT',
+                    'Recruiter' => 'ROLE_RECRUITER',
+                    'Job applicant' => 'ROLE_JOB_APPLICANT',
                     'Guest' => 'ROLE_GUEST'
                 ],
-                'mapped'=>false
+                'mapped' => false
             ])
-
-            ->add('password',PasswordType::class,[
-                'mapped'=>false,
-            ])
-
-            ->add('sendEmail',HiddenType::class,[
+            ->add('password', PasswordType::class, [
                 'mapped' => false,
-                'required'=>false
             ])
-        ;
+            ->add('sendEmail', HiddenType::class, [
+                'mapped' => false,
+                'required' => false
+            ]);;
 
     }
 
@@ -77,8 +110,8 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'email1'=>null,
-            'email2'=>null,
+            'email1' => null,
+            'email2' => null,
 
         ]);
     }

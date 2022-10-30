@@ -1,14 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Imports{% endblock %}
+{% block title %}Import: {{ heading }}{% endblock %}
 
 {% block body %}
-{#    {% if selection is defined %}#}
-{#        <div id="selection" data="{{ selection }}">#}
-{#        </div>#}
-{#    {% endif %}#}
 
-    <h1 class="text-danger">Import from CSV files</h1>
+
+    <h1 class="text-danger">Import from CSV files ({{ heading }})</h1>
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn btn-success" type="submit">Import</button>

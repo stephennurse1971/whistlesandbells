@@ -65,10 +65,6 @@ class User implements UserInterface
      */
     private $mobile2;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $calendarInviteEmail;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -81,12 +77,8 @@ class User implements UserInterface
     private $LastName;
 
 
-
-
-
-
     /**
-     * @ORM\OneToMany(targetEntity=Log::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Log::class, mappedBy="user", orphanRemoval=true)
      */
     private $logs;
 
@@ -105,15 +97,6 @@ class User implements UserInterface
      */
     private $company;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $businessAddress;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $homeAddress;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -146,7 +129,7 @@ class User implements UserInterface
     private $webPage;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $notes;
 
@@ -155,10 +138,93 @@ class User implements UserInterface
      */
     private $inviteDate;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $salutation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $jobTitle;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $recruitingArea;
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $linkedIn;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Introduction::class, mappedBy="author", orphanRemoval=true)
+     */
+    private $introductions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProspectEmployer::class, mappedBy="recruiter")
+     */
+    private $prospectEmployers;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ProspectEmployer::class, inversedBy="interviewer1")
+     */
+    private $prospectEmployer;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CurriculumVitae::class, mappedBy="candidate", orphanRemoval=true)
+     */
+    private $curriculumVitaes;
 
 
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $businessStreet;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $businessCity;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $businessPostalCode;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $businessCountry;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $homeStreet;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $homeCity;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $homePostalCode;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $homeCountry;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $AreasOfInterestList = [];
 
 
     public function __construct()
@@ -166,6 +232,9 @@ class User implements UserInterface
         $this->logs = new ArrayCollection();
         $this->houseGuests = new ArrayCollection();
         $this->photos = new ArrayCollection();
+        $this->introductions = new ArrayCollection();
+        $this->prospectEmployers = new ArrayCollection();
+        $this->curriculumVitaes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -310,17 +379,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCalendarInviteEmail(): ?string
-    {
-        return $this->calendarInviteEmail;
-    }
-
-    public function setCalendarInviteEmail(?string $calendarInviteEmail): self
-    {
-        $this->calendarInviteEmail = $calendarInviteEmail;
-
-        return $this;
-    }
 
     public function getFirstName(): ?string
     {
@@ -447,30 +505,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBusinessAddress(): ?string
-    {
-        return $this->businessAddress;
-    }
-
-    public function setBusinessAddress(?string $businessAddress): self
-    {
-        $this->businessAddress = $businessAddress;
-
-        return $this;
-    }
-
-    public function getHomeAddress(): ?string
-    {
-        return $this->homeAddress;
-    }
-
-    public function setHomeAddress(?string $homeAddress): self
-    {
-        $this->homeAddress = $homeAddress;
-
-        return $this;
-    }
-
     public function getBusinessPhone(): ?string
     {
         return $this->businessPhone;
@@ -563,6 +597,268 @@ class User implements UserInterface
     public function setInviteDate(?\DateTimeInterface $inviteDate): self
     {
         $this->inviteDate = $inviteDate;
+
+        return $this;
+    }
+
+    public function getSalutation(): ?string
+    {
+        return $this->salutation;
+    }
+
+    public function setSalutation(?string $salutation): self
+    {
+        $this->salutation = $salutation;
+
+        return $this;
+    }
+
+    public function getJobTitle(): ?string
+    {
+        return $this->jobTitle;
+    }
+
+    public function setJobTitle(?string $jobTitle): self
+    {
+        $this->jobTitle = $jobTitle;
+
+        return $this;
+    }
+
+
+
+
+
+    public function getLinkedIn(): ?string
+    {
+        return $this->linkedIn;
+    }
+
+    public function setLinkedIn(?string $linkedIn): self
+    {
+        $this->linkedIn = $linkedIn;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Introduction[]
+     */
+    public function getIntroductions(): Collection
+    {
+        return $this->introductions;
+    }
+
+    public function addIntroduction(Introduction $introduction): self
+    {
+        if (!$this->introductions->contains($introduction)) {
+            $this->introductions[] = $introduction;
+            $introduction->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntroduction(Introduction $introduction): self
+    {
+        if ($this->introductions->removeElement($introduction)) {
+            // set the owning side to null (unless already changed)
+            if ($introduction->getAuthor() === $this) {
+                $introduction->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProspectEmployer[]
+     */
+    public function getProspectEmployers(): Collection
+    {
+        return $this->prospectEmployers;
+    }
+
+    public function addProspectEmployer(ProspectEmployer $prospectEmployer): self
+    {
+        if (!$this->prospectEmployers->contains($prospectEmployer)) {
+            $this->prospectEmployers[] = $prospectEmployer;
+            $prospectEmployer->setRecruiter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspectEmployer(ProspectEmployer $prospectEmployer): self
+    {
+        if ($this->prospectEmployers->removeElement($prospectEmployer)) {
+            // set the owning side to null (unless already changed)
+            if ($prospectEmployer->getRecruiter() === $this) {
+                $prospectEmployer->setRecruiter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProspectEmployer(): ?ProspectEmployer
+    {
+        return $this->prospectEmployer;
+    }
+
+    public function setProspectEmployer(?ProspectEmployer $prospectEmployer): self
+    {
+        $this->prospectEmployer = $prospectEmployer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CurriculumVitae[]
+     */
+    public function getCurriculumVitaes(): Collection
+    {
+        return $this->curriculumVitaes;
+    }
+
+    public function addCurriculumVitae(CurriculumVitae $curriculumVitae): self
+    {
+        if (!$this->curriculumVitaes->contains($curriculumVitae)) {
+            $this->curriculumVitaes[] = $curriculumVitae;
+            $curriculumVitae->setCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCurriculumVitae(CurriculumVitae $curriculumVitae): self
+    {
+        if ($this->curriculumVitaes->removeElement($curriculumVitae)) {
+            // set the owning side to null (unless already changed)
+            if ($curriculumVitae->getCandidate() === $this) {
+                $curriculumVitae->setCandidate(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRecruitingArea(): ?string
+    {
+        return $this->recruitingArea;
+    }
+
+    public function setRecruitingArea(?string $recruitingArea): self
+    {
+        $this->recruitingArea = $recruitingArea;
+
+        return $this;
+    }
+
+    public function getBusinessStreet(): ?string
+    {
+        return $this->businessStreet;
+    }
+
+    public function setBusinessStreet(?string $businessStreet): self
+    {
+        $this->businessStreet = $businessStreet;
+
+        return $this;
+    }
+
+    public function getBusinessCity(): ?string
+    {
+        return $this->businessCity;
+    }
+
+    public function setBusinessCity(?string $businessCity): self
+    {
+        $this->businessCity = $businessCity;
+
+        return $this;
+    }
+
+    public function getBusinessPostalCode(): ?string
+    {
+        return $this->businessPostalCode;
+    }
+
+    public function setBusinessPostalCode(?string $businessPostalCode): self
+    {
+        $this->businessPostalCode = $businessPostalCode;
+
+        return $this;
+    }
+
+    public function getBusinessCountry(): ?string
+    {
+        return $this->businessCountry;
+    }
+
+    public function setBusinessCountry(?string $businessCountry): self
+    {
+        $this->businessCountry = $businessCountry;
+
+        return $this;
+    }
+
+    public function getHomeStreet(): ?string
+    {
+        return $this->homeStreet;
+    }
+
+    public function setHomeStreet(?string $homeStreet): self
+    {
+        $this->homeStreet = $homeStreet;
+
+        return $this;
+    }
+
+    public function getHomeCity(): ?string
+    {
+        return $this->homeCity;
+    }
+
+    public function setHomeCity(?string $homeCity): self
+    {
+        $this->homeCity = $homeCity;
+
+        return $this;
+    }
+
+    public function getHomePostalCode(): ?string
+    {
+        return $this->homePostalCode;
+    }
+
+    public function setHomePostalCode(?string $homePostalCode): self
+    {
+        $this->homePostalCode = $homePostalCode;
+
+        return $this;
+    }
+
+    public function getHomeCountry(): ?string
+    {
+        return $this->homeCountry;
+    }
+
+    public function setHomeCountry(?string $homeCountry): self
+    {
+        $this->homeCountry = $homeCountry;
+
+        return $this;
+    }
+
+    public function getAreasOfInterestList(): ?array
+    {
+        return $this->AreasOfInterestList;
+    }
+
+    public function setAreasOfInterestList(?array $AreasOfInterestList): self
+    {
+        $this->AreasOfInterestList = $AreasOfInterestList;
 
         return $this;
     }

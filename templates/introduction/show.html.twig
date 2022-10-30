@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Introduction{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Introductory Emails</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ introduction.id }}</td>
+            </tr>
+            <tr>
+                <th>Region</th>
+                <td>{{ introduction.region }}</td>
+            </tr>
+            <tr>
+                <th>AreaOfInterest</th>
+                <td>{{ introduction.areaOfInterest }}</td>
+            </tr>
+            <tr>
+                <th>IntroductoryEmail</th>
+                <td>{{ introduction.introductoryEmail }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('introduction_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-danger btn-sm" href="{{ path('introduction_edit', {'id': introduction.id}) }}">Edit</a>
+
+    {{ include('introduction/_delete_form.html.twig') }}
+{% endblock %}

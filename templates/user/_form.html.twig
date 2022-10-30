@@ -2,17 +2,35 @@
 
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <h3><b>Name</b></h3>
+        {{ form_row(form.salutation) }}
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
+        {{ form_row(form.jobTitle) }}
         {{ form_row(form.company) }}
         {{ form_row(form.birthday) }}
+        {{ form_row(form.linkedIn) }}
+        {{ form_row(form.recruitingArea) }}
+        {{ form_row(form.areasOfInterestList ) }}
     </div>
     <div class="col-md-3">
-        <h3><b>Name</b></h3>
-        {{ form_row(form.homeAddress) }}
-        {{ form_row(form.businessAddress) }}
+        <h3><b>Address</b></h3>
+        {{ form_row(form.businessStreet) }}
+        {{ form_row(form.businessCity) }}
+        {{ form_row(form.businessPostalCode) }}
+        {{ form_row(form.businessCountry) }}
+        <br>
+        <hr>
+        <br>
+        {{ form_row(form.homeStreet) }}
+        {{ form_row(form.homeCity) }}
+        {{ form_row(form.homePostalCode) }}
+        {{ form_row(form.homeCountry) }}
+
+    </div>
+    <div class="col-md-2">
+        <h3><b>Phone</b></h3>
         {{ form_row(form.mobile) }}
         {{ form_row(form.mobile2) }}
         {{ form_row(form.businessPhone) }}
@@ -20,17 +38,16 @@
         {{ form_row(form.homePhone2) }}
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <h3><b>Contact details</b></h3>
         {{ form_row(form.email) }}
         {{ form_row(form.email2) }}
         {{ form_row(form.email3) }}
-        {{ form_row(form.calendarInviteEmail) }}
         {{ form_row(form.webPage) }}
         {{ form_row(form.notes) }}
 
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <h3><b>Access rights</b></h3>
         {{ form_row(form.password) }}
         {% if is_granted('ROLE_SUPER_ADMIN') %}
@@ -41,7 +58,6 @@
     </div>
 </div>
 <hr>
-
 
 
 <button id="save" class="btn btn-primary btn-sm">{{ button_label|default('Save (no welcome email)') }}</button>

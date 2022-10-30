@@ -1,0 +1,29 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>Recipients</h2>
+        {{ form_row(form.SendTo) }}
+        {{ form_row(form.SendCC) }}
+        {{ form_row(form.SendBcc) }}
+    </div>
+    <div class="col-md-3">
+        <h2>Summary</h2>
+        {{ form_row(form.sendAuthor) }}
+        {{ form_row(form.SendDate) }}
+        {{ form_row(form.subject) }}
+        {{ form_row(form.attachment) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <h2>Body</h2>
+        {{ form_row(form.body) }}
+    </div>
+
+</div>
+
+
+<button class="btn btn-success btn-sm mb-1 ">{{ button_label|default('Send') }}</button>
+{{ form_end(form) }}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: CV segment{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: CV</h1>
+
+    {{ include('curriculum_vitae/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-primary btn-sm mt-2" href="{{ path('curriculum_vitae_index') }}">Return to list</a>
+
+    {{ include('curriculum_vitae/_delete_form.html.twig') }}
+{% endblock %}

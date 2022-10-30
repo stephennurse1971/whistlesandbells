@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Import;
 use App\Form\ImportType;
 use App\Services\ChaveyDownImportService;
+use App\Services\UserImportGrapevineService;
+use App\Services\UserImportOutlookService;
 use App\Services\UserImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,9 +54,9 @@ class ImportController extends AbstractController
     }
 
     /**
-     * @Route("/importContacts", name="userimport")
+     * @Route("/importContacts/{source}", name="userImport")
      */
-    public function userImport(Request $request, SluggerInterface $slugger, UserImportService $userImportService): Response
+    public function userImport(Request $request, string $source, SluggerInterface $slugger, UserImportOutlookService $userImportOutlookService, UserImportGrapevineService $userImportGrapevineService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -72,15 +74,21 @@ class ImportController extends AbstractController
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-                $userImportService->importUser($newFilename);
-                return $this->redirectToRoute('user_index');
+                if($source == 'Outlook'){
+                    $userImportOutlookService->importUser($newFilename);
+                    return $this->redirectToRoute('user_index');
+                }
+              if($source == 'Grapevine'){
+                  $userImportGrapevineService->importUser($newFilename);
+                  return $this->redirectToRoute('user_role_index',['role'=>'ROLE_RECRUITER']);
+              }
+
+
             }
         }
-
         return $this->render('admin/import/index.html.twig', [
             'form' => $form->createView(),
+            'heading' => $source
         ]);
     }
-
-
 }

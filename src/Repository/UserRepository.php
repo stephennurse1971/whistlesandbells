@@ -95,4 +95,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+    public function findByBirthday($birthday)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.birthday LIKE :company')
+            ->setParameter('birthday', '1')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

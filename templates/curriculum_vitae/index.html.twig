@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CurriculumVitae index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CVs</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Job Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for curriculum_vitae in curriculum_vitaes %}
+            <tr>
+                <td>
+                    <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.id }}</a>
+                </td>
+                <td>{{ curriculum_vitae.date ? curriculum_vitae.date|date('Y-m-d') : '' }}</td>
+                <td>{{ curriculum_vitae.jobDescription }}</td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('curriculum_vitae_new') }}">New</a>
+{% endblock %}

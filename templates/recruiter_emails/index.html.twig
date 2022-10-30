@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recruiter Emails{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Recruiter Emails</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>SendTo</th>
+            <th>SendCC</th>
+            <th>SendBcc</th>
+            <th>Subject</th>
+            <th>Body</th>
+            <th>Attachment</th>
+            <th>SendDate</th>
+            <th>SendAuthor</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for recruiter_email in recruiter_emails %}
+            <tr>
+                <td  title="{{ recruiter_email.SendTo }}" >
+                    {% if recruiter_email.SendTo is not empty %}
+                         Fullname of Recipient
+                    {% endif %}
+                </td>
+                <td>{{ recruiter_email.SendCC }}</td>
+                <td>{{ recruiter_email.SendBcc }}</td>
+                <td>{{ recruiter_email.subject }}</td>
+                <td>{{ recruiter_email.body }}</td>
+                <td>
+                    {% if recruiter_email.attachment is not empty %}
+                        <i class="fa fa-paperclip" title="{{ recruiter_email.attachment }}"></i>
+                    {% endif %}
+                </td>
+                <td data-sort="{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('Y-m-d H:i') : '' }}">{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('d-M-Y H:i') : '' }}</td>
+                <td>{{ recruiter_email.sendAuthor }}</td>
+                <td>
+                    <a class="btn btn-outline-info btn-sm"
+                       href="{{ path('recruiter_emails_show', {'id': recruiter_email.id}) }}">Show</a>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('recruiter_emails_delete', {'id': recruiter_email.id}) }}">Delete</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('recruiter_emails_new') }}">New</a>
+{% endblock %}

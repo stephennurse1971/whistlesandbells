@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Show: {{ user.fullname }}{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <h1 style="color: red"><span class="text-danger">{{ user.fullName }}</span></h1>
+
+{#    {{ include('user/_form.html.twig', {'button_label': 'Save (no welcome email)'}) }}#}
 
     <table class="table">
         <tbody>
