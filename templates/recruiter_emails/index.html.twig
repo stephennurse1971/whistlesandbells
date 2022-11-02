@@ -11,6 +11,7 @@
             <th>SendTo</th>
             <th>SendCC</th>
             <th>SendBcc</th>
+            <th>Author</th>
             <th>Subject</th>
             <th>Body</th>
             <th>Attachment</th>
@@ -22,27 +23,43 @@
         <tbody>
         {% for recruiter_email in recruiter_emails %}
             <tr>
-                <td  title="{{ recruiter_email.SendTo }}" >
+                <td title="{{ recruiter_email.SendTo }}" >
                     {% if recruiter_email.SendTo is not empty %}
-                         Fullname of Recipient
+                        {{ recruiter_email.SendToFullName }}
                     {% endif %}
                 </td>
-                <td>{{ recruiter_email.SendCC }}</td>
-                <td>{{ recruiter_email.SendBcc }}</td>
-                <td>{{ recruiter_email.subject }}</td>
-                <td>{{ recruiter_email.body }}</td>
+                <td title="{{ recruiter_email.SendCC }}" >
+                    {% if recruiter_email.SendCC is not empty %}
+                        {{ recruiter_email.SendCCFullName }}
+                    {% endif %}
+                </td>
+                <td title="{{ recruiter_email.SendBcc }}" >
+                    {% if recruiter_email.SendBcc is not empty %}
+                        {{ recruiter_email.SendBccFullName }}
+                    {% endif %}
+                </td>
+                <td title="{{ recruiter_email.Author }}" >
+                    {% if recruiter_email.Author is not empty %}
+                        {{ recruiter_email.AuthorFullName }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ recruiter_email.subject }}</td>
+                <td>{{ recruiter_email.body|raw }}</td>
                 <td>
                     {% if recruiter_email.attachment is not empty %}
                         <i class="fa fa-paperclip" title="{{ recruiter_email.attachment }}"></i>
                     {% endif %}
                 </td>
                 <td data-sort="{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('Y-m-d H:i') : '' }}">{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('d-M-Y H:i') : '' }}</td>
-                <td>{{ recruiter_email.sendAuthor }}</td>
-                <td>
+                <td>{{ recruiter_email.Author }}</td>
+                <td style="width: 200px">
                     <a class="btn btn-outline-info btn-sm"
                        href="{{ path('recruiter_emails_show', {'id': recruiter_email.id}) }}">Show</a>
-                    <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('recruiter_emails_delete', {'id': recruiter_email.id}) }}">Delete</a>
+                     <form class="d-inline" method="post" action="{{ path('recruiter_emails_delete', {'id': recruiter_email.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recruiter_email.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                 </td>
             </tr>
 
@@ -52,3 +69,18 @@
 
     <a class="btn btn-success btn-sm" href="{{ path('recruiter_emails_new') }}">New</a>
 {% endblock %}
+
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[7, 'asc'] ],
+                "paging": false,
+                "searching": true,
+                "bInfo": true
+            });
+        });
+    </script>
+{% endblock datatable %}

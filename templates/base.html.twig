@@ -40,6 +40,12 @@
     #introduction_introductoryEmail{
         height: 800px;
     }
+    #recruiter_emails_body{
+        height: 800px;
+    }
+    .ck{
+        height: 800px;
+      }
 </style>
     <style>
         .rotate-90 {
@@ -146,6 +152,26 @@
     $(document).ready(function () {
         bsCustomFileInput.init();
     });
+</script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#recruiter_emails_body'))
+        .catch(error => {
+            console.error(error);
+        });
+
+    ClassicEditor
+        .create(document.querySelector('#introduction_introductoryEmail'))
+        .catch(error => {
+            console.error(error);
+        });
+
+    ClassicEditor
+        .create(document.querySelector('#curriculum_vitae_jobDescription'))
+        .catch(error => {
+            console.error(error);
+        });
+
 </script>
 <script>
     $("input.datetime").flatpickr({

@@ -5,13 +5,14 @@ namespace App\Controller;
 use App\Entity\CurriculumVitae;
 use App\Form\CurriculumVitaeType;
 use App\Repository\CurriculumVitaeRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/curriculum/vitae")
+ * @Route("/cv")
  */
 class CurriculumVitaeController extends AbstractController
 {
@@ -24,6 +25,22 @@ class CurriculumVitaeController extends AbstractController
             'curriculum_vitaes' => $curriculumVitaeRepository->findAll(),
         ]);
     }
+
+
+
+    /**
+     * @Route("/account/{name}", name="curriculum_vitae_individual", methods={"GET"})
+     */
+    public function indexIndividual(string $name, CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository){
+        $user = $userRepository->findOneBy([
+            'fullName'=>$name
+            ]);
+        return $this->render('curriculum_vitae/indexByPerson.html.twig', [
+            'curriculum_vitaes' => $curriculumVitaeRepository->findBy(['candidate'=>$user]),
+            'candidate' => $name
+        ]);
+    }
+
 
     /**
      * @Route("/new", name="curriculum_vitae_new", methods={"GET","POST"})

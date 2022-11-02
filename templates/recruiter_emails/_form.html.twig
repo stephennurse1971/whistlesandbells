@@ -3,21 +3,30 @@
 <div class="row">
     <div class="col-md-3">
         <h2>Recipients</h2>
+        {{ form_row(form.SendToFullName) }}
         {{ form_row(form.SendTo) }}
+        <hr>
+        {{ form_row(form.SendCCFullName) }}
         {{ form_row(form.SendCC) }}
+        <hr>
+        {{ form_row(form.SendBccFullName) }}
         {{ form_row(form.SendBcc) }}
+
     </div>
     <div class="col-md-3">
         <h2>Summary</h2>
-        {{ form_row(form.sendAuthor) }}
+        {{ form_row(form.AuthorFullName) }}
+        {{ form_row(form.Author) }}
+        <hr>
         {{ form_row(form.SendDate) }}
         {{ form_row(form.subject) }}
+        <hr>
         {{ form_row(form.attachment) }}
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-6">
         <h2>Body</h2>
         {{ form_row(form.body) }}
     </div>

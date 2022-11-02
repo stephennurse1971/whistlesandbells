@@ -11,8 +11,10 @@
         {{ form_row(form.company) }}
         {{ form_row(form.birthday) }}
         {{ form_row(form.linkedIn) }}
+        {% if form.recruitingArea is defined  and form.recruitingAreaList is defined %}
         {{ form_row(form.recruitingArea) }}
-        {{ form_row(form.areasOfInterestList ) }}
+        {{ form_row(form.recruitingAreaList ) }}
+        {% endif %}
     </div>
     <div class="col-md-3">
         <h3><b>Address</b></h3>
@@ -23,10 +25,12 @@
         <br>
         <hr>
         <br>
+        {% if form.homeStreet is defined and form.homeCity is defined and form.homePostalCode is defined and form.homeCountry is defined %}
         {{ form_row(form.homeStreet) }}
         {{ form_row(form.homeCity) }}
         {{ form_row(form.homePostalCode) }}
         {{ form_row(form.homeCountry) }}
+        {% endif %}
 
     </div>
     <div class="col-md-2">
@@ -50,10 +54,9 @@
     <div class="col-md-2">
         <h3><b>Access rights</b></h3>
         {{ form_row(form.password) }}
-        {% if is_granted('ROLE_SUPER_ADMIN') %}
+        {% if form.role is defined and form.inviteDate is defined %}
             {{ form_row(form.role) }}
             {{ form_row(form.inviteDate) }}
-
         {% endif %}
     </div>
 </div>

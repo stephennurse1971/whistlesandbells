@@ -9,11 +9,14 @@ use App\Form\UserType;
 use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
 use App\Repository\EmployeeRepository;
 use App\Repository\IntroductionRepository;
+use App\Repository\RecruiterEmailsRepository;
+use App\Repository\TennisVenuesRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
 
 
+use JeroenDesloovere\VCard\VCard;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -84,10 +87,11 @@ class UserController extends AbstractController
     /**
      * @Route("/recruiters", name="user_index_recruiters", methods={"GET"})
      */
-    public function indexRecruiters(UserRepository $userRepository): Response
+    public function indexRecruiters(UserRepository $userRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
     {
         return $this->render('user/indexRecruiters.html.twig', [
             'users' => $userRepository->findByRole('ROLE_RECRUITER'),
+            'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
             'role_title' => "Recruiters"
         ]);
@@ -127,23 +131,12 @@ class UserController extends AbstractController
                 $users_container[] = $user;
             }
         }
-        return $this->render('user/birthdayindex.html.twig', [
+        return $this->render('user/indexBirthday.html.twig', [
             'users' => $users_container,
             'role' => "Personal"
         ]);
     }
 
-
-    /**
-     * @Route("/group/telephoneCheck", name="user_telephonecheck", methods={"GET"})
-     */
-    public function indextelephone(UserRepository $userRepository): Response
-    {
-        return $this->render('user/telephonecheckindex.html.twig', [
-            'users' => $userRepository->findAll(),
-            'role' => "Personal"
-        ]);
-    }
 
     /**
      * @Route("/delete_all_AX", name="/user/delete_all_AX")
@@ -267,11 +260,9 @@ class UserController extends AbstractController
             $logged_user_id = $this->getUser()->getId();
             $plainPassword = $user->getPlainPassword();
             $roles = $user->getRoles();
-            $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2()]);
+            $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
             $logged_user_roles = $this->getUser()->getRoles();
-            if (!in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
-                $form->remove('role');
-            }
+
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -380,9 +371,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
+     * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
      */
-    public function recruiterInviteEmail(int $authorId, int $recruiterId, MailerInterface $mailer, Request $request, UserRepository $userRepository, IntroductionRepository $introductionRepository, EntityManagerInterface $manager): Response
+    public function recruiterInviteEmail(int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository, IntroductionRepository $introductionRepository, EntityManagerInterface $manager): Response
     {
         $author = $userRepository->find($authorId);
         $recruiter = $userRepository->find($recruiterId);
@@ -391,50 +382,115 @@ class UserController extends AbstractController
             'user' => $author,
             'content' => $introductionRepository->find($authorId)->getIntroductoryEmail()
         ]);
+        $html = 'Dear '. $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . $html;
         $introduction_attachment = $introductionRepository->find($authorId)->getAttachment();
+
         $recruiterEmail = new RecruiterEmails();
-        $recruiterEmail->setSendAuthor($author->getEmail())
-            ->setSendTo('nurse_stephen@hotmail.com')
+        if ($editable == "editable") {
+
+            $recruiterEmail->setAuthorFullName($author->getFullName())
+                ->setSendBccFullName($author->getFullName())
+                ->setSendToFullName($recruiter->getFullName())
+                ->setSendDate(new \DateTime('now'));
+
+            $recruiterEmail->setAuthor($author->getEmail())
+                ->setSendTo('nurse_stephen@hotmail.com')
 //            ->setSendTo($recruiter->getEmail())
-            ->setSendBcc($author->getEmail())
-            ->setSubject($subject)
-            ->setBody($html)
-            ->setAttachment($introduction_attachment);
-        $form = $this->createForm(RecruiterEmailsType::class, $recruiterEmail);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+                ->setSendBcc($author->getEmail())
+                ->setSubject($subject)
+                ->setBody($html)
+                ->setAttachment($introduction_attachment);
+            $form = $this->createForm(RecruiterEmailsType::class, $recruiterEmail);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $email = (new Email())
+                    ->to('nurse_stephen@hotmail.com')
+//                    ->to($recruiterEmail->getSendTo())
+                    ->bcc($recruiterEmail->getSendBcc())
+                    ->subject($recruiterEmail->getSubject())
+                    ->from($author->getEmail())
+                    ->html($recruiterEmail->getBody());
+                if ($introduction_attachment) {
+                    $attachment_path = $this->getParameter('files_upload_default_directory') . "/" . $introduction_attachment;
+                    $email->attachFromPath($attachment_path);
+                }
+                $mailer->send($email);
+                $manager->persist($recruiterEmail);
+                $manager->flush();
+                return $this->redirectToRoute("recruiter_emails_index");
+            }
+            return $this->render("recruiter_emails/new.html.twig", [
+                'form' => $form->createView(),
+            ]);
+        } else {
+
             $email = (new Email())
-                ->to($recruiterEmail->getSendTo())
-                ->bcc($recruiterEmail->getSendBcc())
-                ->subject($recruiterEmail->getSubject())
-                ->from($recruiterEmail->getSendAuthor())
-                ->html($recruiterEmail->getBody());
+                ->to('nurse_stephen@hotmail.com')
+                ->bcc($author->getEmail())
+                ->subject($subject)
+                ->from($author->getEmail())
+                ->html($html);
             if ($introduction_attachment) {
                 $attachment_path = $this->getParameter('files_upload_default_directory') . "/" . $introduction_attachment;
                 $email->attachFromPath($attachment_path);
             }
+            $recruiterEmail
+                ->setSendTo('nurse_stephen@hotmail.com')
+                ->setSendToFullName($recruiter->getFullName())
+                ->setSendBcc($author->getEmail())
+                ->setsendBccFullName($author->getFullName())
+                ->setAuthor($author->getEmail())
+                ->setauthorFullName($author->getFullName())
+                ->setSubject($subject)
+                ->setSendDate(new \DateTime('now'))
+                ->setBody($html)
+                ->setAttachment($introduction_attachment);
             $mailer->send($email);
-            $user = $userRepository->find($recruiterId);
-            date_default_timezone_set("Europe/London");
-            $user->setInviteDate(new \DateTime('now'));
             $manager->persist($recruiterEmail);
             $manager->flush();
-            return $this-$this->redirectToRoute("recruiter_emails_index");
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         }
-        return $this->render("recruiter_emails/new.html.twig", [
-            'form' => $form->createView(),
-        ]);
-
     }
 
+    /**
+     * @Route("/create/Vcarduser/{userid}", name="create_vcard_user")
+     */
+    public function createVcardUser(int $userid, UserRepository $userRepository)
+    {
+        $user = $userRepository->find($userid);
+        $vcard = new VCard();
+        $userFirstName = $user->getFirstName();
+        $userLastName = $user->getLastName();
+
+        $vcard->addName($userFirstName, $userLastName);
+        $vcard->addEmail($user->getEmail())
+            ->addJobtitle($user->getJobTitle())
+            ->addBirthday($user->getBirthday())
+            ->addCompany($user->getCompany())
+            ->addPhoneNumber($user->getBusinessPhone(), 'work')
+            ->addPhoneNumber($user->getMobile(), 'home')
+            ->addURL($user->getWebPage());
+        $vcard->download();
+        return new Response(null);
+    }
 
     /**
-     * @Route ("/user/export/file", name="user_export" )
+     * @Route ("/user/export/file/{Subset}", name="user_export" )
      */
-    public function export(UserRepository $userRepository)
+    public function export(string $Subset, UserRepository $userRepository)
     {
+
         $data = [];
-        $user_list = $userRepository->findAll();
+        if ($Subset == 'All') {
+            $user_list = $userRepository->findAll();
+            $fileName = 'all_users_export.csv';
+        }
+        if ($Subset == 'Recruiters') {
+            $user_list = $userRepository->findByRole('ROLE_RECRUITER');
+            $fileName = 'recruiters_export.csv';
+        }
+
         $exported_date = new \DateTime('now');
         $exported_date = $exported_date->format('d-M-Y h:m');
         $count = 0;
@@ -448,8 +504,6 @@ class UserController extends AbstractController
             if ($user->getBirthday() != null) {
                 $birthday = $user->getBirthday()->format('d-m-Y');
             }
-
-
             $data[] = [
                 "Blank",
                 $user->getSalutation(),
@@ -518,7 +572,7 @@ class UserController extends AbstractController
         }
         $writer = new Csv($spreadsheet);
 
-        $fileName = 'users_export.csv';
+
         $response = new StreamedResponse(function () use ($writer) {
             $writer->save('php://output');
         });
@@ -528,5 +582,4 @@ class UserController extends AbstractController
         $response->headers->set('Cache-Control', 'max-age=0');
         return $response;
     }
-
 }

@@ -16,7 +16,6 @@
     {% set count=0 %}
     {% for role in roles %}
         {% if role != "ROLE_USER" %}
-
             {% set count=count + 1 %}
             {% set id = 'role'~count %}
             <div id="{{ id }}" data-role{{ count }}="{{ role }}"></div>

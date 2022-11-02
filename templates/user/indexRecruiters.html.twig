@@ -9,12 +9,14 @@
         <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_AX') }}">Delete AX Users (excl Admin)</a>
         <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_Personal') }}">Delete Personal Users (excl
             Admin) </a>
-        <a class="btn btn-success btn-sm" href="{{ path('user_export') }}">Export users to CSV</a>
+        <a class="btn btn-success btn-sm" href="{{ path('user_export', {Subset: 'Recruiters'}) }}">Export Recruiters to
+            CSV</a>
     {% endif %}
 
     <table class="table">
         <thead>
         <tr>
+            <th>Salutation</th>
             <th>Name</th>
             <th>Company</th>
             <th title="Home/Business">Address</th>
@@ -29,6 +31,7 @@
             <th style="width: 150px">Notes</th>
             <th>Invite email</th>
             <th>Date</th>
+            <th>VCF</th>
 
 
             {% if is_granted('ROLE_ADMIN') %}
@@ -42,6 +45,7 @@
         <tbody>
         {% for user in users %}
             <tr>
+                <td>{{ user.salutation }}</td>
                 <td>
                     {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
                         <b><a target="_blank"
@@ -79,7 +83,7 @@
 
                 <td style="text-align: center">
                     {% if user.businessPhone is not empty %}
-                        <i class="fa fa-phone" title="{{ user.homePhone }}"></i>
+                        <i class="fa fa-phone" title="{{ user.businessPhone }}"></i>
                     {% endif %}
 
                     {% if user.homePhone is not empty %} /
@@ -129,25 +133,29 @@
                 <td>{{ user.businessCountry }}</td>
                 <td>{{ user.recruitingArea }}</td>
                 <td>
-                    {% for area in user.areasOfInterestList %}
+                    {% for area in user.recruitingAreaList %}
                         {{ area }},
                     {% endfor %}
                 </td>
                 <td>{{ user.notes }}</td>
-                <td>
-                    <a class="btn btn-success btn-sm"
-                       href="{{ path('recruiter_intro', {'authorId':app.user.id, 'recruiterId': user.id, 'recruiterCountry': user.businessCountry}) }}">Recruiter
-                        intro</a>
+                <td style="width: 200px">
+                    <a class="btn btn-success btn-sm d-inline" href="{{ path('recruiter_intro', {'authorId':app.user.id,
+                        'recruiterId': user.id, 'recruiterCountry': user.businessCountry, 'editable':'editable'}) }}">Editable</a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('recruiter_intro', {'authorId':app.user.id,
+                        'recruiterId': user.id, 'recruiterCountry': user.businessCountry, 'editable':'standard' })}}">Standard</a>
                     <br>
                 </td>
-                <td>
-                    {% if user.inviteDate is not empty %}
-                        {{ user.inviteDate|date('d-M-Y h:i') }}
-                    {% else %}
-                        --
-                    {% endif %}
-                </td>
+                <td style="width: 200px">
+                    {% for recruiterEmail in recruiterEmails %}
+                        {% if recruiterEmail.Author == app.user.email and recruiterEmail.sendToFullName == user.fullName %}
+                            <a target="_blank" href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-Y h:i') }}</a>
 
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a class="btn btn-outline-info btn-sm" href="{{ path('create_vcard_user',{'userid': user.id}) }}"><i style="font-size: 15px; color: blue" class="fas fa-address-card"></i></a>
+                </td>
 
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <td>{{ user.plainPassword }}</td>
@@ -182,7 +190,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'asc'], [10, 'asc']],
+                "order": [[14, 'desc'], [0, 'asc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": true

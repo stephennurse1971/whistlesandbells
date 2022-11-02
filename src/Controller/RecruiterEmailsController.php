@@ -22,6 +22,7 @@ class RecruiterEmailsController extends AbstractController
     {
         return $this->render('recruiter_emails/index.html.twig', [
             'recruiter_emails' => $recruiterEmailsRepository->findAll(),
+
         ]);
     }
 
@@ -39,7 +40,7 @@ class RecruiterEmailsController extends AbstractController
             $entityManager->persist($recruiterEmail);
             $entityManager->flush();
 
-            return $this->redirectToRoute('recruiter_emails_index');
+            return $this->redirectToRoute('recruiters_index');
         }
 
         return $this->render('recruiter_emails/new.html.twig', [

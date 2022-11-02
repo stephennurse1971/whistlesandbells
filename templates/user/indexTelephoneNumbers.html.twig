@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %}Users: {{ role }} {% endblock %}
+{% block title %}Users: Telephone Check {% endblock %}
 {% block body %}
-    <h1><span class="text-danger">Users: Telephone Numbers check</span></h1>
+    <h1><span class="text-danger">Users: Telephone Check</span></h1>
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_non_admin') }}">Delete All Users (excl
@@ -9,30 +9,16 @@
         <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_AX') }}">Delete AX Users (excl Admin)</a>
         <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_Personal') }}">Delete Personal Users (excl
             Admin) </a>
-        <a class="btn btn-success btn-sm" href="{{ path('user_export') }}">Export users to CSV</a>
     {% endif %}
 
     <table class="table">
         <thead>
         <tr>
             <th>Name</th>
-{#            <th style="text-align: right"; style="color: blue">Business Street</th>#}
-{#            <th style="text-align: right"; style="color: blue">Business City</th>#}
-{#            <th style="text-align: right"; style="color: blue">Business Postal Code</th>#}
-{#            <th style="text-align: right"; style="color: blue">Business Country</th>#}
-{#            <th style="text-align: right"; style="color: green">Home Street</th>#}
-{#            <th style="text-align: right"; style="color: green">Home City</th>#}
-{#            <th style="text-align: right"; style="color: green">Home Postal Code</th>#}
-{#            <th style="text-align: right"; style="color: green">Home Country</th>#}
             <th style="text-align: right">Mobile 1</th>
             <th style="text-align: right">Mobile 2</th>
             <th style="text-align: right">Business Phone</th>
             <th style="text-align: right">Home Phone</th>
-{#            <th style="text-align: right">Email 1</th>#}
-{#            <th style="text-align: right">Email 2</th>#}
-{#            <th style="text-align: right">Email 3</th>#}
-{#            <th>LinkedIN</th>#}
-{#            <th>www</th>#}
         </tr>
         </thead>
 
@@ -47,49 +33,11 @@
                         <b>{{ user.fullName }}</b>
                     {% endif %}
                 </td>
-
-
-{#                <td align="right"; style="color: blue">{{ user.businessStreet }}</td>#}
-{#                <td align="right"; style="color: blue">{{ user.businessCity }}</td>#}
-{#                <td align="right"; style="color: blue">{{ user.businessPostalCode }}</td>#}
-{#                <td align="right"; style="color: blue">{{ user.businessCountry }}</td>#}
-
-{#                <td align="right"; style="color: green">{{ user.homeStreet }}</td>#}
-{#                <td align="right"; style="color: green">{{ user.homeCity }}</td>#}
-{#                <td align="right"; style="color: green">{{ user.homePostalCode }}</td>#}
-{#                <td align="right"; style="color: green">{{ user.homeCountry }}</td>#}
-
                 <td align="right">{{ user.mobile }}</td>
                 <td align="right">{{ user.mobile2 }}</td>
 
                 <td align="right">{{ user.businessPhone }}</td>
                 <td align="right">{{ user.homePhone }}</td>
-
-{#                <td align="right">{{ user.email }}</td>#}
-{#                <td align="right">{{ user.email2 }}</td>#}
-{#                <td align="right">{{ user.email3 }}</td>#}
-
-{#                <td align="center">#}
-{#                    {% if user.linkedIn is not empty %}#}
-{#                        <a target="_blank" title="{{ user.linkedIn }}" href="{{ user.linkedIn }}">#}
-{#                            <i class="fa fa-linkedin"></i>#}
-{#                        </a>#}
-{#                    {% endif %}#}
-{#                </td>#}
-{#                <td align="center">#}
-{#                    {% if user.webPage is not empty %}#}
-{#                        {% if user.webPage starts with 'http' %}#}
-{#                            {% set web = user.webPage %}#}
-{#                        {% else %}#}
-{#                            {% set web = 'https://'~user.webPage %}#}
-{#                        {% endif %}#}
-{#                        <a target="_blank" title="{{ user.webPage }}" href="{{ web }}">#}
-{#                            <i class="fa fa-globe"></i>#}
-{#                        </a>#}
-{#                    {% endif %}#}
-{#                </td>#}
-
-
             </tr>
         {% endfor %}
 

@@ -9,7 +9,7 @@
         <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_AX') }}">Delete AX Users (excl Admin)</a>
         <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_Personal') }}">Delete Personal Users (excl
             Admin) </a>
-        <a class="btn btn-success btn-sm" href="{{ path('user_export') }}">Export users to CSV</a>
+        <a class="btn btn-success btn-sm" href="{{ path('user_export', {Subset: 'All'}) }}">Export users to CSV</a>
     {% endif %}
 
     <table class="table">
@@ -24,7 +24,7 @@
             <th>LinkedIN</th>
             <th>www</th>
             <th>Birthday</th>
-            <th style="width: 150px">Notes</th>
+            <th>Notes</th>
             <th>Admin</th>
             <th>Family</th>
             <th>Contact</th>
@@ -53,7 +53,7 @@
                 </td>
 
                 <td>{{ user.company }}</td>
-                <td align="center">
+                <td style="text-align: center">
                     {% if user.homeStreet is not empty %}
                         <i class="fa fa-home"
                            title="{{ user.homeStreet }} {{ user.homeCity }} {{ user.homePostalCode }}"></i>
@@ -67,54 +67,64 @@
                     {% endif %}
                 </td>
 
-                <td align="center">
+                <td style="text-align: center">
                     {% if user.mobile is not empty %}
                         <i class="fa fa-phone" title="{{ user.mobile }}"></i>
                     {% endif %}
 
-                    {% if user.mobile2 is not empty %} /
+                    {% if user.mobile is not empty and user.mobile2 is not empty %} /
+                    {% endif %}
+                    {% if user.mobile2 is not empty %}
                         <i class="fa fa-phone" title="{{ user.mobile2 }}"></i>
                     {% endif %}
                 </td>
 
-                <td align="center">
+                <td style="text-align: center">
                     {% if user.businessPhone is not empty %}
                         <i class="fa fa-phone" title="{{ user.homePhone }}"></i>
                     {% endif %}
 
-                    {% if user.homePhone is not empty %} /
+                    {% if user.homePhone is not empty and user.businessPhone is not empty %} /
+                    {% endif %}
+                    {% if user.homePhone is not empty%}
                         <i class="fa fa-phone" title="{{ user.homePhone }}"></i>
                     {% endif %}
                 </td>
 
-                <td align="center">
+                <td style="text-align: center">
                     {% if user.email is not empty %}
                         <a title="{{ user.email }}" href="mailto:{{ user.email }}">
                             <i class="fa fa-envelope-open-o"></i>
+                            {{ user.email }}
                         </a>
                     {% endif %}
 
                     {% if user.email2 is not empty %}
                         <a title="{{ user.email2 }}" href="mailto:{{ user.email2 }}">
                             <i class="fa fa-envelope-open-o"></i>
+                            {{ user.email2 }}
                         </a>
                     {% endif %}
 
                     {% if user.email3 is not empty %} /
                         <a title="{{ user.email3 }}" href="mailto:{{ user.email3 }}">
                             <i class="fa fa-envelope-open-o"></i>
+                            {{ user.email3 }}
                         </a>
                     {% endif %}
                 </td>
-                <td align="center">
+
+                <td style="text-align: center">
                     {% if user.linkedIn is not empty %}
                         <a target="_blank" title="{{ user.linkedIn }}" href="{{ user.linkedIn }}">
                             <i class="fa fa-linkedin"></i>
                         </a>
                     {% endif %}
                 </td>
-                <td align="center">
+
+                <td style="text-align: center">
                     {% if user.webPage is not empty %}
+                        {{ user.webPage }}
                         {% if user.webPage starts with 'http' %}
                             {% set web = user.webPage %}
                         {% else %}
@@ -127,16 +137,17 @@
                 </td>
 
 
-                <td align="center" data-sort="{{ user.birthday|date('Y-m-d') }}">
+                <td style="text-align: center"; data-sort="{{ user.birthday|date('Y-m-d') }}">
                     {% if user.birthday is not empty %}
                     {{ user.birthday |date('d-M-Y') }}
-
                 </td>
                 {% endif %}
 
-
-                <td>{{ user.notes }}</td>
-
+                <td>
+                    {% if user.notes is not empty %}
+                        <i class="fa fa-info-circle" title="{{ user.notes }}"></i>
+                    {% endif %}
+                </td>
 
                 {#- ----- Radio buttons for roles --------------- -#}
                 {% if role != 'ROLE_RECRUITER' %}
@@ -148,7 +159,7 @@
                         {% endif %}
                     {% endfor %}
 
-                    <td style="text-align: center" data-sort="{{ role_flag }}">
+                    <td style="text-align: center"; data-sort="{{ role_flag }}">
                         {% set flag = 0 %}
                         {% for role in user.roles %}
                             {% if role == 'ROLE_SUPER_ADMIN' or role == 'ROLE_ADMIN' %}
@@ -170,7 +181,7 @@
                         {% endif %}
                     {% endfor %}
 
-                    <td style="text-align: center" data-sort="{{ role_flag2 }}">
+                    <td style="text-align: center"; data-sort="{{ role_flag2 }}">
                         {% set flag2 = 0 %}
                         {% for role in user.roles %}
                             {% if role == 'ROLE_FAMILY' %}
@@ -185,8 +196,6 @@
                                             class="fa fa-circle" style="color: green; text-align: right"></i></a>
                             {% endif %}
                         {% else %}
-
-
                             {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: red; text-align: right"></i>
                             {% else %}
@@ -203,9 +212,7 @@
                             {% set role_flag3 = 1 %}
                         {% endif %}
                     {% endfor %}
-
-
-                    <td style="text-align: center" data-sort="{{ role_flag3 }}">
+                    <td style="text-align: center"; data-sort="{{ role_flag3 }}">
                         {% set flag3 = 0 %}
                         {% for role in user.roles %}
                             {% if role == 'ROLE_CONTACT' %}
@@ -220,7 +227,6 @@
                                             class="fa fa-circle" style="color: green; text-align: right"></i></a>
                             {% endif %}
                         {% else %}
-
 
                             {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: red; text-align: right"></i>
@@ -239,7 +245,7 @@
                         {% endif %}
                     {% endfor %}
 
-                    <td style="text-align: center" data-sort="{{ role_flag4 }}">
+                    <td style="text-align: center"; data-sort="{{ role_flag4 }}">
                         {% set flag4 = 0 %}
                         {% for role in user.roles %}
                             {% if role == 'ROLE_GUEST' %}
@@ -254,7 +260,6 @@
                                             class="fa fa-circle" style="color: green; text-align: right"></i></a>
                             {% endif %}
                         {% else %}
-
 
                             {% if app.user.id == user.id %}
                                 <i class="fa fa-circle" style="color: red; text-align: right"></i>

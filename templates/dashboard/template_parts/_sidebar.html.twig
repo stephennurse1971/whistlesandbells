@@ -167,7 +167,8 @@
             <div id="collapseCV" class="collapse show" aria-labelledby="headingTwo"
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ path('curriculum_vitae_index') }}">CV</a>
+                    <a class="collapse-item" href="{{ path('curriculum_vitae_index') }}">CV sections</a>
+                    <a class="collapse-item" href="{{ path('curriculum_vitae_individual',{'name': 'Stephen Nurse'}) }}">CV - Stephen Nurse</a>
                 </div>
             </div>
         </li>
@@ -202,7 +203,6 @@
                     <a class="collapse-item" href="{{ path('user_ax') }}">AX</a>
                     <hr>
                     <a class="collapse-item" href="{{ path('user_birthdays') }}">Birthdays</a>
-                    <a class="collapse-item" href="{{ path('user_telephonecheck') }}">Phone check</a>
                     <hr>
                     <a class="collapse-item" href="{{ path('log_index') }}">User log</a>
                 </div>

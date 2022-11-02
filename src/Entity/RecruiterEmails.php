@@ -20,17 +20,17 @@ class RecruiterEmails
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $SendTo;
+    private $sendTo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $SendCC;
+    private $sendCc;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $SendBcc;
+    private $sendBcc;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -38,7 +38,7 @@ class RecruiterEmails
     private $subject;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $body;
 
@@ -50,12 +50,32 @@ class RecruiterEmails
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $SendDate;
+    private $sendDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $sendAuthor;
+    private $author;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sendToFullName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sendCcFullName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sendBccFullName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $authorFullName;
 
     public function getId(): ?int
     {
@@ -64,36 +84,36 @@ class RecruiterEmails
 
     public function getSendTo(): ?string
     {
-        return $this->SendTo;
+        return $this->sendTo;
     }
 
-    public function setSendTo(?string $SendTo): self
+    public function setSendTo(?string $sendTo): self
     {
-        $this->SendTo = $SendTo;
+        $this->sendTo = $sendTo;
 
         return $this;
     }
 
-    public function getSendCC(): ?string
+    public function getSendCc(): ?string
     {
-        return $this->SendCC;
+        return $this->sendCc;
     }
 
-    public function setSendCC(?string $SendCC): self
+    public function setSendCc(?string $sendCc): self
     {
-        $this->SendCC = $SendCC;
+        $this->sendCc = $sendCc;
 
         return $this;
     }
 
     public function getSendBcc(): ?string
     {
-        return $this->SendBcc;
+        return $this->sendBcc;
     }
 
-    public function setSendBcc(?string $SendBcc): self
+    public function setSendBcc(?string $sendBcc): self
     {
-        $this->SendBcc = $SendBcc;
+        $this->sendBcc = $sendBcc;
 
         return $this;
     }
@@ -134,26 +154,74 @@ class RecruiterEmails
         return $this;
     }
 
-    public function getSendDate(): ?\DateTimeInterface
+    public function getsendDate(): ?\DateTimeInterface
     {
-        return $this->SendDate;
+        return $this->sendDate;
     }
 
-    public function setSendDate(?\DateTimeInterface $SendDate): self
+    public function setsendDate(?\DateTimeInterface $sendDate): self
     {
-        $this->SendDate = $SendDate;
+        $this->sendDate = $sendDate;
 
         return $this;
     }
 
-    public function getSendAuthor(): ?string
+    public function getauthor(): ?string
     {
-        return $this->sendAuthor;
+        return $this->author;
     }
 
-    public function setSendAuthor(?string $sendAuthor): self
+    public function setauthor(?string $author): self
     {
-        $this->sendAuthor = $sendAuthor;
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getsendToFullName(): ?string
+    {
+        return $this->sendToFullName;
+    }
+
+    public function setsendToFullName(?string $sendToFullName): self
+    {
+        $this->sendToFullName = $sendToFullName;
+
+        return $this;
+    }
+
+    public function getsendCcFullName(): ?string
+    {
+        return $this->sendCcFullName;
+    }
+
+    public function setsendCcFullName(?string $sendCcFullName): self
+    {
+        $this->sendCcFullName = $sendCcFullName;
+
+        return $this;
+    }
+
+    public function getsendBccFullName(): ?string
+    {
+        return $this->sendBccFullName;
+    }
+
+    public function setsendBccFullName(?string $sendBccFullName): self
+    {
+        $this->sendBccFullName = $sendBccFullName;
+
+        return $this;
+    }
+
+    public function getauthorFullName(): ?string
+    {
+        return $this->authorFullName;
+    }
+
+    public function setauthorFullName(?string $authorFullName): self
+    {
+        $this->authorFullName = $authorFullName;
 
         return $this;
     }

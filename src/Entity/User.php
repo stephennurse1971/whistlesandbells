@@ -224,7 +224,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $AreasOfInterestList = [];
+    private $recruitingAreaList = [];
 
 
     public function __construct()
@@ -851,14 +851,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAreasOfInterestList(): ?array
+    public function getRecruitingAreaList(): ?array
     {
-        return $this->AreasOfInterestList;
+        return $this->recruitingAreaList;
     }
 
-    public function setAreasOfInterestList(?array $AreasOfInterestList): self
+    public function setRecruitingAreaList(?array $recruitingAreaList): self
     {
-        $this->AreasOfInterestList = $AreasOfInterestList;
+        $this->recruitingAreaList = $recruitingAreaList;
 
         return $this;
     }

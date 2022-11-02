@@ -50,7 +50,7 @@ class UserImportGrapevineService
             $businessAddressCountry = trim($oneLineFromCsv[13]);
             $email = trim(strtolower($oneLineFromCsv[14])) . '2';
             $businessPhone = trim($oneLineFromCsv[15]);
-            $businessPhone = str_replace([' ', "(0)", "-", "Switchboard", "+"], "", $businessPhone);
+            $businessPhone = str_replace([' ','.', "(0)", "-", "Switchboard", "+", "(", ")"], "", $businessPhone);
             if ($businessPhone != '') {
                 $businessPhone = "+" . $businessPhone;
             }
@@ -69,15 +69,15 @@ class UserImportGrapevineService
             if ($businessAddress4 != '') {
                 $businessAddress = $businessAddress . ', ' . $businessAddress4;
             }
-
-            $areaOfInterest = [];
+            $recruitingAreaDefault = $recruitingArea;
+            $recruitingAreaListPref = [];
             $recruitingArea = str_replace(", ",",",$recruitingArea);
-            $recruitingAreaList = explode(',',$recruitingArea);
-            $areaOfInterestList = ['Asset Management','Investment Banking', 'Fixed Income','Equities', 'Hedge Funds', 'Risk', 'Private Equity', 'CEOs','Compliance'];
+            $recruitingArea = explode(',',$recruitingArea);
+            $recruitingAreaList = ['Asset Management','Investment Banking', 'Fixed Income','Equities', 'Hedge Funds', 'Risk',
+                'Private Equity', 'CEOs','Compliance'];
             foreach ($recruitingAreaList as $area){
-               if(in_array($area,$areaOfInterestList)){
-                   $areaOfInterest[]=$area;
-//                   $areaOfInterest[]= "match found";
+               if(in_array($area,$recruitingArea)){
+                   $recruitingAreaListPref[]=$area;
                }
             }
 
@@ -94,8 +94,8 @@ class UserImportGrapevineService
                     ->setFirstName($firstName)
                     ->setLastName($lastName)
                     ->setJobTitle($jobTitle)
-                    ->setRecruitingArea($recruitingArea)
-                    ->setAreasOfInterestList($areaOfInterest)
+                    ->setRecruitingArea($recruitingAreaDefault)
+                    ->setRecruitingAreaList($recruitingAreaListPref)
                     ->setEmail($email)
                     ->setLinkedIn($linkedIn)
                     ->setFullName($firstName . ' ' . $lastName)

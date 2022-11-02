@@ -33,6 +33,21 @@ class CurriculumVitae
      */
     private $jobDescription;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateFinish;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $section;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +85,42 @@ class CurriculumVitae
     public function setJobDescription(?string $jobDescription): self
     {
         $this->jobDescription = $jobDescription;
+
+        return $this;
+    }
+
+    public function getDateFinish(): ?\DateTimeInterface
+    {
+        return $this->dateFinish;
+    }
+
+    public function setDateFinish(?\DateTimeInterface $dateFinish): self
+    {
+        $this->dateFinish = $dateFinish;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSection(): ?string
+    {
+        return $this->section;
+    }
+
+    public function setSection(?string $section): self
+    {
+        $this->section = $section;
 
         return $this;
     }

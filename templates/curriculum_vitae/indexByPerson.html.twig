@@ -1,15 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CurriculumVitae index{% endblock %}
+{% block title %}CV: {{ candidate }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">CVs</h1>
-
+    <h1 style="color: red">{{ candidate }}</h1>
     <table class="table">
         <thead>
             <tr>
-                <th>Candidate</th>
-                <th>Section</th>
                 <th>Title</th>
                 <th>Date From</th>
                 <th>Date To</th>
@@ -19,8 +16,6 @@
         <tbody>
         {% for curriculum_vitae in curriculum_vitaes %}
             <tr>
-                <td>{{ curriculum_vitae.candidate.fullName }}</td>
-                <td>{{ curriculum_vitae.section }}</td>
                 <td>
                     <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
                 </td>
@@ -33,7 +28,6 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('curriculum_vitae_new') }}">New</a>
 {% endblock %}
 
 {% block datatable %}
@@ -43,8 +37,8 @@
                 "pageLength": 100,
                 "order": [[1, 'desc']],
                 "paging": false,
-                "searching": true,
-                "bInfo": true
+                "searching": false,
+                "bInfo": false
             });
         });
     </script>
