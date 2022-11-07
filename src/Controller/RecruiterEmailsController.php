@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\RecruiterEmails;
 use App\Form\RecruiterEmailsType;
 use App\Repository\RecruiterEmailsRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,11 +81,11 @@ class RecruiterEmailsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="recruiter_emails_delete", methods={"POST"})
+     * @Route("/{id}/delete", name="recruiter_emails_delete", methods={"POST"})
      */
     public function delete(Request $request, RecruiterEmails $recruiterEmail): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$recruiterEmail->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $recruiterEmail->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($recruiterEmail);
             $entityManager->flush();
@@ -92,4 +93,21 @@ class RecruiterEmailsController extends AbstractController
 
         return $this->redirectToRoute('recruiter_emails_index');
     }
+
+
+    /**
+     * @Route("/delete/all_emails", name="recruiter_emails_delete_all")
+     */
+    public function deleteAllRecruiterEmails(RecruiterEmailsRepository $recruiterEmailsRepository)
+    {
+        $recruiterEmails = $recruiterEmailsRepository->findAll();
+        foreach ($recruiterEmails as $recruiterEmail) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($recruiterEmail);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('recruiter_emails_index');
+    }
+
+
 }

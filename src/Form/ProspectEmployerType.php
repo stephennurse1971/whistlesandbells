@@ -37,7 +37,7 @@ class ProspectEmployerType extends AbstractType
             ->add('recruiter', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'fullName',
-//                'choices'=>$this->userRepository->findByRole('ROLE_RECRUITER'),
+                'choices' => $this->userRepository->findByRole('ROLE_RECRUITER'),
                 'required' => true,
                 'empty_data' => null,
             ])

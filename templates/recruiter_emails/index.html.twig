@@ -4,7 +4,9 @@
 
 {% block body %}
     <h1 style="color: red">Recruiter Emails</h1>
-
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a class="btn btn-danger btn-sm" href="{{ path('recruiter_emails_delete_all') }}">Delete eMails</a>
+ {% endif %}
     <table class="table">
         <thead>
         <tr>

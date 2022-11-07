@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ProspectEmployer index{% endblock %}
+{% block title %}Prospective Employers{% endblock %}
 
 {% block body %}
     <h1 style="color: red">Prospect Employers</h1>
@@ -8,31 +8,25 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Employer</th>
                 <th>InterviewDate1</th>
                 <th>InterviewDate2</th>
                 <th>InterviewDate3</th>
-                <th>actions</th>
-            </tr>
         </thead>
         <tbody>
         {% for prospect_employer in prospect_employers %}
             <tr>
-                <td>{{ prospect_employer.id }}</td>
-                <td>{{ prospect_employer.employer }}</td>
-                <td>{{ prospect_employer.interviewDate1 ? prospect_employer.interviewDate1|date('Y-m-d') : '' }}</td>
-                <td>{{ prospect_employer.interviewDate2 ? prospect_employer.interviewDate2|date('Y-m-d') : '' }}</td>
-                <td>{{ prospect_employer.interviewDate3 ? prospect_employer.interviewDate3|date('Y-m-d') : '' }}</td>
+                <td>    <a href="{{ path('prospect_employer_edit', {'id': prospect_employer.id}) }}">{{ prospect_employer.employer }}</a></td>
+                <td>{{ prospect_employer.interviewDate1 ? prospect_employer.interviewDate1|date('d-M-Y') : '' }}</td>
+                <td>{{ prospect_employer.interviewDate2 ? prospect_employer.interviewDate2|date('d-M-Y') : '' }}</td>
+                <td>{{ prospect_employer.interviewDate3 ? prospect_employer.interviewDate3|date('d-M-Y') : '' }}</td>
                 <td>
-                    <a href="{{ path('prospect_employer_show', {'id': prospect_employer.id}) }}">show</a>
-                    <a href="{{ path('prospect_employer_edit', {'id': prospect_employer.id}) }}">edit</a>
-                </td>
+                   </td>
             </tr>
 
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('prospect_employer_new') }}">New</a>
+    <a class="btn btn-success btn-sm" href="{{ path('prospect_employer_new') }}">New</a>
 {% endblock %}

@@ -192,7 +192,7 @@ class UserController extends AbstractController
     public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2()]);
+        $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(),'user'=>$user]);
         $roles = $this->getUser()->getRoles();
 
         if (!in_array('ROLE_SUPER_ADMIN', $roles)) {
