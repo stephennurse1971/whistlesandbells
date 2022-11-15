@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}File Attachments{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: File Attachments</h1>
+
+    {{ include('file_attachments/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-info bt-sm mt-2" href="{{ path('/admin/fileattachments/index') }}">Return to list</a>
+
+    {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
+        {{ include('file_attachments/_delete_form.html.twig') }}
+    {% endif %}
+{% endblock %}
+
+
+{% block javascripts %}
+{% endblock %}

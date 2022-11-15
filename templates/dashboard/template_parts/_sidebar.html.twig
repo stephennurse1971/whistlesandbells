@@ -28,17 +28,17 @@
     <hr class="sidebar-divider">
 
 
-    <!-- Nav Item #2 - HMRC -->
+    <!-- Nav Item #2 - File Attachments -->
     {% if is_granted('ROLE_HMRC') or is_granted('ROLE_SERPENTINE') %}
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHMRC"
-               aria-expanded="true" aria-controls="collapseHMRC">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFileAttachments"
+               aria-expanded="true" aria-controls="collapseFileAttachments">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>HMRC</span>
+                <span>File Attachments</span>
             </a>
-            <div id="collapseHMRC" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseFileAttachments" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ path('chavey_down_index') }}">Chavey Down</a>
+                    <a class="collapse-item" href="{{ path('/admin/fileattachments/index') }}">File Attachments</a>
                 </div>
             </div>
         </li>
@@ -74,6 +74,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{ path('house_guests_index') }}">House Guest</a>
                     <a class="collapse-item" href="{{ path('house_guests_index_simple') }}">House Guest (simple)</a>
+                    <a class="collapse-item" href="{{ path('garmin_files_index') }}">Garmin Files</a>
                 </div>
             </div>
         </li>

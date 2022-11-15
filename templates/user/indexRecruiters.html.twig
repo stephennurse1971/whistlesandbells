@@ -18,7 +18,8 @@
         <tr>
             <th>Salutation</th>
             <th>Name</th>
-            <th>Company</th>
+            <th>Recruiting Company</th>
+            <th>Hiring Company</th>
             <th title="Home/Business">Address</th>
             <th>Mobile(s)</th>
             <th>Landlines</th>
@@ -32,18 +33,17 @@
             <th>Invite email</th>
             <th>Date</th>
             <th>VCF</th>
-
-
+            <th>Opportunity</th>
             {% if is_granted('ROLE_ADMIN') %}
                 <th style="color: red;">Plain Password</th>
                 <th style="color: red;">#</th>
             {% endif %}
-
         </tr>
         </thead>
 
         <tbody>
         {% for user in users %}
+
             <tr>
                 <td>{{ user.salutation }}</td>
                 <td>
@@ -57,6 +57,14 @@
                 </td>
 
                 <td>{{ user.company }}</td>
+                <td>
+                    {% for prospect_employer in prospect_employers %}
+                        {% if prospect_employer.recruiter.id == user.id %}
+                            <a target="_blank" href="{{ path('prospect_employer_edit', {'id': prospect_employer.id}) }}">{{ prospect_employer.employer }}</a>;
+                        {% endif %}
+                    {% endfor %}
+                </td>
+
                 <td style="text-align: center">
                     {% if user.homeStreet is not empty %}
                         <i class="fa fa-home"
@@ -139,22 +147,30 @@
                 </td>
                 <td>{{ user.notes }}</td>
                 <td style="width: 200px">
-                    <a class="btn btn-success btn-sm d-inline" href="{{ path('recruiter_intro', {'authorId':app.user.id,
-                        'recruiterId': user.id, 'recruiterCountry': user.businessCountry, 'editable':'editable'}) }}">Editable</a>
+                    <a class="btn btn-success btn-sm d-inline"
+                       href="{{ path('recruiter_intro', {'authorId':app.user.id,
+                           'recruiterId': user.id, 'recruiterCountry': user.businessCountry, 'editable':'editable'}) }}">Editable</a>
                     <a class="btn btn-primary btn-sm" href="{{ path('recruiter_intro', {'authorId':app.user.id,
-                        'recruiterId': user.id, 'recruiterCountry': user.businessCountry, 'editable':'standard' })}}">Standard</a>
+                        'recruiterId': user.id, 'recruiterCountry': user.businessCountry, 'editable':'standard' }) }}">Standard</a>
                     <br>
                 </td>
                 <td style="width: 200px">
                     {% for recruiterEmail in recruiterEmails %}
                         {% if recruiterEmail.Author == app.user.email and recruiterEmail.sendToFullName == user.fullName %}
-                            <a target="_blank" href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-Y h:i') }}</a>
+                            <a target="_blank"
+                               href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-Y h:i') }}</a>
 
                         {% endif %}
                     {% endfor %}
                 </td>
                 <td>
-                    <a class="btn btn-outline-info btn-sm" href="{{ path('create_vcard_user',{'userid': user.id}) }}"><i style="font-size: 15px; color: blue" class="fas fa-address-card"></i></a>
+                    <a class="btn btn-outline-info btn-sm"
+                       href="{{ path('create_vcard_user',{'userid': user.id}) }}"><i
+                                style="font-size: 15px; color: blue" class="fas fa-address-card"></i></a>
+                </td>
+                <td>
+                    <a target="_blank" class="btn btn-outline-success btn-sm"
+                       href="{{ path('prospect_employer_new',{'applicantid': app.user.id, 'recruiterid':user.id}) }}">Opening</a>
                 </td>
 
                 {% if is_granted('ROLE_SUPER_ADMIN') %}

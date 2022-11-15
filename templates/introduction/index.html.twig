@@ -25,7 +25,15 @@
                 <td>{{ introduction.region }}</td>
                 <td>{{ introduction.areaOfInterest }}</td>
                 <td>{{ introduction.subjectLine }}</td>
-                <td>{{ introduction.attachment }}</td>
+                <td>
+                    {% if introduction.attachment is not empty %}
+{#                        {% for introduction.attachment in introduction.attachments %}#}
+                            <a title= {{ introduction.attachment }} target="_blank"
+                               href="{{ path('show_attachment',{id : introduction.id,'filename':introduction.attachment}) }}"><i
+                                        class="fa fa-paperclip"></i></a>
+{#                        {% endfor %}#}
+                    {% endif %}
+                </td>
                 <td>{{ introduction.introductoryEmail|raw }}</td>
             </tr>
         {% endfor %}

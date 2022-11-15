@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-4">
+        {{ form_row(form.country) }}
+        {{ form_row(form.startingPoint) }}
+        {{ form_row(form.kilometres) }}
+        {{ form_row(form.climb) }}
+        {{ form_row(form.description) }}
+        <strong style="color: blue">
+            {{ garmin_file.gpxFile }}
+        </strong> <br>
+        {% if garmin_file.gpxFile is not empty %}
+            <a class="btn btn-sm btn-danger" href="{{ path('garmin_files_delete_attachment',{id:garmin_file.id}) }}">Delete
+                attachment</a>
+        {% endif %}
+        {{ form_row(form.gpxFile) }}
+    </div>
+</div>
+<br> <hr>
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

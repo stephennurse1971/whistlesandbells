@@ -16,6 +16,10 @@
           </strong>
             <br>
         {% endfor %}
+        {% if to_do_list.file is not empty %}
+            <a class="btn btn-sm btn-danger" href="{{ path('todolist_delete_attachment',{id:to_do_list.id}) }}">Delete
+                attachment</a>
+        {% endif %}
 <div class="mt-1"></div>
         {{ form_row(form.file) }}
     </div>

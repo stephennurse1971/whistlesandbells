@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ProspectEmployer;
 use App\Form\ProspectEmployerType;
 use App\Repository\ProspectEmployerRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,15 +27,21 @@ class ProspectEmployerController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="prospect_employer_new", methods={"GET","POST"})
+     * @Route("/new/{recruiterid}/{applicantid}", name="prospect_employer_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,int $recruiterid,int $applicantid,UserRepository $userRepository): Response
     {
+        $recruiter = $userRepository->find($recruiterid);
+        $applicant = $userRepository->find($applicantid);
         $prospectEmployer = new ProspectEmployer();
+        $prospectEmployer->setApplicant($applicant);
+        $prospectEmployer->setRecruiter($recruiter);
         $form = $this->createForm(ProspectEmployerType::class, $prospectEmployer);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($prospectEmployer);
             $entityManager->flush();
@@ -63,7 +70,8 @@ class ProspectEmployerController extends AbstractController
      */
     public function edit(Request $request, ProspectEmployer $prospectEmployer): Response
     {
-        $form = $this->createForm(ProspectEmployerType::class, $prospectEmployer);
+       $employer = $prospectEmployer->getEmployer();
+        $form = $this->createForm(ProspectEmployerType::class, $prospectEmployer,['employer'=>$employer]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

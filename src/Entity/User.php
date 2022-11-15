@@ -226,6 +226,11 @@ class User implements UserInterface
      */
     private $recruitingAreaList = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity=ProspectEmployer::class, mappedBy="applicant", orphanRemoval=true)
+     */
+    private $prospectiveEmployer;
+
 
     public function __construct()
     {
@@ -235,6 +240,7 @@ class User implements UserInterface
         $this->introductions = new ArrayCollection();
         $this->prospectEmployers = new ArrayCollection();
         $this->curriculumVitaes = new ArrayCollection();
+        $this->prospectiveEmployer = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -859,6 +865,36 @@ class User implements UserInterface
     public function setRecruitingAreaList(?array $recruitingAreaList): self
     {
         $this->recruitingAreaList = $recruitingAreaList;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProspectEmployer[]
+     */
+    public function getProspectiveEmployer(): Collection
+    {
+        return $this->prospectiveEmployer;
+    }
+
+    public function addProspectiveEmployer(ProspectEmployer $prospectiveEmployer): self
+    {
+        if (!$this->prospectiveEmployer->contains($prospectiveEmployer)) {
+            $this->prospectiveEmployer[] = $prospectiveEmployer;
+            $prospectiveEmployer->setApplicant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspectiveEmployer(ProspectEmployer $prospectiveEmployer): self
+    {
+        if ($this->prospectiveEmployer->removeElement($prospectiveEmployer)) {
+            // set the owning side to null (unless already changed)
+            if ($prospectiveEmployer->getApplicant() === $this) {
+                $prospectiveEmployer->setApplicant(null);
+            }
+        }
 
         return $this;
     }

@@ -5,7 +5,7 @@ namespace App\Services;
 
 
 use App\Entity\Import;
-use App\Entity\ChaveyDown;
+use App\Entity\FileAttachments;
 use App\Repository\ChaveyDownRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -44,7 +44,7 @@ class ChaveyDownImportService
             $caxton = trim($oneLineFromCsv[7]);
 
             {
-                $cdexpense = new ChaveyDown();
+                $cdexpense = new FileAttachments();
                 $cdexpense->setDate(new \DateTime($date))
                     ->setAmount($amount)
                     ->setVendor($vendor)

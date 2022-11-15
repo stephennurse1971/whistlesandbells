@@ -1,4 +1,26 @@
 {{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        <h2>Employer</h2>
+        {{ form_row(form.employer) }}
+        {{ form_row(form.applicant) }}
+        {{ form_row(form.recruiter) }}
+    </div>
+    <div class="col-md-3">
+        <h2>Interview Date</h2>
+        {{ form_row(form.interviewDate1) }}
+        {{ form_row(form.interviewDate2) }}
+        {{ form_row(form.interviewDate3) }}
+    </div>
+    <div class="col-md-3">
+        <h2>Interviewers <a target="_blank" href="{{ path('user_new') }}">+</a>
+        </h2>
+        {{ form_row(form.interviewer1) }}
+        {{ form_row(form.interviewer2) }}
+        {{ form_row(form.interviewer3) }}
+    </div>
+
+</div>
     {{ form_widget(form) }}
     <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Country;
+use App\Entity\ToDoList;
 use App\Entity\UkDays;
 use App\Form\UkDaysType;
 use App\Repository\CountryRepository;
 use App\Repository\TaxYearRepository;
 use App\Repository\UkDaysRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,14 +42,14 @@ class UkDaysController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
 
-        if (date_diff($ukDay->getStartDate(), $ukDay->getEndDate())->format("%r%a") < 0) {
-            return $this->render('uk_days/new.html.twig', [
-                'uk_day' => $ukDay,
-                'form' => $form->createView(),
-                'error' => 'End Date Cannot be less then Start Date.'
-            ]);
+            if (date_diff($ukDay->getStartDate(), $ukDay->getEndDate())->format("%r%a") < 0) {
+                return $this->render('uk_days/new.html.twig', [
+                    'uk_day' => $ukDay,
+                    'form' => $form->createView(),
+                    'error' => 'End Date Cannot be less then Start Date.'
+                ]);
+            }
         }
-    }
         if ($form->isSubmitted() && $form->isValid()) {
 
             if ($form->get('travelDocs')->getData()) {
@@ -66,7 +68,21 @@ class UkDaysController extends AbstractController
                 }
                 $ukDay->setTravelDocs($file_names);
             }
+            if ($form->get('travelDocs2')->getData()) {
 
+                $files = $form->get('travelDocs2')->getData();
+                $file_names = [];
+                foreach ($files as $file) {
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename . "." . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('files_upload_default_directory'),
+                        $newFilename
+                    );
+                    $file_names[] = $newFilename;
+                }
+                $ukDay->setTravelDocs2($file_names);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ukDay);
             $entityManager->flush();
@@ -109,6 +125,36 @@ class UkDaysController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()) {
 
+            if ($form->get('travelDocs')->getData()) {
+
+                $files = $form->get('travelDocs')->getData();
+                $file_names = [];
+                foreach ($files as $file) {
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename . "." . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('files_upload_default_directory'),
+                        $newFilename
+                    );
+                    $file_names[] = $newFilename;
+                }
+                $ukDay->setTravelDocs($file_names);
+            }
+            if ($form->get('travelDocs2')->getData()) {
+
+                $files = $form->get('travelDocs2')->getData();
+                $file_names = [];
+                foreach ($files as $file) {
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename . "." . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('files_upload_default_directory'),
+                        $newFilename
+                    );
+                    $file_names[] = $newFilename;
+                }
+                $ukDay->setTravelDocs2($file_names);
+            }
             $days = $ukDay->getEndDate()->diff($ukDay->getStartDate())->days;
             $ukDay->setDayCount($days);
             $this->getDoctrine()->getManager()->flush();
@@ -132,7 +178,28 @@ class UkDaysController extends AbstractController
             $entityManager->remove($ukDay);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('uk_days_index');
+    }
+
+    /**
+     * @Route("/{id}/delete/attachment1", name="ukdays_delete_attachment1")
+     */
+    public function deleteAttachment1(Request $request, UkDays $ukDays, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $ukDays->setTravelDocs([]);
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/{id}/delete/attachment2", name="ukdays_delete_attachment2")
+     */
+    public function deleteAttachment2(Request $request, UkDays $ukDays, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $ukDays->setTravelDocs2('');
+        $entityManager->flush();
+        return $this->redirect($referer);
     }
 }

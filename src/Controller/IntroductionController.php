@@ -6,6 +6,7 @@ use App\Entity\Introduction;
 use App\Form\IntroductionType;
 use App\Repository\IntroductionRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +52,6 @@ class IntroductionController extends AbstractController
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-
             }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($introduction);
@@ -99,11 +99,8 @@ class IntroductionController extends AbstractController
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-
             }
-
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('introduction_index');
         }
 
@@ -123,7 +120,17 @@ class IntroductionController extends AbstractController
             $entityManager->remove($introduction);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('introduction_index');
+    }
+
+    /**
+     * @Route("/{id}/delete/attachment", name="introduction_delete_attachment")
+     */
+    public function deleteAttachment(Request $request, Introduction $introduction,EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+       $introduction->setAttachment('');
+       $entityManager->flush();
+       return $this->redirect($referer);
     }
 }

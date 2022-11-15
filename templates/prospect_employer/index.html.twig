@@ -7,26 +7,96 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Employer</th>
-                <th>InterviewDate1</th>
-                <th>InterviewDate2</th>
-                <th>InterviewDate3</th>
+        <tr>
+            <th>Employee</th>
+            <th>Employer</th>
+            <th>Recruiter</th>
+            <th>InterviewDate1</th>
+            <th>Interviewer1</th>
+            <th>InterviewDate2</th>
+            <th>Interviewer2</th>
+            <th>InterviewDate3</th>
+            <th>Interviewer3</th>
+            <th>#</th>
         </thead>
         <tbody>
         {% for prospect_employer in prospect_employers %}
             <tr>
-                <td>    <a href="{{ path('prospect_employer_edit', {'id': prospect_employer.id}) }}">{{ prospect_employer.employer }}</a></td>
-                <td>{{ prospect_employer.interviewDate1 ? prospect_employer.interviewDate1|date('d-M-Y') : '' }}</td>
-                <td>{{ prospect_employer.interviewDate2 ? prospect_employer.interviewDate2|date('d-M-Y') : '' }}</td>
-                <td>{{ prospect_employer.interviewDate3 ? prospect_employer.interviewDate3|date('d-M-Y') : '' }}</td>
+                <td>{{ prospect_employer.applicant.fullName }}</td>
                 <td>
-                   </td>
+                    <a target="_blank"
+                       href="{{ path('prospect_employer_edit', {'id': prospect_employer.id}) }}">{{ prospect_employer.employer }}</a>
+                </td>
+                <td>
+                    <a target="_blank"
+                       href="{{ path('user_edit', {'id': prospect_employer.recruiter.id}) }}">{{ prospect_employer.recruiter.fullName }}</a>
+
+                </td>
+                <td>{{ prospect_employer.interviewDate1 ? prospect_employer.interviewDate1|date('d-M-Y') : '' }}</td>
+
+                <td>
+                    {% if prospect_employer.interviewer1 is not empty %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <b><a target="_blank"
+                                  href="{{ path('user_edit', {'id': prospect_employer.interviewer1.id}) }}">  {{ prospect_employer.interviewer1.fullName }}</a></b>
+                        {% else %}
+                            <b><a target="_blank"
+                                  href="{{ path('user_show', {'id': prospect_employer.interviewer1.id}) }}">  {{ prospect_employer.interviewer1.fullName }}</a></b>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>{{ prospect_employer.interviewDate2 ? prospect_employer.interviewDate2|date('d-M-Y') : '' }}</td>
+
+                <td>
+                    {% if prospect_employer.interviewer2 is not empty %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <b><a target="_blank"
+                                  href="{{ path('user_edit', {'id': prospect_employer.interviewer2.id}) }}">  {{ prospect_employer.interviewer2.fullName }}</a></b>
+                        {% else %}
+                            <b><a target="_blank"
+                                  href="{{ path('user_show', {'id': prospect_employer.interviewer2.id}) }}">  {{ prospect_employer.interviewer2.fullName }}</a></b>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>{{ prospect_employer.interviewDate3 ? prospect_employer.interviewDate3|date('d-M-Y') : '' }}</td>
+
+                <td>
+                    {% if prospect_employer.interviewer3 is not empty %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <b><a target="_blank"
+                                  href="{{ path('user_edit', {'id': prospect_employer.interviewer3.id}) }}">  {{ prospect_employer.interviewer3.fullName }}</a></b>
+                        {% else %}
+                            <b><a target="_blank"
+                                  href="{{ path('user_show', {'id': prospect_employer.interviewer3.id}) }}">  {{ prospect_employer.interviewer3.fullName }}</a></b>
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+                <td>
+                    <form method="post" action="{{ path('prospect_employer_delete', {'id': prospect_employer.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ prospect_employer.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
             </tr>
 
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('prospect_employer_new') }}">New</a>
-{% endblock %}
+    {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[0, 'asc'], [1, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": true
+            });
+        });
+    </script>
+{% endblock datatable %}

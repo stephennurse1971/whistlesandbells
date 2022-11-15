@@ -45,25 +45,33 @@ class ProspectEmployer
     private $interviewDate3;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="prospectEmployer")
+     * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $interviewer1;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="prospectEmployer")
+     * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $interviewer2;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="prospectEmployer")
+     * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $interviewer3;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="prospectiveEmployer")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $applicant;
+
+
+
+
+
     public function __construct()
     {
-        $this->interviewer1 = new ArrayCollection();
-        $this->interviewer2 = new ArrayCollection();
-        $this->interviewer3 = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -131,92 +139,50 @@ class ProspectEmployer
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getInterviewer1(): Collection
+    public function getInterviewer1(): ?User
     {
         return $this->interviewer1;
     }
 
-    public function addInterviewer1(User $interviewer1): self
+    public function setInterviewer1(?User $interviewer1): self
     {
-        if (!$this->interviewer1->contains($interviewer1)) {
-            $this->interviewer1[] = $interviewer1;
-            $interviewer1->setProspectEmployer($this);
-        }
+        $this->interviewer1 = $interviewer1;
 
         return $this;
     }
 
-    public function removeInterviewer1(User $interviewer1): self
-    {
-        if ($this->interviewer1->removeElement($interviewer1)) {
-            // set the owning side to null (unless already changed)
-            if ($interviewer1->getProspectEmployer() === $this) {
-                $interviewer1->setProspectEmployer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getInterviewer2(): Collection
+    public function getInterviewer2(): ?User
     {
         return $this->interviewer2;
     }
 
-    public function addInterviewer2(User $interviewer2): self
+    public function setInterviewer2(?User $interviewer2): self
     {
-        if (!$this->interviewer2->contains($interviewer2)) {
-            $this->interviewer2[] = $interviewer2;
-            $interviewer2->setProspectEmployer($this);
-        }
+        $this->interviewer2 = $interviewer2;
 
         return $this;
     }
 
-    public function removeInterviewer2(User $interviewer2): self
-    {
-        if ($this->interviewer2->removeElement($interviewer2)) {
-            // set the owning side to null (unless already changed)
-            if ($interviewer2->getProspectEmployer() === $this) {
-                $interviewer2->setProspectEmployer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getInterviewer3(): Collection
+    public function getInterviewer3(): ?User
     {
         return $this->interviewer3;
     }
 
-    public function addInterviewer3(User $interviewer3): self
+    public function setInterviewer3(?User $interviewer3): self
     {
-        if (!$this->interviewer3->contains($interviewer3)) {
-            $this->interviewer3[] = $interviewer3;
-            $interviewer3->setProspectEmployer($this);
-        }
+        $this->interviewer3 = $interviewer3;
 
         return $this;
     }
 
-    public function removeInterviewer3(User $interviewer3): self
+    public function getApplicant(): ?User
     {
-        if ($this->interviewer3->removeElement($interviewer3)) {
-            // set the owning side to null (unless already changed)
-            if ($interviewer3->getProspectEmployer() === $this) {
-                $interviewer3->setProspectEmployer(null);
-            }
-        }
+        return $this->applicant;
+    }
+
+    public function setApplicant(?User $applicant): self
+    {
+        $this->applicant = $applicant;
 
         return $this;
     }

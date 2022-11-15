@@ -35,6 +35,7 @@
                 <th style="color: red;">Plain Password</th>
                 <th style="color: red;">#</th>
                 <th style="color: red;">#</th>
+                <th style="color: red;">#</th>
             {% endif %}
         </tr>
         </thead>
@@ -355,6 +356,11 @@
                         <a class="btn btn-success btn-sm" href="{{ path('user_invite', {'userid':user.id}) }}">Invite
                             email</a>
                     </td>
+                    <td>
+                        {% if user.inviteDate is not empty %}
+                        {{ user.inviteDate|date('d-M-Y') }}
+                        {% endif %}
+                    </td>
 
                 {% endif %}
 
@@ -380,7 +386,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[10, 'desc'], [0, 'asc']],
+                "order": [[0, 'asc'], [10, 'desc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": true

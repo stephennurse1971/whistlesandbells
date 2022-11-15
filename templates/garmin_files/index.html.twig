@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Garmin Files{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Garmin Files</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Country</th>
+            <th>Starting Point</th>
+            <th>Kilometres</th>
+            <th>Climb</th>
+            <th>Description</th>
+            <th>GPX File</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for garmin_file in garmin_files %}
+            <tr>
+                <td>{{ garmin_file.country.country }}</td>
+                <td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('garmin_files_edit', {'id': garmin_file.id}) }}">{{ garmin_file.startingPoint }}</a>
+                    {% else %}
+                         {{ garmin_file.startingPoint }}</a>
+                    {% endif %}
+                </td>
+                <td style="text-align: right">{{ garmin_file.kilometres| number_format (0, ',')  }}</td>
+                <td style="text-align: right">{{ garmin_file.climb| number_format (0, ',') }}</td>
+                <td>{{ garmin_file.description }}</td>
+                <td style="text-align: center">
+                    {% if garmin_file.gpxFile is not empty %}
+                        <a title="{{ garmin_file.gpxFile }}" target="_blank"
+                           href="{{ path('show_attachment',{id : garmin_file.id,'filename':garmin_file.gpxFile}) }}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                <td>
+                    <a class="btn btn-danger btn-sm" href="{{ path('garmin_files_edit', {'id': garmin_file.id}) }}">Email
+                        File</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <a class="btn btn-success btn-sm" href="{{ path('garmin_files_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[0, 'asc'], [1, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

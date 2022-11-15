@@ -20,12 +20,12 @@ final class Version20220125061323 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE chavey_down ADD serpentime_comments VARCHAR(255) DEFAULT NULL, ADD hmrc_comments VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE file_attachments ADD serpentime_comments VARCHAR(255) DEFAULT NULL, ADD hmrc_comments VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE chavey_down DROP serpentime_comments, DROP hmrc_comments');
+        $this->addSql('ALTER TABLE file_attachments DROP serpentime_comments, DROP hmrc_comments');
     }
 }

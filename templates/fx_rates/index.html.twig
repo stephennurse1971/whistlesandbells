@@ -63,7 +63,6 @@
                 .then(response => response.json())
                 .then(result => test(result.result,fxRate_id))
                 .catch(error => console.log('error', error));
-
         }
         function test(fxRate,fxRate_id) {
             $.post("/admin/fxrates/ajax/update/currency/rate",
@@ -75,14 +74,7 @@
                     location.reload();
                 });
         }
-
-       //alert(result);
         </script>
 {% endblock datatable %}
 {% block additionaljs %}
-
-
-
-
-
 {% endblock %}

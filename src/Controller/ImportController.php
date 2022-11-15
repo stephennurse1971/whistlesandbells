@@ -23,37 +23,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ImportController extends AbstractController
 {
     /**
-     * @Route("/import", name="chaveydownimport")
-     */
-    public function chaveyDownImport(Request $request, SluggerInterface $slugger, ChaveyDownImportService $chaveyDownImportService): Response
-    {
-        $form = $this->createForm(ImportType::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $importFile = $form->get('File')->getData();
-            if ($importFile) {
-                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $importFile->guessExtension();
-                try {
-                    $importFile->move(
-                        $this->getParameter(' chavey_down_attachments_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-                $chaveyDownImportService->importCD($newFilename);
-                return $this->redirectToRoute('chavey_down_index');
-            }
-        }
-
-        return $this->render('admin/import/index.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/importContacts/{source}", name="userImport")
      */
     public function userImport(Request $request, string $source, SluggerInterface $slugger, UserImportOutlookService $userImportOutlookService, UserImportGrapevineService $userImportGrapevineService): Response

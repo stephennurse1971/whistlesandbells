@@ -43,7 +43,7 @@ class UkDays
     private $country;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="json",  nullable=true)
      */
     private $travelDocs2;
 
@@ -129,12 +129,12 @@ class UkDays
         return $this;
     }
 
-    public function getTravelDocs2(): ?string
+    public function getTravelDocs2(): ?array
     {
         return $this->travelDocs2;
     }
 
-    public function setTravelDocs2(?string $travelDocs2): self
+    public function setTravelDocs2(?array $travelDocs2): self
     {
         $this->travelDocs2 = $travelDocs2;
 

@@ -11,7 +11,8 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Tax year     <a target="_blank" class="btn-outline-secondary btn-sm" href="{{ path('tax_year_new') }}">+</a></th>
+            <th>Tax year <a target="_blank" class="btn-outline-secondary btn-sm" href="{{ path('tax_year_new') }}">+</a>
+            </th>
             {% for country in countries %}
                 <th> {{ country.country }}  </th>
             {% endfor %}
@@ -49,7 +50,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th>test</th>
+            <th>Tax Year</th>
             <th>Start Date</th>
             <th>End Date</th>
             <th># days</th>
@@ -63,34 +64,36 @@
         <tbody>
         {% for uk_day in uk_days %}
             <tr>
-             <td>  {% set tax_year = TaxYear.findTaxYearAndDays(uk_day.startDate,uk_day.endDate) %}
-                   {% for year in tax_year %}
-                       {{ year }}
-                   {% endfor %}
-{#                <td>#}
-{#                 {{   TaxYear.findTaxYearAndDays(uk_day.startDate,uk_day.endDate) }}#}
-             </td>
-                <td data-sort="{{ uk_day.startDate ? uk_day.startDate|date('Y-m-d') : '' }}" >
+                <td>  {% set tax_year = TaxYear.findTaxYearAndDays(uk_day.startDate,uk_day.endDate) %}
+                    {% for year in tax_year %}
+                        {{ year }}
+                    {% endfor %}
+                    {#                <td> #}
+                    {#                 {{   TaxYear.findTaxYearAndDays(uk_day.startDate,uk_day.endDate) }} #}
+                </td>
+                <td data-sort="{{ uk_day.startDate ? uk_day.startDate|date('Y-m-d') : '' }}">
                     <a href="{{ path('uk_days_edit', {'id': uk_day.id}) }}">{{ uk_day.startDate ? uk_day.startDate|date('d-M-Y') : '' }}</a>
                 </td>
                 <td>{{ uk_day.endDate ? uk_day.endDate|date('d-M-Y') : '' }}</td>
-                <td align="right">{{ uk_day.dayCount }}</td>
-                <td align="right">{{ uk_day.country.country }}</td>
-                <td align="right">{{ uk_day.comment }}</td>
-                <td>
+                <td style="text-align: left" {{ uk_day.dayCount }}</td>
+                <td style="text-align: left">{{ uk_day.country.country }}</td>
+                <td style="text-align: left">{{ uk_day.comment }}</td>
+                <td style="text-align: center">
                     {% for travelDocs in uk_day.travelDocs %}
                         <strong>
-                            <a target="_blank"
-                               href="{{ path('to_do_list_viewfile',{fileName:travelDocs}) }}"> {{ travelDocs }}  </a>
+                            <a title="{{ travelDocs }}" target="_blank"
+                               href="{{ path('to_do_list_viewfile',{fileName:travelDocs}) }}"> <i
+                                        class="fas fa-paperclip"></i> </a>
                         </strong>
                         <br>
                     {% endfor %}
                 </td>
-                <td>
+                <td style="text-align: center">
                     {% for travelDocs2 in uk_day.travelDocs2 %}
                         <strong>
-                            <a target="_blank"
-                               href="{{ path('to_do_list_viewfile',{fileName:travelDocs2}) }}"> {{ travelDocs2 }}  </a>
+                            <a title="{{ travelDocs2 }}" target="_blank"
+                               href="{{ path('to_do_list_viewfile',{fileName:travelDocs2}) }}"> <i
+                                        class="fas fa-paperclip"></i></a>
                         </strong>
                         <br>
                     {% endfor %}

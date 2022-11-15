@@ -56,7 +56,7 @@ class UserImportOutlookService
         }
 
         foreach ($alldatatsFromCsv as $oneLineFromCsv) {
-                $salutation = trim($oneLineFromCsv[0]);
+            $salutation = trim($oneLineFromCsv[0]);
             $firstName = trim($oneLineFromCsv[1]);
             $lastName = trim($oneLineFromCsv[3]);
             $company = trim($oneLineFromCsv[5]);
@@ -105,6 +105,9 @@ class UserImportOutlookService
             }
             if (count($oneLineFromCsv)>=91) {
                 $webPage = trim(strtolower($oneLineFromCsv[91]));
+            }
+            if (count($oneLineFromCsv)<91) {
+                $webPage = '';
             }
 
             if (!$email) {

@@ -6,18 +6,22 @@
     <h1 style="color: red">{{ candidate }}</h1>
     <table class="table">
         <thead>
-            <tr>
-                <th>Title</th>
-                <th>Date From</th>
-                <th>Date To</th>
-                <th>Job Description</th>
-            </tr>
+        <tr>
+            <th>Title</th>
+            <th>Date From</th>
+            <th>Date To</th>
+            <th>Job Description</th>
+        </tr>
         </thead>
         <tbody>
         {% for curriculum_vitae in curriculum_vitaes %}
             <tr>
                 <td>
-                    <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
+                    {% if curriculum_vitae.title is not empty %}
+                        <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
+                    {% else %}
+                        <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.section }}</a>
+                    {% endif %}
                 </td>
                 <td data-sort="{{ curriculum_vitae.date|date('y-m-d') }}">{{ curriculum_vitae.date ? curriculum_vitae.date|date('M-Y') : '' }}</td>
                 <td data-sort="{{ curriculum_vitae.dateFinish|date('y-m-d') }}">{{ curriculum_vitae.dateFinish ? curriculum_vitae.dateFinish|date('M-Y') : '' }}</td>

@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Introduction;
 use App\Entity\Photos;
 use App\Entity\ToDoList;
 use App\Form\ToDoListType;
 use App\Repository\ToDoListRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -142,5 +144,18 @@ class ToDoListController extends AbstractController
         }
 
         return $this->redirectToRoute('to_do_list_index');
+    }
+
+
+
+    /**
+     * @Route("/{id}/delete/attachment", name="todolist_delete_attachment")
+     */
+    public function deleteAttachment(Request $request, ToDoList $toDoList, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $toDoList->setFile([]);
+        $entityManager->flush();
+        return $this->redirect($referer);
     }
 }

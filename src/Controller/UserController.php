@@ -9,6 +9,7 @@ use App\Form\UserType;
 use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
 use App\Repository\EmployeeRepository;
 use App\Repository\IntroductionRepository;
+use App\Repository\ProspectEmployerRepository;
 use App\Repository\RecruiterEmailsRepository;
 use App\Repository\TennisVenuesRepository;
 use App\Repository\UserRepository;
@@ -87,10 +88,11 @@ class UserController extends AbstractController
     /**
      * @Route("/recruiters", name="user_index_recruiters", methods={"GET"})
      */
-    public function indexRecruiters(UserRepository $userRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
+    public function indexRecruiters(UserRepository $userRepository,ProspectEmployerRepository $prospectEmployerRepository,RecruiterEmailsRepository $recruiterEmailsRepository): Response
     {
         return $this->render('user/indexRecruiters.html.twig', [
             'users' => $userRepository->findByRole('ROLE_RECRUITER'),
+            'prospect_employers'=>$prospectEmployerRepository->findAll(),
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
             'role_title' => "Recruiters"
@@ -188,7 +190,6 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/new", name="user_new", methods={"GET","POST"})
      */
-
     public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
