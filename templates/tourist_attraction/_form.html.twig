@@ -1,0 +1,41 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-2">
+        <h3><b>Name</b></h3>
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.full_name) }}
+        {{ form_row(form.company) }}
+        {{ form_row(form.photo) }}
+    </div>
+
+    <div class="col-md-3">
+        <h3><b>Address</b></h3>
+        {{ form_row(form.businessStreet) }}
+        {{ form_row(form.businessCity) }}
+        {{ form_row(form.businessPostCode) }}
+        {{ form_row(form.country) }}
+        <br>
+
+    </div>
+    <div class="col-md-2">
+        <h3><b>Phone</b></h3>
+        {{ form_row(form.mobile) }}
+        {{ form_row(form.businessPhone) }}
+    </div>
+
+    <div class="col-md-2">
+        <h3><b>Contact details</b></h3>
+        {{ form_row(form.email) }}
+        {{ form_row(form.email2) }}
+        {{ form_row(form.webPage) }}
+        {{ form_row(form.notes) }}
+    </div>
+
+</div>
+<hr>
+
+
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

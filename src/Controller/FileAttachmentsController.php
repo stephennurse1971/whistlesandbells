@@ -30,12 +30,17 @@ class FileAttachmentsController extends AbstractController
     }
 
     /**
-     * @Route("show/attachment/{id}/{filename}", name="show_attachment")
+     * @Route("/show/attachment/{id}/{filename}", name="show_attachment")
      */
     public function showAttachment(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository)
     {
-        $filepath = $this->getParameter('file_attachments_directory') . "/" . $filename;
-        return $this->file($filepath, 'sample.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
+        $filepath = $this->getParameter('garmin_attachments_directory') . "/" . $filename;
+        if(file_exists($filepath)){
+            return $this->file($filepath, 'sample.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
+        }
+       else{
+           return new Response("file does not exist");
+       }
     }
 
     /**

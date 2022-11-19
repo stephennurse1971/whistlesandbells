@@ -30,6 +30,7 @@ class IntroductionType extends AbstractType
             ->add('areaOfInterest')
             ->add('subjectLine')
             ->add('introductoryEmail')
+            ->add('introductoryEmail2')
             ->add('attachment', FileType::class, [
                 'label' => 'CV',
                 'mapped' => false,

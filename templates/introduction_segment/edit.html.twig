@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: Introduction Segment{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: Introduction Segment</h1>
+
+    {{ include('introduction_segment/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('introduction_segment_index') }}">Return to list</a>
+
+    {{ include('introduction_segment/_delete_form.html.twig') }}
+{% endblock %}

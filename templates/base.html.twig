@@ -1,18 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
+    <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Stephen Nurse personal website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
     <meta name="author" content="Stephen Nurse">
+    <!-- Page Title -->
+    <title>{% block title %}Stephen Nurse{% endblock %}</title>
+    <!-- Place flavicon.ico in the root directory -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Google Fonts css-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <!--Reset normalize css -->
+    <link rel="stylesheet" href="{{ asset('user-templates/assets/css/normalize.css') }}">
+    <!--Reset main css -->
+    <link rel="stylesheet" href="{{ asset('user-templates/assets/css/main.css') }}">
+    <!-- Bootstrap css -->
+    <link href="{{ asset('user-templates/assets/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <!-- Carousel css -->
+    <link href="{{ asset('user-templates/assets/css/owl.carousel.min.css') }}" rel="stylesheet" media="screen">
+    <!-- Carousel default css -->
+    <link href="{{ asset('user-templates/assets/css/owl.theme.default.min.css') }}" rel="stylesheet" media="screen">
+    <!-- Icofont css-->
+    <link href="{{ asset('user-templates/assets/icofont/css/icofont.css') }}" rel="stylesheet" media="screen">
+    <!-- Style css -->
+    <link href="{{ asset('user-templates/assets/css/style.css') }}" rel="stylesheet" media="screen">
+    <!-- Responsive css -->
+    <link rel="stylesheet" href="{{ asset('user-templates/assets/css/responsive.css') }}">
+    <!--Modernizr Js-->
+    <script src="{{ asset('user-templates/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
+
     {% if app.environment=='dev' %}
         <link rel="icon" href="{{ asset('administration/img/negative-dynamic.png') }}">
     {% else %}
         <link rel="icon" href="{{ asset('administration/img/positive-dynamic.png') }}">
     {% endif %}
-    <title>{% block title %}Stephen Nurse{% endblock %}</title>
+
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -20,33 +46,46 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="{{ asset('admin/css/font.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    {#    <link rel="stylesheet" href="{{ asset('admin/css/font.css') }}"> #}
+    {#    <link rel="stylesheet" href="{{ asset('css/style.css') }}"> #}
     <script src="https://cdn.ckeditor.com/ckeditor5/32.0.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('/css/sb-admin-2.css') }}" rel="stylesheet">
+    {#    <link href="{{ asset('/css/sb-admin-2.css') }}" rel="stylesheet"> #}
 
-<style>
-    .hide-form-field{
-        display: none;
-    }
-    .custom-file{
-        overflow:hidden
-    }
-    #photos_person{
-        height: 1000px;
-    }
-    #introduction_introductoryEmail{
-        height: 800px;
-    }
-    #recruiter_emails_body{
-        height: 800px;
-    }
-    .ck{
-        height: 800px;
-      }
-</style>
+    <style>
+        .hide-form-field {
+            display: none;
+        }
+
+        .custom-file {
+            overflow: hidden
+        }
+
+        #photos_person {
+            height: 1000px;
+        }
+
+        #introduction_introductoryEmail {
+            height: 300px;
+        }
+
+        #introduction_introductoryEmail2 {
+            height: 300px;
+        }
+
+        #recruiter_emails_body {
+            height: 800px;
+        }
+
+        /*.ck{*/
+        /*    height: 400px;*/
+        /*}*/
+        .dropdown-menu {
+            background: #fffefe;;
+        }
+    </style>
     <style>
         .rotate-90 {
             -moz-transform: rotate(90deg);
@@ -58,92 +97,353 @@
     </style>
 </head>
 
-<body id="page-top">
 
-<!-- Page Wrapper -->
-<div id="wrapper">
-
-    <!-- Sidebar -->
-    {{ include('dashboard/template_parts/_sidebar.html.twig') }}
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            {{ include ('\dashboard/template_parts/_header.html.twig') }}
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800"></h1>
-                </div>
+<body>
 
 
-                {% block body %}
-                {% endblock body %}
+<!--Start Header Section -->
+<header id="top-header" class="clearfix">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container-fluid">
+            <div class="logo">
+                <a class="navbar-brand" href="{{ path('app_home') }}">Stephen Nurse</a>
             </div>
-            <!-- /.container-fluid -->
+
+            <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse  main-menu navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('app_home') }}">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('aboutSN') }}">About Me</a>
+                    </li>
+
+                    {#                    <li class="nav-item"> #}
+                    {#                        <a class="nav-link" href="service.html">Services</a> #}
+                    {#                    </li> #}
+                    {#                    <li class="nav-item"> #}
+                    {#                        <a class="nav-link" href="portfolio.html">Portfolio</a> #}
+                    {#                    </li> #}
+                    {#                    <li class="nav-item"> #}
+                    {#                        <a class="nav-link" href="blog.html">Blog</a> #}
+                    {#                    </li> #}
+                    {#                    <li class="nav-item"> #}
+                    {#                        <a class="nav-link" href="contact.html">Contact</a> #}
+                    {#                    </li> #}
+
+                    <!-- Nav Item #1 - Photos -->
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Photos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('photos_index') }}">Photos</a>
+                        </div>
+                    </li>
+
+
+                    <!-- Nav Item #2 - File Attachments -->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                               role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                File Attachments
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">File
+                                    Attachments</a>
+                            </div>
+                        </li>
+                    {% endif %}
+
+                    <!-- Nav Item #3 - UK Days -->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                UK Days
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('uk_days_index') }}">UK Days</a>
+
+                            </div>
+                        </li>
+
+                    {% endif %}
+
+                    <!-- Nav Item #3 - House Guest -->
+                    {% if is_granted('ROLE_GUEST') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                House Guest
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('house_guests_index') }}">House Guest</a>
+                                <a class="dropdown-item" href="{{ path('house_guests_index_simple') }}">House Guest
+                                    (simple)</a>
+                                <a class="dropdown-item" href="{{ path('tourist_attraction_index') }}">Tourist
+                                    attractions</a>
+                                <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files</a>
+
+                            </div>
+                        </li>
+
+                    {% endif %}
+
+
+                    <!-- Nav Item #3 - Investments -->
+                    {% if is_granted('ROLE_ACCOUNTANT') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Investments & Tax
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('investments_index') }}">Investments</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('tax_supporting_docs_index') }}">Supporting Tax
+                                    Docs</a>
+                                <a class="dropdown-item" href="{{ path('investment_future_comms_index') }}">Investment
+                                    Other
+                                    Docs</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('market_data_index') }}">Share Prices</a>
+                                <a class="dropdown-item" href="{{ path('fx_rates_index') }}">FX Rates</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('tax_documents_index') }}">Tax Filings</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('jpm_ic_history_index') }}">IC Record</a>
+
+                            </div>
+                        </li>
+                    {% endif %}
+
+
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <!-- Nav Item #4 - ToDoList -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                To Do List
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('to_do_list_index') }}">To Do List</a>
+
+                            </div>
+                        </li>
+
+                    {% endif %}
+
+
+                    {% if is_granted('ROLE_JOB_APPLICANT') %}
+                        <!-- Nav Item #5 - Recruiters -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Recruiters
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters') }}">Recruiters</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('introduction_index') }}">Email Templates</a>
+                                <a class="dropdown-item" href="{{ path('introduction_segment_index') }}">Email Templates
+                                    (Country Add-on)</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('recruiter_emails_index') }}">Emails Sent</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('prospect_employer_index') }}">Prospective
+                                    Employers</a>
+                            </div>
+
+                        </li>
+
+                    {% endif %}
+
+
+                    <!-- Nav Item #6 - Recruiters -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            CV
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            <a class="dropdown-item"
+                               href="{{ path('curriculum_vitae_individual',{'name': 'Stephen Nurse'}) }}">CV -
+                                Stephen Nurse</a>
+                            {% if is_granted('ROLE_JOB_APPLICANT') %}
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('curriculum_vitae_index') }}">CV - Sections</a>
+                            {% endif %}
+                        </div>
+
+                    </li>
+
+
+                    <!-- Nav Item #7 - Users -->
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Users
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('user_index') }}">Users - All</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
+                                <a class="dropdown-item" href="{{ path('user_index_telnumbers') }}">Users - Tel
+                                    numbers</a>
+                                <hr>
+                                <a class="dropdown-item"
+                                   href="{{ path('user_role_index',{'role':'ROLE_ADMIN'}) }}">Admin</a>
+                                <a class="dropdown-item"
+                                   href="{{ path('user_role_index',{'role':'ROLE_FAMILY'}) }}">Family</a>
+                                <a class="dropdown-item" href="{{ path('user_role_index',{'role':'ROLE_CONTACT'}) }}">Contact</a>
+                                <a class="dropdown-item"
+                                   href="{{ path('user_role_index',{'role':'ROLE_GUEST'}) }}">Guest</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('user_personal') }}">Personal</a>
+                                <a class="dropdown-item" href="{{ path('user_ax') }}">AX</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('user_birthdays') }}">Birthdays</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('log_index') }}">User log</a>
+                            </div>
+                        </li>
+                    {% endif %}
+                    <!-- Nav Item #8 - Contact -->
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Contact
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="mailto:{{ StaticText.content.emailAddress }}"><i
+                                        class="fa fa-envelope"
+                                        style="color:black;font-size:16px"></i></a>
+                            <a class="dropdown-item"
+                               href="https://wa.me/{{ StaticText.content.mobileNumber | replace({' ': ''}) }}">
+                                <i style="color: #0f6848" class="fa fa-whatsapp"></i></a>
+                            <a class="dropdown-item" href="skype:{{ StaticText.content.skype }}?call"><i
+                                        style="color: royalblue"
+                                        class="fa fa-skype"></i></a>
+
+                            <a target="_blank"
+                               href={{ StaticText.content.gpsCoordinates }}>{{ StaticText.content.address }}</a>
+
+
+                        </div>
+                    </li>
+
+                    <!-- Nav Item #8 - Settings -->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Settings
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('photo_locations_index') }}">Photo locations</a>
+                                <a class="dropdown-item" href="{{ path('country_index') }}">Countries</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('tax_year_index') }}">Tax Years</a>
+                                <a class="dropdown-item" href="{{ path('file_upload') }}">File upload</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('static_text_index') }}">CMS</a>
+                                <a class="dropdown-item" href="{{ path('cms_copy_index') }}">CMS Copy</a>
+                                <a title="Stephen's CV" target="_blank"
+                                   href="/administration/attachments/CV/CV%20-%20Stephen%20Nurse%20(2022).pdf">CV</a>
+                            </div>
+                        </li>
+                    {% endif %}
+
+
+
+                    {% if app.user %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user text-dark"></i><span
+                                        class="ml-1 text-primary"> {{ app.user.fullName }}</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('user_edit',{'id':app.user.id}) }}">Profile</a>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <a class=" btn btn-sm btn-outline-dark" href="{{ path('app_login') }}">Login</a>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-        <!-- End of Main Content -->
-        <!-- Footer
-{#{{ include('dashboard/template_parts/_footer.html.twig') }}#}
-        <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-</div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="{{ path('app_logout') }}">Logout</a>
-            </div>
+    </nav>
+    <!-- Navigation -->
+</header>
+<!--End Header Section -->
+<div class="container-fluid" style="margin-top:90px;margin-bottom: 320px;">
+    <div class="row m-auto">
+        <div class="col-12 mt-2">
+            {% block body %}
+            {% endblock body %}
         </div>
     </div>
 </div>
+<!-- Footer section -->
+
+<!--  Default space  -->
+{#    <div class="default-space"></div> #}
+<!--  Default space  -->
 {{ include('dashboard/template_parts/_footer.html.twig') }}
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.compatibility.min.js"
-        integrity="sha256-5ZrdaeOQG3t2uVEkC6FxsGF2y3taTxhdjyGLXi3RUDk=" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<!-- Custom scripts for all pages-->
-<script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
-<script>
-    $('table').addClass('table-responsive');
-</script>
+<!-- Footer section -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<!-- Back to scroll  -->
+<div class="top-arrow">
+        <span class="scroll-top-top">
+          <i class="icofont icofont-arrow-up" aria-hidden="true"></i>
+        </span>
+</div>
+<!-- Back to scroll  -->
+
+<!--All Jquery Library Files -->
+<script src="{{ asset('user-templates/assets/js/vendor/jquery-3.3.1.min.js') }}"></script>
+<!-- Bootstrap js  -->
+<script src="{{ asset('user-templates/assets/js/bootstrap.min.js') }}"></script>
+<!-- Google Map Active js  -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBn-q0VMtMOum5A7HVG86duHeJApbVDv7o"></script>
+<script src="{{ asset('user-templates/assets/js/map.js') }}"></script>
+<!-- isotope js  -->
+<script src="{{ asset('user-templates/assets/js/isotope.pkgd.min.js') }}"></script>
+<!-- Carousel js  -->
+<script src="{{ asset('user-templates/assets/js/owl.carousel.min.js') }}"></script>
+<!-- Ajax Contact Form Js -->
+<script src="{{ asset('user-templates/assets/js/contact-form.js') }}"></script>
+<!-- scripts Js -->
+<script src="{{ asset('user-templates/assets/js/scripts.js') }}"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+
+{# <script> #}
+{#    $('table').addClass('table-responsive'); #}
+{# </script> #}
+
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
@@ -197,49 +497,47 @@
             var isMobile = detectMob();
             if (isMobile) {
                 $('body').addClass('mobile');
+
+
             }
         });
-
-
-
-
-        function fixedImageOrientation()
-        {
-
-         //  var img = document.getElementsByClassName('image');
-           $('.image').each(function () {
-
-               EXIF.getData(this, function() {
-                   console.log('Exif=', EXIF.getTag(this, "Width"));
-                   switch (parseInt(EXIF.getTag(this, "Orientation"))) {
-                       case 1:
-                           $(this).addClass('rotate-90');
-                           break;
-                       case 2:
-                           $(this).addClass('flip');
-                           break;
-                       case 3:
-                           $(this).addClass('rotate-180');
-                           break;
-                       case 4:
-                           $(this).addClass('flip-and-rotate-180');
-                           break;
-                       case 5:
-                           $(this).addClass('flip-and-rotate-270');
-                           break;
-                       case 6:
-                           $(this).addClass('flip-and-rotate-90');
-                           break;
-                       case 7:
-                           $(this).addClass('rotate-270');
-                           break;
-                   }});
-           })
-
+        if (window.innerWidth < 800) {
+            $('footer').removeClass('fixed-bottom');
 
         }
 
+        function fixedImageOrientation() {
+            //  var img = document.getElementsByClassName('image');
+            $('.image').each(function () {
 
+                EXIF.getData(this, function () {
+                    console.log('Exif=', EXIF.getTag(this, "Width"));
+                    switch (parseInt(EXIF.getTag(this, "Orientation"))) {
+                        case 1:
+                            $(this).addClass('rotate-90');
+                            break;
+                        case 2:
+                            $(this).addClass('flip');
+                            break;
+                        case 3:
+                            $(this).addClass('rotate-180');
+                            break;
+                        case 4:
+                            $(this).addClass('flip-and-rotate-180');
+                            break;
+                        case 5:
+                            $(this).addClass('flip-and-rotate-270');
+                            break;
+                        case 6:
+                            $(this).addClass('flip-and-rotate-90');
+                            break;
+                        case 7:
+                            $(this).addClass('rotate-270');
+                            break;
+                    }
+                });
+            })
+        }
     </script>
 
 {% endblock datatable %}

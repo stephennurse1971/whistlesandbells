@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New: CMS Copy{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New CMS Copy</h1>
+
+    {{ include('cms_copy/_form.html.twig') }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
+{% endblock %}

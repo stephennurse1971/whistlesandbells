@@ -1,0 +1,30 @@
+<style>
+    .ck-editor__editable {
+        min-height: 600px;
+    }
+</style>
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        <h2>Field names</h2>
+        {{ form_row(form.name) }}
+        {{ form_row(form.hyperlinks) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9">
+        <h2>Content</h2>
+        {{ form_row(form.contentText) }}
+    </div>
+</div>
+
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentText'));
+
+    </script>
+{% endblock %}

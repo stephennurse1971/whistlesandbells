@@ -17,45 +17,8 @@ class StaticText
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $homepage1;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $homepage2;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $emailFamily;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $emailAccountant;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $emailContact;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $emailGuest;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $webDesign;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $aboutSN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -112,106 +75,56 @@ class StaticText
      */
     private $baseCurrency;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo1;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo3;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo4;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo5;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo6;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo7;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo8;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo9;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getHomepage1(): ?string
-    {
-        return $this->homepage1;
-    }
-
-    public function setHomepage1(?string $homepage1): self
-    {
-        $this->homepage1 = $homepage1;
-
-        return $this;
-    }
-
-    public function getHomepage2(): ?string
-    {
-        return $this->homepage2;
-    }
-
-    public function setHomepage2(?string $homepage2): self
-    {
-        $this->homepage2 = $homepage2;
-
-        return $this;
-    }
-
-    public function getEmailFamily(): ?string
-    {
-        return $this->emailFamily;
-    }
-
-    public function setEmailFamily(string $emailFamily): self
-    {
-        $this->emailFamily = $emailFamily;
-
-        return $this;
-    }
-
-    public function getEmailAccountant(): ?string
-    {
-        return $this->emailAccountant;
-    }
-
-    public function setEmailAccountant(?string $emailAccountant): self
-    {
-        $this->emailAccountant = $emailAccountant;
-
-        return $this;
-    }
-
-    public function getEmailContact(): ?string
-    {
-        return $this->emailContact;
-    }
-
-    public function setEmailContact(?string $emailContact): self
-    {
-        $this->emailContact = $emailContact;
-
-        return $this;
-    }
-
-    public function getEmailGuest(): ?string
-    {
-        return $this->emailGuest;
-    }
-
-    public function setEmailGuest(?string $emailGuest): self
-    {
-        $this->emailGuest = $emailGuest;
-
-        return $this;
-    }
-
-    public function getWebDesign(): ?string
-    {
-        return $this->webDesign;
-    }
-
-    public function setWebDesign(?string $webDesign): self
-    {
-        $this->webDesign = $webDesign;
-
-        return $this;
-    }
-
-    public function getAboutSN(): ?string
-    {
-        return $this->aboutSN;
-    }
-
-    public function setAboutSN(?string $aboutSN): self
-    {
-        $this->aboutSN = $aboutSN;
-
-        return $this;
-    }
 
     public function getMobileNumber(): ?string
     {
@@ -341,6 +254,114 @@ class StaticText
     public function setBaseCurrency(?string $baseCurrency): self
     {
         $this->baseCurrency = $baseCurrency;
+
+        return $this;
+    }
+
+    public function getPhoto1(): ?string
+    {
+        return $this->photo1;
+    }
+
+    public function setPhoto1(?string $photo1): self
+    {
+        $this->photo1 = $photo1;
+
+        return $this;
+    }
+
+    public function getPhoto2(): ?string
+    {
+        return $this->photo2;
+    }
+
+    public function setPhoto2(?string $photo2): self
+    {
+        $this->photo2 = $photo2;
+
+        return $this;
+    }
+
+    public function getPhoto3(): ?string
+    {
+        return $this->photo3;
+    }
+
+    public function setPhoto3(?string $photo3): self
+    {
+        $this->photo3 = $photo3;
+
+        return $this;
+    }
+
+    public function getPhoto4(): ?string
+    {
+        return $this->photo4;
+    }
+
+    public function setPhoto4(?string $photo4): self
+    {
+        $this->photo4 = $photo4;
+
+        return $this;
+    }
+
+    public function getPhoto5(): ?string
+    {
+        return $this->photo5;
+    }
+
+    public function setPhoto5(?string $photo5): self
+    {
+        $this->photo5 = $photo5;
+
+        return $this;
+    }
+
+    public function getPhoto6(): ?string
+    {
+        return $this->photo6;
+    }
+
+    public function setPhoto6(?string $photo6): self
+    {
+        $this->photo6 = $photo6;
+
+        return $this;
+    }
+
+    public function getPhoto7(): ?string
+    {
+        return $this->photo7;
+    }
+
+    public function setPhoto7(?string $photo7): self
+    {
+        $this->photo7 = $photo7;
+
+        return $this;
+    }
+
+    public function getPhoto8(): ?string
+    {
+        return $this->photo8;
+    }
+
+    public function setPhoto8(?string $photo8): self
+    {
+        $this->photo8 = $photo8;
+
+        return $this;
+    }
+
+    public function getPhoto9(): ?string
+    {
+        return $this->photo9;
+    }
+
+    public function setPhoto9(?string $photo9): self
+    {
+        $this->photo9 = $photo9;
 
         return $this;
     }

@@ -1,0 +1,237 @@
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('app_home') }}">
+        <div class="sidebar-brand-icon rotate-n-15">
+        </div>
+        <div class="sidebar-brand-text mx-3 mt-3">Stephen Nurse</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+
+    <!-- Nav Item #1 - Photos -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePhotos"
+           aria-expanded="true" aria-controls="collapsePhotos">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Photos</span>
+        </a>
+        <div id="collapsePhotos" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item text" href="{{ path('photos_index') }}">Photos</a>
+            </div>
+        </div>
+    </li>
+    <hr class="sidebar-divider">
+
+
+    <!-- Nav Item #2 - File Attachments -->
+    {% if is_granted('ROLE_ADMIN') %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFileAttachments"
+               aria-expanded="true" aria-controls="collapseFileAttachments">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>File Attachments</span>
+            </a>
+            <div id="collapseFileAttachments" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('/admin/fileattachments/index') }}">File Attachments</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
+
+    <!-- Nav Item #3 - UK Days -->
+    {% if is_granted('ROLE_ADMIN') %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUKDays"
+               aria-expanded="true" aria-controls="collapseUKDays">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>UK Days</span>
+            </a>
+            <div id="collapseUKDays" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('uk_days_index') }}">UK Days</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
+    <!-- Nav Item #3 - House Guest -->
+    {% if is_granted('ROLE_GUEST') %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHouseGuests"
+               aria-expanded="true" aria-controls="collapseHouseGuests">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>House Guest</span>
+            </a>
+            <div id="collapseHouseGuests" class="collapse" aria-labelledby="headingTwo"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('house_guests_index') }}">House Guest</a>
+                    <a class="collapse-item" href="{{ path('house_guests_index_simple') }}">House Guest (simple)</a>
+                    <a class="collapse-item" href="{{ path('tourist_attraction_index') }}">Tourist attractions</a>
+                    <a class="collapse-item" href="{{ path('garmin_files_index') }}">Garmin Files</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
+
+
+    <!-- Nav Item #3 - Investments -->
+    {% if is_granted('ROLE_ACCOUNTANT') %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInvestments"
+               aria-expanded="true" aria-controls="collapseInvestments">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Investments & Tax</span>
+            </a>
+            <div id="collapseInvestments" class="collapse" aria-labelledby="headingTwo"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('investments_index') }}">Investments</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('tax_supporting_docs_index') }}">Supporting Tax Docs</a>
+                    <a class="collapse-item" href="{{ path('investment_future_comms_index') }}">Investment Other
+                        Docs</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('market_data_index') }}">Share Prices</a>
+                    <a class="collapse-item" href="{{ path('fx_rates_index') }}">FX Rates</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('tax_documents_index') }}">Tax Filings</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('jpm_ic_history_index') }}">IC Record</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
+
+
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <!-- Nav Item #4 - ToDoList -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseToDoList"
+               aria-expanded="true" aria-controls="collapseToDoList">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>To Do List</span>
+            </a>
+            <div id="collapseToDoList" class="collapse" aria-labelledby="headingTwo"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('to_do_list_index') }}">To Do List</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
+
+
+    {% if is_granted('ROLE_JOB_APPLICANT') %}
+        <!-- Nav Item #5 - Recruiters -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRecruiters"
+               aria-expanded="true" aria-controls="collapseRecruiters">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Recruiters</span>
+            </a>
+            <div id="collapseRecruiters" class="collapse show" aria-labelledby="headingTwo"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('user_index_recruiters') }}">Recruiter</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('introduction_index') }}">Email Templates</a>
+                    <a class="collapse-item" href="{{ path('introduction_segment_index') }}">Email Templates Segment</a>
+                    <a class="collapse-item" href="{{ path('recruiter_emails_index') }}">Emails Sent</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('prospect_employer_index') }}">Employers</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
+
+
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <!-- Nav Item #6 - Recruiters -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCV"
+               aria-expanded="true" aria-controls="collapseCV">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>CV</span>
+            </a>
+            <div id="collapseCV" class="collapse show" aria-labelledby="headingTwo"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('curriculum_vitae_index') }}">CV sections</a>
+                    <a class="collapse-item" href="{{ path('curriculum_vitae_individual',{'name': 'Stephen Nurse'}) }}">CV - Stephen Nurse</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+    {% endif %}
+
+
+
+
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+
+        <!-- Nav Item #7 - Users -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
+               aria-expanded="true" aria-controls="collapseUsers">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Users</span>
+            </a>
+            <div id="collapseUsers" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('user_index') }}">Users - All</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
+                    <a class="collapse-item" href="{{ path('user_index_telnumbers') }}">Users - Tel numbers</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('user_role_index',{'role':'ROLE_ADMIN'}) }}">Admin</a>
+                    <a class="collapse-item" href="{{ path('user_role_index',{'role':'ROLE_FAMILY'}) }}">Family</a>
+                    <a class="collapse-item" href="{{ path('user_role_index',{'role':'ROLE_CONTACT'}) }}">Contact</a>
+                    <a class="collapse-item" href="{{ path('user_role_index',{'role':'ROLE_GUEST'}) }}">Guest</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('user_personal') }}">Personal</a>
+                    <a class="collapse-item" href="{{ path('user_ax') }}">AX</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('user_birthdays') }}">Birthdays</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('log_index') }}">User log</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item #8 - Settings -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings"
+               aria-expanded="true" aria-controls="collapseSettings">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <div id="collapseSettings" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ path('photo_locations_index') }}">Photo locations</a>
+                    <a class="collapse-item" href="{{ path('country_index') }}">Countries</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('tax_year_index') }}">Tax Years</a>
+                    <a class="collapse-item" href="{{ path('file_upload') }}">File upload</a>
+                    <hr>
+                    <a class="collapse-item" href="{{ path('static_text_index') }}">CMS</a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+    {% endif %}
+</ul>

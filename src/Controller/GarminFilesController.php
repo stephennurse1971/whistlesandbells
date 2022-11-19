@@ -4,12 +4,20 @@ namespace App\Controller;
 
 use App\Entity\GarminFiles;
 use App\Entity\Introduction;
+use App\Entity\RecruiterEmails;
+use App\Entity\StaticText;
 use App\Form\GarminFilesType;
+use App\Form\RecruiterEmailsType;
 use App\Repository\GarminFilesRepository;
+use App\Repository\IntroductionRepository;
+use App\Repository\StaticTextRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -27,8 +35,6 @@ class GarminFilesController extends AbstractController
             'garmin_files' => $garminFilesRepository->findAll(),
         ]);
     }
-
-
 
 
     /**
@@ -118,7 +124,7 @@ class GarminFilesController extends AbstractController
      */
     public function delete(Request $request, GarminFiles $garminFile): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$garminFile->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $garminFile->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($garminFile);
             $entityManager->flush();
@@ -130,12 +136,48 @@ class GarminFilesController extends AbstractController
     /**
      * @Route("/{id}/delete/attachment", name="garmin_files_delete_attachment")
      */
-    public function deleteAttachment(Request $request, GarminFiles $garminFiles,EntityManagerInterface $entityManager)
+    public function deleteAttachment(Request $request, GarminFiles $garminFiles, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
         $garminFiles->setGpxFile('');
         $entityManager->flush();
         return $this->redirect($referer);
     }
+
+
+    /**
+     * @Route("/{garminid}/{recipientid}/email_gpxfile", name="garmin_file_email")
+     */
+    public function emailGPXFile(int $garminid, int $recipientid, Request $request, StaticTextRepository $staticTextRepository, UserRepository $userRepository, GarminFilesRepository $garminFilesRepository, MailerInterface $mailer)
+    {
+        $garminFile = $garminFilesRepository->find($garminid);
+        $author = $staticTextRepository->find(3)->getEmailAddress();
+        $recipient = $userRepository->find($recipientid);
+        $subject = 'GPX file';
+        $html = $this->renderView('emails/gpxfile_email.html.twig', [
+            'user' => $author,
+            'description' => $garminFile->getDescription(),
+            'starting_point' => $garminFile->getStartingPoint(),
+            'kilometres' => $garminFile->getKilometres(),
+            'climb' => $garminFile->getClimb(),
+            'country' => $garminFile->getCountry()->getCountry(),
+        ]);
+
+        $gpx_attachment = $garminFile->getGpxFile();
+        $email = (new Email())
+            ->to($recipient-> getEmail())
+            ->subject($subject)
+            ->from($author)
+            ->html($html);
+        if ($gpx_attachment) {
+            $attachment_path = $this->getParameter('garmin_attachments_directory') . "/" . $gpx_attachment;
+            $email->attachFromPath($attachment_path);
+        }
+
+        $mailer->send($email);
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+    }
+
 
 }

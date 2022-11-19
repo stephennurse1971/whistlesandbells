@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Email Country Segment{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Country Email Segment</h1>
+
+    {{ include('introduction_segment/_form.html.twig') }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('introduction_segment_index') }}">Return to list</a>
+{% endblock %}

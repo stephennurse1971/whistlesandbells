@@ -48,6 +48,11 @@ class Introduction
      */
     private $attachment;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $introductoryEmail2;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +126,18 @@ class Introduction
     public function setAttachment(?string $attachment): self
     {
         $this->attachment = $attachment;
+
+        return $this;
+    }
+
+    public function getIntroductoryEmail2(): ?string
+    {
+        return $this->introductoryEmail2;
+    }
+
+    public function setIntroductoryEmail2(?string $introductoryEmail2): self
+    {
+        $this->introductoryEmail2 = $introductoryEmail2;
 
         return $this;
     }

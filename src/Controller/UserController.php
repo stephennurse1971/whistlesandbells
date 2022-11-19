@@ -9,6 +9,7 @@ use App\Form\UserType;
 use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
 use App\Repository\EmployeeRepository;
 use App\Repository\IntroductionRepository;
+use App\Repository\IntroductionSegmentRepository;
 use App\Repository\ProspectEmployerRepository;
 use App\Repository\RecruiterEmailsRepository;
 use App\Repository\TennisVenuesRepository;
@@ -374,21 +375,28 @@ class UserController extends AbstractController
     /**
      * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
      */
-    public function recruiterInviteEmail(int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository, IntroductionRepository $introductionRepository, EntityManagerInterface $manager): Response
+    public function recruiterInviteEmail(string $recruiterCountry,int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository,
+                                         IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository,EntityManagerInterface $manager): Response
     {
         $author = $userRepository->find($authorId);
         $recruiter = $userRepository->find($recruiterId);
         $subject = $introductionRepository->find($authorId)->getSubjectLine();
+        $additional_segment='';
+        $segment = $introductionSegmentRepository->findOneBy(['user'=>$author,'country'=>$recruiterCountry]);
+        if($segment){
+            $additional_segment = $introductionSegmentRepository->findOneBy(['user'=>$author,'country'=>$recruiterCountry])->getEmailSegment();
+        }
         $html = $this->renderView('emails/recruiter_intro_email.html.twig', [
             'user' => $author,
-            'content' => $introductionRepository->find($authorId)->getIntroductoryEmail()
+            'content1' => $introductionRepository->find($authorId)->getIntroductoryEmail(),
+            'content2' => $introductionRepository->find($authorId)->getIntroductoryEmail2(),
+            'additional_segment'=>$additional_segment
         ]);
-        $html = 'Dear '. $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . $html;
+        $html = 'Dear '. $recruiter->getSalutation() . ' ' . $recruiter->getLastName().',' . $html;
         $introduction_attachment = $introductionRepository->find($authorId)->getAttachment();
 
         $recruiterEmail = new RecruiterEmails();
         if ($editable == "editable") {
-
             $recruiterEmail->setAuthorFullName($author->getFullName())
                 ->setSendBccFullName($author->getFullName())
                 ->setSendToFullName($recruiter->getFullName())

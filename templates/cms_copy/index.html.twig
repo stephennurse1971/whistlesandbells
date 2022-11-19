@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CMS Copy index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CMS Copy index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="width: 50px">Name</th>
+            <th style="width: 900px">Content</th>
+            <th style="width: 20px">Hyperlinks</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cms_copy in cms_copies %}
+            <tr>
+                <td>
+                    <a href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">{{ cms_copy.name }}</a>
+                </td>
+                <td>{{ (cms_copy.contentText |slice (0, 500))|raw}}</td>
+                <td>
+                    <a href="{{ cms_copy.hyperlinks }}">{{ cms_copy.hyperlinks }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('cms_copy_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

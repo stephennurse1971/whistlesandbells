@@ -15,7 +15,7 @@
         {{ form_row(form.gpsCoordinates) }}
     </div>
     <div class="col-md-6">
-        <h3 style="color: blue">Social Media</h2>
+        <h3 style="color: blue">Social Media</h3>
         {{ form_row(form.linkedIn) }}
         {{ form_row(form.companiesHouseLink) }}
         {{ form_row(form.github) }}
@@ -26,89 +26,121 @@
 <hr>
 <div class="row">
     <div class="col-md-6">
-        <h3 style="color: blue">Commercial details</h3>
+        <h3 style="color: blue">Investment Base Currency</h3>
         {{ form_row(form.baseCurrency) }}
     </div>
-    <div class="col-md-6">
-
-    </div>
 </div>
+
 
 <div class="row">
-    <div class="col-md-6">
-        <h3 style="color: blue">Homepage</h2>
-        {{ form_row(form.homepage1) }}
-        {{ form_row(form.homepage2) }}
-    </div>
-    <div class="col-md-6">
-        <h3 style="color: blue">Sub Pages</h2>
-        {{ form_row(form.webDesign) }}
-        {{ form_row(form.aboutSN) }}
+
+    <div class="col-md-12">
+        <h3 style="color: blue">Photos</h3>
+        <div class="row">
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':1}) }}">{{ static_text.photo1 }}</a>
+                {{ form_row(form.photo1) }}
+                {% if static_text.photo1 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':1}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':2}) }}">{{ static_text.photo2 }}</a>
+                {{ form_row(form.photo2) }}
+                {% if static_text.photo2 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':2}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':3}) }}">{{ static_text.photo3 }}</a>
+                {{ form_row(form.photo3) }}
+                {% if static_text.photo3 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':3}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':4}) }}">{{ static_text.photo4 }}</a>
+                {{ form_row(form.photo4) }}
+                {% if static_text.photo4 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':4}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':5}) }}">{{ static_text.photo5 }}</a>
+                {{ form_row(form.photo5) }}
+                {% if static_text.photo5 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':5}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':6}) }}">{{ static_text.photo6 }}</a>
+                {{ form_row(form.photo6) }}
+                {% if static_text.photo6 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':6}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+        </div>
+        <br>
+        <hr>
+        <br>
+
+        <div class="row">
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':7}) }}">{{ static_text.photo7 }}</a>
+                {{ form_row(form.photo7) }}
+                {% if static_text.photo7 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':7}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':8}) }}">{{ static_text.photo8 }}</a>
+                {{ form_row(form.photo8) }}
+                {% if static_text.photo8 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':8}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+
+            <div class="col-2">
+                <a target="_blank"
+                   href="{{ path('cms_view_photo', {'id': static_text.id, 'photoid':9}) }}">{{ static_text.photo9 }}</a>
+                {{ form_row(form.photo9) }}
+                {% if static_text.photo9 is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('cms_delete_photo', {'id': static_text.id, 'photoid':9}) }}">Delete photo</a>
+                {% endif %}
+            </div>
+
+
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <h3 style="color: blue">Introduction/Emails</h2>
-        {{ form_row(form.emailContact) }}
-        {{ form_row(form.emailGuest) }}
-    </div>
-    <div class="col-md-6">
-        <h3 style="color: blue">Introduction/Emails</h2>
-        {{ form_row(form.emailAccountant) }}
-        {{ form_row(form.emailFamily) }}
-    </div>
-</div>
+<hr>
+
 <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
-
-{% block additionaljs %}
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#static_text_homepage1'))
-            .catch(error => {
-                console.error(error);
-            });
-
-        ClassicEditor
-            .create(document.querySelector('#static_text_homepage2'))
-            .catch(error => {
-                console.error(error);
-            });
-
-        ClassicEditor
-            .create(document.querySelector('#static_text_webDesign'))
-            .catch(error => {
-                console.error(error);
-            });
-
-
-        ClassicEditor
-            .create(document.querySelector('#static_text_aboutSN'))
-            .catch(error => {
-                console.error(error);
-            });
-
-        ClassicEditor
-            .create(document.querySelector('#static_text_emailAccountant'))
-            .catch(error => {
-                console.error(error);
-            });
-
-        ClassicEditor
-            .create(document.querySelector('#static_text_emailContact'))
-            .catch(error => {
-                console.error(error);
-            });
-        ClassicEditor
-            .create(document.querySelector('#static_text_emailFamily'))
-            .catch(error => {
-                console.error(error);
-            });
-        ClassicEditor
-            .create(document.querySelector('#static_text_emailGuest'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-{% endblock %}

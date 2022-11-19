@@ -1,6 +1,6 @@
 <!-- BEGIN .footer -->
-<footer class="footer" style="background: none">
-    <section id="footertop" class="py-5" style="background-color: lightgray">
+<footer class="footer fixed-bottom" style="background: #F6F8FC">
+    <section id="footertop" class="py-5">
         <div class="container">
             <div class="row">
 
@@ -19,14 +19,13 @@
                                 <span class="zoom-social_icons-list-span social-icon socicon socicon-ch rounded border"
                                       data-hover-rule="color" data-hover-color="red"
                                       style="color : black; background-color: black; font-size: 16px; padding:6px"><img
-                                            src="https://d109b4smb8id36.cloudfront.net/images/royal-coat-of-arms-white.svg"
-                                            style="height: 28px; width: 24px;color: black"></span></a>
+                                            src="{{ asset('administration/img/companieshouse.png') }}"
+                                            style="height: 28px; width: 24px;color: white"></span></a>
 
                             <a href="https://github.com/{{ StaticText.content.github }}" target="_blank">
                                 <span class="zoom-social_icons-list-span social-icon socicon socicon-github"
                                       data-hover-rule="color" data-hover-color="#dd3333"
-                                      style="color : black; font-size: 16px; padding:6px"><i class="fa fa-github"
-                                                                                             style="font-size:24px"></i></span></a>
+                                      style="color : black; font-size: 16px; padding:6px"><i class="fa fa-github" style="font-size:24px"></i></span></a>
 
                             <a href="https://facebook.com/{{ StaticText.content.facebookLink }}" target="_blank">
                                 <span class="zoom-social_icons-list-span social-icon socicon socicon-facebook"
@@ -79,25 +78,13 @@
                                     <p>Overview</p>
                                     <hr>
                                     <ul class="row" style="list-style:disc">
-                                        <div class="col-6">
-                                            <li>
-                                                <a href="{{ path('aboutSN') }}">About Stephen</a>
-                                            </li>
 
-
-                                        </div>
                                         <div class="col-6">
                                             <li>
                                                 <a title="Stephen's CV" target="_blank"
                                                    href="/administration/attachments/CV/CV%20-%20Stephen%20Nurse%20(2022).pdf">CV</a>
                                             </li>
-                                            <li>
-                                                <a title="Chavey Dhown" target="_blank"
-                                                   href="{{ path('file_download') }}">Chavey Down</a>
-                                            </li>
-                                            <li>
-                                                <a title="" href="{{ path('webdesign') }}">Web design</a>
-                                            </li>
+
                                         </div>
                                     </ul>
                                 </div>

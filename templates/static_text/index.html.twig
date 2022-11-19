@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}StaticText index{% endblock %}
+{% block title %}CMS index{% endblock %}
 
 {% block body %}
     <h1 style="color: red">CMS Editor</h1>
@@ -8,27 +8,34 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Edit</th>
+
+            <th>Address</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Skype</th>
+            <th>LinkedIN</th>
+            <th>Companies House</th>
+            <th>GitHub</th>
+            <th>Facebook</th>
+            <th>Twitter</th>
             <th>Base ccy</th>
-            <th>Homepage1</th>
-            <th>Homepage2</th>
-            <th>Email Family</th>
-            <th>Email Accountant</th>
-            <th>Email Contact</th>
-            <th>Email Guest</th>
+            <th>Edit</th>
         </tr>
         </thead>
         <tbody>
         {% for static_text in static_texts %}
             <tr>
-                <td><a class="btn btn-outline-danger btn-sm" href="{{ path('static_text_edit', {'id': static_text.id}) }}">Edit</a></td>
+                <td>{{ static_text.address }}</td>
+                <td>{{ static_text.emailAddress }}</td>
+                <td>{{ static_text.mobileNumber }}</td>
+                <td>{{ static_text.skype }}</td>
+                <td>{{ static_text.linkedIn }}</td>
+                <td>{{ static_text.companiesHouseLink }}</td>
+                <td>{{ static_text.github }}</td>
+                <td>{{ static_text.facebookLink }}</td>
+                <td>{{ static_text.twitter }}</td>
                 <td>{{ static_text.baseCurrency }}</td>
-                <td>{{ static_text.homepage1 |raw }}</td>
-                <td>{{ static_text.homepage2 |raw }}</td>
-                <td>{{ static_text.emailFamily |raw }}</td>
-                <td>{{ static_text.emailAccountant |raw }}</td>
-                <td>{{ static_text.emailContact |raw }}</td>
-                <td>{{ static_text.emailGuest |raw }}</td>
+                <td><a class="btn btn-outline-danger btn-sm" href="{{ path('static_text_edit', {'id': static_text.id}) }}">Edit</a></td>
             </tr>
 
         {% endfor %}

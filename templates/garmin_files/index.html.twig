@@ -37,8 +37,7 @@
                            href="{{ path('show_attachment',{id : garmin_file.id,'filename':garmin_file.gpxFile}) }}"><i class="fa fa-paperclip"></i></a>
                     {% endif %}
                 <td>
-                    <a class="btn btn-danger btn-sm" href="{{ path('garmin_files_edit', {'id': garmin_file.id}) }}">Email
-                        File</a>
+                    <a class="btn btn-danger btn-sm" href="{{ path('garmin_file_email', {'garminid': garmin_file.id, 'recipientid': app.user.id}) }}">Email File</a>
                 </td>
             </tr>
         {% endfor %}

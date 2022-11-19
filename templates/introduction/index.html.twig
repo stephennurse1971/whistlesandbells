@@ -14,7 +14,8 @@
             <th>Area of Interest</th>
             <th>Subject</th>
             <th>Attachment</th>
-            <th>Email</th>
+            <th style="width: 1400px">Email-Part 1</th>
+            <th style="width: 1400px">Email-Part 2</th>
         </tr>
         </thead>
         <tbody>
@@ -27,14 +28,13 @@
                 <td>{{ introduction.subjectLine }}</td>
                 <td>
                     {% if introduction.attachment is not empty %}
-{#                        {% for introduction.attachment in introduction.attachments %}#}
                             <a title= {{ introduction.attachment }} target="_blank"
                                href="{{ path('show_attachment',{id : introduction.id,'filename':introduction.attachment}) }}"><i
                                         class="fa fa-paperclip"></i></a>
-{#                        {% endfor %}#}
                     {% endif %}
                 </td>
                 <td>{{ introduction.introductoryEmail|raw }}</td>
+                <td>{{ introduction.introductoryEmail2|raw }}</td>
             </tr>
         {% endfor %}
         </tbody>

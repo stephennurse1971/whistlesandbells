@@ -1,0 +1,20 @@
+<div>
+
+    <h1 style="color: red"> GPX file from stephen.nurse.com</h1>
+
+
+    <strong>Description</strong>: {{ description }}
+    <br>
+    <strong>Starting point</strong>: {{ starting_point }}
+    <br>
+    <strong>Kilometres</strong>: {{ kilometres| number_format (0, ',') }}
+    <br>
+    <strong>Climber</strong>: {{ climb |number_format (0, ',') }}
+    <br>
+    <strong>Country</strong>: {{ country }}
+    <br><br>
+
+    {#    {{ include('emails/footerLoginAndEmail.html.twig') }} #}
+
+
+</div>

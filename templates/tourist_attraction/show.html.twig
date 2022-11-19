@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tourist Attraction{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tourist Attraction</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tourist_attraction.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ tourist_attraction.email }}</td>
+            </tr>
+            <tr>
+                <th>Full_name</th>
+                <td>{{ tourist_attraction.fullName }}</td>
+            </tr>
+            <tr>
+                <th>Mobile</th>
+                <td>{{ tourist_attraction.mobile }}</td>
+            </tr>
+            <tr>
+                <th>Email2</th>
+                <td>{{ tourist_attraction.email2 }}</td>
+            </tr>
+            <tr>
+                <th>FirstName</th>
+                <td>{{ tourist_attraction.firstName }}</td>
+            </tr>
+            <tr>
+                <th>LastName</th>
+                <td>{{ tourist_attraction.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ tourist_attraction.company }}</td>
+            </tr>
+            <tr>
+                <th>BusinessPhone</th>
+                <td>{{ tourist_attraction.businessPhone }}</td>
+            </tr>
+            <tr>
+                <th>WebPage</th>
+                <td>{{ tourist_attraction.webPage }}</td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>{{ tourist_attraction.notes }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td>{{ tourist_attraction.photo }}</td>
+            </tr>
+            <tr>
+                <th>BusinessStreet</th>
+                <td>{{ tourist_attraction.businessStreet }}</td>
+            </tr>
+            <tr>
+                <th>BusinessCity</th>
+                <td>{{ tourist_attraction.BusinessCity }}</td>
+            </tr>
+            <tr>
+                <th>BusinessPostCode</th>
+                <td>{{ tourist_attraction.BusinessPostCode }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('tourist_attraction_index') }}">back to list</a>
+
+    <a href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">edit</a>
+
+    {{ include('tourist_attraction/_delete_form.html.twig') }}
+{% endblock %}

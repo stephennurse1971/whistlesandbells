@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\StaticText;
 use App\Form\StaticTextType;
 use App\Repository\StaticTextRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/static/text")
@@ -61,12 +63,157 @@ class StaticTextController extends AbstractController
     /**
      * @Route("/{id}/edit", name="static_text_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, StaticText $staticText): Response
+    public function edit(Request $request, StaticText $staticText, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(StaticTextType::class, $staticText);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $photo1 = $form->get('photo1')->getData();
+            $photo2 = $form->get('photo2')->getData();
+            $photo3 = $form->get('photo3')->getData();
+            $photo4 = $form->get('photo4')->getData();
+            $photo5 = $form->get('photo5')->getData();
+            $photo6 = $form->get('photo6')->getData();
+            $photo7 = $form->get('photo7')->getData();
+            $photo8 = $form->get('photo8')->getData();
+            $photo9 = $form->get('photo9')->getData();
+            if ($photo1) {
+                $originalFilename = pathinfo($photo1->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo1->guessExtension();
+                try {
+                    $photo1->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto1($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+            if ($photo2) {
+                $originalFilename = pathinfo($photo2->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo2->guessExtension();
+                try {
+                    $photo2->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto2($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+            if ($photo3) {
+                $originalFilename = pathinfo($photo3->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo3->guessExtension();
+                try {
+                    $photo3->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto3($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+            if ($photo4) {
+                $originalFilename = pathinfo($photo4->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo4->guessExtension();
+                try {
+                    $photo4->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto4($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+            if ($photo5) {
+                $originalFilename = pathinfo($photo5->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo5->guessExtension();
+                try {
+                    $photo5->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto5($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+            if ($photo6) {
+                $originalFilename = pathinfo($photo6->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo6->guessExtension();
+                try {
+                    $photo6->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto6($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+            if ($photo7) {
+                $originalFilename = pathinfo($photo7->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo7->guessExtension();
+                try {
+                    $photo7->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto7($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+            if ($photo8) {
+                $originalFilename = pathinfo($photo8->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo8->guessExtension();
+                try {
+                    $photo8->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto8($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+            if ($photo9) {
+                $originalFilename = pathinfo($photo9->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . $photo9->guessExtension();
+                try {
+                    $photo9->move(
+                        $this->getParameter('website_photos_directory'),
+                        $newFilename
+                    );
+                    $staticText->setPhoto9($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('static_text_index');
@@ -83,7 +230,7 @@ class StaticTextController extends AbstractController
      */
     public function delete(Request $request, StaticText $staticText): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$staticText->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $staticText->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($staticText);
             $entityManager->flush();
@@ -91,4 +238,90 @@ class StaticTextController extends AbstractController
 
         return $this->redirectToRoute('static_text_index');
     }
+
+
+    /**
+     * @Route("/{id}/{photoid}/deletephoto", name="cms_delete_photo", methods={"POST", "GET"})
+     */
+    public function deletePhotoFile(int $photoid,Request $request, StaticText $staticText, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+
+        if($photoid == 1 ){
+        $staticText->setPhoto1('');
+        }
+
+        if($photoid == 2 ){
+            $staticText->setPhoto2('');
+        }
+
+        if($photoid == 3 ){
+            $staticText->setPhoto3('');
+        }
+
+        if($photoid == 4 ){
+            $staticText->setPhoto4('');
+        }
+
+        if($photoid == 5 ){
+            $staticText->setPhoto5('');
+        }
+
+        if($photoid == 6 ){
+            $staticText->setPhoto6('');
+        }
+
+        if($photoid == 7 ){
+            $staticText->setPhoto7('');
+        }
+
+        if($photoid == 8 ){
+            $staticText->setPhoto8('');
+        }
+        if($photoid == 9 ){
+            $staticText->setPhoto9('');
+        }
+
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/{id}/{photoid}/viewphoto", name="cms_view_photo", methods={"POST", "GET"})
+     */
+    public function viewPhotoFile(int $photoid,Request $request, StaticText $staticText, EntityManagerInterface $entityManager)
+    {
+
+        if($photoid == 1 ){
+           $imagename = $staticText->getPhoto1();
+        }
+        if($photoid == 2 ){
+            $imagename = $staticText->getPhoto2();
+        }
+        if($photoid == 3 ){
+            $imagename = $staticText->getPhoto3();
+        }
+        if($photoid == 4 ){
+            $imagename = $staticText->getPhoto4();
+        }
+        if($photoid == 5 ){
+            $imagename = $staticText->getPhoto5();
+        }
+        if($photoid == 6 ){
+            $imagename = $staticText->getPhoto6();
+        }
+        if($photoid == 7 ){
+            $imagename = $staticText->getPhoto7();
+        }
+        if($photoid == 8 ){
+            $imagename = $staticText->getPhoto8();
+        }
+        if($photoid == 9 ){
+            $imagename = $staticText->getPhoto9();
+        }
+    return $this->render('static_text/image_view.html.twig',['imagename'=>$imagename]);
+    }
+
+
+
 }

@@ -29,7 +29,7 @@ class CurriculumVitaeController extends AbstractController
 
 
     /**
-     * @Route("/account/{name}", name="curriculum_vitae_individual", methods={"GET"})
+     * @Route("/{name}", name="curriculum_vitae_individual", methods={"GET"})
      */
     public function indexIndividual(string $name, CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository){
         $user = $userRepository->findOneBy([

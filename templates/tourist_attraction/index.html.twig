@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tourist Attractions{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tourist Attractions</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Full_name</th>
+                <th>Mobile</th>
+                <th>Email2</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Company</th>
+                <th>BusinessPhone</th>
+                <th>WebPage</th>
+                <th>Notes</th>
+                <th>Photo</th>
+                <th>BusinessStreet</th>
+                <th>BusinessCity</th>
+                <th>BusinessPostCode</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tourist_attraction in tourist_attractions %}
+            <tr>
+                <td>{{ tourist_attraction.id }}</td>
+                <td>{{ tourist_attraction.email }}</td>
+                <td>{{ tourist_attraction.fullName }}</td>
+                <td>{{ tourist_attraction.mobile }}</td>
+                <td>{{ tourist_attraction.email2 }}</td>
+                <td>{{ tourist_attraction.firstName }}</td>
+                <td>{{ tourist_attraction.lastName }}</td>
+                <td>{{ tourist_attraction.company }}</td>
+                <td>{{ tourist_attraction.businessPhone }}</td>
+                <td>{{ tourist_attraction.webPage }}</td>
+                <td>{{ tourist_attraction.notes }}</td>
+                <td>{{ tourist_attraction.photo }}</td>
+                <td>{{ tourist_attraction.businessStreet }}</td>
+                <td>{{ tourist_attraction.BusinessCity }}</td>
+                <td>{{ tourist_attraction.BusinessPostCode }}</td>
+                <td>
+                    <a href="{{ path('tourist_attraction_show', {'id': tourist_attraction.id}) }}">show</a>
+                    <a href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">edit</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">Create new</a>
+{% endblock %}

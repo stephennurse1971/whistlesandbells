@@ -96,21 +96,18 @@
                     {% if user.email is not empty %}
                         <a title="{{ user.email }}" href="mailto:{{ user.email }}">
                             <i class="fa fa-envelope-open-o"></i>
-                            {{ user.email }}
                         </a>
                     {% endif %}
 
                     {% if user.email2 is not empty %}
                         <a title="{{ user.email2 }}" href="mailto:{{ user.email2 }}">
                             <i class="fa fa-envelope-open-o"></i>
-                            {{ user.email2 }}
                         </a>
                     {% endif %}
 
                     {% if user.email3 is not empty %} /
                         <a title="{{ user.email3 }}" href="mailto:{{ user.email3 }}">
                             <i class="fa fa-envelope-open-o"></i>
-                            {{ user.email3 }}
                         </a>
                     {% endif %}
                 </td>
@@ -125,7 +122,6 @@
 
                 <td style="text-align: center">
                     {% if user.webPage is not empty %}
-                        {{ user.webPage }}
                         {% if user.webPage starts with 'http' %}
                             {% set web = user.webPage %}
                         {% else %}

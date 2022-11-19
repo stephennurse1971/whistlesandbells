@@ -21,17 +21,18 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Photo</th>
-            <th>Location</th>
-            <th>Date</th>
-            <th>Rotate</th>
+            <th style="width: 50px">Photo</th>
+            <th style="width: 50px">Location</th>
+            <th style="width: 50px">Date</th>
+            <th style="width: 50px">Rotate</th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th>People</th>
-                <th>Public</th>
-                <th style="text-align: center" width="100px">#</th>
+                <th style="width: 50px">People</th>
+                <th style="width: 50px">Public</th>
+                <th style="width: 50px">#</th>
             {% endif %}
         </tr>
         </thead>
+
         <tbody>
         {% for photo in photos %}
             <tr>

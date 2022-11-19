@@ -16,6 +16,7 @@ parameters:
     investments_future_comms_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments/InvestmentsFutureComms'
     photos_upload_default_directory: '%kernel.project_dir%/public/photos/'
     files_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Files'
+    website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
 
 services:
     # default configuration for services in *this* file

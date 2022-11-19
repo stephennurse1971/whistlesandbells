@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CMS Photo: 1{% endblock %}
+
+{% block body %}
+<div class="d-flex m-auto justify-content-center">
+    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ imagename }}" >
+</div>
+{% endblock %}

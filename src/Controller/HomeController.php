@@ -14,9 +14,10 @@ class HomeController extends AbstractController
      */
     public function index(StaticTextRepository $staticTextRepository): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('user-templates/home.html.twig');
+//        return $this->render('home/index.html.twig', [
+//            'controller_name' => 'HomeController',
+//        ]);
     }
 
     /**
