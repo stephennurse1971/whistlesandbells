@@ -17,11 +17,33 @@ class CmsCopyType extends AbstractType
         $builder
             ->add('name')
             ->add('hyperlinks')
-            ->add('contentText',TextareaType::class,[
-                'required'=>false
+
+
+            ->add('contentTitle', TextType::class, [
+                'required' => false,
+                'label' => 'Title (English)'
+            ])
+            ->add('contentText', TextareaType::class, [
+                'required' => false,
+                'label' => 'Content (English)'
             ])
 
-        ;
+
+            ->add('contentTitleFR', TextType::class, [
+                'required' => false,
+                'label' => 'Title (French)'])
+            ->add('contentTextFR', TextareaType::class, [
+                'required' => false,
+                'label' => 'Content (French)'
+            ])
+
+            ->add('contentTitleDE', TextType::class, [
+                'required' => false,
+                'label' => 'Title (German)'])
+            ->add('contentTextDE', TextareaType::class, [
+                'required' => false,
+                'label' => 'Content (German)'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

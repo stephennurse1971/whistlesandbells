@@ -36,8 +36,18 @@ class HomeController extends AbstractController
      */
     public function webDesign(StaticTextRepository $staticTextRepository): Response
     {
-
         return $this->render('template_parts/webdesign.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+
+    /**
+     * @Route("/homeaddress", name="/homeaddress", methods={"GET"})
+     */
+    public function homeAddress(StaticTextRepository $staticTextRepository): Response
+    {
+        return $this->render('template_parts/homeaddress.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

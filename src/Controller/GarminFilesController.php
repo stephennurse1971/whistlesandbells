@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
@@ -51,7 +52,7 @@ class GarminFilesController extends AbstractController
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $attachment->guessExtension();
+                $newFilename = $safeFilename . '.gpx';
                 try {
                     $attachment->move(
                         $this->getParameter('garmin_attachments_directory'),
@@ -95,7 +96,7 @@ class GarminFilesController extends AbstractController
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $attachment->guessExtension();
+                $newFilename = $safeFilename . '.gpx' ;
                 try {
                     $attachment->move(
                         $this->getParameter('garmin_attachments_directory'),
@@ -148,16 +149,17 @@ class GarminFilesController extends AbstractController
     /**
      * @Route("/{garminid}/{recipientid}/email_gpxfile", name="garmin_file_email")
      */
-    public function emailGPXFile(int $garminid, int $recipientid, Request $request, StaticTextRepository $staticTextRepository, UserRepository $userRepository, GarminFilesRepository $garminFilesRepository, MailerInterface $mailer)
+    public function emailGPXFile(Security $security,int $garminid, int $recipientid, Request $request,
+                                 StaticTextRepository $staticTextRepository, UserRepository $userRepository, GarminFilesRepository $garminFilesRepository, MailerInterface $mailer)
     {
         $garminFile = $garminFilesRepository->find($garminid);
-        $author = $staticTextRepository->find(3)->getEmailAddress();
+        $senderEmail = $security->getUser()->getEmail();
         $recipient = $userRepository->find($recipientid);
         $subject = 'GPX file';
         $html = $this->renderView('emails/gpxfile_email.html.twig', [
-            'user' => $author,
             'description' => $garminFile->getDescription(),
             'starting_point' => $garminFile->getStartingPoint(),
+            'end_point' => $garminFile->getEndPoint(),
             'kilometres' => $garminFile->getKilometres(),
             'climb' => $garminFile->getClimb(),
             'country' => $garminFile->getCountry()->getCountry(),
@@ -167,7 +169,7 @@ class GarminFilesController extends AbstractController
         $email = (new Email())
             ->to($recipient-> getEmail())
             ->subject($subject)
-            ->from($author)
+            ->from($senderEmail)
             ->html($html);
         if ($gpx_attachment) {
             $attachment_path = $this->getParameter('garmin_attachments_directory') . "/" . $gpx_attachment;

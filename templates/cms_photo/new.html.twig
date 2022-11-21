@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New: CMS- Photo{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New CMS - Photo</h1>
+
+    {{ include('cms_photo/_form.html.twig') }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('cms_photo_index') }}">Return to list</a>
+{% endblock %}

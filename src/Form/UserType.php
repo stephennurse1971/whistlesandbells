@@ -112,7 +112,6 @@ class UserType extends AbstractType
                     ],
                     'mapped' => false
                 ]);
-
         }
     }
 
@@ -128,7 +127,6 @@ class UserType extends AbstractType
             'email1' => null,
             'email2' => null,
             'user'=>null
-
         ]);
     }
 }

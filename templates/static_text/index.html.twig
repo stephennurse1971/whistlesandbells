@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
         <tr>
-
             <th>Address</th>
             <th>Email</th>
             <th>Mobile</th>
@@ -19,7 +18,9 @@
             <th>Facebook</th>
             <th>Twitter</th>
             <th>Base ccy</th>
+            {% if is_granted('ROLE_ADMIN') %}
             <th>Edit</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -35,12 +36,18 @@
                 <td>{{ static_text.facebookLink }}</td>
                 <td>{{ static_text.twitter }}</td>
                 <td>{{ static_text.baseCurrency }}</td>
-                <td><a class="btn btn-outline-danger btn-sm" href="{{ path('static_text_edit', {'id': static_text.id}) }}">Edit</a></td>
+                {% if is_granted('ROLE_ADMIN') %}
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('static_text_edit', {'id': 1}) }}">Edit</a>
+                </td>
+                {% endif %}
             </tr>
 
         {% endfor %}
         </tbody>
     </table>
-
+<hr>
+    {% if is_granted('ROLE_ADMIN') %}
     <a class="btn btn-success btn-sm" href="{{ path('static_text_new') }}">New</a>
+    {% endif %}
 {% endblock %}

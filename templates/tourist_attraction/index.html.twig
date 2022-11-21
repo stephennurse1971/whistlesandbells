@@ -4,55 +4,76 @@
 
 {% block body %}
     <h1 style="color: red">Tourist Attractions</h1>
+    {% if is_granted('ROLE_GUEST') %}
+    <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">+</a>
+{% endif %}
+
+
+    <a class="btn btn-outline-danger btn-sm" href="">Export All</a>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Full_name</th>
-                <th>Mobile</th>
-                <th>Email2</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Company</th>
-                <th>BusinessPhone</th>
-                <th>WebPage</th>
-                <th>Notes</th>
-                <th>Photo</th>
-                <th>BusinessStreet</th>
-                <th>BusinessCity</th>
-                <th>BusinessPostCode</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Email2</th>
+            <th>Landline</th>
+            <th>Mobile</th>
+            <th>WebPage</th>
+            <th>Address</th>
+            <th>Notes</th>
+            <th>#</th>
+        </tr>
         </thead>
         <tbody>
         {% for tourist_attraction in tourist_attractions %}
             <tr>
-                <td>{{ tourist_attraction.id }}</td>
+                <td><a target="_blank"
+                       href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">{{ tourist_attraction.fullName }}</a></td>
                 <td>{{ tourist_attraction.email }}</td>
-                <td>{{ tourist_attraction.fullName }}</td>
-                <td>{{ tourist_attraction.mobile }}</td>
                 <td>{{ tourist_attraction.email2 }}</td>
-                <td>{{ tourist_attraction.firstName }}</td>
-                <td>{{ tourist_attraction.lastName }}</td>
-                <td>{{ tourist_attraction.company }}</td>
                 <td>{{ tourist_attraction.businessPhone }}</td>
-                <td>{{ tourist_attraction.webPage }}</td>
-                <td>{{ tourist_attraction.notes }}</td>
-                <td>{{ tourist_attraction.photo }}</td>
-                <td>{{ tourist_attraction.businessStreet }}</td>
-                <td>{{ tourist_attraction.BusinessCity }}</td>
-                <td>{{ tourist_attraction.BusinessPostCode }}</td>
+                <td>{{ tourist_attraction.mobile }}</td>
                 <td>
-                    <a href="{{ path('tourist_attraction_show', {'id': tourist_attraction.id}) }}">show</a>
-                    <a href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">edit</a>
+                    {% if tourist_attraction.webPage is not empty %}
+                        {% if tourist_attraction.webPage starts with 'http' %}
+                            {% set web = tourist_attraction.webPage %}
+                        {% else %}
+                            {% set web = 'https://'~tourist_attraction.webPage %}
+                        {% endif %}
+                        <a target="_blank" title="{{ tourist_attraction.webPage }}" href="{{ web }}">
+                            <i class="fa fa-globe"></i>
+                        </a>
+                    {% endif %}
                 </td>
+
+                <td>
+                    {% if tourist_attraction.businessStreet is not empty %}
+                        <i class="fa fa-home"
+                           title="{{ tourist_attraction.businessStreet }} {{ tourist_attraction.BusinessCity }} {{ tourist_attraction.BusinessPostCode }}"></i>
+                    {% endif %}
+                </td>
+                <td>{{ tourist_attraction.notes }}</td>
+                <td><a class="btn btn-outline-danger btn-sm" href="">VCF</a></td>
             </tr>
 
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">Create new</a>
+
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[0, 'desc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -32,54 +32,7 @@ class StaticTextType extends AbstractType
                     'GBP' => 'GBP',
                     'CHF' => 'CHF',
                     'EUR' => 'EUR'
-                ]])
-            ->add('photo1', FileType::class, [
-                'label' => 'Photo1',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('photo2', FileType::class, [
-                'label' => 'Photo2',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('photo3', FileType::class, [
-                'label' => 'Photo3',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('photo4', FileType::class, [
-                'label' => 'Photo4',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('photo5', FileType::class, [
-                'label' => 'Photo5',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('photo6', FileType::class, [
-                'label' => 'Photo6',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('photo7', FileType::class, [
-                'label' => 'Photo7',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('photo8', FileType::class, [
-                'label' => 'Photo8',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('photo9', FileType::class, [
-                'label' => 'Photo9',
-                'mapped' => false,
-                'required' => false
-            ])
-
-        ;
+                ]]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

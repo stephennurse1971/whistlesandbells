@@ -11,10 +11,10 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Tax year <a target="_blank" class="btn-outline-secondary btn-sm" href="{{ path('tax_year_new') }}">+</a>
+            <th style="width: 50px">Tax year <a target="_blank" class="btn-outline-secondary btn-sm" href="{{ path('tax_year_new') }}">+</a>
             </th>
             {% for country in countries %}
-                <th> {{ country.country }}  </th>
+                <th style="width: 50px; text-align: right">{{ country.country }}</th>
             {% endfor %}
         </tr>
         </thead>
@@ -37,47 +37,31 @@
 
         </tbody>
     </table>
-
     <hr>
-
-
-
-
-
-
-
 
     <table class="table">
         <thead>
         <tr>
-            <th>Tax Year</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th># days</th>
-            <th>Country</th>
+            <th style="width: 50px">Start Date</th>
+            <th style="width: 50px">End Date</th>
+            <th style="width: 50px"># days</th>
+            <th style="width: 50px">Country</th>
+            <th style="width: 50px">Outbound</th>
+            <th style="width: 50px">Inbound</th>
             <th>Commentary</th>
-            <th>Outbound</th>
-            <th>Inbound</th>
-            <th>#</th>
+            <th style="width: 50px">#</th>
         </tr>
         </thead>
         <tbody>
         {% for uk_day in uk_days %}
             <tr>
-                <td>  {% set tax_year = TaxYear.findTaxYearAndDays(uk_day.startDate,uk_day.endDate) %}
-                    {% for year in tax_year %}
-                        {{ year }}
-                    {% endfor %}
-                    {#                <td> #}
-                    {#                 {{   TaxYear.findTaxYearAndDays(uk_day.startDate,uk_day.endDate) }} #}
-                </td>
+
                 <td data-sort="{{ uk_day.startDate ? uk_day.startDate|date('Y-m-d') : '' }}">
                     <a href="{{ path('uk_days_edit', {'id': uk_day.id}) }}">{{ uk_day.startDate ? uk_day.startDate|date('d-M-Y') : '' }}</a>
                 </td>
                 <td>{{ uk_day.endDate ? uk_day.endDate|date('d-M-Y') : '' }}</td>
                 <td style="text-align: left" {{ uk_day.dayCount }}</td>
                 <td style="text-align: left">{{ uk_day.country.country }}</td>
-                <td style="text-align: left">{{ uk_day.comment }}</td>
                 <td style="text-align: center">
                     {% for travelDocs in uk_day.travelDocs %}
                         <strong>
@@ -98,6 +82,8 @@
                         <br>
                     {% endfor %}
                 </td>
+
+                <td style="text-align: left">{{ uk_day.comment }}</td>
                 <td>
                     <form method="post" action="{{ path('uk_days_delete', {'id': uk_day.id}) }}"
                           onsubmit="return confirm('Are you sure you want to delete this item?');">

@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Index: CMS Photos{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CMS Photos</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="width: 50px">ID</th>
+            <th style="width: 50px">SitePage</th>
+            <th style="width: 50px">Photo</th>
+            <th style="width: 50px">Name</th>
+            <th style="width: 50px">Photo</th>
+            <th style="width: 500px">Title (English)</th>
+            <th style="width: 500px">Title (French)</th>
+            <th style="width: 500px">Title (German)</th>
+            <th style="width: 200px">Link</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cms_photo in cms_photos %}
+            <tr>
+                <td>{{ cms_photo.id }}</td>
+                <td>{{ cms_photo.sitePage }}</td>
+                <td>
+                    <img height="50" width="50" src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ cms_photo.photo  }}" class="rounded-circle">
+                </td>
+                <td>
+                    <a href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">{{ cms_photo.name }}</a>
+                </td>
+                <td>
+                    <a target="_blank"
+                       href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">{{ cms_photo.photo }}</a>
+                </td>
+                <td>{{ cms_photo.title }}
+                </td>
+                <td>{{ cms_photo.titleFR }}</td>
+                <td>{{ cms_photo.titleDE }}</td>
+                <td>
+                    {% if  cms_photo.link is not empty %}
+                        {% if  cms_photo.link starts with 'http' %}
+                            {% set web =  cms_photo.link %}
+                        {% else %}
+                            {% set web = 'https://'~ cms_photo.link %}
+                        {% endif %}
+                        <a target="_blank" title="{{  cms_photo.link }}" href="{{ web }}">
+                            <i class="fa fa-globe"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+    <a class="btn btn-success btn-sm" href="{{ path('cms_photo_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[0, 'asc'], [1, 'desc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": true
+            });
+        });
+    </script>
+{% endblock datatable %}

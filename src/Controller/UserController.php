@@ -6,13 +6,10 @@ use App\Entity\RecruiterEmails;
 use App\Entity\User;
 use App\Form\RecruiterEmailsType;
 use App\Form\UserType;
-use App\Repository\DefaultTennisPlayerAvailabilityHoursRepository;
-use App\Repository\EmployeeRepository;
 use App\Repository\IntroductionRepository;
 use App\Repository\IntroductionSegmentRepository;
 use App\Repository\ProspectEmployerRepository;
 use App\Repository\RecruiterEmailsRepository;
-use App\Repository\TennisVenuesRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -89,11 +86,11 @@ class UserController extends AbstractController
     /**
      * @Route("/recruiters", name="user_index_recruiters", methods={"GET"})
      */
-    public function indexRecruiters(UserRepository $userRepository,ProspectEmployerRepository $prospectEmployerRepository,RecruiterEmailsRepository $recruiterEmailsRepository): Response
+    public function indexRecruiters(UserRepository $userRepository, ProspectEmployerRepository $prospectEmployerRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
     {
         return $this->render('user/indexRecruiters.html.twig', [
             'users' => $userRepository->findByRole('ROLE_RECRUITER'),
-            'prospect_employers'=>$prospectEmployerRepository->findAll(),
+            'prospect_employers' => $prospectEmployerRepository->findAll(),
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
             'role_title' => "Recruiters"
@@ -183,7 +180,6 @@ class UserController extends AbstractController
                 $entityManager->remove($user);
                 $entityManager->flush();
             }
-
         }
         return $this->redirectToRoute('user_index');
     }
@@ -194,7 +190,7 @@ class UserController extends AbstractController
     public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(),'user'=>$user]);
+        $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
         $roles = $this->getUser()->getRoles();
 
         if (!in_array('ROLE_SUPER_ADMIN', $roles)) {
@@ -230,11 +226,8 @@ class UserController extends AbstractController
                     ->html($html);
                 $mailer->send($email);
             }
-
-
             return $this->redirectToRoute('user_index');
         }
-
         return $this->render('user/new.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
@@ -375,24 +368,24 @@ class UserController extends AbstractController
     /**
      * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
      */
-    public function recruiterInviteEmail(string $recruiterCountry,int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository,
-                                         IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository,EntityManagerInterface $manager): Response
+    public function recruiterInviteEmail(string                 $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository,
+                                         IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository, EntityManagerInterface $manager): Response
     {
         $author = $userRepository->find($authorId);
         $recruiter = $userRepository->find($recruiterId);
         $subject = $introductionRepository->find($authorId)->getSubjectLine();
-        $additional_segment='';
-        $segment = $introductionSegmentRepository->findOneBy(['user'=>$author,'country'=>$recruiterCountry]);
-        if($segment){
-            $additional_segment = $introductionSegmentRepository->findOneBy(['user'=>$author,'country'=>$recruiterCountry])->getEmailSegment();
+        $additional_segment = '';
+        $segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry]);
+        if ($segment) {
+            $additional_segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry])->getEmailSegment();
         }
         $html = $this->renderView('emails/recruiter_intro_email.html.twig', [
             'user' => $author,
             'content1' => $introductionRepository->find($authorId)->getIntroductoryEmail(),
             'content2' => $introductionRepository->find($authorId)->getIntroductoryEmail2(),
-            'additional_segment'=>$additional_segment
+            'additional_segment' => $additional_segment
         ]);
-        $html = 'Dear '. $recruiter->getSalutation() . ' ' . $recruiter->getLastName().',' . $html;
+        $html = 'Dear ' . $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . ',' . $html;
         $introduction_attachment = $introductionRepository->find($authorId)->getAttachment();
 
         $recruiterEmail = new RecruiterEmails();
@@ -463,6 +456,42 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/recruiter/email/CV/", name="recruiter_email_CV", methods={"GET","POST"})
+     */
+    public function recruiterEmailCV(\Symfony\Component\Security\Core\Security $security, MailerInterface $mailer, Request $request,
+                                     UserRepository                            $userRepository, EntityManagerInterface $manager): Response
+    {
+        if($request->isMethod('POST'))
+        {
+            $recipientEmail = $_POST['email'];
+        } else {
+            $recipient = $security->getUser();
+            $recipientEmail = $recipient->getEmail();
+        }
+
+
+            $subject = "CV for Stephen Nurse";
+            $html = $this->renderView('template_parts/emailCV.html.twig', [
+                'content' => 'xxx',
+            ]);
+            $email = (new Email())
+                ->to($recipientEmail)
+                ->cc('nurse_stephen@hotmail.com')
+                ->subject($subject)
+                ->from('nurse_stephen@hotmail.com')
+                ->html($html);
+            $attachment_path = $this->getParameter('files_cv_directory') . "/CV_StephenNurse.pdf";
+            $email->attachFromPath($attachment_path);
+            $mailer->send($email);
+
+
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+
+    }
+
+
+    /**
      * @Route("/create/Vcarduser/{userid}", name="create_vcard_user")
      */
     public function createVcardUser(int $userid, UserRepository $userRepository)
@@ -471,11 +500,32 @@ class UserController extends AbstractController
         $vcard = new VCard();
         $userFirstName = $user->getFirstName();
         $userLastName = $user->getLastName();
-
         $vcard->addName($userFirstName, $userLastName);
         $vcard->addEmail($user->getEmail())
             ->addJobtitle($user->getJobTitle())
             ->addBirthday($user->getBirthday())
+            ->addCompany($user->getCompany())
+            ->addPhoneNumber($user->getBusinessPhone(), 'work')
+            ->addPhoneNumber($user->getMobile(), 'home')
+            ->addURL($user->getWebPage());
+        $vcard->download();
+        return new Response(null);
+    }
+
+    /**
+     * @Route("/create/StephenNurse/Vcarduser", name="create_vcard_SN")
+     */
+    public function createVcardSN(UserRepository $userRepository)
+    {
+
+        $user = $userRepository->find(1);
+        $vcard = new VCard();
+        $userFirstName = $user->getFirstName();
+        $userLastName = $user->getLastName();
+        $vcard->addName($userFirstName, $userLastName);
+        $vcard->addEmail($user->getEmail())
+            ->addJobtitle($user->getJobTitle())
+            ->addBirthday($user->getBirthday()->format('d-m-y'))
             ->addCompany($user->getCompany())
             ->addPhoneNumber($user->getBusinessPhone(), 'work')
             ->addPhoneNumber($user->getMobile(), 'home')

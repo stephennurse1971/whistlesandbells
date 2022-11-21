@@ -35,6 +35,9 @@ class TouristAttractionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $firstName = $touristAttraction->getFirstName();
+            $lastName = $touristAttraction->getLastName();
+            $touristAttraction->setFullName($firstName . ' ' . $lastName);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($touristAttraction);
             $entityManager->flush();
@@ -67,6 +70,9 @@ class TouristAttractionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $firstName = $touristAttraction->getFirstName();
+            $lastName = $touristAttraction->getLastName();
+            $touristAttraction->setFullName($firstName . ' ' . $lastName);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('tourist_attraction_index');

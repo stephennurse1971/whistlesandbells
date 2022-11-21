@@ -2,19 +2,33 @@
 
     <h1 style="color: red"> GPX file from stephen.nurse.com</h1>
 
+    Please find attached a GPX file from the stephen-nurse.com website <br>
+    <li>
+        <b>Description</b>: {{ description }}
+    </li>
+    <li>
+        <strong>Starting point</strong>: {{ starting_point }}
+    </li>
+    <li>
+        <strong>End point</strong>: {{ end_point }}
+    </li>
+    <li>
+        <strong>Kilometres</strong>: {{ kilometres| number_format (0, ',') }}
+    </li>
 
-    <strong>Description</strong>: {{ description }}
-    <br>
-    <strong>Starting point</strong>: {{ starting_point }}
-    <br>
-    <strong>Kilometres</strong>: {{ kilometres| number_format (0, ',') }}
-    <br>
-    <strong>Climber</strong>: {{ climb |number_format (0, ',') }}
-    <br>
-    <strong>Country</strong>: {{ country }}
-    <br><br>
+    <li>
+        <strong>Climber</strong>: {{ climb |number_format (0, ',') }}
+    </li>
 
-    {#    {{ include('emails/footerLoginAndEmail.html.twig') }} #}
+    <li>
+        <strong>Country</strong>: {{ country }}
+    </li>
 
+    <br>
+    <br>
+    <br>
+    <hr>
+
+    {{ include('emails/footerLoginAndEmail.html.twig') }}
 
 </div>

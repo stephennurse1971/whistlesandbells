@@ -10,8 +10,8 @@
     <meta name="author" content="Stephen Nurse">
     <!-- Page Title -->
     <title>{% block title %}Stephen Nurse{% endblock %}</title>
-    <!-- Place flavicon.ico in the root directory -->
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+
     <!-- Google Fonts css-->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
     <!--Reset normalize css -->
@@ -93,8 +93,11 @@
             -o-transform: rotate(90deg);
             transform: rotate(90deg);
         }
-
+#popup-form-mail{
+    display: none;
+}
     </style>
+
 </head>
 
 
@@ -117,31 +120,20 @@
 
             <div class="collapse  main-menu navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
+
+                    <!-- Nav Item #1 - Home -->
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ path('app_home') }}">Home
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
 
+                    <!-- Nav Item #2 - About Me -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('aboutSN') }}">About Me</a>
+                        <a class="nav-link" href="{{ path('app_home') }}">About Me</a>
                     </li>
 
-                    {#                    <li class="nav-item"> #}
-                    {#                        <a class="nav-link" href="service.html">Services</a> #}
-                    {#                    </li> #}
-                    {#                    <li class="nav-item"> #}
-                    {#                        <a class="nav-link" href="portfolio.html">Portfolio</a> #}
-                    {#                    </li> #}
-                    {#                    <li class="nav-item"> #}
-                    {#                        <a class="nav-link" href="blog.html">Blog</a> #}
-                    {#                    </li> #}
-                    {#                    <li class="nav-item"> #}
-                    {#                        <a class="nav-link" href="contact.html">Contact</a> #}
-                    {#                    </li> #}
-
-                    <!-- Nav Item #1 - Photos -->
-
+                    <!-- Nav Item #3 - Photos -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -152,106 +144,74 @@
                         </div>
                     </li>
 
-
-                    <!-- Nav Item #2 - File Attachments -->
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                               role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                File Attachments
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">File
-                                    Attachments</a>
-                            </div>
-                        </li>
-                    {% endif %}
-
-                    <!-- Nav Item #3 - UK Days -->
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                UK Days
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('uk_days_index') }}">UK Days</a>
-
-                            </div>
-                        </li>
-
-                    {% endif %}
-
-                    <!-- Nav Item #3 - House Guest -->
+                    <!-- Nav Item #4 - Come Visit -->
                     {% if is_granted('ROLE_GUEST') %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                House Guest
+                                Come Visit
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="">Cyprus</a>
+                                <hr>
                                 <a class="dropdown-item" href="{{ path('house_guests_index') }}">House Guest</a>
                                 <a class="dropdown-item" href="{{ path('house_guests_index_simple') }}">House Guest
                                     (simple)</a>
+                                <hr>
                                 <a class="dropdown-item" href="{{ path('tourist_attraction_index') }}">Tourist
                                     attractions</a>
                                 <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files</a>
-
                             </div>
                         </li>
-
                     {% endif %}
 
 
-                    <!-- Nav Item #3 - Investments -->
-                    {% if is_granted('ROLE_ACCOUNTANT') %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Investments & Tax
+
+
+
+                    <!-- Nav Item #5 - CV -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            CV
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item"
+                               href="{{ path('curriculum_vitae_individual',{'name': 'Stephen Nurse'}) }}">CV -
+                                Stephen Nurse</a>
+                            {% if is_granted('ROLE_JOB_APPLICANT') %}
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('curriculum_vitae_index') }}">CV - Sections</a>
+                            {% endif %}
+                        </div>
+                    </li>
+
+                    <!-- Nav Item #6 - Contact -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Contact
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a title={{StaticText.content.emailAddress }} class="dropdown-item" href="mailto:{{ StaticText.content.emailAddress }}">
+{#                                <i class="fa fa-envelope" style="color:black;font-size:16px"></i>#}
+                                @
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('investments_index') }}">Investments</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('tax_supporting_docs_index') }}">Supporting Tax
-                                    Docs</a>
-                                <a class="dropdown-item" href="{{ path('investment_future_comms_index') }}">Investment
-                                    Other
-                                    Docs</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('market_data_index') }}">Share Prices</a>
-                                <a class="dropdown-item" href="{{ path('fx_rates_index') }}">FX Rates</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('tax_documents_index') }}">Tax Filings</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('jpm_ic_history_index') }}">IC Record</a>
-
-                            </div>
-                        </li>
-                    {% endif %}
-
-
-
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <!-- Nav Item #4 - ToDoList -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                To Do List
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('to_do_list_index') }}">To Do List</a>
-
-                            </div>
-                        </li>
-
-                    {% endif %}
+                            <a class="dropdown-item" title="{{StaticText.content.mobileNumber }}"
+                               href="https://wa.me/{{ StaticText.content.mobileNumber | replace({' ': ''}) }}">
+                                <i style="color: #0f6848" class="fa fa-whatsapp"></i></a>
+                            <a class="dropdown-item" title={{StaticText.content.skype }}
+                               href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue" class="fa fa-skype"></i></a>
+                            <a target="_blank" title="{{ StaticText.content.address}} "
+                               href="{{ path('/homeaddress') }}"> <i style="color: royalblue" class="fa fa-car"></i></a></a>
+                        </div>
+                    </li>
 
 
                     {% if is_granted('ROLE_JOB_APPLICANT') %}
-                        <!-- Nav Item #5 - Recruiters -->
+                        <!-- Nav Item #7 - Recruiters -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            <a style="color: green !important"  class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Recruiters
                             </a>
@@ -267,37 +227,55 @@
                                 <a class="dropdown-item" href="{{ path('prospect_employer_index') }}">Prospective
                                     Employers</a>
                             </div>
-
                         </li>
-
                     {% endif %}
 
 
-                    <!-- Nav Item #6 - Recruiters -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            CV
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                            <a class="dropdown-item"
-                               href="{{ path('curriculum_vitae_individual',{'name': 'Stephen Nurse'}) }}">CV -
-                                Stephen Nurse</a>
-                            {% if is_granted('ROLE_JOB_APPLICANT') %}
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('curriculum_vitae_index') }}">CV - Sections</a>
-                            {% endif %}
-                        </div>
-
-                    </li>
-
-
-                    <!-- Nav Item #7 - Users -->
-
+                    <!-- Nav Item #8 - SN Admin -->
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            <a style="color: red !important" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('to_do_list_index') }}">To Do List</a>
+                                <a class="dropdown-item" href="{{ path('uk_days_index') }}">UK Days</a>
+                                <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">File
+                                    Attachments</a>
+                            </div>
+                        </li>
+                    {% endif %}
+
+                    <!-- Nav Item #9 - Investments -->
+                    {% if is_granted('ROLE_ACCOUNTANT') %}
+                        <li class="nav-item dropdown">
+                            <a style="color: red !important"  class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Investments & Tax
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('investments_index') }}">Investments</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('tax_supporting_docs_index') }}">Supporting Tax
+                                    Docs</a>
+                                <a class="dropdown-item" href="{{ path('investment_future_comms_index') }}">Investment
+                                    Docs</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('market_data_index') }}">Share Prices</a>
+                                <a class="dropdown-item" href="{{ path('fx_rates_index') }}">FX Rates</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('tax_documents_index') }}">Tax Filings</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('jpm_ic_history_index') }}">IC Record</a>
+                            </div>
+                        </li>
+                    {% endif %}
+
+                    <!-- Nav Item #10 - Users -->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a style="color: red !important"  class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Users
                             </a>
@@ -305,8 +283,7 @@
                                 <a class="dropdown-item" href="{{ path('user_index') }}">Users - All</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
-                                <a class="dropdown-item" href="{{ path('user_index_telnumbers') }}">Users - Tel
-                                    numbers</a>
+                                <a class="dropdown-item" href="{{ path('user_index_telnumbers') }}">Users - Tel numbers</a>
                                 <hr>
                                 <a class="dropdown-item"
                                    href="{{ path('user_role_index',{'role':'ROLE_ADMIN'}) }}">Admin</a>
@@ -325,35 +302,11 @@
                             </div>
                         </li>
                     {% endif %}
-                    <!-- Nav Item #8 - Contact -->
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Contact
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="mailto:{{ StaticText.content.emailAddress }}"><i
-                                        class="fa fa-envelope"
-                                        style="color:black;font-size:16px"></i></a>
-                            <a class="dropdown-item"
-                               href="https://wa.me/{{ StaticText.content.mobileNumber | replace({' ': ''}) }}">
-                                <i style="color: #0f6848" class="fa fa-whatsapp"></i></a>
-                            <a class="dropdown-item" href="skype:{{ StaticText.content.skype }}?call"><i
-                                        style="color: royalblue"
-                                        class="fa fa-skype"></i></a>
-
-                            <a target="_blank"
-                               href={{ StaticText.content.gpsCoordinates }}>{{ StaticText.content.address }}</a>
-
-
-                        </div>
-                    </li>
-
-                    <!-- Nav Item #8 - Settings -->
+                    <!-- Nav Item #11 - Settings -->
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            <a style="color: red !important"  class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Settings
                             </a>
@@ -364,8 +317,10 @@
                                 <a class="dropdown-item" href="{{ path('tax_year_index') }}">Tax Years</a>
                                 <a class="dropdown-item" href="{{ path('file_upload') }}">File upload</a>
                                 <hr>
-                                <a class="dropdown-item" href="{{ path('static_text_index') }}">CMS</a>
+                                <a class="dropdown-item" href="{{ path('static_text_index') }}">CMS Static Data</a>
                                 <a class="dropdown-item" href="{{ path('cms_copy_index') }}">CMS Copy</a>
+                                <a class="dropdown-item" href="{{ path('cms_photo_index') }}">CMS Photos</a>
+                                <hr>
                                 <a title="Stephen's CV" target="_blank"
                                    href="/administration/attachments/CV/CV%20-%20Stephen%20Nurse%20(2022).pdf">CV</a>
                             </div>

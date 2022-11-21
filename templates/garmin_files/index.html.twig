@@ -8,36 +8,47 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Country</th>
-            <th>Starting Point</th>
-            <th>Kilometres</th>
-            <th>Climb</th>
-            <th>Description</th>
-            <th>GPX File</th>
+            <th style="text-align: left; width: 150px">Country</th>
+            <th style="text-align: left; width: 50px">Starting Point</th>
+            <th style="text-align: left; width: 50px">End Point</th>
+            <th style="text-align: right; width: 50px">Km</th>
+            <th style="text-align: right; width: 50px">Climb</th>
+            <th style="text-align: right; width: 120px">Uploaded by</th>
+            <th style="text-align: left">Description</th>
+            <th style="text-align: center; width: 50px">GPX File</th>
             <th>#</th>
         </tr>
         </thead>
         <tbody>
         {% for garmin_file in garmin_files %}
             <tr>
-                <td>{{ garmin_file.country.country }}</td>
-                <td>
+                <td style="text-align: left">{{ garmin_file.country.country }}</td>
+                <td style="text-align: left">
                     {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('garmin_files_edit', {'id': garmin_file.id}) }}">{{ garmin_file.startingPoint }}</a>
                     {% else %}
-                         {{ garmin_file.startingPoint }}</a>
+                        {{ garmin_file.startingPoint }}</a>
                     {% endif %}
                 </td>
-                <td style="text-align: right">{{ garmin_file.kilometres| number_format (0, ',')  }}</td>
+                <td style="text-align: left">{{ garmin_file.endPoint }}</a></td>
+                <td style="text-align: right">{{ garmin_file.kilometres| number_format (0, ',') }}</td>
                 <td style="text-align: right">{{ garmin_file.climb| number_format (0, ',') }}</td>
-                <td>{{ garmin_file.description }}</td>
+                <td style="text-align: right">
+                    {% if garmin_file.author is not empty %}
+                        {{ garmin_file.author.fullName }}
+                    {% endif %}
+                </td>
+                <td style="text-align: left">{{ garmin_file.description }}</td>
                 <td style="text-align: center">
                     {% if garmin_file.gpxFile is not empty %}
                         <a title="{{ garmin_file.gpxFile }}" target="_blank"
-                           href="{{ path('show_attachment',{id : garmin_file.id,'filename':garmin_file.gpxFile}) }}"><i class="fa fa-paperclip"></i></a>
+                           href="{{ path('show_attachment',{id : garmin_file.id,'filename':garmin_file.gpxFile}) }}"><i
+                                    class="fa fa-paperclip"></i></a>
                     {% endif %}
                 <td>
-                    <a class="btn btn-danger btn-sm" href="{{ path('garmin_file_email', {'garminid': garmin_file.id, 'recipientid': app.user.id}) }}">Email File</a>
+                    <a class="btn btn-danger btn-sm"
+                       href="{{ path('garmin_file_email', {'garminid': garmin_file.id, 'recipientid': app.user.id}) }}">Email
+                        File</a>
                 </td>
             </tr>
         {% endfor %}

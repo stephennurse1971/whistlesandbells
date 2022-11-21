@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: CMS Photo{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit CMS Photo</h1>
+
+    {{ include('cms_photo/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('cms_photo_index') }}">Return to list</a>
+
+    {{ include('cms_photo/_delete_form.html.twig') }}
+{% endblock %}

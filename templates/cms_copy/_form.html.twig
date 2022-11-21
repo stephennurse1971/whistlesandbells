@@ -4,17 +4,41 @@
     }
 </style>
 {{ form_start(form) }}
+
+<h2>Field names</h2>
 <div class="row">
     <div class="col-md-3">
-        <h2>Field names</h2>
         {{ form_row(form.name) }}
+    </div>
+    <div class="col-md-3">
         {{ form_row(form.hyperlinks) }}
     </div>
 </div>
+
+<h2>Content</h2>
 <div class="row">
-    <div class="col-md-9">
-        <h2>Content</h2>
+    <div class="col-md-3">
         {{ form_row(form.contentText) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.contentTextFR) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.contentTextDE) }}
+    </div>
+</div>
+
+
+<h2>Titles</h2>
+<div class="row">
+    <div class="col-md-3">
+        {{ form_row(form.contentTitle) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.contentTitleFR) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.contentTitleDE) }}
     </div>
 </div>
 
@@ -26,5 +50,32 @@
         ClassicEditor
             .create(document.querySelector('#cms_copy_contentText'));
 
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentTextFR'));
+
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentTextDE'));
     </script>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

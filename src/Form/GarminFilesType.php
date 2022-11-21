@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Country;
 use App\Entity\GarminFiles;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -22,9 +23,16 @@ class GarminFilesType extends AbstractType
                 'empty_data' => null,
             ])
             ->add('startingPoint')
+            ->add('endPoint')
             ->add('kilometres')
             ->add('climb')
             ->add('description')
+            ->add('author', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'fullName',
+                'required' => false,
+                'empty_data' => null,
+            ])
             ->add('gpxFile', FileType::class, [
                 'label' => 'GPX File',
                 'mapped' => false,

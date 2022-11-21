@@ -37,7 +37,8 @@
                 <a target="_blank" href="{{ path('to_do_list_viewfile',{fileName:travelDocs2}) }}"> {{ travelDocs2 }}  </a>
             </strong><br>
         {% endfor %}
-        {% if uk_day.travelDocs is not empty %}
+
+        {% if uk_day.travelDocs2 is not empty %}
             <a class="btn btn-sm btn-danger" href="{{ path('ukdays_delete_attachment2',{id:uk_day.id}) }}">Delete attachment</a>
         {% endif %}
         <div class="mt-1"></div>
