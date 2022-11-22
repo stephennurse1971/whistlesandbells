@@ -480,10 +480,9 @@ class UserController extends AbstractController
                 ->subject($subject)
                 ->from('nurse_stephen@hotmail.com')
                 ->html($html);
-            $attachment_path = $this->getParameter('files_cv_directory') . "/CV_StephenNurse.pdf";
+            $attachment_path = $this->getParameter('files_cv_directory') . "/StephenNurse_CV.pdf";
             $email->attachFromPath($attachment_path);
             $mailer->send($email);
-
 
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);

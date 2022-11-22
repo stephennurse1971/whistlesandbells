@@ -15,6 +15,7 @@ class CmsPhotoType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('heading')
             ->add('photo', FileType::class, [
                 'label' => false,
                 'mapped' => false,

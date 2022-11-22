@@ -52,6 +52,11 @@ class CmsPhoto
      */
     private $sitePage;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $heading;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class CmsPhoto
     public function setSitePage(?string $sitePage): self
     {
         $this->sitePage = $sitePage;
+
+        return $this;
+    }
+
+    public function getHeading(): ?string
+    {
+        return $this->heading;
+    }
+
+    public function setHeading(?string $heading): self
+    {
+        $this->heading = $heading;
 
         return $this;
     }

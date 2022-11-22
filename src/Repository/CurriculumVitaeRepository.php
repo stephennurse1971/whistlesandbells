@@ -47,4 +47,12 @@ class CurriculumVitaeRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function distinctCandidate(){
+        return $this->createQueryBuilder('c')
+            ->select( 'IDENTITY(c.candidate)' )
+            ->distinct()
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

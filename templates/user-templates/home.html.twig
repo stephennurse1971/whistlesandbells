@@ -41,10 +41,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 " id="author-photo-right">
-                    <div class="home1-author-photo">
-{#                        <img class="home1-author-photo-image" src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ StaticText.content.photo1 }}">#}
-                    </div>
-
+                    <div class="home1-author-photo" style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ homepage1.photo }} )"></div>
                 </div>
             </div>
         </div>
@@ -70,12 +67,15 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="specilizing-item">
                         <figure>
+                            <div class="col-lg-6 col-md-12 " id="author-photo-right">
+                                <div class="home1-author-photo" style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ specialising1.photo }} )"></div>
+                            </div>
                             <img src="{{ asset('user-templates/assets/images/special/01.jpg') }}" alt="">
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    <h4>Graphics Design</h4>
-                                    <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively .</p>
+                                    <h4>{{ specialising1.heading }}</h4>
+                                    <p>{{ specialising1.title }}</p>
                                     <a class="info btn btn-primary" href="service.html">Learn more</a>
                                 </div>
                             </div>
@@ -89,8 +89,8 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    <h4>Graphics Design</h4>
-                                    <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively .</p>
+                                    <h4>{{ specialising2.heading }}</h4>
+                                    <p>{{ specialising3.title }}</p>
                                     <a class="info btn btn-primary" href="service.html">Learn more</a>
                                 </div>
                             </div>
@@ -104,8 +104,8 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    <h4>Graphics Design</h4>
-                                    <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively .</p>
+                                    <h4>{{ specialising3.heading }}</h4>
+                                    <p>{{ specialising3.title }}</p>
                                     <a class="info btn btn-primary" href="service.html">Learn more</a>
                                 </div>
                             </div>

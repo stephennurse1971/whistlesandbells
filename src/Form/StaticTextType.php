@@ -25,6 +25,11 @@ class StaticTextType extends AbstractType
             ->add('github')
             ->add('facebookLink')
             ->add('twitter')
+            ->add('cv', FileType::class, [
+                'multiple' => false,
+                'mapped' => false,
+                'required'=>false
+            ])
             ->add('baseCurrency', ChoiceType::class, [
                 'multiple' => false,
                 'choices' => [

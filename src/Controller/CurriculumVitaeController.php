@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CurriculumVitae;
 use App\Form\CurriculumVitaeType;
 use App\Repository\CurriculumVitaeRepository;
+use App\Repository\StaticTextRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,23 +22,28 @@ class CurriculumVitaeController extends AbstractController
      */
     public function index(CurriculumVitaeRepository $curriculumVitaeRepository): Response
     {
+       $candidates_Id = $curriculumVitaeRepository->distinctCandidate();
+//dump($candidates_Id);
+//exit;
         return $this->render('curriculum_vitae/index.html.twig', [
             'curriculum_vitaes' => $curriculumVitaeRepository->findAll(),
+            'candidates_Id'=> $candidates_Id
         ]);
     }
 
 
 
     /**
-     * @Route("/{name}", name="curriculum_vitae_individual", methods={"GET"})
+     * @Route("/individual/{name}", name="curriculum_vitae_individual", methods={"GET"})
      */
-    public function indexIndividual(string $name, CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository){
+    public function indexIndividual(string $name, CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository, StaticTextRepository $staticTextRepository){
         $user = $userRepository->findOneBy([
             'fullName'=>$name
             ]);
         return $this->render('curriculum_vitae/indexByPerson.html.twig', [
             'curriculum_vitaes' => $curriculumVitaeRepository->findBy(['candidate'=>$user]),
-            'candidate' => $name
+            'candidate' => $name,
+            'static_text'=> $staticTextRepository->findAll()
         ]);
     }
 

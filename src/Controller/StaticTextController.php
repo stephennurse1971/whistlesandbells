@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\GarminFiles;
 use App\Entity\StaticText;
 use App\Form\StaticTextType;
+use App\Repository\FileAttachmentsRepository;
 use App\Repository\StaticTextRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -67,155 +70,21 @@ class StaticTextController extends AbstractController
     {
         $form = $this->createForm(StaticTextType::class, $staticText);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $photo1 = $form->get('photo1')->getData();
-            $photo2 = $form->get('photo2')->getData();
-            $photo3 = $form->get('photo3')->getData();
-            $photo4 = $form->get('photo4')->getData();
-            $photo5 = $form->get('photo5')->getData();
-            $photo6 = $form->get('photo6')->getData();
-            $photo7 = $form->get('photo7')->getData();
-            $photo8 = $form->get('photo8')->getData();
-            $photo9 = $form->get('photo9')->getData();
-            if ($photo1) {
-                $originalFilename = pathinfo($photo1->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo1->guessExtension();
+            $cv = $form->get('cv')->getData();
+            if ($cv) {
+                $newFilename = 'StephenNurse_CV.pdf';
                 try {
-                    $photo1->move(
-                        $this->getParameter('website_photos_directory'),
+                    $cv->move(
+                        $this->getParameter('files_cv_directory'),
                         $newFilename
                     );
-                    $staticText->setPhoto1($newFilename);
+                    $staticText->setCV($newFilename);
                 } catch (FileException $e) {
                     die('Import failed');
                 }
             }
-
-            if ($photo2) {
-                $originalFilename = pathinfo($photo2->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo2->guessExtension();
-                try {
-                    $photo2->move(
-                        $this->getParameter('website_photos_directory'),
-                        $newFilename
-                    );
-                    $staticText->setPhoto2($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-            }
-
-            if ($photo3) {
-                $originalFilename = pathinfo($photo3->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo3->guessExtension();
-                try {
-                    $photo3->move(
-                        $this->getParameter('website_photos_directory'),
-                        $newFilename
-                    );
-                    $staticText->setPhoto3($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-            }
-
-            if ($photo4) {
-                $originalFilename = pathinfo($photo4->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo4->guessExtension();
-                try {
-                    $photo4->move(
-                        $this->getParameter('website_photos_directory'),
-                        $newFilename
-                    );
-                    $staticText->setPhoto4($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-            }
-
-            if ($photo5) {
-                $originalFilename = pathinfo($photo5->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo5->guessExtension();
-                try {
-                    $photo5->move(
-                        $this->getParameter('website_photos_directory'),
-                        $newFilename
-                    );
-                    $staticText->setPhoto5($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-            }
-
-            if ($photo6) {
-                $originalFilename = pathinfo($photo6->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo6->guessExtension();
-                try {
-                    $photo6->move(
-                        $this->getParameter('website_photos_directory'),
-                        $newFilename
-                    );
-                    $staticText->setPhoto6($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-            }
-
-            if ($photo7) {
-                $originalFilename = pathinfo($photo7->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo7->guessExtension();
-                try {
-                    $photo7->move(
-                        $this->getParameter('website_photos_directory'),
-                        $newFilename
-                    );
-                    $staticText->setPhoto7($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-            }
-
-            if ($photo8) {
-                $originalFilename = pathinfo($photo8->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo8->guessExtension();
-                try {
-                    $photo8->move(
-                        $this->getParameter('website_photos_directory'),
-                        $newFilename
-                    );
-                    $staticText->setPhoto8($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-            }
-
-            if ($photo9) {
-                $originalFilename = pathinfo($photo9->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '.' . $photo9->guessExtension();
-                try {
-                    $photo9->move(
-                        $this->getParameter('website_photos_directory'),
-                        $newFilename
-                    );
-                    $staticText->setPhoto9($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-            }
-
-
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('static_text_index');
         }
 
@@ -235,7 +104,32 @@ class StaticTextController extends AbstractController
             $entityManager->remove($staticText);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('static_text_index');
     }
+
+    /**
+     * @Route("/{id}/delete/attachment", name="cv_delete_attachment")
+     */
+    public function deleteAttachment(Request $request, StaticText $staticText, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $staticText->setCV('');
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/show/attachment/{id}", name="show_cv_attachment")
+     */
+    public function showAttachment(int $id, StaticTextRepository $staticTextRepository)
+    {
+        $filepath = $this->getParameter('files_cv_directory') . "/StephenNurse_CV.pdf";
+        if(file_exists($filepath)){
+            return $this->file($filepath, 'sample.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
+        }
+        else{
+            return new Response("file does not exist");
+        }
+    }
+
 }

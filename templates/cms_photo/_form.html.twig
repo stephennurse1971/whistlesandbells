@@ -3,6 +3,13 @@
 <h2>Field names</h2>
 <div class="row">
     <div class="col-md-2">
+        {{ form_row(form.sitePage) }}
+    </div>
+
+    <div class="col-md-2">
+        {{ form_row(form.heading) }}
+    </div>
+    <div class="col-md-2">
         {{ form_row(form.name) }}
     </div>
     <div class="col-md-2">
@@ -25,7 +32,7 @@
 <div class="row">
     <div class="col-md-2">
         {% if cms_photo.id is not empty %}
-        <a target="_blank" href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">{{ cms_photo.photo }}</a>
+            <a target="_blank" href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">{{ cms_photo.photo }}</a>
         {% endif %}
     </div>
 </div>

@@ -8,6 +8,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>ID</th>
             <th>Address</th>
             <th>Email</th>
             <th>Mobile</th>
@@ -17,15 +18,15 @@
             <th>GitHub</th>
             <th>Facebook</th>
             <th>Twitter</th>
+            <th>CV</th>
             <th>Base ccy</th>
-            {% if is_granted('ROLE_ADMIN') %}
             <th>Edit</th>
-            {% endif %}
         </tr>
         </thead>
         <tbody>
         {% for static_text in static_texts %}
             <tr>
+                <td>{{ static_text.id }}</td>
                 <td>{{ static_text.address }}</td>
                 <td>{{ static_text.emailAddress }}</td>
                 <td>{{ static_text.mobileNumber }}</td>
@@ -35,19 +36,22 @@
                 <td>{{ static_text.github }}</td>
                 <td>{{ static_text.facebookLink }}</td>
                 <td>{{ static_text.twitter }}</td>
-                <td>{{ static_text.baseCurrency }}</td>
-                {% if is_granted('ROLE_ADMIN') %}
                 <td>
-                    <a class="btn btn-outline-danger btn-sm" href="{{ path('static_text_edit', {'id': 1}) }}">Edit</a>
+                    {% if static_text.cv is not empty %}
+                        <a target="_blank" href="{{ path('show_cv_attachment',{id : static_text.id}) }}">{{ static_text.cv }}</a>
+                    {% endif %}
                 </td>
-                {% endif %}
+                <td>{{ static_text.baseCurrency }}</td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('static_text_edit',{id:static_text.id}) }}">Edit</a>
+                </td>
             </tr>
 
         {% endfor %}
         </tbody>
     </table>
-<hr>
+    <hr>
     {% if is_granted('ROLE_ADMIN') %}
-    <a class="btn btn-success btn-sm" href="{{ path('static_text_new') }}">New</a>
+        <a class="btn btn-success btn-sm" href="{{ path('static_text_new') }}">New</a>
     {% endif %}
 {% endblock %}

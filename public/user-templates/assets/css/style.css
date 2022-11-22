@@ -318,7 +318,7 @@ padding-bottom: 22px;box-shadow:0 6px 16px rgba(153, 153, 153, 0.2);background-c
 .author-socials ul#social li a span i{color: #727272}
 .author-socials ul#social li a span i:hover{color: #fab702;transition: all 0.5s;-webkit-transition: all 0.5s;-moz-transition: all 0.5s;}
 .home1-author-photo{
-    /*background: url(../images/home-pro.jpg) no-repeat center center;*/
+
     /*background-size: cover;*/
     position: absolute;
     right: 0;
@@ -326,14 +326,7 @@ padding-bottom: 22px;box-shadow:0 6px 16px rgba(153, 153, 153, 0.2);background-c
     height: 100%;
     width:49%;
     background-position: 20% 80px }
-.home1-author-photo-image {
-    max-width: 784px;
-    max-height: 700px;
-    height: auto;
-    width:auto;
 
-
-}
 #author-photo-right {
     position: static;
 }

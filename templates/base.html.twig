@@ -195,15 +195,15 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a title={{StaticText.content.emailAddress }} class="dropdown-item" href="mailto:{{ StaticText.content.emailAddress }}">
 {#                                <i class="fa fa-envelope" style="color:black;font-size:16px"></i>#}
-                                @
+                                @ {{ StaticText.content.emailAddress }}
                             </a>
                             <a class="dropdown-item" title="{{StaticText.content.mobileNumber }}"
                                href="https://wa.me/{{ StaticText.content.mobileNumber | replace({' ': ''}) }}">
-                                <i style="color: #0f6848" class="fa fa-whatsapp"></i></a>
+                                <i style="color: #0f6848" class="fa fa-whatsapp"></i> {{ StaticText.content.mobileNumber }}</a>
                             <a class="dropdown-item" title={{StaticText.content.skype }}
-                               href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue" class="fa fa-skype"></i></a>
+                               href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue" class="fa fa-skype"></i>{{ StaticText.content.skype}}</a>
                             <a target="_blank" title="{{ StaticText.content.address}} "
-                               href="{{ path('/homeaddress') }}"> <i style="color: royalblue" class="fa fa-car"></i></a></a>
+                               href="{{ path('/homeaddress') }}"> <i style="color: royalblue" class="fa fa-car"></i> {{ StaticText.content.address}}</a></a>
                         </div>
                     </li>
 
@@ -317,12 +317,10 @@
                                 <a class="dropdown-item" href="{{ path('tax_year_index') }}">Tax Years</a>
                                 <a class="dropdown-item" href="{{ path('file_upload') }}">File upload</a>
                                 <hr>
-                                <a class="dropdown-item" href="{{ path('static_text_index') }}">CMS Static Data</a>
+                                <a class="dropdown-item" href="{{ path('static_text_index') }}">CMS Static Text</a>
                                 <a class="dropdown-item" href="{{ path('cms_copy_index') }}">CMS Copy</a>
                                 <a class="dropdown-item" href="{{ path('cms_photo_index') }}">CMS Photos</a>
-                                <hr>
-                                <a title="Stephen's CV" target="_blank"
-                                   href="/administration/attachments/CV/CV%20-%20Stephen%20Nurse%20(2022).pdf">CV</a>
+
                             </div>
                         </li>
                     {% endif %}

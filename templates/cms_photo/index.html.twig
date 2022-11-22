@@ -9,8 +9,9 @@
         <thead>
         <tr>
             <th style="width: 50px">ID</th>
-            <th style="width: 50px">SitePage</th>
             <th style="width: 50px">Photo</th>
+            <th style="width: 50px">Site Page</th>
+            <th style="width: 50px">Heading</th>
             <th style="width: 50px">Name</th>
             <th style="width: 50px">Photo</th>
             <th style="width: 500px">Title (English)</th>
@@ -22,13 +23,18 @@
         <tbody>
         {% for cms_photo in cms_photos %}
             <tr>
-                <td>{{ cms_photo.id }}</td>
-                <td>{{ cms_photo.sitePage }}</td>
                 <td>
-                    <img height="50" width="50" src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ cms_photo.photo  }}" class="rounded-circle">
+                    <a target="_blank" href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">{{ cms_photo.id }}</a>
                 </td>
                 <td>
-                    <a href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">{{ cms_photo.name }}</a>
+                    <img height="50" width="50"
+                         src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ cms_photo.photo }}"
+                         class="rounded-circle">
+                </td>
+                <td>{{ cms_photo.sitePage }}</td>
+                <td>{{ cms_photo.heading }}</td>
+                <td>
+                    {{ cms_photo.name }}
                 </td>
                 <td>
                     <a target="_blank"
@@ -45,7 +51,7 @@
                         {% else %}
                             {% set web = 'https://'~ cms_photo.link %}
                         {% endif %}
-                        <a target="_blank" title="{{  cms_photo.link }}" href="{{ web }}">
+                        <a target="_blank" title="{{ cms_photo.link }}" href="{{ web }}">
                             <i class="fa fa-globe"></i>
                         </a>
                     {% endif %}

@@ -7,14 +7,14 @@
     <h1 style="color: red">{{ candidate }}</h1>
     <a class="btn btn-success" href="{{ path('create_vcard_SN') }}">Download Contact Details (VCF)</a>
 
-    <a target="_blank" class="btn btn-primary" href="/administration/attachments/CV/CV_StephenNurse.pdf">Download CV</a>
-    {% if app.user  %}
+    <a target="_blank" class="btn btn-primary" href="/administration/attachments/CV/StephenNurse_CV.pdf">Download CV</a>
+    {% if app.user %}
         <a class="btn btn-secondary" href="{{ path('recruiter_email_CV') }}">Email CV</a>
     {% else %}
         <button class="btn btn-primary" id="show-email-popup">Email CV</button>
     {% endif %}
     <div id="popup-form-mail" class="mt-2 col-3">
-        <form method="POST" class="form" action="{{ path('recruiter_email_CV') }}" >
+        <form method="POST" class="form" action="{{ path('recruiter_email_CV') }}">
             <div class="form-group">
                 <div class="">
                     <label for="email"><strong>Enter your Email:</strong></label>
@@ -26,36 +26,107 @@
     </div>
     <br>
     <br>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Date From</th>
-            <th>Date To</th>
-            <th>Job Description</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for curriculum_vitae in curriculum_vitaes %}
-            <tr>
-                <td>
-                    {% if curriculum_vitae.title is not empty %}
-                        <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
-                    {% else %}
-                        <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.section }}</a>
-                    {% endif %}
-                </td>
-                <td data-sort="{{ curriculum_vitae.date|date('y-m-d') }}">{{ curriculum_vitae.date ? curriculum_vitae.date|date('M-Y') : '' }}</td>
-                <td data-sort="{{ curriculum_vitae.dateFinish|date('y-m-d') }}">{{ curriculum_vitae.dateFinish ? curriculum_vitae.dateFinish|date('M-Y') : '' }}</td>
-                <td>{{ curriculum_vitae.jobDescription|raw }}</td>
-            </tr>
 
-        {% endfor %}
-        </tbody>
-    </table>
+    <!--  Summary section  -->
+
+    {% for curriculum_vitae in curriculum_vitaes %}
+        {% if curriculum_vitae.section == "Summary" %}
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    {{ curriculum_vitae.jobDescription|raw }}
+                </div>
+                <div class="col-1"></div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <br>
+    <br>
+    <!--  Jobs section  -->
+
+
+    {% for curriculum_vitae in curriculum_vitaes %}
+        {% if curriculum_vitae.section == "Job" %}
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-md-3"><b> {{ curriculum_vitae.title }} </b></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-3">
+                    <b> {{ curriculum_vitae.date ? curriculum_vitae.date|date('M-Y') : '' }}
+                        - {{ curriculum_vitae.dateFinish ? curriculum_vitae.dateFinish|date('M-Y') : '' }} </b>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    {{ curriculum_vitae.jobDescription|raw }}
+                </div>
+                <div class="col-1"></div>
+
+            </div>
+            <br>
+        {% endif %}
+
+    {% endfor %}
+
+
+    <br>
+    <br>
+
+    <!--  Education section  -->
+
+    {% for curriculum_vitae in curriculum_vitaes %}
+        {% if curriculum_vitae.section == "Education" %}
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    {{ curriculum_vitae.jobDescription|raw }}
+                </div>
+                <div class="col-1"></div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <br>
+    <br>
+
+    <!--  End  -->
+
+    <!--  Old version  -->
+    {#    <table class="table"> #}
+    {#        <thead> #}
+    {#        <tr> #}
+    {#            <th>Title</th> #}
+    {#            <th>Date From</th> #}
+    {#            <th>Date To</th> #}
+    {#            <th>Job Description</th> #}
+    {#        </tr> #}
+    {#        </thead> #}
+    {#        <tbody> #}
+    {#        {% for curriculum_vitae in curriculum_vitaes %} #}
+    {#            {% if curriculum_vitae.section == "Job" %} #}
+    {#                <tr> #}
+    {#                    <td> #}
+    {#                        {% if curriculum_vitae.title is not empty %} #}
+    {#                            {{ curriculum_vitae.title }} #}
+    {#                        {% else %} #}
+    {#                            {{ curriculum_vitae.section }} #}
+    {#                        {% endif %} #}
+    {#                    </td> #}
+    {#                    <td data-sort="{{ curriculum_vitae.date|date('y-m-d') }}">{{ curriculum_vitae.date ? curriculum_vitae.date|date('M-Y') : '' }}</td> #}
+    {#                    <td data-sort="{{ curriculum_vitae.dateFinish|date('y-m-d') }}">{{ curriculum_vitae.dateFinish ? curriculum_vitae.dateFinish|date('M-Y') : '' }}</td> #}
+    {#                    <td>{{ curriculum_vitae.jobDescription|raw }}</td> #}
+    {#                </tr> #}
+    {#            {% endif %} #}
+    {#        {% endfor %} #}
+    {#        </tbody> #}
+    {#    </table>    #}
+
+
 
 {% endblock %}
-
 {% block datatable %}
     <script>
         $(document).ready(function () {
@@ -70,10 +141,10 @@
     </script>
     <script>
 
-             $("#show-email-popup").click(function (){
+        $("#show-email-popup").click(function () {
 
-                 $("#popup-form-mail").css("display","block");
-             })
+            $("#popup-form-mail").css("display", "block");
+        })
 
 
     </script>

@@ -1,12 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CurriculumVitae index{% endblock %}
+{% block title %}Curriculum Vitae Segmentd{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">CVs</h1>
+    <h1 style="color: red">CV Segments - By applicant</h1>
 
-    <table class="table">
-        <thead>
+    {% for candidate_Id in candidates_Id %}
+        {{ candidate_Id[1] }}
+        {#    <h2>{{ curriculum_vitae.candidate.fullName }}</h2> #}
+
+        <table class="table">
+            <thead>
             <tr>
                 <th>Candidate</th>
                 <th>Section</th>
@@ -15,25 +19,32 @@
                 <th>Date To</th>
                 <th>Job Description</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for curriculum_vitae in curriculum_vitaes %}
-            <tr>
-                <td>{{ curriculum_vitae.candidate.fullName }}</td>
-                <td>{{ curriculum_vitae.section }}</td>
-                <td>
-                    <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
-                </td>
-                <td data-sort="{{ curriculum_vitae.date|date('y-m-d') }}">{{ curriculum_vitae.date ? curriculum_vitae.date|date('M-Y') : '' }}</td>
-                <td data-sort="{{ curriculum_vitae.dateFinish|date('y-m-d') }}">{{ curriculum_vitae.dateFinish ? curriculum_vitae.dateFinish|date('M-Y') : '' }}</td>
-                <td>{{ curriculum_vitae.jobDescription|raw }}</td>
-            </tr>
+            </thead>
+            <tbody>
+            {% for curriculum_vitae in curriculum_vitaes %}
 
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a class="btn btn-success btn-sm" href="{{ path('curriculum_vitae_new') }}">New</a>
+{#                {% if curriculum_vitae.candidate.candidateid == candidate_Id %}#}
+                {% if 1 == 1 %}
+                    <tr>
+                        <td>{{ curriculum_vitae.candidate.fullName }}</td>
+                        <td>{{ curriculum_vitae.section }}</td>
+                        <td>
+                            {% if curriculum_vitae.title is not empty %}<a
+                                href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
+                            {% else %}
+                                <a href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.section }}</a>
+                            {% endif %}
+                        </td>
+                        <td data-sort="{{ curriculum_vitae.date|date('y-m-d') }}">{{ curriculum_vitae.date ? curriculum_vitae.date|date('M-Y') : '' }}</td>
+                        <td data-sort="{{ curriculum_vitae.dateFinish|date('y-m-d') }}">{{ curriculum_vitae.dateFinish ? curriculum_vitae.dateFinish|date('M-Y') : '' }}</td>
+                        <td>{{ curriculum_vitae.jobDescription|raw }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('curriculum_vitae_new') }}">New</a>
 {% endblock %}
 
 {% block datatable %}
@@ -41,7 +52,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'asc'],[1, 'desc']],
+                "order": [[0, 'asc'], [1, 'desc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": true
