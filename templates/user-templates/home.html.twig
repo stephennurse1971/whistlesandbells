@@ -41,7 +41,11 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 " id="author-photo-right">
+                    {% if homepage1 is not null %}
                     <div class="home1-author-photo" style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ homepage1.photo }} )"></div>
+                {% else %}
+                    <div class="home1-author-photo"></div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -67,10 +71,13 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="specilizing-item">
                         <figure>
-                            <div class="col-lg-6 col-md-12 " id="author-photo-right">
-                                <div class="home1-author-photo" style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ specialising1.photo }} )"></div>
-                            </div>
-                            <img src="{{ asset('user-templates/assets/images/special/01.jpg') }}" alt="">
+
+                                {% if specialising1 is not null %}
+                                    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ specialising1.photo }}" alt="">
+                          {% else %}
+                              <img src="assets/images/special/01.jpg" alt="">
+                                {% endif %}
+
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
@@ -85,7 +92,11 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="specilizing-item">
                         <figure>
-                            <img src="{{ asset('user-templates/assets/images/special/02.jpg') }}" alt="">
+                            {% if specialising1 is not null %}
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ specialising2.photo }}" alt="">
+                            {% else %}
+                                <img src="assets/images/special/01.jpg" alt="">
+                            {% endif %}
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
@@ -100,7 +111,11 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="specilizing-item">
                         <figure>
-                            <img src="{{ asset('user-templates/assets/images/special/03.jpg') }}" alt="">
+                            {% if specialising1 is not null %}
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ specialising3.photo }}" alt="">
+                            {% else %}
+                                <img src="assets/images/special/01.jpg" alt="">
+                            {% endif %}
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
