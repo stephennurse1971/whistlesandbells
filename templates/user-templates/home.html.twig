@@ -81,8 +81,13 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
+                                    {% if specialising1 is not null %}
                                     <h4>{{ specialising1.heading }}</h4>
                                     <p>{{ specialising1.title }}</p>
+                                    {% else %}
+                                        <h4> heading </h4>
+                                        <p> title </p>
+                                    {% endif %}
                                     <a class="info btn btn-primary" href="service.html">Learn more</a>
                                 </div>
                             </div>
@@ -100,8 +105,13 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    <h4>{{ specialising2.heading }}</h4>
-                                    <p>{{ specialising3.title }}</p>
+                                    {% if specialising1 is not null %}
+                                        <h4>{{ specialising2.heading }}</h4>
+                                        <p>{{ specialising2.title }}</p>
+                                    {% else %}
+                                        <h4> heading </h4>
+                                        <p> title </p>
+                                    {% endif %}
                                     <a class="info btn btn-primary" href="service.html">Learn more</a>
                                 </div>
                             </div>
@@ -119,8 +129,13 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    <h4>{{ specialising3.heading }}</h4>
-                                    <p>{{ specialising3.title }}</p>
+                                    {% if specialising1 is not null %}
+                                        <h4>{{ specialising3.heading }}</h4>
+                                        <p>{{ specialising3.title }}</p>
+                                    {% else %}
+                                        <h4> heading </h4>
+                                        <p> title </p>
+                                    {% endif %}
                                     <a class="info btn btn-primary" href="service.html">Learn more</a>
                                 </div>
                             </div>
