@@ -60,7 +60,8 @@
                 <td>
                     {% for prospect_employer in prospect_employers %}
                         {% if prospect_employer.recruiter.id == user.id %}
-                            <a target="_blank" href="{{ path('prospect_employer_edit', {'id': prospect_employer.id}) }}">{{ prospect_employer.employer }}</a>;
+                            <a target="_blank"
+                               href="{{ path('prospect_employer_edit', {'id': prospect_employer.id}) }}">{{ prospect_employer.employer }}</a>;
                         {% endif %}
                     {% endfor %}
                 </td>
@@ -147,11 +148,15 @@
                 </td>
                 <td>{{ user.notes }}</td>
                 <td style="width: 200px">
+                    {% set businessCountry = 'United Kingdom' %}
+                    {% if user.businessCountry is not null %}
+                        {% set businessCountry = user.businessCountry %}
+                    {% endif %}
                     <a class="btn btn-success btn-sm d-inline"
                        href="{{ path('recruiter_intro', {'authorId':app.user.id,
-                           'recruiterId': user.id, 'recruiterCountry': user.businessCountry, 'editable':'editable'}) }}">Editable</a>
+                           'recruiterId': user.id, 'recruiterCountry': businessCountry, 'editable':'editable'}) }}">Editable</a>
                     <a class="btn btn-primary btn-sm" href="{{ path('recruiter_intro', {'authorId':app.user.id,
-                        'recruiterId': user.id, 'recruiterCountry': user.businessCountry, 'editable':'standard' }) }}">Standard</a>
+                        'recruiterId': user.id,'recruiterCountry': businessCountry,'editable':'standard' }) }}">Standard</a>
                     <br>
                 </td>
                 <td style="width: 200px">
