@@ -23,8 +23,11 @@
                         </div>
                         <div class="author-socials">
                             <ul id="social">
-                                <li><a target="_blank" href="https://www.linkedin.com/in/{{ StaticText.content.linkedIn }}"><span><i class="icofont icofont-social-linkedin"></i></span></a></li>
-                                <li><a target="_blank" href="https://find-and-update.company-information.service.gov.uk/officers/{{ StaticText.content.companiesHouseLink }}/appointments">
+                                <li><a target="_blank"
+                                       href="https://www.linkedin.com/in/{{ StaticText.content.linkedIn }}"><span><i
+                                                    class="icofont icofont-social-linkedin"></i></span></a></li>
+                                <li><a target="_blank"
+                                       href="https://find-and-update.company-information.service.gov.uk/officers/{{ StaticText.content.companiesHouseLink }}/appointments">
                                         <span class="zoom-social_icons-list-span social-icon socicon socicon-ch rounded border"
                                               data-hover-rule="color" data-hover-color="red"
                                               style="color : black; background-color: black; font-size: 16px; padding:6px"><img
@@ -34,17 +37,22 @@
                                 <li><a target="_blank" href="https://github.com/{{ StaticText.content.github }}"><span>
                                         <i class="fa fa-github" style="font-size:24px"></i>
                                         </span></a></li>
-                                <li><a target="_blank" href="https://facebook.com/{{ StaticText.content.facebookLink }}"><span><i class="icofont icofont-social-facebook"></i></span></a></li>
-                                <li><a target="_blank" href="https://twitter.com/{{ StaticText.content.twitter }}"><span><i class="icofont icofont-social-twitter"></i></span></a></li>
+                                <li><a target="_blank"
+                                       href="https://facebook.com/{{ StaticText.content.facebookLink }}"><span><i
+                                                    class="icofont icofont-social-facebook"></i></span></a></li>
+                                <li><a target="_blank"
+                                       href="https://twitter.com/{{ StaticText.content.twitter }}"><span><i
+                                                    class="icofont icofont-social-twitter"></i></span></a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 " id="author-photo-right">
-                    {% if HomePage1Photo is not null %}
-                    <div class="home1-author-photo" style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ HomePage1Photo.photo }} )"></div>
-                {% else %}
-                    <div class="home1-author-photo"></div>
+                    {% if HomePage1Photo is not empty %}
+                        <div class="home1-author-photo"
+                             style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ HomePage1Photo.photo }} )"></div>
+                    {% else %}
+                        <div class="home1-author-photo"></div>
                     {% endif %}
                 </div>
             </div>
@@ -72,23 +80,27 @@
                     <div class="specilizing-item">
                         <figure>
 
-                                {% if Specialising1Photo is not null %}
-                                    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising1Photo.photo }}" alt="">
-                          {% else %}
-                              <img src="assets/images/special/01.jpg" alt="">
-                                {% endif %}
+                            {% if Specialising1Photo is not empty %}
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising1Photo.photo }}"
+                                     alt="">
+                            {% else %}
+                                <img src="assets/images/special/01.jpg" alt="">
+                            {% endif %}
 
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    {% if Specialising1Photo is not null %}
-                                    <h4>{{ Specialising1Photo.heading }}</h4>
-                                    <p>{{ Specialising1Photo.title }}</p>
+                                    {% if Specialising1Photo is not empty %}
+                                        <h4>{{ Specialising1Photo.heading }}</h4>
+                                        <p>{{ Specialising1Photo.title }}</p>
+                                        <a target="_blank" class="info btn btn-primary"
+                                           href={{ Specialising1Photo.link }}>Learn more</a>
+
                                     {% else %}
                                         <h4> Heading1 </h4>
                                         <p> Title1 </p>
                                     {% endif %}
-                                    <a target="_blank" class="info btn btn-primary" href={{ Specialising1Photo.link }}>Learn more</a>
+
                                 </div>
                             </div>
                         </figure>
@@ -98,7 +110,8 @@
                     <div class="specilizing-item">
                         <figure>
                             {% if Specialising2Photo is not null %}
-                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising2Photo.photo }}" alt="">
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising2Photo.photo }}"
+                                     alt="">
                             {% else %}
                                 <img src="assets/images/special/01.jpg" alt="">
                             {% endif %}
@@ -108,11 +121,13 @@
                                     {% if Specialising2Photo is not null %}
                                         <h4>{{ Specialising2Photo.heading }}</h4>
                                         <p>{{ Specialising2Photo.title }}</p>
+                                        <a target="_blank" class="info btn btn-primary"
+                                           href={{ Specialising2Photo.link }}>Learn more</a>
                                     {% else %}
                                         <h4> Heading2 TBC </h4>
                                         <p> Title2 TBC </p>
                                     {% endif %}
-                                    <a target="_blank" class="info btn btn-primary" href={{ Specialising2Photo.link }}>Learn more</a>
+
                                 </div>
                             </div>
                         </figure>
@@ -122,7 +137,8 @@
                     <div class="specilizing-item">
                         <figure>
                             {% if Specialising3Photo is not null %}
-                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising3Photo.photo }}" alt="">
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising3Photo.photo }}"
+                                     alt="">
                             {% else %}
                                 <img src="assets/images/special/01.jpg" alt="">
                             {% endif %}
@@ -132,11 +148,13 @@
                                     {% if Specialising3Photo is not null %}
                                         <h4>{{ Specialising3Photo.heading }}</h4>
                                         <p>{{ Specialising3Photo.title }}</p>
+                                        <a target="_blank" class="info btn btn-primary"
+                                           href={{ Specialising3Photo.link }}>Learn more</a>
                                     {% else %}
                                         <h4> Heading3 TBC </h4>
                                         <p> Title3 TBC </p>
                                     {% endif %}
-                                    <a target="_blank" class="info btn btn-primary" href={{ Specialising3Photo.link }}>Learn more</a>
+
                                 </div>
                             </div>
                         </figure>
@@ -168,15 +186,18 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="why-choose-content">
                         <h3>Why Hire me?</h3>
-                        <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal materials rather than high standards.</p>
+                        <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                            Progressively maximize optimal materials rather than high standards.</p>
                     </div>
                     <div class="why-choose-content">
                         <h3>Which services you get from me?</h3>
-                        <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal materials rather than high standards.</p>
+                        <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                            Progressively maximize optimal materials rather than high standards.</p>
                     </div>
                     <div class="why-choose-content">
                         <h3>Which files I will provide you?</h3>
-                        <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal materials rather than high standards.</p>
+                        <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                            Progressively maximize optimal materials rather than high standards.</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12" id="video-right-static">
@@ -185,7 +206,7 @@
 
                         <div class="video_button">
                             <a href="#" data-toggle="modal" data-target="#myModal">
-                                <div  class="profilepicture"></div>
+                                <div class="profilepicture"></div>
                             </a>
                         </div>
                     </div>
@@ -202,14 +223,14 @@
                             </div>
                             <div class="modal-body">
                                 <div class="video-container">
-                                    <iframe width="640" height="360" src="https://www.youtube.com/embed/SyiwWRMoXXA" frameborder="0" allowfullscreen></iframe>
+                                    <iframe width="640" height="360" src="https://www.youtube.com/embed/SyiwWRMoXXA"
+                                            frameborder="0" allowfullscreen></iframe>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!--Video  Modal -->
-
 
 
             </div>
@@ -397,7 +418,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -411,7 +433,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -425,7 +448,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -439,7 +463,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -453,7 +478,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -467,7 +493,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -481,7 +508,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -495,7 +523,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -509,7 +538,8 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
                     <div class="item">
@@ -523,13 +553,13 @@
                                     <p>Envato Customer</p>
                                 </div>
                             </div>
-                            <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively maximize optimal.</p>
+                            <p>Monotonectally plagiarize client-centered relationships through superior relationships.
+                                Progressively maximize optimal.</p>
                         </div>
                     </div>
 
 
                 </div>
-
 
 
             </div>
@@ -557,15 +587,15 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="pricing-table text-center">
                         <ul>
-                            <li> <span class="price-title">BASIC</span></li>
-                            <li class="pricing-details"> <span class="pricing-price">$49</span> </li>
-                            <li> Mobile App UI </li>
+                            <li><span class="price-title">BASIC</span></li>
+                            <li class="pricing-details"><span class="pricing-price">$49</span></li>
+                            <li> Mobile App UI</li>
                             <li> Web App UI</li>
                             <li> Web Template</li>
                             <li> One Page Web UI</li>
                             <li> One Screen App UI</li>
                             <li> Dashboard UI</li>
-                            <li> <a class="btn raisa-btn btn-primary" href="#">Purchase</a> </li>
+                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li>
                         </ul>
                     </div>
                     <!--pricing-table-->
@@ -573,15 +603,15 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="pricing-table text-center active">
                         <ul>
-                            <li> <span class="price-title">Premium</span></li>
-                            <li class="pricing-details"> <span class="pricing-price">$49</span> </li>
-                            <li> Mobile App UI </li>
+                            <li><span class="price-title">Premium</span></li>
+                            <li class="pricing-details"><span class="pricing-price">$49</span></li>
+                            <li> Mobile App UI</li>
                             <li> Web App UI</li>
                             <li> Web Template</li>
                             <li> One Page Web UI</li>
                             <li> One Screen App UI</li>
                             <li> Dashboard UI</li>
-                            <li> <a class="btn raisa-btn btn-primary" href="#">Purchase</a> </li>
+                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li>
                         </ul>
                     </div>
                     <!--pricing-table-->
@@ -589,15 +619,15 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="pricing-table text-center">
                         <ul>
-                            <li> <span class="price-title">Standard</span></li>
-                            <li class="pricing-details"> <span class="pricing-price">$49</span> </li>
-                            <li> Mobile App UI </li>
+                            <li><span class="price-title">Standard</span></li>
+                            <li class="pricing-details"><span class="pricing-price">$49</span></li>
+                            <li> Mobile App UI</li>
                             <li> Web App UI</li>
                             <li> Web Template</li>
                             <li> One Page Web UI</li>
                             <li> One Screen App UI</li>
                             <li> Dashboard UI</li>
-                            <li> <a class="btn raisa-btn btn-primary" href="#">Purchase</a> </li>
+                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li>
                         </ul>
                     </div>
                     <!--pricing-table-->
@@ -649,7 +679,8 @@
                                 <div class="blur"></div>
                                 <div class="blog-captions">
                                     <h4>Graphics Design</h4>
-                                    <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively .</p>
+                                    <p>Monotonectally plagiarize client-centered relationships through superior
+                                        relationships. Progressively .</p>
                                     <a class="info btn btn-primary" href="#">Learn more</a>
                                 </div>
                             </div>
@@ -677,7 +708,8 @@
                                 <div class="blur"></div>
                                 <div class="blog-captions">
                                     <h4>Graphics Design</h4>
-                                    <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively .</p>
+                                    <p>Monotonectally plagiarize client-centered relationships through superior
+                                        relationships. Progressively .</p>
                                     <a class="info btn btn-primary" href="#">Learn more</a>
                                 </div>
                             </div>
@@ -705,7 +737,8 @@
                                 <div class="blur"></div>
                                 <div class="blog-captions">
                                     <h4>Graphics Design</h4>
-                                    <p>Monotonectally plagiarize client-centered relationships through superior relationships. Progressively .</p>
+                                    <p>Monotonectally plagiarize client-centered relationships through superior
+                                        relationships. Progressively .</p>
                                     <a class="info btn btn-primary" href="#">Learn more</a>
                                 </div>
                             </div>
