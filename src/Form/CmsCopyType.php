@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\CmsCopy;
 use PhpOffice\PhpSpreadsheet\Calculation\TextData\Text;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,9 +17,25 @@ class CmsCopyType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('hyperlinks')
+            ->add('sitePage', ChoiceType::class, [
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    'HomePage' => 'HomePage',
+                    'AboutSN' => 'AboutSN',
+                    'PrivateEquity' => 'PrivateEquity',
+                    'WebDesign' => 'WebDesign',
+                    'Tennis' => 'Tennis',
+                    'Flying' => 'Flying',
+                    'Cyprus' => 'Cyprus',
+                    'Volunteering' => 'Volunteering',
+                    'Introduction Email - Family' => 'Introduction Email - Family',
+                    'Introduction Email - Contact' => 'Introduction Email - Contact',
+                    'Introduction Email - Guest' => 'Introduction Email - Guest',
+                    'Introduction Email - Job Applicant' => 'Introduction Email - Job Applicant',
+                    'Introduction Email - Recruiter' => 'Introduction Email - Recruiter',
 
-
+                ],])
             ->add('contentTitle', TextType::class, [
                 'required' => false,
                 'label' => 'Title (English)'
@@ -27,8 +44,6 @@ class CmsCopyType extends AbstractType
                 'required' => false,
                 'label' => 'Content (English)'
             ])
-
-
             ->add('contentTitleFR', TextType::class, [
                 'required' => false,
                 'label' => 'Title (French)'])
@@ -36,14 +51,14 @@ class CmsCopyType extends AbstractType
                 'required' => false,
                 'label' => 'Content (French)'
             ])
-
             ->add('contentTitleDE', TextType::class, [
                 'required' => false,
                 'label' => 'Title (German)'])
             ->add('contentTextDE', TextareaType::class, [
                 'required' => false,
                 'label' => 'Content (German)'
-            ]);
+            ])
+            ->add('hyperlinks');
     }
 
     public function configureOptions(OptionsResolver $resolver)

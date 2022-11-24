@@ -50,7 +50,15 @@
         {% if curriculum_vitae.section == "Job" %}
             <div class="row">
                 <div class="col-1"></div>
-                <div class="col-md-3"><b> {{ curriculum_vitae.title }} </b></div>
+                <div class="col-md-3">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <b>
+                        <a target="_blank" href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
+                    </b>
+                    {% else %}
+                        <b> {{ curriculum_vitae.title }} </b>
+                    {% endif %}
+                </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-3">
                     <b> {{ curriculum_vitae.date ? curriculum_vitae.date|date('M-Y') : '' }}

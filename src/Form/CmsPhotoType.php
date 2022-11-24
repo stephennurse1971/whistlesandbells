@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\CmsPhoto;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,6 +16,19 @@ class CmsPhotoType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('sitePage', ChoiceType::class, [
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    'HomePage' => 'HomePage',
+                    'AboutSN' => 'AboutSN',
+                    'Portfolio Career' => 'Portfolio Career',
+                    'WebDesign' => 'WebDesign',
+                    'Tennis' => 'Tennis',
+                    'Flying' => 'Flying',
+                    'Cyprus' => 'Cyprus',
+                    'Volunteering' => 'Volunteering',
+                ],])
             ->add('heading')
             ->add('photo', FileType::class, [
                 'label' => false,
@@ -33,9 +47,7 @@ class CmsPhotoType extends AbstractType
                 'required' => false,
                 'label' => 'Title (German)'
             ])
-            ->add('sitePage')
-            ->add('link')
-        ;
+            ->add('link');
     }
 
     public function configureOptions(OptionsResolver $resolver)

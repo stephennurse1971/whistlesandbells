@@ -8,20 +8,52 @@
     <table class="table">
         <thead>
         <tr>
+            <th style="width: 90px">Site Page</th>
             <th style="width: 50px">Name</th>
-            <th style="width: 900px">Content</th>
-            <th style="width: 20px">Hyperlinks</th>
+            <th style="width: 900px">Content [English]</th>
+            <th style="width: 50px">Content [Other]</th>
+            <th style="width: 20px">Hyperlink</th>
+            <th style="width: 20px">#</th>
         </tr>
         </thead>
         <tbody>
         {% for cms_copy in cms_copies %}
             <tr>
+
                 <td>
-                    <a href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">{{ cms_copy.name }}</a>
+                    {% if cms_copy.sitePage is not empty %}
+                        <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">{{ cms_copy.sitePage }}</a>
+                    {% else %}
+                        <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">TBD</a>
+                    {% endif %}
                 </td>
-                <td>{{ (cms_copy.contentText |slice (0, 500))|raw}}</td>
+                <td>{{ cms_copy.name }}</td>
+                <td>{{ (cms_copy.contentText |slice (0, 250))|raw }}</td>
                 <td>
-                    <a href="{{ cms_copy.hyperlinks }}">{{ cms_copy.hyperlinks }}</a>
+                    {% if cms_copy.contentTextFR is not empty %}
+
+                        <img title="{{ (cms_copy.contentTextFR |slice (0, 250))|raw }}" src="{{ asset('administration/img/flag/french.png') }}" height="30px" width="20px">
+                    {% endif %}
+                    {% if cms_copy.contentTextDE is not empty %}
+                        <img title="{{ (cms_copy.contentTextFR |slice (0, 250))|raw }}" src="{{ asset('administration/img/flag/german.png') }}" height="30px" width="20px">
+                    {% endif %}
+                </td>
+                <td>
+                    {% if  cms_copy.hyperlinks is not empty %}
+                        {% if  cms_copy.hyperlinks starts with 'http' %}
+                            {% set web =  cms_copy.hyperlinks %}
+                        {% else %}
+                            {% set web = 'https://'~ cms_copy.hyperlinks %}
+                        {% endif %}
+                        <a target="_blank" title="{{ cms_copy.hyperlinks }}" href="{{ web }}">
+                            {{ web }}
+                        </a>
+                    {% endif %}
+
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">Edit</a>
                 </td>
             </tr>
         {% endfor %}
@@ -36,7 +68,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc']],
+                "order": [[0, 'asc'], [1, 'desc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": false

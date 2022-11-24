@@ -20,14 +20,20 @@ class CurriculumVitaeController extends AbstractController
     /**
      * @Route("/", name="curriculum_vitae_index", methods={"GET"})
      */
-    public function index(CurriculumVitaeRepository $curriculumVitaeRepository): Response
+    public function index(CurriculumVitaeRepository $curriculumVitaeRepository,UserRepository $userRepository): Response
     {
        $candidates_Id = $curriculumVitaeRepository->distinctCandidate();
-//dump($candidates_Id);
-//exit;
+       $candidates = [];
+       foreach($candidates_Id as $candidate)
+       {
+
+           $candidates[] = $userRepository->find($candidate[1]);
+       }
+
         return $this->render('curriculum_vitae/index.html.twig', [
             'curriculum_vitaes' => $curriculumVitaeRepository->findAll(),
-            'candidates_Id'=> $candidates_Id
+            //'candidates_Id'=> $candidates_Id,
+            'candidates'=>$candidates
         ]);
     }
 
@@ -37,11 +43,13 @@ class CurriculumVitaeController extends AbstractController
      * @Route("/individual/{name}", name="curriculum_vitae_individual", methods={"GET"})
      */
     public function indexIndividual(string $name, CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository, StaticTextRepository $staticTextRepository){
+
+
         $user = $userRepository->findOneBy([
             'fullName'=>$name
             ]);
         return $this->render('curriculum_vitae/indexByPerson.html.twig', [
-            'curriculum_vitaes' => $curriculumVitaeRepository->findBy(['candidate'=>$user]),
+            'curriculum_vitaes' => $curriculumVitaeRepository->findByCandidate($user),
             'candidate' => $name,
             'static_text'=> $staticTextRepository->findAll()
         ]);

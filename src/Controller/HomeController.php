@@ -18,18 +18,28 @@ class HomeController extends AbstractController
     {
         return $this->render('user-templates/home.html.twig', [
             'photos' => $cmsPhotoRepository->findAll(),
-            'homepage1' => $cmsPhotoRepository->findOneBy([
+            'HomePage1Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'HomePage1'
             ]),
-            'specialising1' => $cmsPhotoRepository->findOneBy([
+            'Specialising1Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'Specialising1'
             ]),
-            'specialising2' => $cmsPhotoRepository->findOneBy([
+            'Specialising2Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'Specialising2'
             ]),
-            'specialising3' => $cmsPhotoRepository->findOneBy([
+            'Specialising3Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'Specialising3'
             ]),
+            'WhyMePhoto' => $cmsPhotoRepository->findOneBy([
+                'name' => 'WhyMe'
+            ]),
+
+
+            'HomePage1Text' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage1'
+            ]),
+
+
 
         ]);
     }

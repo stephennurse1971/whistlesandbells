@@ -41,8 +41,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 " id="author-photo-right">
-                    {% if homepage1 is not null %}
-                    <div class="home1-author-photo" style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ homepage1.photo }} )"></div>
+                    {% if HomePage1Photo is not null %}
+                    <div class="home1-author-photo" style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ HomePage1Photo.photo }} )"></div>
                 {% else %}
                     <div class="home1-author-photo"></div>
                     {% endif %}
@@ -72,8 +72,8 @@
                     <div class="specilizing-item">
                         <figure>
 
-                                {% if specialising1 is not null %}
-                                    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ specialising1.photo }}" alt="">
+                                {% if Specialising1Photo is not null %}
+                                    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising1Photo.photo }}" alt="">
                           {% else %}
                               <img src="assets/images/special/01.jpg" alt="">
                                 {% endif %}
@@ -81,14 +81,14 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    {% if specialising1 is not null %}
-                                    <h4>{{ specialising1.heading }}</h4>
-                                    <p>{{ specialising1.title }}</p>
+                                    {% if Specialising1Photo is not null %}
+                                    <h4>{{ Specialising1Photo.heading }}</h4>
+                                    <p>{{ Specialising1Photo.title }}</p>
                                     {% else %}
-                                        <h4> heading </h4>
-                                        <p> title </p>
+                                        <h4> Heading1 </h4>
+                                        <p> Title1 </p>
                                     {% endif %}
-                                    <a class="info btn btn-primary" href="service.html">Learn more</a>
+                                    <a target="_blank" class="info btn btn-primary" href={{ Specialising1Photo.link }}>Learn more</a>
                                 </div>
                             </div>
                         </figure>
@@ -97,22 +97,22 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="specilizing-item">
                         <figure>
-                            {% if specialising1 is not null %}
-                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ specialising2.photo }}" alt="">
+                            {% if Specialising2Photo is not null %}
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising2Photo.photo }}" alt="">
                             {% else %}
                                 <img src="assets/images/special/01.jpg" alt="">
                             {% endif %}
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    {% if specialising1 is not null %}
-                                        <h4>{{ specialising2.heading }}</h4>
-                                        <p>{{ specialising2.title }}</p>
+                                    {% if Specialising2Photo is not null %}
+                                        <h4>{{ Specialising2Photo.heading }}</h4>
+                                        <p>{{ Specialising2Photo.title }}</p>
                                     {% else %}
-                                        <h4> heading </h4>
-                                        <p> title </p>
+                                        <h4> Heading2 TBC </h4>
+                                        <p> Title2 TBC </p>
                                     {% endif %}
-                                    <a class="info btn btn-primary" href="service.html">Learn more</a>
+                                    <a target="_blank" class="info btn btn-primary" href={{ Specialising2Photo.link }}>Learn more</a>
                                 </div>
                             </div>
                         </figure>
@@ -121,22 +121,22 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="specilizing-item">
                         <figure>
-                            {% if specialising1 is not null %}
-                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ specialising3.photo }}" alt="">
+                            {% if Specialising3Photo is not null %}
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising3Photo.photo }}" alt="">
                             {% else %}
                                 <img src="assets/images/special/01.jpg" alt="">
                             {% endif %}
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    {% if specialising1 is not null %}
-                                        <h4>{{ specialising3.heading }}</h4>
-                                        <p>{{ specialising3.title }}</p>
+                                    {% if Specialising3Photo is not null %}
+                                        <h4>{{ Specialising3Photo.heading }}</h4>
+                                        <p>{{ Specialising3Photo.title }}</p>
                                     {% else %}
-                                        <h4> heading </h4>
-                                        <p> title </p>
+                                        <h4> Heading3 TBC </h4>
+                                        <p> Title3 TBC </p>
                                     {% endif %}
-                                    <a class="info btn btn-primary" href="service.html">Learn more</a>
+                                    <a target="_blank" class="info btn btn-primary" href={{ Specialising3Photo.link }}>Learn more</a>
                                 </div>
                             </div>
                         </figure>

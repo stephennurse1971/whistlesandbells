@@ -8,28 +8,27 @@
     <table class="table">
         <thead>
         <tr>
-            <th style="width: 50px">ID</th>
             <th style="width: 50px">Photo</th>
             <th style="width: 50px">Site Page</th>
-            <th style="width: 50px">Heading</th>
-            <th style="width: 50px">Name</th>
+            <th style="width: 150px">Heading</th>
+            <th style="width: 50px">Tag</th>
             <th style="width: 50px">Photo</th>
             <th style="width: 500px">Title (English)</th>
             <th style="width: 500px">Title (French)</th>
             <th style="width: 500px">Title (German)</th>
-            <th style="width: 200px">Link</th>
+            <th style="width: 200px">Hyperlink</th>
+            <th style="width: 200px">#</th>
         </tr>
         </thead>
         <tbody>
         {% for cms_photo in cms_photos %}
             <tr>
                 <td>
-                    <a target="_blank" href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">{{ cms_photo.id }}</a>
-                </td>
-                <td>
+                    <a class="btn btn-outline-danger btn-sm" target="_blank" href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
                     <img height="50" width="50"
                          src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ cms_photo.photo }}"
                          class="rounded-circle">
+                    </a>
                 </td>
                 <td>{{ cms_photo.sitePage }}</td>
                 <td>{{ cms_photo.heading }}</td>
@@ -52,9 +51,12 @@
                             {% set web = 'https://'~ cms_photo.link %}
                         {% endif %}
                         <a target="_blank" title="{{ cms_photo.link }}" href="{{ web }}">
-                            <i class="fa fa-globe"></i>
+                            {{ web }}
                         </a>
                     {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" target="_blank" href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a>
                 </td>
             </tr>
         {% endfor %}
@@ -69,7 +71,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'asc'], [1, 'desc']],
+                "order": [[1, 'asc'], [3, 'desc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": true

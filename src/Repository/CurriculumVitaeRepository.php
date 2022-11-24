@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CurriculumVitae;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,22 +20,18 @@ class CurriculumVitaeRepository extends ServiceEntityRepository
         parent::__construct($registry, CurriculumVitae::class);
     }
 
-    // /**
-    //  * @return CurriculumVitae[] Returns an array of CurriculumVitae objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByCandidate(User $user)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('c.candidate = :val')
+            ->setParameter('val', $user)
+            ->orderBy('c.date', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?CurriculumVitae

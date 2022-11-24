@@ -57,6 +57,11 @@ class CmsCopy
      */
     private $contentTitleDE;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sitePage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +159,18 @@ class CmsCopy
     public function setContentTitleDE(?string $contentTitleDE): self
     {
         $this->contentTitleDE = $contentTitleDE;
+
+        return $this;
+    }
+
+    public function getSitePage(): ?string
+    {
+        return $this->sitePage;
+    }
+
+    public function setSitePage(?string $sitePage): self
+    {
+        $this->sitePage = $sitePage;
 
         return $this;
     }
