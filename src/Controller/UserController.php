@@ -516,7 +516,6 @@ class UserController extends AbstractController
      */
     public function createVcardSN(UserRepository $userRepository)
     {
-
         $user = $userRepository->find(1);
         $vcard = new VCard();
         $userFirstName = $user->getFirstName();
