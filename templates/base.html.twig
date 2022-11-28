@@ -84,6 +84,9 @@
         .dropdown-menu {
             background: #fffefe;;
         }
+        #photo_locations_enabledUsers{
+            min-height : 1000px;
+        }
     </style>
     <style>
         .rotate-90 {
@@ -129,6 +132,25 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_home') }}">About Me</a>
                     </li>
+
+                    <!-- Nav Item #2a - Temporary -->
+                    {% if is_granted('ROLE_GUEST') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Others
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">XVA consulting</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private Equity</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('volunteering') }}">Volunteering</a>
+                            </div>
+                        </li>
+                    {% endif %}
+
 
                     <!-- Nav Item #3 - Photos -->
                     <li class="nav-item dropdown">
@@ -267,6 +289,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('user_index') }}">Users - All</a>
+                                <a class="dropdown-item" href="{{ path('user_index_edited_since_download') }}">Users - Edited</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
                                 <a class="dropdown-item" href="{{ path('user_index_telnumbers') }}">Users - Tel
@@ -321,7 +344,9 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-user text-dark"></i><span
-                                        class="ml-1 text-primary"> {{ app.user.fullName }}</span>
+                                        class="ml-1 text-primary"> {{ app.user.fullName }}
+
+                                </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('user_edit',{'id':app.user.id}) }}">Profile</a>

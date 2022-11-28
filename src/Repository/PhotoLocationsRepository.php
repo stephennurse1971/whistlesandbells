@@ -47,4 +47,12 @@ class PhotoLocationsRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getUniqueGroupId(){
+        return $this->createQueryBuilder('p')
+           ->select('p.groupId')
+            ->distinct()
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

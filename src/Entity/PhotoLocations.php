@@ -29,6 +29,28 @@ class PhotoLocations
      */
     private $photos;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $enabledUsers = [];
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $publicPrivate;
+
+
+
+
+
+
+
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
@@ -80,4 +102,46 @@ class PhotoLocations
 
         return $this;
     }
+
+    public function getEnabledUsers(): ?array
+    {
+        return $this->enabledUsers;
+    }
+
+    public function setEnabledUsers(array $enabledUsers): self
+    {
+        $this->enabledUsers = $enabledUsers;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getPublicPrivate(): ?string
+    {
+        return $this->publicPrivate;
+    }
+
+    public function setPublicPrivate(?string $publicPrivate): self
+    {
+        $this->publicPrivate = $publicPrivate;
+
+        return $this;
+    }
+
+
+
+
+
+
 }

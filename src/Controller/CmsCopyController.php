@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CmsCopy;
 use App\Form\CmsCopyType;
 use App\Repository\CmsCopyRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,6 @@ class CmsCopyController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
-
             return $this->redirectToRoute('cms_copy_index');
         }
 
@@ -67,8 +67,9 @@ class CmsCopyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($cmsCopy);
+            $entityManager->flush();
             return $this->redirectToRoute('cms_copy_index');
         }
 
@@ -77,6 +78,43 @@ class CmsCopyController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/{id}/copy_and_edit", name="cms_copy_copy_and_edit", methods={"GET","POST"})
+     */
+    public function copyAndEdit(Request $request, CmsCopy $cmsCopy,EntityManagerInterface $manager): Response
+    {
+        $sitePage = $cmsCopy->getSitePage();
+        $name = $cmsCopy->getName();
+        $cmsCopy = new CmsCopy();
+        $cmsCopy->setSitePage($sitePage)
+            ->setName($name)
+            ->setContentText($sitePage. ' - Content text')
+            ->setContentTitle($sitePage. ' - Title text')
+            ->setContentTextFR($sitePage. ' - Content text (FR)')
+            ->setContentTitleFR($sitePage. ' - Title text (FR)')
+            ->setContentTextDE($sitePage. ' - Content text (DE)')
+            ->setContentTitleDE($sitePage. ' - Title text (DE)')
+
+             ;
+        $form = $this->createForm(CmsCopyType::class, $cmsCopy);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($cmsCopy);
+            $entityManager->flush();
+            return $this->redirectToRoute('cms_copy_index');
+        }
+
+        return $this->render('cms_copy/new.html.twig', [
+            'cms_copy' => $cmsCopy,
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+
 
     /**
      * @Route("/{id}", name="cms_copy_delete", methods={"POST"})

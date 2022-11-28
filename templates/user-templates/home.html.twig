@@ -48,9 +48,9 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 " id="author-photo-right">
-                    {% if HomePage1Photo is not empty %}
+                    {% if Photo1 is not empty %}
                         <div class="home1-author-photo"
-                             style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ HomePage1Photo.photo }} )"></div>
+                             style="background: url({{ asset('administration/attachments/WebSitePhotos/') }}{{ Photo1.photo }} )"></div>
                     {% else %}
                         <div class="home1-author-photo"></div>
                     {% endif %}
@@ -80,8 +80,8 @@
                     <div class="specilizing-item">
                         <figure>
 
-                            {% if Specialising1Photo is not empty %}
-                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising1Photo.photo }}"
+                            {% if SpecialisingPhoto1 is not empty %}
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ SpecialisingPhoto1.photo }}"
                                      alt="">
                             {% else %}
                                 <img src="assets/images/special/01.jpg" alt="">
@@ -90,11 +90,11 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    {% if Specialising1Photo is not empty %}
-                                        <h4>{{ Specialising1Photo.heading }}</h4>
-                                        <p>{{ Specialising1Photo.title }}</p>
+                                    {% if SpecialisingPhoto1 is not empty %}
+                                        <h4>{{ SpecialisingPhoto1.heading }}</h4>
+                                        <p>{{ SpecialisingPhoto1.title }}</p>
                                         <a target="_blank" class="info btn btn-primary"
-                                           href={{ Specialising1Photo.link }}>Learn more</a>
+                                           href={{ SpecialisingPhoto1.link }}>Learn more</a>
 
                                     {% else %}
                                         <h4> Heading1 </h4>
@@ -109,8 +109,8 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="specilizing-item">
                         <figure>
-                            {% if Specialising2Photo is not null %}
-                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising2Photo.photo }}"
+                            {% if SpecialisingPhoto2 is not null %}
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ SpecialisingPhoto2.photo }}"
                                      alt="">
                             {% else %}
                                 <img src="assets/images/special/01.jpg" alt="">
@@ -118,11 +118,11 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    {% if Specialising2Photo is not null %}
-                                        <h4>{{ Specialising2Photo.heading }}</h4>
-                                        <p>{{ Specialising2Photo.title }}</p>
+                                    {% if SpecialisingPhoto2 is not null %}
+                                        <h4>{{ SpecialisingPhoto2.heading }}</h4>
+                                        <p>{{ SpecialisingPhoto2.title }}</p>
                                         <a target="_blank" class="info btn btn-primary"
-                                           href={{ Specialising2Photo.link }}>Learn more</a>
+                                           href={{ SpecialisingPhoto2.link }}>Learn more</a>
                                     {% else %}
                                         <h4> Heading2 TBC </h4>
                                         <p> Title2 TBC </p>
@@ -136,8 +136,8 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="specilizing-item">
                         <figure>
-                            {% if Specialising3Photo is not null %}
-                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ Specialising3Photo.photo }}"
+                            {% if SpecialisingPhoto3 is not null %}
+                                <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ SpecialisingPhoto3.photo }}"
                                      alt="">
                             {% else %}
                                 <img src="assets/images/special/01.jpg" alt="">
@@ -145,11 +145,11 @@
                             <div class="caption">
                                 <div class="blur"></div>
                                 <div class="specilizing-captions">
-                                    {% if Specialising3Photo is not null %}
-                                        <h4>{{ Specialising3Photo.heading }}</h4>
-                                        <p>{{ Specialising3Photo.title }}</p>
+                                    {% if SpecialisingPhoto3 is not null %}
+                                        <h4>{{ SpecialisingPhoto3.heading }}</h4>
+                                        <p>{{ SpecialisingPhoto3.title }}</p>
                                         <a target="_blank" class="info btn btn-primary"
-                                           href={{ Specialising3Photo.link }}>Learn more</a>
+                                           href={{ SpecialisingPhoto3.link }}>Learn more</a>
                                     {% else %}
                                         <h4> Heading3 TBC </h4>
                                         <p> Title3 TBC </p>

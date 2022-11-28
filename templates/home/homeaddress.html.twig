@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stephen Nurse: Home Address{% endblock %}
+
+{% block body %}
+    <h3 style="color: red">Address</h3>
+    <b>Our home address is: </b>
+    {{ StaticText.content.address | raw }}
+    <br>
+    <br>
+    Google Maps:  <a target="_blank" href="{{ StaticText.content.gpsCoordinates }}">Link</a>
+    <br>
+    <br>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2480.356990153824!2d-0.24049748372151972!3d51.56168881455265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4876110184901231%3A0xb3a052803ce166fd!2sBrook%20Rd%2C%20London%20NW2%207DW!5e0!3m2!1sen!2suk!4v1669620190465!5m2!1sen!2suk"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+    <br>
+    <br>
+    <br>
+    <b>Getting here:</b> <br>
+    <li>
+        The nearest airport is Paphos (PAF)
+    </li>
+
+
+{% endblock %}

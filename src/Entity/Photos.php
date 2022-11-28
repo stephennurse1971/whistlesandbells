@@ -19,10 +19,7 @@ class Photos
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $date;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -39,22 +36,7 @@ class Photos
      */
     private $rotate;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="photos")
-     */
-    private $person;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $public;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $description;
-
-    public function __construct()
+        public function __construct()
     {
         $this->person = new ArrayCollection();
     }
@@ -62,18 +44,6 @@ class Photos
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(?\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
     }
 
     public function getPhotoFile(): ?string
@@ -112,51 +82,4 @@ class Photos
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getPerson(): Collection
-    {
-        return $this->person;
-    }
-
-    public function addPerson(User $person): self
-    {
-        if (!$this->person->contains($person)) {
-            $this->person[] = $person;
-        }
-
-        return $this;
-    }
-
-    public function removePerson(User $person): self
-    {
-        $this->person->removeElement($person);
-
-        return $this;
-    }
-
-    public function getPublic(): ?bool
-    {
-        return $this->public;
-    }
-
-    public function setPublic(?bool $public): self
-    {
-        $this->public = $public;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
 }

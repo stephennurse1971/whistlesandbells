@@ -10,6 +10,7 @@ use App\Repository\IntroductionRepository;
 use App\Repository\IntroductionSegmentRepository;
 use App\Repository\ProspectEmployerRepository;
 use App\Repository\RecruiterEmailsRepository;
+use App\Repository\StaticTextRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -38,6 +39,18 @@ class UserController extends AbstractController
      * @Route("/", name="user_index", methods={"GET"})
      */
     public function index(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+            'role' => 'All',
+            'role_title' => 'All'
+        ]);
+    }
+
+    /**
+     * @Route("/user_index_edited_since_download", name="user_index_edited_since_download", methods={"GET"})
+     */
+    public function indexEditedSinceDowload(UserRepository $userRepository, StaticTextRepository $staticTextRepository): Response
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
@@ -341,7 +354,8 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('user_index');
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
     }
 
 

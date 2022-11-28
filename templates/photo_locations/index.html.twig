@@ -1,22 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PhotoLocations index{% endblock %}
+{% block title %}Photos: Locations{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Photo Locations index</h1>
+    <h1 style="color: red">Photos: Locations & Viewers</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Location</th>
-            </tr>
+        <tr>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Public/Private</th>
+            <th>Users</th>
+        </tr>
         </thead>
         <tbody>
+
         {% for photo_location in photo_locations %}
             <tr>
-                <td><a href="{{ path('photo_locations_edit', {'id': photo_location.id}) }}">{{ photo_location.location }}</a></td>
+                <td>{{ photo_location.date |date('d-M-Y')}}</td>
+                <td>
+                    <a href="{{ path('photo_locations_edit', {'id': photo_location.id}) }}">{{ photo_location.location }}</a>
+                </td>
+                <td>{{ photo_location.publicPrivate }}</td>
+                <td>
+                   {% for user_id in photo_location.enabledUsers %}
+                       {% set user = FindUser.getUser(user_id) %}
+                       {% if user is not null %}
+                    <a href="{{ path('user_edit',{id:user.id}) }}" >  {{ user.fullName }}, </a>
+                       {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
-        {% else %}
         {% endfor %}
         </tbody>
     </table>
@@ -36,5 +51,4 @@
             });
         });
     </script>
-
 {% endblock datatable %}

@@ -77,6 +77,16 @@ class StaticText
      */
     private $cv;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $gpsImage;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $lastOutlookDownload;
+
 
     public function getId(): ?int
     {
@@ -223,6 +233,30 @@ class StaticText
     public function setCv(?string $cv): self
     {
         $this->cv = $cv;
+
+        return $this;
+    }
+
+    public function getGpsImage(): ?string
+    {
+        return $this->gpsImage;
+    }
+
+    public function setGpsImage(?string $gpsImage): self
+    {
+        $this->gpsImage = $gpsImage;
+
+        return $this;
+    }
+
+    public function getLastOutlookDownload(): ?\DateTimeInterface
+    {
+        return $this->lastOutlookDownload;
+    }
+
+    public function setLastOutlookDownload(\DateTimeInterface $lastOutlookDownload): self
+    {
+        $this->lastOutlookDownload = $lastOutlookDownload;
 
         return $this;
     }

@@ -8,17 +8,18 @@
     <table class="table">
         <thead>
         <tr>
-            <th>FX</th>
-            <th>Current Rate</th>
-            <th>Live FX Rate link</th>
-            <th>#</th>
+            <th style="width: 30px;">FX</th>
+            <th style="width: 50px; text-align: right">Current Rate</th>
+            <th style="width: 50px;">Live FX Rate link</th>
+            <th style="width: 50px; text-align: right">#</th>
+            <th style="width: 500px;"></th>
         </tr>
         </thead>
         <tbody>
         {% for fx_rate in fx_rates %}
         <tr>
 
-            <td>{{ fx_rate.fx }}</td>
+            <td style="width: 30px;">{{ fx_rate.fx }}</td>
             <td style="text-align: right">
                 <a href="{{ path('fx_rates_edit', {'id': fx_rate.id}) }}">{{ fx_rate.currentFxRate |number_format(4) }}</a>
             </td>
@@ -26,7 +27,8 @@
                         title="https://www.xe.com/currencyconverter/convert/?Amount=1&From={{ fx_rate.fx }}&To={{ StaticText.content.baseCurrency }}"><i
                             class="fas fa-link" style="color:blue; text-align: center"></i></a></td>
             <td style="text-align: right"><button onclick="currencyConverter('USD','{{ fx_rate.fx }}','{{ fx_rate.id }}')">Update</button>
-            </td>
+            </td style="width: 50px;">
+            <td></td>
         </tr>
             {% endfor %}
         </tbody>

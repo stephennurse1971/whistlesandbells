@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\StaticText;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,7 @@ class StaticTextType extends AbstractType
             ->add('skype')
             ->add('address')
             ->add('gpsCoordinates')
+            ->add('gpsImage')
             ->add('linkedIn')
             ->add('companiesHouseLink')
             ->add('github')
@@ -37,7 +39,12 @@ class StaticTextType extends AbstractType
                     'GBP' => 'GBP',
                     'CHF' => 'CHF',
                     'EUR' => 'EUR'
-                ]]);
+                ]])
+            ->add('lastOutlookDownload', DateType::class, [
+                'label' => 'Last Outlook Downland',
+                'required' => false,
+                'widget' => 'single_text',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

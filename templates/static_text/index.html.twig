@@ -20,6 +20,7 @@
             <th>Twitter</th>
             <th>CV</th>
             <th>Base ccy</th>
+            <th>Last Outlook Download</th>
             <th>Edit</th>
         </tr>
         </thead>
@@ -42,6 +43,7 @@
                     {% endif %}
                 </td>
                 <td>{{ static_text.baseCurrency }}</td>
+                <td>{{ static_text.lastOutlookDownload|date('d-M-Y') }}</td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm" href="{{ path('static_text_edit',{id:static_text.id}) }}">Edit</a>
                 </td>

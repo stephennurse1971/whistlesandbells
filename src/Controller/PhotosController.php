@@ -21,24 +21,14 @@ class PhotosController extends AbstractController
     /**
      * @Route("/", name="photos_index", methods={"GET"})
      */
-    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository): Response
+    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository): Response
     {
-        if(!$this->getUser()){
-            $photos = $photosRepository->findBy([
-                'location' => $locationsRepository->findAll(),
-                'public'=>1
-            ]);
-        }
-        else{
-            $photos = $photosRepository->findBy([
-                'location' => $locationsRepository->findAll()
-            ]);
-        }
-
+        $photos = $photosRepository->findAll();
+        $photolocations = $photoLocationsRepository->findAll();
 
         return $this->render('photos/index.html.twig', [
             'photos' => $photos,
-            'locations' => $locationsRepository->findAll()
+            'locations' => $photolocations
         ]);
     }
 
@@ -47,25 +37,16 @@ class PhotosController extends AbstractController
      */
     public function showPhotosByLocation(string $locationName, PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository)
     {
-        if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')){
             $photos = $photosRepository->findBy([
                 'location' => $locationsRepository->findOneBy([
-                    'location'=>$locationName
+                    'location' => $locationName
                 ])
             ]);
-        }
-       else{
-           $photos = $photosRepository->findBy([
-               'location' => $locationsRepository->findOneBy([
-                   'location'=>$locationName
-               ]),
-               'public'=>1
-           ]);
-       }
+
 
         return $this->render('photos/showByLocation.html.twig', [
             'photos' => $photos,
-             'location'=>$locationsRepository->findOneBy(['location'=>$locationName])->getLocation()
+            'location' => $locationsRepository->findOneBy(['location' => $locationName])->getLocation()
         ]);
     }
 
@@ -88,35 +69,30 @@ class PhotosController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="photos_new", methods={"GET","POST"})
+     * @Route("/new/{location}", name="photos_new", methods={"GET","POST"})
      */
-    public function new(Request $request, EntityManagerInterface $manager): Response
+    public function new(string $location = null, Request $request, EntityManagerInterface $manager, PhotoLocationsRepository $locationsRepository): Response
     {
+
         $photo = new Photos();
-        $form = $this->createForm(PhotosType::class, $photo);
+        $form = $this->createForm(PhotosType::class, $photo, ['location' => $locationsRepository->findOneBy(['location' => $location])]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $photos = $form->get('photos')->getData();
             foreach ($photos as $single_photo) {
                 $photo_single = new Photos();
-                if(!$photo->getPublic()){
-                    $photo_single->setPublic(0);
-                }
                 $originalFilename = pathinfo($single_photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $originalFilename . '.' . $single_photo->guessExtension();
                 $single_photo->move(
                     $this->getParameter('photos_upload_default_directory'),
                     $newFilename
                 );
-                foreach ($photo->getPerson() as $person) {
-                    $photo_single->setPhotoFile($newFilename)
-                        ->setLocation($photo->getLocation())
-                        ->setDate($photo->getDate())
-                        ->addPerson($person);
-                    $manager->persist($photo_single);
-                    $manager->flush();
-                }
+                $photo_single->setLocation($photo->getLocation());
+                $photo_single->setPhotoFile($newFilename);
+                $photo_single->setRotate(0);
+                $manager->persist($photo_single);
+                $manager->flush();
             }
             return $this->redirectToRoute('photos_index');
         }
@@ -127,10 +103,12 @@ class PhotosController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}", name="photos_show", methods={"GET"})
      */
-    public function show(Photos $photo): Response
+    public
+    function show(Photos $photo): Response
     {
         return $this->render('photos/show.html.twig', [
             'photo' => $photo,
@@ -140,7 +118,8 @@ class PhotosController extends AbstractController
     /**
      * @Route("/{id}/edit", name="photos_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Photos $photo, EntityManagerInterface $manager): Response
+    public
+    function edit(Request $request, Photos $photo, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(PhotosType::class, $photo);
         $form->remove('photos');
@@ -162,13 +141,13 @@ class PhotosController extends AbstractController
     /**
      * @Route("/{id}/switchPublicPrivate", name="photos_public_private", methods={"GET","POST"})
      */
-    public function switchPublicPrivate(Request $request, Photos $photo, EntityManagerInterface $manager): Response
+    public
+    function switchPublicPrivate(Request $request, Photos $photo, EntityManagerInterface $manager): Response
     {
         $publicPrivate = $request->query->get('action');
         if ($publicPrivate == '1') {
             $photo->setPublic('0');
-        }
-        else {
+        } else {
             $photo->setPublic('1');
         }
         $this->getDoctrine()->getManager()->flush();
@@ -180,7 +159,8 @@ class PhotosController extends AbstractController
     /**
      * @Route("/{id}", name="photos_delete", methods={"POST"})
      */
-    public function delete(Request $request, Photos $photo): Response
+    public
+    function delete(Request $request, Photos $photo): Response
     {
         $referer = $request->server->get('HTTP_REFERER');
         if ($this->isCsrfTokenValid('delete' . $photo->getId(), $request->request->get('_token'))) {
@@ -195,10 +175,11 @@ class PhotosController extends AbstractController
     /**
      * @Route("/deleteAll/photos", name="photos_delete_all",)
      */
-    public function deleteAll(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
+    public
+    function deleteAll(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
     {
         $referer = $request->server->get('HTTP_REFERER');
-        foreach ($photosRepository->findAll() as $photo){
+        foreach ($photosRepository->findAll() as $photo) {
             $entityManager->remove($photo);
 
         }

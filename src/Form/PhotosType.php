@@ -18,45 +18,24 @@ class PhotosType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', DateTimeType::class, [
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker datetime'
-                ],
-            ])
             ->add('location', EntityType::class, [
                 'class' => PhotoLocations::class,
                 'choice_label' => 'location',
                 'required' => false,
                 'empty_data' => null,
+                'data'=>$options['location']
             ])
             ->add('photos', FileType::class, [
                 'multiple' => true,
                 'mapped' => false
-            ])
-            ->add('person', EntityType::class, [
-                'class' => User::class,
-                'query_builder'=> function (EntityRepository $er) {
-                   return $er->createQueryBuilder('u')
-                           -> where('u.roles LIKE :role')
-                           ->setParameter('role', "%ROLE_GUEST%")
-                           ->orderBy('u.fullName', 'ASC')
-                    ;
-
-                },
-                'choice_label' => 'fullName',
-                'required' => false,
-                'empty_data' => null,
-                'multiple'=>true
-            ])
-            ->add('description')
-            ->add('public');
-    }
+            ]);
+             }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Photos::class,
+            'location'=>null
         ]);
     }
 }

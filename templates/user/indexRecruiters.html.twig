@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Recruiters: {{ role }} {% endblock %}
 {% block body %}
-    <h1><span class="text-danger">Headhunters</span></h1>
+    <h1><span class="text-danger">Recruiters</span></h1>
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_non_admin') }}">Delete All Users (excl

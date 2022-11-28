@@ -231,6 +231,11 @@ class User implements UserInterface
      */
     private $prospectiveEmployer;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PhotoLocations::class, mappedBy="enabledUsers")
+     */
+    private $photoLocations;
+
 
     public function __construct()
     {
@@ -241,6 +246,7 @@ class User implements UserInterface
         $this->prospectEmployers = new ArrayCollection();
         $this->curriculumVitaes = new ArrayCollection();
         $this->prospectiveEmployer = new ArrayCollection();
+        $this->photoLocations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -893,6 +899,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($prospectiveEmployer->getApplicant() === $this) {
                 $prospectiveEmployer->setApplicant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PhotoLocations[]
+     */
+    public function getPhotoLocations(): Collection
+    {
+        return $this->photoLocations;
+    }
+
+    public function addPhotoLocation(PhotoLocations $photoLocation): self
+    {
+        if (!$this->photoLocations->contains($photoLocation)) {
+            $this->photoLocations[] = $photoLocation;
+            $photoLocation->setEnabledUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhotoLocation(PhotoLocations $photoLocation): self
+    {
+        if ($this->photoLocations->removeElement($photoLocation)) {
+            // set the owning side to null (unless already changed)
+            if ($photoLocation->getEnabledUsers() === $this) {
+                $photoLocation->setEnabledUsers(null);
             }
         }
 

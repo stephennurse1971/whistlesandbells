@@ -5,4 +5,5 @@ twig:
         Investment: '@App\Services\Investment'
         StaticText: '@App\Services\StaticText'
         TaxYear: '@App\Services\TaxYear'
+        FindUser: '@App\Services\FindUser'
 

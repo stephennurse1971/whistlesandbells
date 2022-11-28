@@ -19,6 +19,7 @@ parameters:
     files_cv_directory: '%kernel.project_dir%/public/administration/attachments/CV'
     website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
 
+
 services:
     # default configuration for services in *this* file
     _defaults:

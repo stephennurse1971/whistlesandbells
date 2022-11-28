@@ -13,7 +13,7 @@
             <th style="width: 900px">Content [English]</th>
             <th style="width: 50px">Content [Other]</th>
             <th style="width: 20px">Hyperlink</th>
-            <th style="width: 20px">#</th>
+            <th style="width: 100px">#</th>
         </tr>
         </thead>
         <tbody>
@@ -52,8 +52,14 @@
 
                 </td>
                 <td>
-                    <a class="btn btn-outline-danger btn-sm" target="_blank"
+                    <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
                        href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">Edit</a>
+                    <form class="d-inline" method="post" action="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                    <a class="d-inline btn btn-success btn-sm" target="_blank"
+                       href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">Copy</a>
                 </td>
             </tr>
         {% endfor %}
@@ -68,7 +74,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'], [1, 'desc']],
+                "order": [[0, 'asc'], [1, 'asc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": false

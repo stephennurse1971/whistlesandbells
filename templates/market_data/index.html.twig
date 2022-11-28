@@ -9,10 +9,10 @@
         <thead>
         <tr>
             <th>Grouping</th>
-            <th>Company</th>
-            <th>Share Price</th>
-            <th>Corporate website</th>
-            <th>Companies House</th>
+            <th style="width: 250px;">Company</th>
+            <th style="text-align: right">Share Price</th>
+            <th style="width: 50px;">Corporate website</th>
+            <th style="width: 50px;">Companies House</th>
             <th>Investor site</th>
             <th>Login</th>
             <th>Password</th>
@@ -48,7 +48,18 @@
                             <i class="fas fa-link" style="color:blue; text-align: center"></i></a>
                     {% endif %}
                 </td>
-                <td>{{ market_data.investorSite }}</td>
+                <td>
+                    {% if  market_data.investorSite is not empty %}
+                        {% if  market_data.investorSite starts with 'http' %}
+                            {% set web =  market_data.investorSite %}
+                        {% else %}
+                            {% set web = 'https://'~ market_data.investorSite %}
+                        {% endif %}
+                        <a target="_blank" title="{{ market_data.investorSite }}" href="{{ web }}">
+                            {{ web }}
+                        </a>
+                    {% endif %}
+                </td>
                 <td>{{ market_data.login }}</td>
                 <td>{{ market_data.password }}</td>
                 <td><a class="btn btn-success btn-sm" target="_blank" href="{{ market_data.investorSite }}">Login</a></td>

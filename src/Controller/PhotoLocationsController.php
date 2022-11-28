@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\PhotoLocations;
 use App\Form\PhotoLocationsType;
 use App\Repository\PhotoLocationsRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,7 @@ class PhotoLocationsController extends AbstractController
     {
         return $this->render('photo_locations/index.html.twig', [
             'photo_locations' => $photoLocationsRepository->findAll(),
+
         ]);
     }
 
@@ -35,10 +37,16 @@ class PhotoLocationsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $usersID_container = [];
+            $enabledUsers = $form['enabledUsers']->getData();
+            foreach ($enabledUsers as $user) {
+               $usersID_container[] = $user->getID();
+
+            }
+            $photoLocation->setEnabledUsers($usersID_container);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($photoLocation);
             $entityManager->flush();
-
             return $this->redirectToRoute('photo_locations_index');
         }
 
@@ -61,14 +69,24 @@ class PhotoLocationsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="photo_locations_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, PhotoLocations $photoLocation): Response
+    public function edit(Request $request, PhotoLocations $photoLocation,UserRepository $userRepository): Response
     {
-        $form = $this->createForm(PhotoLocationsType::class, $photoLocation);
+        $users =[];
+        foreach($photoLocation->getEnabledUsers() as $userId){
+            $users[]=$userRepository->find($userId);
+        }
+        $form = $this->createForm(PhotoLocationsType::class, $photoLocation,['users'=>$users]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $usersID_container = [];
+            $enabledUsers = $form['enabledUsers']->getData();
+            foreach ($enabledUsers as $user) {
+                $usersID_container[] = $user->getID();
 
+            }
+            $photoLocation->setEnabledUsers($usersID_container);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
             return $this->redirectToRoute('photo_locations_index');
         }
 
@@ -83,7 +101,7 @@ class PhotoLocationsController extends AbstractController
      */
     public function delete(Request $request, PhotoLocations $photoLocation): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$photoLocation->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $photoLocation->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($photoLocation);
             $entityManager->flush();
