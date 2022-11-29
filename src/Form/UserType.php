@@ -69,6 +69,10 @@ class UserType extends AbstractType
             ->add('sendEmail', HiddenType::class, [
                 'mapped' => false,
                 'required' => false
+            ])
+            ->add('lastEdited', DateType::class, [
+                'required' => false,
+                'widget' => 'single_text'
             ]);
        $logged_user_roles = $this->security->getUser()->getRoles();
        $user_roles = $options['user']->getRoles();

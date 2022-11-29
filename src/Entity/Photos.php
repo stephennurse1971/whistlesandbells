@@ -38,7 +38,7 @@ class Photos
 
         public function __construct()
     {
-        $this->person = new ArrayCollection();
+      //  $this->person = new ArrayCollection();
     }
 
     public function getId(): ?int

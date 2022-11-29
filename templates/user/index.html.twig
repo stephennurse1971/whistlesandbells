@@ -36,6 +36,7 @@
                 <th style="color: red;">#</th>
                 <th style="color: red;">#</th>
                 <th style="color: red;">#</th>
+                <th style="color: red;">Last edited</th>
             {% endif %}
         </tr>
         </thead>
@@ -355,6 +356,11 @@
                     <td>
                         {% if user.inviteDate is not empty %}
                         {{ user.inviteDate|date('d-M-Y') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.lastEdited is not empty %}
+                            {{ user.lastEdited|date('d-M-Y') }}
                         {% endif %}
                     </td>
 

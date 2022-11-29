@@ -28,37 +28,37 @@ class HomeController extends AbstractController
             ]),
 
 
-            'Text1' => $cmsPhotoRepository->findOneBy([
+            'Text1' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePage1'
             ]),
-            'Text2' => $cmsPhotoRepository->findOneBy([
+            'Text2' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePage2'
             ]),
-            'Text3' => $cmsPhotoRepository->findOneBy([
+            'Text3' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePage3'
             ]),
 
-            'Text1FR' => $cmsPhotoRepository->findOneBy([
+            'Text1FR' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageFR1'
             ]),
-            'Text2FR' => $cmsPhotoRepository->findOneBy([
+            'Text2FR' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageFR2'
             ]),
-            'Text3FR' => $cmsPhotoRepository->findOneBy([
+            'Text3FR' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageFR3'
             ]),
 
-            'Text1DE' => $cmsPhotoRepository->findOneBy([
+            'Text1DE' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageDE1'
             ]),
-            'Text2DE' => $cmsPhotoRepository->findOneBy([
+            'Text2DE' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageDE2'
             ]),
-            'Text3DE' => $cmsPhotoRepository->findOneBy([
+            'Text3DE' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageDE3'
             ]),
 
-            'Hyperlink' => $cmsPhotoRepository->findOneBy([
+            'Hyperlink' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageHyperlink'
             ]),
 

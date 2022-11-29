@@ -87,10 +87,10 @@ class User implements UserInterface
      */
     private $houseGuests;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Photos::class, mappedBy="person")
-     */
-    private $photos;
+//    /**
+//     * @ORM\ManyToMany(targetEntity=Photos::class, mappedBy="person")
+//     */
+//    private $photos;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -236,12 +236,17 @@ class User implements UserInterface
      */
     private $photoLocations;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $lastEdited;
+
 
     public function __construct()
     {
         $this->logs = new ArrayCollection();
         $this->houseGuests = new ArrayCollection();
-        $this->photos = new ArrayCollection();
+      //  $this->photos = new ArrayCollection();
         $this->introductions = new ArrayCollection();
         $this->prospectEmployers = new ArrayCollection();
         $this->curriculumVitaes = new ArrayCollection();
@@ -347,7 +352,7 @@ class User implements UserInterface
         return $this->mobile;
     }
 
-    public function setMobile(string $mobile): self
+    public function setMobile(?string $mobile): self
     {
         $this->mobile = $mobile;
 
@@ -478,32 +483,32 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Photos[]
-     */
-    public function getPhotos(): Collection
-    {
-        return $this->photos;
-    }
-
-    public function addPhoto(Photos $photo): self
-    {
-        if (!$this->photos->contains($photo)) {
-            $this->photos[] = $photo;
-            $photo->addPerson($this);
-        }
-
-        return $this;
-    }
-
-    public function removePhoto(Photos $photo): self
-    {
-        if ($this->photos->removeElement($photo)) {
-            $photo->removePerson($this);
-        }
-
-        return $this;
-    }
+//    /**
+//     * @return Collection|Photos[]
+//     */
+//    public function getPhotos(): Collection
+//    {
+//        return $this->photos;
+//    }
+//
+//    public function addPhoto(Photos $photo): self
+//    {
+//        if (!$this->photos->contains($photo)) {
+//            $this->photos[] = $photo;
+//            $photo->addPerson($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removePhoto(Photos $photo): self
+//    {
+//        if ($this->photos->removeElement($photo)) {
+//            $photo->removePerson($this);
+//        }
+//
+//        return $this;
+//    }
 
     public function getCompany(): ?string
     {
@@ -931,6 +936,18 @@ class User implements UserInterface
                 $photoLocation->setEnabledUsers(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastEdited(): ?\DateTimeInterface
+    {
+        return $this->lastEdited;
+    }
+
+    public function setLastEdited(?\DateTimeInterface $lastEdited): self
+    {
+        $this->lastEdited = $lastEdited;
 
         return $this;
     }

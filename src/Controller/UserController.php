@@ -52,10 +52,11 @@ class UserController extends AbstractController
      */
     public function indexEditedSinceDowload(UserRepository $userRepository, StaticTextRepository $staticTextRepository): Response
     {
+        $lastDownload =$staticTextRepository->find(1)->getLastOutlookDownload();
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-            'role' => 'All',
-            'role_title' => 'All'
+            'users' => $userRepository->lastEditedListByDate($lastDownload),
+            'role' => 'All - Edited since '. $lastDownload->format('d-M-Y'),
+            'role_title' => 'Edited since '. $lastDownload->format('d-M-Y')
         ]);
     }
 
@@ -289,7 +290,8 @@ class UserController extends AbstractController
                 $firstName = $user->getFirstName();
                 $lastName = $user->getLastName();
                 $user->setFullName($firstName . ' ' . $lastName);
-
+                $today = new \DateTime('now');
+                $user->setLastEdited($today);
                 $this->getDoctrine()->getManager()->flush();
 
                 if ($form['sendEmail']->getData() == 1) {
