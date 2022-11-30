@@ -10,8 +10,9 @@
         <tr>
             <th style="width: 100px">Date</th>
             <th style="width: 500px">Description</th>
-            <th style="width: 20px">Attachment</th>
-            <th style="width: 20px">#</th>
+            <th style="text-align: right; width: 50px">Attachment</th>
+            <th style="width: 20px">Email</th>
+            <th style="width: 20px">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -19,15 +20,20 @@
             <tr>
                 <td data-sort='{{ file_attachment.date|date('Y-m-d') }}'>{{ file_attachment.date ? file_attachment.date|date('d-M-Y') : '' }}</td>
                 <td>{{ file_attachment.description }} </td>
-                <td style="text-align: center">
+                <td style="text-align: right">
                     {% if file_attachment.attachments is not empty %}
                         {% for attachment in file_attachment.attachments %}
-                            <a title= {{ attachment }} target="_blank"
-                               href="{{ path('show_attachment',{id : file_attachment.id,'filename':attachment}) }}"><i
+                            <a title= "{{ attachment|raw }}" target="_blank"
+                               href="{{ path('show_attachment_file_upload_directory',{id : file_attachment.id,'filename':attachment}) }}"><i
                                         class="fa fa-paperclip"></i></a>
                         {% endfor %}
                     {% endif %}
                 </td>
+                <td>
+                    <a class="btn btn-danger btn-sm"
+                       href="{{ path('file_attachments_email', {'fileid': file_attachment.id, 'recipientid': app.user.id}) }}">Email
+                        File</a>
+
                 <td style="width: 250px">
                     <a class="btn btn-outline-primary btn-sm mt-2"
                        href="{{ path('file_attachments_edit', {'id': file_attachment.id}) }}">Edit</a>
@@ -37,6 +43,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file_attachment.id) }}">
                         <button class="btn btn-danger btn-sm mt-2"><i style="color: white;" class="fa fa-trash"></i>
                         </button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}

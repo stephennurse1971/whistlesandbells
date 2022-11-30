@@ -5,14 +5,19 @@ namespace App\Controller;
 use App\Entity\FileAttachments;
 use App\Form\FileAttachmentsType;
 use App\Repository\FileAttachmentsRepository;
+use App\Repository\GarminFilesRepository;
 use App\Repository\StaticTextRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/admin/fileattachments")
@@ -35,12 +40,30 @@ class FileAttachmentsController extends AbstractController
     public function showAttachment(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository)
     {
         $filepath = $this->getParameter('garmin_attachments_directory') . "/" . $filename;
-        if(file_exists($filepath)){
+        if (file_exists($filepath)) {
             return $this->file($filepath, 'sample.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
+        } else {
+            return new Response("file does not exist");
         }
-       else{
-           return new Response("file does not exist");
-       }
+    }
+
+    /**
+     * @Route("/show/attachment/file-upload-directory/{id}/{filename}", name="show_attachment_file_upload_directory")
+     */
+    public function showAttachmentFileUploadDirectory(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository)
+    {
+        $filepath = $this->getParameter('file_attachments_directory') . "/" . $filename;
+        if (file_exists($filepath)) {
+            $response = new BinaryFileResponse($filepath);
+          //  $response->headers->set('Content-Type');
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_INLINE, //use ResponseHeaderBag::DISPOSITION_ATTACHMENT to save as an attachment
+                $filename
+            );
+            return $response;
+        } else {
+            return new Response("file does not exist");
+        }
     }
 
     /**
@@ -49,7 +72,7 @@ class FileAttachmentsController extends AbstractController
     public function new(Request $request, FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository): Response
     {
         $fileAttachment = new FileAttachments();
-        $form = $this->createForm(FileAttachmentsType::class,$fileAttachment);
+        $form = $this->createForm(FileAttachmentsType::class, $fileAttachment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,7 +88,7 @@ class FileAttachmentsController extends AbstractController
                     $files_name[] = $newFileName;
                 }
             }
-//            $fileAttachment->setAttachments($files_name);
+            $fileAttachment->setAttachments($files_name);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($fileAttachment);
             $entityManager->flush();
@@ -128,7 +151,6 @@ class FileAttachmentsController extends AbstractController
     }
 
 
-
     /**
      * @Route("/{id}", name="file_attachments_delete", methods={"POST"})
      */
@@ -141,4 +163,41 @@ class FileAttachmentsController extends AbstractController
         }
         return $this->redirectToRoute('/admin/fileattachments/index');
     }
+
+
+    /**
+     * @Route("/{fileid}/{recipientid}/email_fileattachments", name="file_attachments_email")
+     */
+    public function emailFileAttachments(Security $security,int $fileid, int $recipientid, Request $request,UserRepository $userRepository,
+                                         FileAttachmentsRepository $fileAttachmentsRepository,MailerInterface $mailer)
+    {
+        $file = $fileAttachmentsRepository->find($fileid);
+        $senderEmail = $security->getUser()->getEmail();
+        $recipient = $userRepository->find($recipientid);
+        $subject = 'File Attachments';
+        $html = $this->renderView('emails/file_attachment_email.html.twig', [
+            'description' => $file->getDescription(),
+        ]);
+
+        $attachments = $file->getAttachments();
+        $email = (new Email())
+            ->to($recipient-> getEmail())
+            ->subject($subject)
+            ->from($senderEmail)
+            ->html($html);
+        if ($attachments) {
+            foreach($attachments as $attachment){
+                $attachment_path = $this->getParameter('file_attachments_directory') . "/" . $attachment;
+                $email->attachFromPath($attachment_path);
+            }
+
+        }
+
+        $mailer->send($email);
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+    }
+
+
+
 }

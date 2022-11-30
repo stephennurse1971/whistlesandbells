@@ -22,12 +22,12 @@ class CmsPhotoType extends AbstractType
                 'choices' => [
                     'HomePage' => 'HomePage',
                     'AboutSN' => 'AboutSN',
-                    'Portfolio Career' => 'Portfolio Career',
+                    'Risk & Capital Consulting' => 'Risk & Capital Consulting',
+                    'PrivateEquity' => 'PrivateEquity',
                     'WebDesign' => 'WebDesign',
-                    'Tennis' => 'Tennis',
                     'Flying' => 'Flying',
+                    'Tennis' => 'Tennis',
                     'Cyprus' => 'Cyprus',
-                    'Volunteering' => 'Volunteering',
                 ],])
             ->add('heading')
             ->add('photo', FileType::class, [

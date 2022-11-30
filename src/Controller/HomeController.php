@@ -17,16 +17,6 @@ class HomeController extends AbstractController
     public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {
         return $this->render('user-templates/home.html.twig', [
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage2'
-            ]),
-
 
             'Text1' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePage1'
@@ -62,6 +52,15 @@ class HomeController extends AbstractController
                 'name' => 'HomePageHyperlink'
             ]),
 
+            'Photo1' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage1'
+            ]),
+            'Photo2' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage2'
+            ]),
+            'Photo3' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage2'
+            ]),
 
             'SpecialisingPhoto1' => $cmsPhotoRepository->findOneBy([
                 'name' => 'Specialising1'
@@ -72,11 +71,24 @@ class HomeController extends AbstractController
             'SpecialisingPhoto3' => $cmsPhotoRepository->findOneBy([
                 'name' => 'Specialising3'
             ]),
-            'WhyMePhoto' => $cmsPhotoRepository->findOneBy([
-                'name' => 'WhyMe'
+
+
+            'HomePage1Photo' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage1'
             ]),
 
-
+            'LatestWorkPhoto1' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork1'
+            ]),
+            'LatestWorkPhoto2' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork2'
+            ]),
+            'LatestWorkPhoto3' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork3'
+            ]),
+            'LatestWorkPhoto4' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork4'
+            ]),
         ]);
     }
 
@@ -86,26 +98,49 @@ class HomeController extends AbstractController
     public function aboutSN(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {
         return $this->render('home/aboutSN.html.twig', [
-            'photos' => $cmsPhotoRepository->findAll(),
+
+            'Text1' => $cmsCopyRepository->findOneBy([
+                'name' => 'HomePage1'
+            ]),
+            'Text2' => $cmsCopyRepository->findOneBy([
+                'name' => 'HomePage2'
+            ]),
+            'Text3' => $cmsCopyRepository->findOneBy([
+                'name' => 'HomePage3'
+            ]),
+
+
+            'Hyperlink' => $cmsCopyRepository->findOneBy([
+                'name' => 'HomePageHyperlink'
+            ]),
+
+            'Photo1' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage1'
+            ]),
+            'Photo2' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage2'
+            ]),
+            'Photo3' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage2'
+            ]),
+
+
 
             'HomePage1Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'HomePage1'
             ]),
-            'Specialising1Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising1'
-            ]),
-            'Specialising2Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising2'
-            ]),
-            'Specialising3Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising3'
-            ]),
-            'WhyMePhoto' => $cmsPhotoRepository->findOneBy([
-                'name' => 'WhyMe'
-            ]),
 
-            'HomePage1Text' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage1'
+            'LatestWorkPhoto1' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork1'
+            ]),
+            'LatestWorkPhoto2' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork2'
+            ]),
+            'LatestWorkPhoto3' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork3'
+            ]),
+            'LatestWorkPhoto4' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork4'
             ]),
         ]);
     }
@@ -180,6 +215,9 @@ class HomeController extends AbstractController
             'HomePage1Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'HomePage1'
             ]),
+
+
+
             'Specialising1Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'Specialising1'
             ]),
@@ -189,12 +227,25 @@ class HomeController extends AbstractController
             'Specialising3Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'Specialising3'
             ]),
-            'WhyMePhoto' => $cmsPhotoRepository->findOneBy([
-                'name' => 'WhyMe'
-            ]),
 
             'HomePage1Text' => $cmsPhotoRepository->findOneBy([
                 'name' => 'HomePage1'
+            ]),
+            'HomePage2Text' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage2'
+            ]),
+            'HomePage3Text' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage3'
+            ]),
+
+            'LatestWorkPhoto1' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork1'
+            ]),
+            'LatestWorkPhoto2' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork2'
+            ]),
+            'LatestWorkPhoto3' => $cmsPhotoRepository->findOneBy([
+                'name' => 'LatestWork3'
             ]),
         ]);
     }
@@ -293,39 +344,6 @@ class HomeController extends AbstractController
             ]),
         ]);
     }
-
-
-
-    /**
-     * @Route("/volunteering", name="volunteering", methods={"GET"})
-     */
-    public function volunteering(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/volunteering.twig', [
-            'photos' => $cmsPhotoRepository->findAll(),
-            'HomePage1Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage1'
-            ]),
-            'Specialising1Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising1'
-            ]),
-            'Specialising2Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising2'
-            ]),
-            'Specialising3Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising3'
-            ]),
-            'WhyMePhoto' => $cmsPhotoRepository->findOneBy([
-                'name' => 'WhyMe'
-            ]),
-            'HomePage1Text' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage1'
-            ]),
-        ]);
-    }
-
-
-
 
 
     /**

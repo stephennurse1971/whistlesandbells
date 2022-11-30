@@ -21,30 +21,30 @@
                             <h1>Stephen Nurse</h1>
                             <p> -- </p>
                         </div>
-                        <div class="author-socials">
-                            <ul id="social">
-                                <li><a target="_blank"
-                                       href="https://www.linkedin.com/in/{{ StaticText.content.linkedIn }}"><span><i
-                                                    class="icofont icofont-social-linkedin"></i></span></a></li>
-                                <li><a target="_blank"
-                                       href="https://find-and-update.company-information.service.gov.uk/officers/{{ StaticText.content.companiesHouseLink }}/appointments">
-                                        <span class="zoom-social_icons-list-span social-icon socicon socicon-ch rounded border"
-                                              data-hover-rule="color" data-hover-color="red"
-                                              style="color : black; background-color: black; font-size: 16px; padding:6px"><img
-                                                    src="{{ asset('administration/img/companieshouse.png') }}"
-                                                    style="height: 28px; width: 24px;color: white"></span>
-                                    </a></li>
-                                <li><a target="_blank" href="https://github.com/{{ StaticText.content.github }}"><span>
-                                        <i class="fa fa-github" style="font-size:24px"></i>
-                                        </span></a></li>
-                                <li><a target="_blank"
-                                       href="https://facebook.com/{{ StaticText.content.facebookLink }}"><span><i
-                                                    class="icofont icofont-social-facebook"></i></span></a></li>
-                                <li><a target="_blank"
-                                       href="https://twitter.com/{{ StaticText.content.twitter }}"><span><i
-                                                    class="icofont icofont-social-twitter"></i></span></a></li>
-                            </ul>
-                        </div>
+                        {#                        <div class="author-socials"> #}
+                        {#                            <ul id="social"> #}
+                        {#                                <li><a target="_blank" #}
+                        {#                                       href="https://www.linkedin.com/in/{{ StaticText.content.linkedIn }}"><span><i #}
+                        {#                                                    class="icofont icofont-social-linkedin"></i></span></a></li> #}
+                        {#                                <li><a target="_blank" #}
+                        {#                                       href="https://find-and-update.company-information.service.gov.uk/officers/{{ StaticText.content.companiesHouseLink }}/appointments"> #}
+                        {#                                        <span class="zoom-social_icons-list-span social-icon socicon socicon-ch rounded border" #}
+                        {#                                              data-hover-rule="color" data-hover-color="red" #}
+                        {#                                              style="color : black; background-color: black; font-size: 16px; padding:6px"><img #}
+                        {#                                                    src="{{ asset('administration/img/companieshouse3.png') }}" #}
+                        {#                                                    style="height: 28px; width: 24px;color: white"></span> #}
+                        {#                                    </a></li> #}
+                        {#                                <li><a target="_blank" href="https://github.com/{{ StaticText.content.github }}"><span> #}
+                        {#                                        <i class="fa fa-github" style="font-size:24px"></i> #}
+                        {#                                        </span></a></li> #}
+                        {#                                <li><a target="_blank" #}
+                        {#                                       href="https://facebook.com/{{ StaticText.content.facebookLink }}"><span><i #}
+                        {#                                                    class="icofont icofont-social-facebook"></i></span></a></li> #}
+                        {#                                <li><a target="_blank" #}
+                        {#                                       href="https://twitter.com/{{ StaticText.content.twitter }}"><span><i #}
+                        {#                                                    class="icofont icofont-social-twitter"></i></span></a></li> #}
+                        {#                            </ul> #}
+                        {#                        </div> #}
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 " id="author-photo-right">
@@ -185,16 +185,31 @@
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="why-choose-content">
-                        <h3>{{ Text1.contentTitle }}</h3>
-                        <p> {{ Text1.contentText|raw }} </p>
+                        {% if Text1 is not null %}
+                            <h3>{{ Text1.contentTitle }}</h3>
+                            <p> {{ Text1.contentText|raw }}</p>
+                        {% else %}
+                            <h3> Heading1 TBC </h3>
+                            <p> Title1 TBC </p>
+                        {% endif %}
                     </div>
                     <div class="why-choose-content">
-                        <h3>{{ Text2.contentTitle }}</h3>
-                        <p> {{ Text2.contentText|raw }} </p>
+                        {% if Text2 is not null %}
+                            <h3>{{ Text2.contentTitle }}</h3>
+                            <p> {{ Text2.contentText|raw }}</p>
+                        {% else %}
+                            <h3> Heading2 TBC </h3>
+                            <p> Title2 TBC </p>
+                        {% endif %}
                     </div>
                     <div class="why-choose-content">
-                        <h3>{{ Text3.contentTitle }}</h3>
-                        <p> {{ Text3.contentText|raw }} </p>
+                        {% if Text3 is not null %}
+                            <h3>{{ Text3.contentTitle }}</h3>
+                            <p> {{ Text3.contentText|raw }}</p>
+                        {% else %}
+                            <h3> Heading3 TBC </h3>
+                            <p> Title3 TBC </p>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12" id="video-right-static">
@@ -220,7 +235,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="video-container">
-                                    <iframe width="640" height="360" src="https://www.youtube.com/embed/SyiwWRMoXXA"
+                                    <iframe width="640" height="360" src="https://www.youtube.com/watch?v=fzLOC-8Jaco"
                                             frameborder="0" allowfullscreen></iframe>
                                 </div>
                             </div>
@@ -257,124 +272,110 @@
                     <div class="item">
                         <div class="latest-work-item">
                             <figure>
-                                <img src="{{ asset('user-templates/assets/images/latest/01.jpg') }}" alt="">
+                                {% if LatestWorkPhoto1 is not null %}
+                                    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ LatestWorkPhoto1.photo }}"
+                                         alt="">
+                                {% endif %}
                                 <div class="caption">
                                     <div class="blur"></div>
                                     <div class="work-captions">
-                                        <h4>Graphics Design</h4>
-                                        <p>Monotonectally plagiarize client-centered relationships through.</p>
-                                        <a class="info btn btn-primary" href="#">Learn more</a>
+                                        {% if LatestWorkPhoto1 is not null %}
+                                            <h4>{{ LatestWorkPhoto1.heading }}</h4>
+                                            <p>{{ LatestWorkPhoto1.title }}</p>
+                                            <a class="info btn btn-primary" href={{ LatestWorkPhoto1.link }}>Learn
+                                                more</a>
+                                        {% else %}
+                                            <h4>Heading TBD</h4>
+                                            <p>Title TBD</p>
+                                            <a class="info btn btn-primary" href="#">Learn more</a>
+                                        {% endif %}
                                     </div>
                                 </div>
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="latest-work-item">
-                            <figure>
-                                <img src="{{ asset('user-templates/assets/images/latest/02.jpg') }}" alt="">
-                                <div class="caption">
-                                    <div class="blur"></div>
-                                    <div class="work-captions">
-                                        <h4>Graphics Design</h4>
-                                        <p>Monotonectally plagiarize client-centered relationships through.</p>
-                                        <a class="info btn btn-primary" href="#">Learn more</a>
-                                    </div>
-                                </div>
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="latest-work-item">
-                            <figure>
-                                <img src="{{ asset('user-templates/assets/images/latest/03.jpg') }}" alt="">
-                                <div class="caption">
-                                    <div class="blur"></div>
-                                    <div class="work-captions">
-                                        <h4>Graphics Design</h4>
-                                        <p>Monotonectally plagiarize client-centered relationships through.</p>
-                                        <a class="info btn btn-primary" href="#">Learn more</a>
-                                    </div>
-                                </div>
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="latest-work-item">
-                            <figure>
-                                <img src="{{ asset('user-templates/assets/images/latest/04.jpg') }}" alt="">
-                                <div class="caption">
-                                    <div class="blur"></div>
-                                    <div class="work-captions">
-                                        <h4>Graphics Design</h4>
-                                        <p>Monotonectally plagiarize client-centered relationships through.</p>
-                                        <a class="info btn btn-primary" href="#">Learn more</a>
-                                    </div>
-                                </div>
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="latest-work-item">
-                            <figure>
-                                <img src="{{ asset('user-templates/assets/images/latest/01.jpg') }}" alt="">
-                                <div class="caption">
-                                    <div class="blur"></div>
-                                    <div class="work-captions">
-                                        <h4>Graphics Design</h4>
-                                        <p>Monotonectally plagiarize client-centered relationships through.</p>
-                                        <a class="info btn btn-primary" href="#">Learn more</a>
-                                    </div>
-                                </div>
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="latest-work-item">
-                            <figure>
-                                <img src="{{ asset('user-templates/assets/images/latest/02.jpg') }}" alt="">
-                                <div class="caption">
-                                    <div class="blur"></div>
-                                    <div class="work-captions">
-                                        <h4>Graphics Design</h4>
-                                        <p>Monotonectally plagiarize client-centered relationships through.</p>
-                                        <a class="info btn btn-primary" href="#">Learn more</a>
-                                    </div>
-                                </div>
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="latest-work-item">
-                            <figure>
-                                <img src="{{ asset('user-templates/assets/images/latest/03.jpg') }}" alt="">
-                                <div class="caption">
-                                    <div class="blur"></div>
-                                    <div class="work-captions">
-                                        <h4>Graphics Design</h4>
-                                        <p>Monotonectally plagiarize client-centered relationships through.</p>
-                                        <a class="info btn btn-primary" href="#">Learn more</a>
-                                    </div>
-                                </div>
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="latest-work-item">
-                            <figure>
-                                <img src="{{ asset('user-templates/assets/images/latest/04.jpg') }}" alt="">
-                                <div class="caption">
-                                    <div class="blur"></div>
-                                    <div class="work-captions">
-                                        <h4>Graphics Design</h4>
-                                        <p>Monotonectally plagiarize client-centered relationships through.</p>
-                                        <a class="info btn btn-primary" href="#">Learn more</a>
-                                    </div>
-                                </div>
-                            </figure>
-                        </div>
-                    </div>
 
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="latest-work-item">
+                            <figure>
+                                {% if LatestWorkPhoto2 is not null %}
+                                    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ LatestWorkPhoto2.photo }}"
+                                         alt="">
+                                {% endif %}
+
+                                <div class="caption">
+                                    <div class="blur"></div>
+                                    <div class="work-captions">
+                                        {% if LatestWorkPhoto2 is not null %}
+                                            <h4>{{ LatestWorkPhoto2.heading }}</h4>
+                                            <p>{{ LatestWorkPhoto2.title }}</p>
+                                            <a class="info btn btn-primary" href={{ LatestWorkPhoto2.link }}>Learn
+                                                more</a>
+                                        {% else %}
+                                            <h4>Heading TBD</h4>
+                                            <p>Title TBD</p>
+                                            <a class="info btn btn-primary" href="#">Learn more</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="latest-work-item">
+                            <figure>
+                                {% if LatestWorkPhoto3 is not null %}
+                                    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ LatestWorkPhoto3.photo }}"
+                                         alt="">
+                                {% endif %}
+
+                                <div class="caption">
+                                    <div class="blur"></div>
+                                    <div class="work-captions">
+                                        {% if LatestWorkPhoto3 is not null %}
+                                            <h4>{{ LatestWorkPhoto3.heading }}</h4>
+                                            <p>{{ LatestWorkPhoto3.title }}</p>
+                                            <a class="info btn btn-primary" href={{ LatestWorkPhoto3.link }}>Learn
+                                                more</a>
+                                        {% else %}
+                                            <h4>Heading TBD</h4>
+                                            <p>Title TBD</p>
+                                            <a class="info btn btn-primary" href="#">Learn more</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="latest-work-item">
+                            <figure>
+                                {% if LatestWorkPhoto4 is not null %}
+                                    <img src="{{ asset('administration/attachments/WebSitePhotos/') }}{{ LatestWorkPhoto4.photo }}"
+                                         alt="">
+                                {% endif %}
+
+                                <div class="caption">
+                                    <div class="blur"></div>
+                                    <div class="work-captions">
+                                        {% if LatestWorkPhoto4 is not null %}
+                                            <h4>{{ LatestWorkPhoto4.heading }}</h4>
+                                            <p>{{ LatestWorkPhoto4.title }}</p>
+                                            <a class="info btn btn-primary" href={{ LatestWorkPhoto4.link }}>Learn
+                                                more</a>
+                                        {% else %}
+                                            <h4>Heading TBD</h4>
+                                            <p>Title TBD</p>
+                                            <a class="info btn btn-primary" href="#">Learn more</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            </figure>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -408,7 +409,7 @@
                         <div class="client-info-area">
                             <div class="client-photo-area">
                                 <div class="client-photo float-left">
-                                    <img src="{{Photo1.photo }}" alt="">
+                                    <img src="{{ Photo1.photo }}" alt="">
                                 </div>
                                 <div class="client-info float-left">
                                     <span>Client 1</span>
@@ -566,189 +567,189 @@
     </section>
     <!-- Client testimonial section -->
 
-{#    <!-- Pricing section -->#}
-{#    <section id="pricing-section" class="default-bg-white">#}
-{#        <!--  Default space  -->#}
-{#        <div class="default-space"></div>#}
-{#        <!--  Default space  -->#}
-{#        <div class="container">#}
-{#            <div class="row">#}
-{#                <div class="col-lg-12 col-md-12 col-sm-12 col-12">#}
-{#                    <div class="defult-title">#}
-{#                        <h4>Pricing Plan</h4>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="row">#}
-{#                <div class="col-lg-4 col-md-12">#}
-{#                    <div class="pricing-table text-center">#}
-{#                        <ul>#}
-{#                            <li><span class="price-title">BASIC</span></li>#}
-{#                            <li class="pricing-details"><span class="pricing-price">$49</span></li>#}
-{#                            <li> Mobile App UI</li>#}
-{#                            <li> Web App UI</li>#}
-{#                            <li> Web Template</li>#}
-{#                            <li> One Page Web UI</li>#}
-{#                            <li> One Screen App UI</li>#}
-{#                            <li> Dashboard UI</li>#}
-{#                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <!--pricing-table-->#}
-{#                </div>#}
-{#                <div class="col-lg-4 col-md-12">#}
-{#                    <div class="pricing-table text-center active">#}
-{#                        <ul>#}
-{#                            <li><span class="price-title">Premium</span></li>#}
-{#                            <li class="pricing-details"><span class="pricing-price">$49</span></li>#}
-{#                            <li> Mobile App UI</li>#}
-{#                            <li> Web App UI</li>#}
-{#                            <li> Web Template</li>#}
-{#                            <li> One Page Web UI</li>#}
-{#                            <li> One Screen App UI</li>#}
-{#                            <li> Dashboard UI</li>#}
-{#                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <!--pricing-table-->#}
-{#                </div>#}
-{#                <div class="col-lg-4 col-md-12">#}
-{#                    <div class="pricing-table text-center">#}
-{#                        <ul>#}
-{#                            <li><span class="price-title">Standard</span></li>#}
-{#                            <li class="pricing-details"><span class="pricing-price">$49</span></li>#}
-{#                            <li> Mobile App UI</li>#}
-{#                            <li> Web App UI</li>#}
-{#                            <li> Web Template</li>#}
-{#                            <li> One Page Web UI</li>#}
-{#                            <li> One Screen App UI</li>#}
-{#                            <li> Dashboard UI</li>#}
-{#                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <!--pricing-table-->#}
-{#                </div>#}
-{#            </div>#}
+    {#    <!-- Pricing section --> #}
+    {#    <section id="pricing-section" class="default-bg-white"> #}
+    {#        <!--  Default space  --> #}
+    {#        <div class="default-space"></div> #}
+    {#        <!--  Default space  --> #}
+    {#        <div class="container"> #}
+    {#            <div class="row"> #}
+    {#                <div class="col-lg-12 col-md-12 col-sm-12 col-12"> #}
+    {#                    <div class="defult-title"> #}
+    {#                        <h4>Pricing Plan</h4> #}
+    {#                    </div> #}
+    {#                </div> #}
+    {#            </div> #}
+    {#            <div class="row"> #}
+    {#                <div class="col-lg-4 col-md-12"> #}
+    {#                    <div class="pricing-table text-center"> #}
+    {#                        <ul> #}
+    {#                            <li><span class="price-title">BASIC</span></li> #}
+    {#                            <li class="pricing-details"><span class="pricing-price">$49</span></li> #}
+    {#                            <li> Mobile App UI</li> #}
+    {#                            <li> Web App UI</li> #}
+    {#                            <li> Web Template</li> #}
+    {#                            <li> One Page Web UI</li> #}
+    {#                            <li> One Screen App UI</li> #}
+    {#                            <li> Dashboard UI</li> #}
+    {#                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li> #}
+    {#                        </ul> #}
+    {#                    </div> #}
+    {#                    <!--pricing-table--> #}
+    {#                </div> #}
+    {#                <div class="col-lg-4 col-md-12"> #}
+    {#                    <div class="pricing-table text-center active"> #}
+    {#                        <ul> #}
+    {#                            <li><span class="price-title">Premium</span></li> #}
+    {#                            <li class="pricing-details"><span class="pricing-price">$49</span></li> #}
+    {#                            <li> Mobile App UI</li> #}
+    {#                            <li> Web App UI</li> #}
+    {#                            <li> Web Template</li> #}
+    {#                            <li> One Page Web UI</li> #}
+    {#                            <li> One Screen App UI</li> #}
+    {#                            <li> Dashboard UI</li> #}
+    {#                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li> #}
+    {#                        </ul> #}
+    {#                    </div> #}
+    {#                    <!--pricing-table--> #}
+    {#                </div> #}
+    {#                <div class="col-lg-4 col-md-12"> #}
+    {#                    <div class="pricing-table text-center"> #}
+    {#                        <ul> #}
+    {#                            <li><span class="price-title">Standard</span></li> #}
+    {#                            <li class="pricing-details"><span class="pricing-price">$49</span></li> #}
+    {#                            <li> Mobile App UI</li> #}
+    {#                            <li> Web App UI</li> #}
+    {#                            <li> Web Template</li> #}
+    {#                            <li> One Page Web UI</li> #}
+    {#                            <li> One Screen App UI</li> #}
+    {#                            <li> Dashboard UI</li> #}
+    {#                            <li><a class="btn raisa-btn btn-primary" href="#">Purchase</a></li> #}
+    {#                        </ul> #}
+    {#                    </div> #}
+    {#                    <!--pricing-table--> #}
+    {#                </div> #}
+    {#            </div> #}
 
-{#        </div>#}
-{#        <!--  Default space  -->#}
-{#        <div class="default-space"></div>#}
-{#        <!--  Default space  -->#}
-{#    </section>#}
-{#    <!-- Pricing section -->#}
+    {#        </div> #}
+    {#        <!--  Default space  --> #}
+    {#        <div class="default-space"></div> #}
+    {#        <!--  Default space  --> #}
+    {#    </section> #}
+    {#    <!-- Pricing section --> #}
 
 
 
-{#    <!-- Blog section -->#}
-{#    <section id="blog-section" class="default-bg-grey">#}
-{#        <!--  Default space  -->#}
-{#        <div class="default-space"></div>#}
-{#        <!--  Default space  -->#}
-{#        <div class="container">#}
-{#            <div class="row">#}
-{#                <div class="col-lg-12 col-md-12 col-sm-12 col-12">#}
-{#                    <div class="defult-title">#}
-{#                        <h4>Blog Post</h4>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="row">#}
-{#                <div class="col-lg-4 col-md-12">#}
+    {#    <!-- Blog section --> #}
+    {#    <section id="blog-section" class="default-bg-grey"> #}
+    {#        <!--  Default space  --> #}
+    {#        <div class="default-space"></div> #}
+    {#        <!--  Default space  --> #}
+    {#        <div class="container"> #}
+    {#            <div class="row"> #}
+    {#                <div class="col-lg-12 col-md-12 col-sm-12 col-12"> #}
+    {#                    <div class="defult-title"> #}
+    {#                        <h4>Blog Post</h4> #}
+    {#                    </div> #}
+    {#                </div> #}
+    {#            </div> #}
+    {#            <div class="row"> #}
+    {#                <div class="col-lg-4 col-md-12"> #}
 
-{#                    <div class="blog-item">#}
-{#                        <figure>#}
-{#                            <img src="{{ asset('user-templates/assets/images/blogs/01.jpg') }}" alt="">#}
-{#                            <div class="caption-static">#}
-{#                                <div class="blur-blog"></div>#}
-{#                                <div class="blog-static">#}
-{#                                    <div class="blog-date">#}
-{#                                        <span>19</span><br/>#}
-{#                                        <p>Dec</p>#}
-{#                                    </div>#}
-{#                                    <div class="blog-title">#}
-{#                                        <h4>UX means problem sloving, like....</h4>#}
-{#                                    </div>#}
+    {#                    <div class="blog-item"> #}
+    {#                        <figure> #}
+    {#                            <img src="{{ asset('user-templates/assets/images/blogs/01.jpg') }}" alt=""> #}
+    {#                            <div class="caption-static"> #}
+    {#                                <div class="blur-blog"></div> #}
+    {#                                <div class="blog-static"> #}
+    {#                                    <div class="blog-date"> #}
+    {#                                        <span>19</span><br/> #}
+    {#                                        <p>Dec</p> #}
+    {#                                    </div> #}
+    {#                                    <div class="blog-title"> #}
+    {#                                        <h4>UX means problem sloving, like....</h4> #}
+    {#                                    </div> #}
 
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="caption">#}
-{#                                <div class="blur"></div>#}
-{#                                <div class="blog-captions">#}
-{#                                    <h4>Graphics Design</h4>#}
-{#                                    <p>Monotonectally plagiarize client-centered relationships through superior#}
-{#                                        relationships. Progressively .</p>#}
-{#                                    <a class="info btn btn-primary" href="#">Learn more</a>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </figure>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="col-lg-4 col-md-12">#}
-{#                    <div class="blog-item">#}
-{#                        <figure>#}
-{#                            <img src="{{ asset('user-templates/assets/images/blogs/02.jpg') }}" alt="">#}
-{#                            <div class="caption-static">#}
-{#                                <div class="blur-blog"></div>#}
-{#                                <div class="blog-static">#}
-{#                                    <div class="blog-date">#}
-{#                                        <span>19</span><br/>#}
-{#                                        <p>Dec</p>#}
-{#                                    </div>#}
-{#                                    <div class="blog-title">#}
-{#                                        <h4>UX means problem sloving, like....</h4>#}
-{#                                    </div>#}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                            <div class="caption"> #}
+    {#                                <div class="blur"></div> #}
+    {#                                <div class="blog-captions"> #}
+    {#                                    <h4>Graphics Design</h4> #}
+    {#                                    <p>Monotonectally plagiarize client-centered relationships through superior #}
+    {#                                        relationships. Progressively .</p> #}
+    {#                                    <a class="info btn btn-primary" href="#">Learn more</a> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </figure> #}
+    {#                    </div> #}
+    {#                </div> #}
+    {#                <div class="col-lg-4 col-md-12"> #}
+    {#                    <div class="blog-item"> #}
+    {#                        <figure> #}
+    {#                            <img src="{{ asset('user-templates/assets/images/blogs/02.jpg') }}" alt=""> #}
+    {#                            <div class="caption-static"> #}
+    {#                                <div class="blur-blog"></div> #}
+    {#                                <div class="blog-static"> #}
+    {#                                    <div class="blog-date"> #}
+    {#                                        <span>19</span><br/> #}
+    {#                                        <p>Dec</p> #}
+    {#                                    </div> #}
+    {#                                    <div class="blog-title"> #}
+    {#                                        <h4>UX means problem sloving, like....</h4> #}
+    {#                                    </div> #}
 
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="caption">#}
-{#                                <div class="blur"></div>#}
-{#                                <div class="blog-captions">#}
-{#                                    <h4>Graphics Design</h4>#}
-{#                                    <p>Monotonectally plagiarize client-centered relationships through superior#}
-{#                                        relationships. Progressively .</p>#}
-{#                                    <a class="info btn btn-primary" href="#">Learn more</a>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </figure>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="col-lg-4 col-md-12">#}
-{#                    <div class="blog-item">#}
-{#                        <figure>#}
-{#                            <img src="{{ asset('user-templates/assets/images/blogs/03.jpg') }}" alt="">#}
-{#                            <div class="caption-static">#}
-{#                                <div class="blur-blog"></div>#}
-{#                                <div class="blog-static">#}
-{#                                    <div class="blog-date">#}
-{#                                        <span>19</span><br/>#}
-{#                                        <p>Dec</p>#}
-{#                                    </div>#}
-{#                                    <div class="blog-title">#}
-{#                                        <h4>UX means problem sloving, like....</h4>#}
-{#                                    </div>#}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                            <div class="caption"> #}
+    {#                                <div class="blur"></div> #}
+    {#                                <div class="blog-captions"> #}
+    {#                                    <h4>Graphics Design</h4> #}
+    {#                                    <p>Monotonectally plagiarize client-centered relationships through superior #}
+    {#                                        relationships. Progressively .</p> #}
+    {#                                    <a class="info btn btn-primary" href="#">Learn more</a> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </figure> #}
+    {#                    </div> #}
+    {#                </div> #}
+    {#                <div class="col-lg-4 col-md-12"> #}
+    {#                    <div class="blog-item"> #}
+    {#                        <figure> #}
+    {#                            <img src="{{ asset('user-templates/assets/images/blogs/03.jpg') }}" alt=""> #}
+    {#                            <div class="caption-static"> #}
+    {#                                <div class="blur-blog"></div> #}
+    {#                                <div class="blog-static"> #}
+    {#                                    <div class="blog-date"> #}
+    {#                                        <span>19</span><br/> #}
+    {#                                        <p>Dec</p> #}
+    {#                                    </div> #}
+    {#                                    <div class="blog-title"> #}
+    {#                                        <h4>UX means problem sloving, like....</h4> #}
+    {#                                    </div> #}
 
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="caption">#}
-{#                                <div class="blur"></div>#}
-{#                                <div class="blog-captions">#}
-{#                                    <h4>Graphics Design</h4>#}
-{#                                    <p>Monotonectally plagiarize client-centered relationships through superior#}
-{#                                        relationships. Progressively .</p>#}
-{#                                    <a class="info btn btn-primary" href="#">Learn more</a>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </figure>#}
-{#                    </div>#}
-{#                </div>#}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                            <div class="caption"> #}
+    {#                                <div class="blur"></div> #}
+    {#                                <div class="blog-captions"> #}
+    {#                                    <h4>Graphics Design</h4> #}
+    {#                                    <p>Monotonectally plagiarize client-centered relationships through superior #}
+    {#                                        relationships. Progressively .</p> #}
+    {#                                    <a class="info btn btn-primary" href="#">Learn more</a> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </figure> #}
+    {#                    </div> #}
+    {#                </div> #}
 
-{#            </div>#}
-{#        </div>#}
-{#        <!--  Default space  -->#}
-{#        <div class="default-space"></div>#}
-{#        <!--  Default space  -->#}
-{#    </section>#}
-{#    <!-- Blog section -->#}
+    {#            </div> #}
+    {#        </div> #}
+    {#        <!--  Default space  --> #}
+    {#        <div class="default-space"></div> #}
+    {#        <!--  Default space  --> #}
+    {#    </section> #}
+    {#    <!-- Blog section --> #}
 
     <!-- Hire me section -->
     <section id="hire-me-section" class="default-bg-white">
@@ -761,7 +762,7 @@
                 <div class="col-5 custom-w">
                     <div class="have-any-project">
                         <h2>Contact Me</h2>
-                        <p>E-mail: {{StaticText.content.emailAddress}} <br>
+                        <p>E-mail: {{ StaticText.content.emailAddress }} <br>
                             WhatsApp: {{ StaticText.content.mobileNumber }}</p>
                     </div>
                 </div>

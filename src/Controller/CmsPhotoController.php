@@ -138,7 +138,7 @@ class CmsPhotoController extends AbstractController
 
 
     /**
-     * @Route("/{id}/viewphoto", name="cms_view_photo", methods={"POST", "GET"})
+     * @Route("/{id}/viewphoto", name="cms_view_photo")
      */
     public function viewCMSPhotoFile(int $id, CmsPhoto $cmsPhoto, EntityManagerInterface $entityManager)
     {
