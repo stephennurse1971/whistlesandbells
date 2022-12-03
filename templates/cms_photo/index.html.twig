@@ -24,9 +24,10 @@
         {% for cms_photo in cms_photos %}
             <tr>
                 <td>
+                    {% set loc = asset('administration/attachments/websitephotos')~"/"~cms_photo.photo %}
                     <a class="btn btn-outline-danger btn-sm" target="_blank" href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
                     <img height="50" width="50"
-                         src="{{ asset('administration/attachments/webSitephotos/') }}{{ cms_photo.photo }}"
+                         src="{{ loc }}"
                          class="rounded-circle">
                     </a>
                 </td>
