@@ -17,7 +17,7 @@ parameters:
     photos_upload_default_directory: '%kernel.project_dir%/public/photos/'
     files_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Files'
     files_cv_directory: '%kernel.project_dir%/public/administration/attachments/CV'
-    website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
+    website_photos_directory: '%kernel.project_dir%/public/administration/attachments/websitephotos'
 
 
 services:
