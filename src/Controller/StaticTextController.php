@@ -25,7 +25,7 @@ class StaticTextController extends AbstractController
      */
     public function index(StaticTextRepository $staticTextRepository): Response
     {
-        phpinfo();
+
         return $this->render('static_text/index.html.twig', [
             'static_texts' => $staticTextRepository->findAll(),
         ]);
