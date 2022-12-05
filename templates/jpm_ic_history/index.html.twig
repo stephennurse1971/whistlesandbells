@@ -7,40 +7,44 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Year</th>
-                <th>Base Salary (GBP)</th>
-                <th>Total Comp (USD)</th>
-                <th>IC Total (USD)</th>
-                <th>IC Cash (USD)</th>
-                <th>IC Shares (USD)</th>
-                <th>Share Price</th>
-                <th>IC Shares #1</th>
-                <th>IC Shares #2</th>
-                <th>Vesting Date #1</th>
-                <th>Vesting Date #2</th>
-                <th><i class="fa fa-paperclip"></i></th>
-            </tr>
+        <tr>
+            <th style="text-align: right">Year</th>
+            <th style="text-align: right">Base Salary (GBP)</th>
+            <th style="text-align: right">Total Comp (USD)</th>
+            <th style="text-align: right">IC Total (USD)</th>
+            <th style="text-align: right">IC Cash (USD)</th>
+            <th style="text-align: right">IC Shares (USD)</th>
+            <th style="text-align: right">Share Price</th>
+            <th style="text-align: right">IC Shares #1</th>
+            <th style="text-align: right">IC Shares #2</th>
+            <th style="text-align: right">Vesting Date #1</th>
+            <th style="text-align: right">Vesting Date #2</th>
+            <th style="text-align: center"><i class="fa fa-paperclip"></i></th>
+        </tr>
         </thead>
         <tbody>
         {% for jpm_ic_history in jpm_ic_histories %}
             <tr>
-                <td> <a href="{{ path('jpm_ic_history_edit', {'id': jpm_ic_history.id}) }}"> {{ jpm_ic_history.year }}</a>
-                   </td>
-                <td style="text-align: right">{{ jpm_ic_history.baseSalaryGBP |number_format(0)}}</td>
+                <td style="text-align: right">
+                    <a href="{{ path('jpm_ic_history_edit', {'id': jpm_ic_history.id}) }}"> {{ jpm_ic_history.year }}</a>
+                </td>
+                <td style="text-align: right">{{ jpm_ic_history.baseSalaryGBP |number_format(0) }}</td>
                 <td style="text-align: right">{{ jpm_ic_history.totalCompUSD|number_format(0) }}</td>
                 <td style="text-align: right">{{ jpm_ic_history.icTotal|number_format(0) }}</td>
                 <td style="text-align: right">{{ jpm_ic_history.icCash|number_format(0) }}</td>
                 <td style="text-align: right">{{ jpm_ic_history.icShares|number_format(0) }}</td>
                 <td style="text-align: right">{{ jpm_ic_history.icSharePrice|number_format(0) }}</td>
                 <td style="text-align: right">{{ jpm_ic_history.icShares1|number_format(0) }}</td>
-                <td style="text-align: right">{{ jpm_ic_history.icShares2 |number_format(0)}}</td>
+                <td style="text-align: right">{{ jpm_ic_history.icShares2 |number_format(0) }}</td>
                 <td style="text-align: right">{{ jpm_ic_history.vestingDate1 |date('d-M-Y') }}</td>
                 <td style="text-align: right">{{ jpm_ic_history.vestingDate2 |date('d-M-Y') }}</td>
                 <td style="text-align: center">
                     {% if jpm_ic_history.attachmentICFile is not empty %}
-                            <a title="{{ jpm_ic_history.attachmentICFile }}" target="_blank"
-                               href=""><i class="fa fa-paperclip"></i></a>
+                        <a title="{{ jpm_ic_history.attachmentICFile }}" target="_blank"
+                           href="{{ path('show_jpm_ic_attachment',{id : jpm_ic_history.id,'filename':jpm_ic_history.attachmentICFile}) }}"><i
+                                    class="fa fa-paperclip"></i></a>
+                    {% else %}
+                        -
                     {% endif %}
                 </td>
             </tr>
@@ -48,5 +52,19 @@
         </tbody>
     </table>
 
-    <a class="btn btn-outline-primary btn mt-2" href="{{ path('jpm_ic_history_new') }}">New</a>
+    <a class="btn btn-success btn mt-2" href="{{ path('jpm_ic_history_new') }}">New</a>
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -4,19 +4,20 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    files_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Files'
+    file_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FileAttachments'
+    files_cv_directory: '%kernel.project_dir%/public/administration/attachments/CV'
     import_user_directory: '%kernel.project_dir%/public/administration/import/'
     import_photo_directory: '%kernel.project_dir%/public/administration/img/photogallery/'
-    temporary_attachment_directory: '%kernel.project_dir%/public/temporary/'
-    file_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FileAttachments'
-    garmin_attachments_directory: '%kernel.project_dir%/public/administration/attachments/GarminGPXFiles'
-    user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
-    tax_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments'
-    tax_supporting_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments/TaxSupportingDocuments'
     investments_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments'
     investments_future_comms_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments/InvestmentsFutureComms'
+    garmin_attachments_directory: '%kernel.project_dir%/public/administration/attachments/GarminGPXFiles'
+    jpm_ic_history_directory: '%kernel.project_dir%/public/administration/attachments/JPMICHistory'
     photos_upload_default_directory: '%kernel.project_dir%/public/photos/'
-    files_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Files'
-    files_cv_directory: '%kernel.project_dir%/public/administration/attachments/CV'
+    tax_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments'
+    tax_supporting_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments/TaxSupportingDocuments'
+    temporary_attachment_directory: '%kernel.project_dir%/public/temporary/'
+    user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
     website_photos_directory: '%kernel.project_dir%/public/administration/attachments/websitephotos'
 
 

@@ -71,6 +71,7 @@ class StaticTextController extends AbstractController
     {
         $form = $this->createForm(StaticTextType::class, $staticText);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $cv = $form->get('cv')->getData();
             if ($cv) {

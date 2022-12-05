@@ -29,23 +29,23 @@ class JpmIcHistoryType extends AbstractType
                 'required'=>false
             ])
             ->add('icCash',TextType::class,[
-                'label' =>'Incentive Compensation in USD Cash',
+                'label' =>'Incentive Compensation in Cash (USD)',
                 'required'=>false
             ])
             ->add('icShares',TextType::class,[
-                'label' =>'Incentive Compensation in JPM Shares%',
+                'label' =>'Incentive Compensation in JPM Shares (USD)',
                 'required'=>false
             ])
             ->add('icSharePrice',TextType::class,[
-                'label' =>'JPM Share price',
+                'label' =>'JPM Share price at issue',
                 'required'=>false
             ])
             ->add('icShares1',TextType::class,[
-                'label' =>'Number of shares',
+                'label' =>'Number of shares (Vesting 1)',
                 'required'=>false
             ])
             ->add('icShares2',TextType::class,[
-                'label' =>'Number of shares',
+                'label' =>'Number of shares (Vesting 2)',
                 'required'=>false
             ])
             ->add('vestingDate1', DateType::class, [

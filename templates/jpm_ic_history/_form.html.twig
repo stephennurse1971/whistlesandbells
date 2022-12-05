@@ -15,7 +15,19 @@
         {{ form_row(form.icShares2) }}
         {{ form_row(form.vestingDate1) }}
         {{ form_row(form.vestingDate2) }}
+
+
+        <strong style="color: blue">
+            {{ jpm_ic_history.attachmentICFile }}
+        </strong> <br>
+        {% if jpm_ic_history.attachmentICFile is not empty %}
+            <a class="btn btn-sm btn-danger" href="{{ path('delete_ic_history_attachment',{id:jpm_ic_history.id}) }}">Delete
+                attachment</a>
+        {% endif %}
         {{ form_row(form.attachmentICFile) }}
+
+
+
     </div>
 </div>
 <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
