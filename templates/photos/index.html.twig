@@ -29,7 +29,7 @@
                    href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
             {% endif %}
             {% if app.user is not null %}
-                {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN') and location.publicPrivate = "Private") %}
+                {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN') and location.publicPrivate == "Private") %}
                     <a class="btn btn-outline-info btn-sm" target="_blank"
                        href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
                 {% endif %}

@@ -37,16 +37,15 @@ class PhotosController extends AbstractController
      */
     public function showPhotosByLocation(string $locationName, PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository)
     {
-            $photos = $photosRepository->findBy([
-                'location' => $locationsRepository->findOneBy([
-                    'location' => $locationName
-                ])
-            ]);
-
-
+        $photos = $photosRepository->findBy([
+            'location' => $locationsRepository->findOneBy([
+                'location' => $locationName
+            ])
+        ]);
         return $this->render('photos/showByLocation.html.twig', [
             'photos' => $photos,
-            'location' => $locationsRepository->findOneBy(['location' => $locationName])->getLocation()
+            'location' => $locationsRepository->findOneBy(['location' => $locationName])->getLocation(),
+            'photo_date' => $locationsRepository->findOneBy(['location' => $locationName])->getDate()
         ]);
     }
 

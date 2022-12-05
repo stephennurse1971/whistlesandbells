@@ -18,7 +18,7 @@
 
         {% for photo_location in photo_locations %}
             <tr>
-                <td>{{ photo_location.date |date('d-M-Y')}}</td>
+                <td>{{ photo_location.date |date('M-Y')}}</td>
                 <td>
                     <a href="{{ path('photo_locations_edit', {'id': photo_location.id}) }}">{{ photo_location.location }}</a>
                 </td>
