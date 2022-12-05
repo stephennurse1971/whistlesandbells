@@ -22,23 +22,6 @@ class FileAttachmentsType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $placeholder='';
-//        if($options['id']) {
-//            $chaveyDown = $this->chaveyDownRepository->find($options['id']);
-//            $attachments = $chaveyDown->getAttachments();
-//            if ($attachments) {
-//                $fileName = '';
-//                $count = 1;
-//                foreach ($attachments as $attachment) {
-//                    $fileName = $fileName . $attachment;
-//                    if ($count < count($attachments)) {
-//                        $fileName = $fileName . ", ";
-//                    }
-//                    $count++;
-//                }
-//                $placeholder = $fileName;
-//            }
-//        }
         $builder
             ->add('date', DateType::class, [
                 'label' => 'Date',
@@ -51,15 +34,8 @@ class FileAttachmentsType extends AbstractType
                 'mapped'=>false,
                 'required'=>false,
                 'multiple'=>true,
-//                'attr'=>[
-//                    'placeholder'=> $placeholder
-//                ]
             ])
-            ->add('clearAttachment',CheckboxType::class,[
-                'label'=>'clear attachment',
-                'mapped'=>false,
-                'required'=>false
-            ])
+
         ;
     }
 

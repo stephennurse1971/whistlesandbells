@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\FileAttachments;
+use App\Entity\GarminFiles;
 use App\Form\FileAttachmentsType;
 use App\Repository\FileAttachmentsRepository;
 use App\Repository\GarminFilesRepository;
@@ -114,20 +115,14 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="file_attachments_edit", methods={"GET","POST"})
      */
-    public function edit(int $id, Request $request, FileAttachments $chaveyDown): Response
+    public function edit(int $id, Request $request, FileAttachments $fileAttachments): Response
     {
-        $form = $this->createForm(FileAttachmentsType::class, $chaveyDown, ['id' => $id]);
+        $form = $this->createForm(FileAttachmentsType::class, $fileAttachments, ['id' => $id]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $clearAttachment = $form['clearAttachment']->getData();
-            if ($clearAttachment) {
-                $chaveyDown->setAttachments(null);
-            }
             $attachments = $form['attachments']->getData();
             if ($attachments) {
                 $files_name = [];
-                $count = 1;
                 $attachment_directory = $this->getParameter('file_attachments_directory');
                 foreach ($attachments as $attachment) {
                     $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
@@ -135,9 +130,8 @@ class FileAttachmentsController extends AbstractController
                     $newFileName = $fileName . "." . $file_extension;
                     $attachment->move($attachment_directory, $newFileName);
                     $files_name[] = $newFileName;
-
                 }
-                $chaveyDown->setAttachments($files_name);
+                $fileAttachments->setAttachments($files_name);
             }
             $this->getDoctrine()->getManager()->flush();
 
@@ -145,7 +139,7 @@ class FileAttachmentsController extends AbstractController
         }
 
         return $this->render('file_attachments/edit.html.twig', [
-            'file_attachments' => $chaveyDown,
+            'file_attachments' => $fileAttachments,
             'form' => $form->createView(),
         ]);
     }
@@ -178,7 +172,6 @@ class FileAttachmentsController extends AbstractController
         $html = $this->renderView('emails/file_attachment_email.html.twig', [
             'description' => $file->getDescription(),
         ]);
-
         $attachments = $file->getAttachments();
         $email = (new Email())
             ->to($recipient-> getEmail())
@@ -190,14 +183,21 @@ class FileAttachmentsController extends AbstractController
                 $attachment_path = $this->getParameter('file_attachments_directory') . "/" . $attachment;
                 $email->attachFromPath($attachment_path);
             }
-
         }
-
         $mailer->send($email);
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
     }
 
 
-
+    /**
+     * @Route("/{id}/delete/attachment", name="file_attachments_delete_attachment")
+     */
+    public function deleteAttachment(Request $request, FileAttachments $fileAttachments, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $fileAttachments->setAttachments(null);
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
 }

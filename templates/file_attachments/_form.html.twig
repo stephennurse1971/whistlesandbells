@@ -16,15 +16,18 @@
 
     <div class="col-12">
         <div class="col-3" style="padding-left: 0px">
-            {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
-                {{ form_row(form.attachments) }}
-                {{ form_row(form.clearAttachment) }}
-            {% else %}
-                {{ form_row(form.attachments,{'attr':{'readonly':'true'}}) }}
-                <div class="d-none">
-                    {{ form_row(form.clearAttachment) }}
-                </div>
+
+            <strong style="color: blue">
+                {% for attachment in file_attachments.attachments %}
+                    {{ attachment }}
+                {% endfor %}
+
+            </strong> <br>
+            {% if file_attachments.attachments is not empty %}
+                <a class="btn btn-sm btn-danger"
+                   href="{{ path('file_attachments_delete_attachment', {'id': file_attachments.id })}} ">Delete attachment</a>
             {% endif %}
+            {{ form_row(form.attachments) }}
         </div>
     </div>
 </div>
