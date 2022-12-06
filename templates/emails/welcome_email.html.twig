@@ -1,21 +1,41 @@
 <div>
 
     <h2> Welcome to SN's personal website</h2>
-    {{ include('template_parts/objectives.html.twig') }}
+
+    {% if 'ROLE_CONTACT' in user.roles %}
+{#        Family template#}
+        {{ CMSCopyContact|raw}}
+    {% endif %}
+
+    <hr>
 
     {% if 'ROLE_FAMILY' in user.roles %}
-        {{ include('template_parts/family.html.twig') }}
+{#        Family template#}
+        {{ CMSCopyFamily|raw}}
     {% endif %}
+
+    <hr>
 
     {% if 'ROLE_GUEST' in user.roles %}
-        {{ include('template_parts/guest.html.twig') }}
+{#        Guest template#}
+        {{ CMSCopyGuest|raw}}
     {% endif %}
 
-    {% if 'ROLE_ACCOUNTANT'in user.roles %}
-        {{ include('template_parts/accountant.html.twig') }}
+    <hr>
+
+    {% if 'ROLE_RECRUITER'in user.roles %}
+{#        Recruiter template#}
+        {{ CMSCopyRecruiter|raw}}
     {% endif %}
+
+    <hr>
+
+    {% if 'JOB_APPLICANT'in user.roles %}
+{#        Job Applicant template#}
+        {{ CMSCopyJobApplicant|raw}}
+    {% endif %}
+
+    <hr>
 
     {{ include('emails/footerLoginAndEmail.html.twig') }}
-
-
 </div>

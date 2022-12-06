@@ -4,69 +4,77 @@
 
 {% block body %}
     <h1 style="color: red">CMS Copy index</h1>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th style="width: 90px">Site Page</th>
-            <th style="width: 50px">Name</th>
-            <th style="width: 900px">Content [English]</th>
-            <th style="width: 50px">Content [Other]</th>
-            <th style="width: 20px">Hyperlink</th>
-            <th style="width: 100px">#</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for cms_copy in cms_copies %}
-            <tr>
-
-                <td>
-                    {% if cms_copy.sitePage is not empty %}
-                        <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">{{ cms_copy.sitePage }}</a>
-                    {% else %}
-                        <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">TBD</a>
-                    {% endif %}
-                </td>
-                <td>{{ cms_copy.name }}</td>
-                <td>{{ (cms_copy.contentText |slice (0, 250))|raw }}</td>
-                <td>
-                    {% if cms_copy.contentTextFR is not empty %}
-
-                        <img title="{{ (cms_copy.contentTextFR |slice (0, 250))|raw }}" src="{{ asset('administration/img/flag/french.png') }}" height="30px" width="20px">
-                    {% endif %}
-                    {% if cms_copy.contentTextDE is not empty %}
-                        <img title="{{ (cms_copy.contentTextFR |slice (0, 250))|raw }}" src="{{ asset('administration/img/flag/german.png') }}" height="30px" width="20px">
-                    {% endif %}
-                </td>
-                <td>
-                    {% if  cms_copy.hyperlinks is not empty %}
-                        {% if  cms_copy.hyperlinks starts with 'http' %}
-                            {% set web =  cms_copy.hyperlinks %}
-                        {% else %}
-                            {% set web = 'https://'~ cms_copy.hyperlinks %}
-                        {% endif %}
-                        <a target="_blank" title="{{ cms_copy.hyperlinks }}" href="{{ web }}">
-                            {{ web }}
-                        </a>
-                    {% endif %}
-
-                </td>
-                <td>
-                    <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
-                       href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">Edit</a>
-                    <form class="d-inline" method="post" action="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy.id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                    <a class="d-inline btn btn-success btn-sm" target="_blank"
-                       href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">Copy</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
     <a class="btn btn-success btn-sm" href="{{ path('cms_copy_new') }}">New</a>
+
+    {% for site_page in site_pages %}
+        <h2 style="color: red">{{ site_page }}</h2>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 50px">Name</th>
+                <th style="width: 900px">Content [English]</th>
+                <th style="width: 50px">DE/FR</th>
+                <th style="width: 20px">Hyperlink</th>
+                <th style="width: 100px">#</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for cms_copy in cms_copies %}
+                {% if cms_copy.sitePage == site_page %}
+                    <tr>
+                        <td>
+                            {% if cms_copy.sitePage is not empty %}
+                                <a target="_blank"
+                                   href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">{{ cms_copy.name }}</a>
+                            {% else %}
+                                <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">TBD</a>
+                            {% endif %}
+                        </td>
+                        <td>{{ (cms_copy.contentText |slice (0, 250))|raw }}</td>
+                        <td>
+                            {% if cms_copy.contentTextFR is not empty %}
+                                <img title="{{ (cms_copy.contentTextFR |slice (0, 250))|raw }}"
+                                     src="{{ asset('administration/img/flag/french.png') }}" height="30px" width="20px">
+                            {% endif %}
+                            {% if cms_copy.contentTextDE is not empty %}
+                                <img title="{{ (cms_copy.contentTextFR |slice (0, 250))|raw }}"
+                                     src="{{ asset('administration/img/flag/german.png') }}" height="30px" width="20px">
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if  cms_copy.hyperlinks is not empty %}
+                                {% if  cms_copy.hyperlinks starts with 'http' %}
+                                    {% set web =  cms_copy.hyperlinks %}
+                                {% else %}
+                                    {% set web = 'https://'~ cms_copy.hyperlinks %}
+                                {% endif %}
+                                <a target="_blank" title="{{ cms_copy.hyperlinks }}" href="{{ web }}">
+                                    {{ web }}
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">Edit</a>
+                            <form class="d-inline" method="post"
+                                  action="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy.id) }}">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            <a class="d-inline btn btn-success btn-sm" target="_blank"
+                               href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">Copy</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endfor %}
+    <br>
+    <br>
 {% endblock %}
 
 {% block datatable %}
@@ -74,9 +82,9 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'], [1, 'asc']],
+                "order": [[0, 'asc']],
                 "paging": false,
-                "searching": true,
+                "searching": false,
                 "bInfo": false
             });
         });

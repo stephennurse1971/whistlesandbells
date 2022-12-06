@@ -59,7 +59,7 @@ class HomeController extends AbstractController
                 'name' => 'HomePage2'
             ]),
             'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage2'
+                'name' => 'HomePage3'
             ]),
 
             'SpecialisingPhoto1' => $cmsPhotoRepository->findOneBy([
@@ -177,9 +177,9 @@ class HomeController extends AbstractController
             'Photo3' => $cmsPhotoRepository->findOneBy([
                 'name' => 'WebDesign3'
             ]),
-
         ]);
     }
+
     /**
      * @Route("/Tennis", name="tennis", methods={"GET"})
      */

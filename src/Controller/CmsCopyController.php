@@ -21,8 +21,11 @@ class CmsCopyController extends AbstractController
      */
     public function index(CmsCopyRepository $cmsCopyRepository): Response
     {
+        $site_pages = ['HomePage','AboutSN','Cyprus','Flying','Tennis','WebDesign','PrivateEquity','Risk & Capital Consulting',
+            'Introduction Email - Family', 'Introduction Email - Contact','Introduction Email - Guest', 'Introduction Email - Job Applicant', 'Introduction Email - Recruiter'];
         return $this->render('cms_copy/index.html.twig', [
             'cms_copies' => $cmsCopyRepository->findAll(),
+            'site_pages'=>$site_pages
         ]);
     }
 

@@ -6,6 +6,7 @@ use App\Entity\RecruiterEmails;
 use App\Entity\User;
 use App\Form\RecruiterEmailsType;
 use App\Form\UserType;
+use App\Repository\CmsCopyRepository;
 use App\Repository\IntroductionRepository;
 use App\Repository\IntroductionSegmentRepository;
 use App\Repository\ProspectEmployerRepository;
@@ -52,11 +53,11 @@ class UserController extends AbstractController
      */
     public function indexEditedSinceDowload(UserRepository $userRepository, StaticTextRepository $staticTextRepository): Response
     {
-        $lastDownload =$staticTextRepository->find(1)->getLastOutlookDownload();
+        $lastDownload = $staticTextRepository->find(1)->getLastOutlookDownload();
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->lastEditedListByDate($lastDownload),
-            'role' => 'All - Edited since '. $lastDownload->format('d-M-Y'),
-            'role_title' => 'Edited since '. $lastDownload->format('d-M-Y')
+            'role' => 'All - Edited since ' . $lastDownload->format('d-M-Y'),
+            'role_title' => 'Edited since ' . $lastDownload->format('d-M-Y')
         ]);
     }
 
@@ -364,17 +365,41 @@ class UserController extends AbstractController
     /**
      * @Route("/{userid}/invite-email", name="user_invite", methods={"GET"})
      */
-    public function inviteEmail(int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository): Response
+    public function inviteEmail(int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
     {
+        $sender = $staticTextRepository->find(1)->getEmailAddress();
         $user = $userRepository->find($userid);
+        $today = new \DateTime('now');
+        $user->setInviteDate($today);
         $html = $this->renderView('emails/welcome_email.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'CMSCopyContact' => $cmsCopyRepository->findOneBy([
+                'name' => 'Introduction Email - Contact'
+            ])->getContentText(),
+
+            'CMSCopyGuest' => $cmsCopyRepository->findOneBy([
+                'name' => 'Introduction Email - Guest'
+            ])->getContentText(),
+
+            'CMSCopyFamily' => $cmsCopyRepository->findOneBy([
+                'name' => 'Introduction Email - Family'
+            ])->getContentText(),
+
+            'CMSCopyJobApplicant' => $cmsCopyRepository->findOneBy([
+                'name' => 'Introduction Email - Job Applicant'
+            ])->getContentText(),
+
+            'CMSCopyRecruiter' => $cmsCopyRepository->findOneBy([
+                'name' => 'Introduction Email - Recruiter'
+            ])->getContentText(),
         ]);
+
+
         $email = (new Email())
-            ->from('nurse_stephen@hotmail.com')
+            ->from($sender)
             ->to($user->getEmail())
-            ->cc('nurse_stephen@hotmail.com')
-            ->subject("Welcome to SN's personal website")
+            ->bcc('nurse_stephen@hotmail.com')
+            ->subject("Welcome to Stephen's personal website")
             ->html($html);
         $mailer->send($email);
         $referer = $request->server->get('HTTP_REFERER');
@@ -477,8 +502,7 @@ class UserController extends AbstractController
     public function recruiterEmailCV(\Symfony\Component\Security\Core\Security $security, MailerInterface $mailer, Request $request,
                                      UserRepository                            $userRepository, EntityManagerInterface $manager): Response
     {
-        if($request->isMethod('POST'))
-        {
+        if ($request->isMethod('POST')) {
             $recipientEmail = $_POST['email'];
         } else {
             $recipient = $security->getUser();
@@ -486,19 +510,19 @@ class UserController extends AbstractController
         }
 
 
-            $subject = "CV for Stephen Nurse";
-            $html = $this->renderView('template_parts/emailCV.html.twig', [
-                'content' => 'xxx',
-            ]);
-            $email = (new Email())
-                ->to($recipientEmail)
-                ->cc('nurse_stephen@hotmail.com')
-                ->subject($subject)
-                ->from('nurse_stephen@hotmail.com')
-                ->html($html);
-            $attachment_path = $this->getParameter('files_cv_directory') . "/StephenNurse_CV.pdf";
-            $email->attachFromPath($attachment_path);
-            $mailer->send($email);
+        $subject = "CV for Stephen Nurse";
+        $html = $this->renderView('template_parts/emailCV.html.twig', [
+            'content' => 'xxx',
+        ]);
+        $email = (new Email())
+            ->to($recipientEmail)
+            ->cc('nurse_stephen@hotmail.com')
+            ->subject($subject)
+            ->from('nurse_stephen@hotmail.com')
+            ->html($html);
+        $attachment_path = $this->getParameter('files_cv_directory') . "/StephenNurse_CV.pdf";
+        $email->attachFromPath($attachment_path);
+        $mailer->send($email);
 
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
