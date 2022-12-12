@@ -5,8 +5,8 @@
 {% block body %}
     <h1 style="color: red">Tourist Attractions</h1>
     {% if is_granted('ROLE_GUEST') %}
-    <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">+</a>
-{% endif %}
+        <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">+</a>
+    {% endif %}
 
 
     <a class="btn btn-outline-danger btn-sm" href="">Export All</a>
@@ -29,7 +29,8 @@
         {% for tourist_attraction in tourist_attractions %}
             <tr>
                 <td><a target="_blank"
-                       href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">{{ tourist_attraction.fullName }}</a></td>
+                       href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">{{ tourist_attraction.fullName }}</a>
+                </td>
                 <td>{{ tourist_attraction.email }}</td>
                 <td>{{ tourist_attraction.email2 }}</td>
                 <td>{{ tourist_attraction.businessPhone }}</td>
@@ -50,11 +51,16 @@
                 <td>
                     {% if tourist_attraction.businessStreet is not empty %}
                         <i class="fa fa-home"
-                           title="{{ tourist_attraction.businessStreet }} {{ tourist_attraction.BusinessCity }} {{ tourist_attraction.BusinessPostCode }}"></i>
+                           title="{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }},
+                                    {{ tourist_attraction.BusinessPostCode }}"></i>
                     {% endif %}
                 </td>
                 <td>{{ tourist_attraction.notes }}</td>
-                <td><a class="btn btn-outline-danger btn-sm" href="">VCF</a></td>
+                <td>
+                    <a class="btn btn-outline-info btn-sm"
+                       href="{{ path('create_vcard_user_ta',{'touristattractionid': tourist_attraction.id}) }}"><i
+                                style="font-size: 15px; color: blue" class="fas fa-address-card"></i></a>
+                </td>
             </tr>
 
         {% endfor %}

@@ -45,7 +45,7 @@ class PhotosController extends AbstractController
         ]);
         return $this->render('photos/showByLocation.html.twig', [
             'photos' => $photos,
-            'location' => $locationsRepository->findOneBy(['location' => $locationName])->getLocation(),
+            'location' => $locationsRepository->findOneBy(['location' => $locationName]),
             'photo_date' => $locationsRepository->findOneBy(['location' => $locationName])->getDate()
         ]);
     }

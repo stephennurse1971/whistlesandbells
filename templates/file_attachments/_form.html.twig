@@ -27,7 +27,13 @@
                 <a class="btn btn-sm btn-danger"
                    href="{{ path('file_attachments_delete_attachment', {'id': file_attachments.id })}} ">Delete attachment</a>
             {% endif %}
+            {% if file_attachments.attachments is null %}
             {{ form_row(form.attachments) }}
+            {% endif %}
+            {% if file_attachments.attachments is not null %}
+            <div class="mt-1"></div>
+            {{ form_row(form.additional) }}
+            {% endif %}
         </div>
     </div>
 </div>

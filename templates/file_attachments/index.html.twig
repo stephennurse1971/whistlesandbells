@@ -10,7 +10,7 @@
         <tr>
             <th style="width: 100px">Date</th>
             <th style="width: 500px">Description</th>
-            <th style="text-align: right; width: 50px">Attachment</th>
+            <th style="text-align: center; width: 50px">Attachment</th>
             <th style="width: 20px">Email</th>
             <th style="width: 20px">#</th>
         </tr>
@@ -20,7 +20,7 @@
             <tr>
                 <td data-sort='{{ file_attachment.date|date('Y-m-d') }}'>{{ file_attachment.date ? file_attachment.date|date('d-M-Y') : '' }}</td>
                 <td>{{ file_attachment.description }} </td>
-                <td style="text-align: right">
+                <td style="text-align: center">
                     {% if file_attachment.attachments is not empty %}
                         {% for attachment in file_attachment.attachments %}
                             <a title= "{{ attachment|raw }}" target="_blank"
@@ -35,7 +35,7 @@
                         File</a>
 
                 <td style="width: 250px">
-                    <a class="btn btn-outline-primary btn-sm"
+                    <a target="_blank" class="btn btn-outline-primary btn-sm"
                        href="{{ path('file_attachments_edit', {'id': file_attachment.id}) }}">Edit</a>
                     <form class="d-inline" method="post"
                           action="{{ path('file_attachments_delete', {'id': file_attachment.id}) }}"

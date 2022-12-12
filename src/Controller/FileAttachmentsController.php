@@ -74,6 +74,7 @@ class FileAttachmentsController extends AbstractController
     {
         $fileAttachment = new FileAttachments();
         $form = $this->createForm(FileAttachmentsType::class, $fileAttachment);
+        $form->remove('additional');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -118,21 +119,53 @@ class FileAttachmentsController extends AbstractController
     public function edit(int $id, Request $request, FileAttachments $fileAttachments): Response
     {
         $form = $this->createForm(FileAttachmentsType::class, $fileAttachments, ['id' => $id]);
+        if(empty($fileAttachments->getAttachments())){
+            $form->remove('additional');
+        }
+        else{
+            $form->remove('attachments');
+        }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $attachments = $form['attachments']->getData();
-            if ($attachments) {
-                $files_name = [];
-                $attachment_directory = $this->getParameter('file_attachments_directory');
-                foreach ($attachments as $attachment) {
-                    $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
-                    $file_extension = $attachment->guessExtension();
-                    $newFileName = $fileName . "." . $file_extension;
-                    $attachment->move($attachment_directory, $newFileName);
-                    $files_name[] = $newFileName;
+            if(!empty($fileAttachments->getAttachments())) {
+                $attachments = $form['additional']->getData();
+                if ($attachments) {
+                    $files_name = [];
+                    $attachment_directory = $this->getParameter('file_attachments_directory');
+                    foreach ($attachments as $attachment) {
+                        $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                        $file_extension = $attachment->guessExtension();
+                        $newFileName = $fileName . "." . $file_extension;
+                        $attachment->move($attachment_directory, $newFileName);
+                        $files_name[] = $newFileName;
+                    }
+                    $previous_files = $fileAttachments->getAttachments();
+                    if (!empty($previous_files)) {
+                        $files = array_merge($previous_files, $files_name);
+                    } else {
+                        $files = array_merge($files_name);
+                    }
+
+                    $fileAttachments->setAttachments($files);
                 }
-                $fileAttachments->setAttachments($files_name);
             }
+            if(empty($fileAttachments->getAttachments())) {
+                $attachments = $form['attachments']->getData();
+                if ($attachments) {
+                    $files_name = [];
+                    $attachment_directory = $this->getParameter('file_attachments_directory');
+                    foreach ($attachments as $attachment) {
+                        $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                        $file_extension = $attachment->guessExtension();
+                        $newFileName = $fileName . "." . $file_extension;
+                        $attachment->move($attachment_directory, $newFileName);
+                        $files_name[] = $newFileName;
+                    }
+                    $fileAttachments->setAttachments($files_name);
+                }
+            }
+
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('/admin/fileattachments/index');

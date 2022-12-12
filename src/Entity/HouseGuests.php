@@ -28,10 +28,7 @@ class HouseGuests
      */
     private $guestName;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $roomCount;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -72,19 +69,7 @@ class HouseGuests
         return $this;
     }
 
-    public function getRoomCount(): ?int
-    {
-        return $this->roomCount;
-    }
-
-    public function setRoomCount(int $roomCount): self
-    {
-        $this->roomCount = $roomCount;
-
-        return $this;
-    }
-
-    public function getNotes(): ?string
+      public function getNotes(): ?string
     {
         return $this->notes;
     }

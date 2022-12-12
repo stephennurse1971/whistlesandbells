@@ -15,11 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FileAttachmentsType extends AbstractType
 {
-    public function __construct()
-    {
-      //  $this->chaveyDownRepository = $chaveyDownRepository;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -35,7 +30,12 @@ class FileAttachmentsType extends AbstractType
                 'required'=>false,
                 'multiple'=>true,
             ])
-
+            ->add('additional',FileType::class,[
+                'label'=>'Add New File',
+                'mapped'=>false,
+                'required'=>false,
+                'multiple'=>true,
+            ])
         ;
     }
 

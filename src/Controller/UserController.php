@@ -535,11 +535,12 @@ class UserController extends AbstractController
      */
     public function createVcardUser(int $userid, UserRepository $userRepository)
     {
+
         $user = $userRepository->find($userid);
         $vcard = new VCard();
         $userFirstName = $user->getFirstName();
         $userLastName = $user->getLastName();
-        $vcard->addName($userFirstName, $userLastName);
+        $vcard->addName($userLastName, $userFirstName);
         $vcard->addEmail($user->getEmail())
             ->addJobtitle($user->getJobTitle())
             ->addBirthday($user->getBirthday())

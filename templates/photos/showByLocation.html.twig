@@ -15,11 +15,13 @@
             max-height: 100%;
         }
     </style>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-success btn-sm mt-2" href="{{ path('photos_new', {location:location }) }}">Add photos</a>
+    {% if is_granted('ROLE_ADMIN') or app.user.id in location.enabledUsers  %}
+        <a class="btn btn-success btn-sm mt-2" href="{{ path('photos_new', {location:location.location }) }}">Add photos</a>
     {% endif %}
+    <a class="btn btn-primary btn-sm mt-2" href="{{ path('photos_index') }}">Back to List</a>
+
     <div>
-        <h1 style="color: red">{{ location }} - ({{ photo_date|date('M-Y') }}) </h1> <br><br>
+        <h1 style="color: red">{{ location.location }} - ({{ photo_date|date('M-Y') }}) </h1> <br><br>
     </div>
 
     {% if photos is empty %}

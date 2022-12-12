@@ -21,8 +21,8 @@ class HouseGuestPerDayList
             {
                 $per_day_guests_list[]=[
                     'date'=>$date->format('d-m-y'),
-                    'roomCount'=>$list->getRoomCount(),
-                    'guest'=> $list->getGuestName()
+                    'guest'=> $list->getGuestName(),
+                    'notes'=>$list->getNotes()
                 ];
                 $date = $date->modify("+1 day");
             }

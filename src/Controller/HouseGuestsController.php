@@ -74,7 +74,6 @@ class HouseGuestsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($houseGuest);
             $entityManager->flush();
-
             return $this->redirectToRoute('house_guests_index');
         }
 

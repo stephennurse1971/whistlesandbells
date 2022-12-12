@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>Attachment Upload</h2>
+
+        {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
+            {{ form_row(form.date) }}
+            {{ form_row(form.description) }}
+        {% else %}
+            {{ form_row(form.date,{'attr':{'readonly':'true'}}) }}
+            {{ form_row(form.description,{'attr':{'readonly':'true'}}) }}
+        {% endif %}
+    </div>
+
+
+    <div class="col-12">
+        <div class="col-3" style="padding-left: 0px">
+            {{ form_row(form.attachments) }}
+        </div>
+    </div>
+</div>
+
+
+<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

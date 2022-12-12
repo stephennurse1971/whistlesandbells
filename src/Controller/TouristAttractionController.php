@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\TouristAttraction;
 use App\Form\TouristAttractionType;
 use App\Repository\TouristAttractionRepository;
+use App\Repository\UserRepository;
+use JeroenDesloovere\VCard\VCard;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -97,4 +99,35 @@ class TouristAttractionController extends AbstractController
 
         return $this->redirectToRoute('tourist_attraction_index');
     }
+
+
+    /**
+     * @Route("/create/VcarduserTA/{touristattractionid}", name="create_vcard_user_ta")
+     */
+    public function createVcardUserTA(int $touristattractionid, TouristAttractionRepository $touristAttractionRepository)
+    {
+
+        $touristattraction = $touristAttractionRepository->find($touristattractionid);
+        $vcard = new VCard();
+        $userFirstName = $touristattraction->getFirstName();
+        $userLastName = $touristattraction->getLastName();
+        $vcard->addName($userLastName, $userFirstName);
+        $vcard->addEmail($touristattraction->getEmail())
+            ->addEmail($touristattraction->getEmail2())
+            ->addCompany($touristattraction->getCompany())
+            ->addAddress('London', 'A123', 'street', 'worktown', null, 'workpostcode',
+                'Belgium','Work')
+           // ->addAddress($touristattraction->getBusinessStreet(), 'street')
+          //  ->addAddress($touristattraction->getBusinessCity(), 'city')
+         //   ->addAddress($touristattraction->getBusinessPostCode(), 'zip')
+         //   ->addAddress($touristattraction->getCountry()->getCountry())
+            ->addPhoneNumber($touristattraction->getBusinessPhone(), 'work')
+            ->addPhoneNumber($touristattraction->getMobile(), 'home')
+            ->addURL($touristattraction->getWebPage())
+           ->addNote($touristattraction->getNotes());
+        $vcard->download();
+        return new Response(null);
+    }
+
+
 }
