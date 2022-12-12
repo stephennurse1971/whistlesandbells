@@ -31,7 +31,6 @@ class HouseGuestsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
             ])
-            ->add('roomCount')
             ->add('notes')
         ;
     }
