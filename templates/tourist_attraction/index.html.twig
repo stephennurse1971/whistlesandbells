@@ -8,66 +8,88 @@
         <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">+</a>
     {% endif %}
 
+    <a class="btn btn-outline-danger btn-sm" href="">Import from Outlook</a>
+    <a class="btn btn-outline-danger btn-sm" href="">Export To CSV</a>
 
-    <a class="btn btn-outline-danger btn-sm" href="">Export All</a>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Email2</th>
-            <th>Landline</th>
-            <th>Mobile</th>
-            <th>WebPage</th>
-            <th>Address</th>
-            <th>Notes</th>
-            <th>#</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for tourist_attraction in tourist_attractions %}
+    {% for type in types %}
+        <h2 style="color: red"> {{ type }}</h2>
+        <table class="table table-responsive">
+            <thead>
             <tr>
-                <td><a target="_blank"
-                       href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">{{ tourist_attraction.fullName }}</a>
-                </td>
-                <td>{{ tourist_attraction.email }}</td>
-                <td>{{ tourist_attraction.email2 }}</td>
-                <td>{{ tourist_attraction.businessPhone }}</td>
-                <td>{{ tourist_attraction.mobile }}</td>
-                <td>
-                    {% if tourist_attraction.webPage is not empty %}
-                        {% if tourist_attraction.webPage starts with 'http' %}
-                            {% set web = tourist_attraction.webPage %}
-                        {% else %}
-                            {% set web = 'https://'~tourist_attraction.webPage %}
-                        {% endif %}
-                        <a target="_blank" title="{{ tourist_attraction.webPage }}" href="{{ web }}">
-                            <i class="fa fa-globe"></i>
-                        </a>
-                    {% endif %}
-                </td>
-
-                <td>
-                    {% if tourist_attraction.businessStreet is not empty %}
-                        <i class="fa fa-home"
-                           title="{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }},
-                                    {{ tourist_attraction.BusinessPostCode }}"></i>
-                    {% endif %}
-                </td>
-                <td>{{ tourist_attraction.notes }}</td>
-                <td>
-                    <a class="btn btn-outline-info btn-sm"
-                       href="{{ path('create_vcard_user_ta',{'touristattractionid': tourist_attraction.id}) }}"><i
-                                style="font-size: 15px; color: blue" class="fas fa-address-card"></i></a>
-                </td>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Email2</th>
+                <th>Landline</th>
+                <th>Mobile</th>
+                <th>WebPage</th>
+                <th>Address</th>
+                <th style="text-align: center">GPS</th>
+                <th>Notes</th>
+                <th>#</th>
             </tr>
-
-        {% endfor %}
-        </tbody>
-    </table>
-
-
+            </thead>
+            <tbody>
+            {% for tourist_attraction in tourist_attractions %}
+                {% if type == tourist_attraction.type %}
+                    <tr>
+                        <td>
+                            {% if tourist_attraction.photo is not null %}
+                                {% set loc = asset('administration/attachments/touristattractionphotos')~"/"~tourist_attraction.photo %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">
+                                    <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                            {% endif %}
+                        </td>
+                        <td><a target="_blank"
+                               href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">{{ tourist_attraction.fullName }}</a>
+                        </td>
+                        <td>{{ tourist_attraction.email }}</td>
+                        <td>{{ tourist_attraction.email2 }}</td>
+                        <td>{{ tourist_attraction.businessPhone }}</td>
+                        <td>{{ tourist_attraction.mobile }}</td>
+                        <td>
+                            {% if tourist_attraction.webPage is not empty %}
+                                {% if tourist_attraction.webPage starts with 'http' %}
+                                    {% set web = tourist_attraction.webPage %}
+                                {% else %}
+                                    {% set web = 'https://'~tourist_attraction.webPage %}
+                                {% endif %}
+                                <a target="_blank" title="{{ tourist_attraction.webPage }}" href="{{ web }}">
+                                    <i class="fa fa-globe"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if tourist_attraction.businessStreet is not empty %}
+                                <i class="fa fa-home"
+                                   title="{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }},
+                                    {{ tourist_attraction.BusinessPostCode }}"></i>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if tourist_attraction.gpsLocation is not empty %}
+                                <a target="_blank"
+                                   href="{{ path('show_location_google_maps',{pin:tourist_attraction.gpsLocation}) }}">
+                                    <i class='fas fa-map-marker-alt text-danger'></i></a>
+                            {% endif %}
+                        </td>
+                        </td>
+                        <td>{{ tourist_attraction.notes }}</td>
+                        <td>
+                            <a class="btn btn-outline-info btn-sm"
+                               href="{{ path('create_vcard_user_ta',{'touristattractionid': tourist_attraction.id}) }}"><i
+                                        style="font-size: 15px; color: blue" class="fas fa-address-card"></i></a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <hr>
+        <br>
+    {% endfor %}
 {% endblock %}
 
 {% block datatable %}
@@ -75,9 +97,9 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'desc']],
+                "order": [[1, 'desc']],
                 "paging": false,
-                "searching": true,
+                "searching": false,
                 "bInfo": false
             });
         });

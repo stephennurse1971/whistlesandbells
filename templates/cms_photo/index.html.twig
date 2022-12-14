@@ -26,6 +26,7 @@
             {% if cms_photo.sitePage == site_page %}
             <tr>
                 <td>
+
                     {% set loc = asset('administration/attachments/websitephotos')~"/"~cms_photo.photo %}
                     <a class="btn btn-outline-danger btn-sm" target="_blank" href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
                     <img height="50" width="50" src="{{ loc }}"class="rounded-circle"></a>

@@ -6,6 +6,8 @@ use App\Entity\Country;
 use App\Entity\TouristAttraction;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,10 +23,28 @@ class TouristAttractionType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('company')
+            ->add('type', ChoiceType::class, [
+                'multiple' => false,
+                'required' =>false,
+                'expanded' => false,
+                'choices' => [
+                    'Beach' => 'Beach',
+                    'Historical interest' => 'Historical interest',
+                    'Hotel' => 'Hotel',
+                    'Restaurant' => 'Restaurant',
+                    'Cafe' => 'Cafe',
+                    'Sport venue' => 'Sport venue',
+                    'Cycling Stop' => 'Cycling Stop',
+                    'Shop' => 'Shop'
+                ],])
             ->add('businessPhone')
             ->add('webPage')
             ->add('notes')
-            ->add('photo')
+            ->add('photo', FileType::class, [
+                'label' => 'Photo',
+                'mapped' => false,
+                'required' => false
+            ])
             ->add('businessStreet')
             ->add('businessCity')
             ->add('businessPostCode')
@@ -34,6 +54,7 @@ class TouristAttractionType extends AbstractType
                 'required' => true,
                 'empty_data' => null,
             ])
+            ->add('gpsLocation')
         ;
     }
 

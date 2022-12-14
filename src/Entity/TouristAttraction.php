@@ -92,6 +92,16 @@ class TouristAttraction
      */
     private $BusinessPostCode;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $gpsLocation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -273,6 +283,30 @@ class TouristAttraction
     public function setBusinessPostCode(?string $BusinessPostCode): self
     {
         $this->BusinessPostCode = $BusinessPostCode;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getGpsLocation(): ?string
+    {
+        return $this->gpsLocation;
+    }
+
+    public function setGpsLocation(?string $gpsLocation): self
+    {
+        $this->gpsLocation = $gpsLocation;
 
         return $this;
     }

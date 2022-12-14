@@ -1,3 +1,4 @@
+<button class="btn btn-primary btn-sm" onclick="getLocation()">Get Current Co-ordinates</button>
 {{ form_start(form) }}
 
 <div class="row">
@@ -7,6 +8,19 @@
         {{ form_row(form.lastName) }}
         {{ form_row(form.full_name) }}
         {{ form_row(form.company) }}
+        {{ form_row(form.type) }}
+
+        <strong style="color: blue">
+            {% if tourist_attraction.photo is not null %}
+                {{ tourist_attraction.photo }}
+            {% endif %}
+        </strong>
+        <br>
+        {% if tourist_attraction.photo is not empty %}
+            <a class="btn btn-sm btn-danger"
+               href="{{ path('tourist_attraction_delete_photo', {'id': tourist_attraction.id }) }} ">Delete photo</a>
+        {% endif %}
+
         {{ form_row(form.photo) }}
     </div>
 
@@ -16,6 +30,7 @@
         {{ form_row(form.businessCity) }}
         {{ form_row(form.businessPostCode) }}
         {{ form_row(form.country) }}
+        {{ form_row(form.gpsLocation) }}
         <br>
 
     </div>
@@ -36,6 +51,24 @@
 </div>
 <hr>
 
-
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+{% block additionaljs %}
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showLocation);
+            } else {
+                $('#tourist_attraction_gpsLocation').html('Geolocation is not supported by this browser.');
+            }
+        }
+
+        function showLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var pin = latitude + "," + longitude;
+            $("#tourist_attraction_gpsLocation").val(pin).change();
+        }
+    </script>
+{% endblock %}
