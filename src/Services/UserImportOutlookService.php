@@ -57,6 +57,7 @@ class UserImportOutlookService
         }
 
         foreach ($alldatatsFromCsv as $oneLineFromCsv) {
+
             $salutation = trim($oneLineFromCsv[0]);
             $firstName = trim($oneLineFromCsv[1]);
             $lastName = trim($oneLineFromCsv[3]);
@@ -114,6 +115,11 @@ class UserImportOutlookService
             if (!$email) {
                 continue;
             }
+
+            if ($company == "Personal - Cyprus Tourist Attraction") {
+                continue;
+            }
+
 
             $user = $this->userRepository->findOneBy(['email' => $email]);
 

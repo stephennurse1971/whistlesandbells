@@ -66,12 +66,22 @@ class UserController extends AbstractController
      */
     public function indexAddresses(UserRepository $userRepository): Response
     {
+        $users = $userRepository->findAll();
+        $users_container = [];
+        foreach ($users as $user) {
+            if ($user->getHomeStreet() != '' or $user->getHomeCity() != '' or $user->getHomeCountry() != '' or $user->getHomePostalCode() != ''
+                or $user->getBusinessStreet() != '' or $user->getBusinessCity() != '' or $user->getBusinessCountry() != '' or $user->getBusinessPostalCode() != '') {
+                $users_container[] = $user;
+            }
+        }
+
         return $this->render('user/indexAddresses.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users_container,
             'role' => 'All',
             'role_title' => 'All'
         ]);
     }
+
 
     /**
      * @Route("/telnumbers", name="user_index_telnumbers", methods={"GET"})
@@ -133,6 +143,18 @@ class UserController extends AbstractController
             'role' => "Personal"
         ]);
     }
+
+    /**
+     * @Route("/group/FestiveMessage", name="user_festiveMessage", methods={"GET"})
+     */
+    public function indexFestiveMessage(UserRepository $userRepository): Response
+    {
+        return $this->render('user/indexFestiveMessage.html.twig', [
+            'users' => $userRepository->findByCompany('Personal'),
+            'role' => "Personal"
+        ]);
+    }
+
 
     /**
      * @Route("/group/Birthdays", name="user_birthdays", methods={"GET"})
@@ -347,6 +369,22 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/festive/message/{id}/{active}/edit", name="user_edit_festive_message", methods={"GET","POST"})
+     */
+    public function editFestiveMessageSetting(string $active, Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        if ($active == 1) {
+            $user->setFestiveMessage('1');
+        } else {
+            $user->setFestiveMessage('');
+        }
+
+        $entityManager->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
+    /**
      * @Route("/admin/{id}", name="user_delete", methods={"POST"})
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
      */
@@ -405,6 +443,36 @@ class UserController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);
     }
+
+    /**
+     * @Route("/{userid}/festive-email", name="user_festive_email", methods={"GET"})
+     */
+    public function festiveEmail(EntityManagerInterface $manager,int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
+    {
+        $sender = $staticTextRepository->find(1)->getEmailAddress();
+        $user = $userRepository->find($userid);
+        $today = new \DateTime('now');
+        $user->setFestiveMessageDate($today);
+        $html = $this->renderView('emails/festive_email.html.twig', [
+            'user' => $user,
+            'CMSCopyContact' => $cmsCopyRepository->findOneBy([
+                'name' => 'Festive Message'
+            ])->getContentText(),
+        ]);
+
+        $email = (new Email())
+            ->from($sender)
+            ->to($user->getEmail())
+            ->bcc('nurse_stephen@hotmail.com')
+            ->subject("Happy Christmas")
+            ->html($html);
+        $mailer->send($email);
+        $manager->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
+
 
     /**
      * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
@@ -508,8 +576,6 @@ class UserController extends AbstractController
             $recipient = $security->getUser();
             $recipientEmail = $recipient->getEmail();
         }
-
-
         $subject = "CV for Stephen Nurse";
         $html = $this->renderView('template_parts/emailCV.html.twig', [
             'content' => 'xxx',
@@ -535,7 +601,6 @@ class UserController extends AbstractController
      */
     public function createVcardUser(int $userid, UserRepository $userRepository)
     {
-
         $user = $userRepository->find($userid);
         $vcard = new VCard();
         $userFirstName = $user->getFirstName();

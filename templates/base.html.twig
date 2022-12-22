@@ -164,11 +164,10 @@
                                 Come Visit
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="">Cyprus</a>
+                                <a class="dropdown-item" href="{{ path('cyprus') }}">Cyprus</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('house_guests_index') }}">House Guest</a>
-{#                                <a class="dropdown-item" href="{{ path('house_guests_index_simple') }}">House Guest#}
-{#                                    (simple)</a>#}
+
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('tourist_attraction_index') }}">Tourist
                                     attractions</a>
@@ -303,6 +302,7 @@
                                    href="{{ path('user_role_index',{'role':'ROLE_GUEST'}) }}">Guest</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('user_personal') }}">Personal</a>
+                                <a class="dropdown-item" href="{{ path('user_festiveMessage') }}">Festive</a>
                                 <a class="dropdown-item" href="{{ path('user_ax') }}">AX</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('user_birthdays') }}">Birthdays</a>

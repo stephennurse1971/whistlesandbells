@@ -63,6 +63,12 @@ class UserType extends AbstractType
             ])
             ->add('webPage')
             ->add('notes')
+            ->add('festiveMessage')
+            ->add('festiveMessageDate', DateType::class, [
+                'widget' => 'single_text',
+                'required' => false
+            ])
+
             ->add('password', PasswordType::class, [
                 'mapped' => false,
             ])

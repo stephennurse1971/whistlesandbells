@@ -2,18 +2,25 @@
 
 namespace App\Controller;
 
+use App\Entity\CmsPhoto;
 use App\Entity\FileAttachments;
 use App\Entity\TouristAttraction;
+use App\Form\ImportType;
 use App\Form\TouristAttractionType;
 use App\Repository\LocationPinRepository;
 use App\Repository\TouristAttractionRepository;
 use App\Repository\UserRepository;
+use App\Services\TouristAttractionImportOutlookService;
+use App\Services\UserImportGrapevineService;
+use App\Services\UserImportOutlookService;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/tourist/attraction")
@@ -25,8 +32,20 @@ class TouristAttractionController extends AbstractController
      */
     public function index(TouristAttractionRepository $touristAttractionRepository): Response
     {
-        $types = ['Beach','Historical interest','Hotel','Restaurant','Cafe','Sport venue','Cycling Stop','Shop'];
+        $types = ['Beach', 'Historical interest', 'Hotel', 'Restaurant', 'Cafe','Admin Services', 'Sport', 'Cycling Stop', 'Shop', 'Taxi', 'TBD'];
         return $this->render('tourist_attraction/index.html.twig', [
+            'tourist_attractions' => $touristAttractionRepository->findAll(),
+            'types' => $types
+        ]);
+    }
+
+    /**
+     * @Route("/by/place", name="tourist_attraction_index_by_place", methods={"GET"})
+     */
+    public function indexByPlace(TouristAttractionRepository $touristAttractionRepository): Response
+    {
+        $types = ['Beach', 'Historical interest', 'Hotel', 'Restaurant', 'Cafe', 'Sport venue', 'Cycling Stop', 'Shop', 'TBD'];
+        return $this->render('tourist_attraction/indexByPlace.html.twig', [
             'tourist_attractions' => $touristAttractionRepository->findAll(),
             'types' => $types
         ]);
@@ -46,11 +65,11 @@ class TouristAttractionController extends AbstractController
                 $files_name = [];
                 $photo_directory = $this->getParameter('tourist_attraction_photos_directory');
 
-                    $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                    $file_extension = $photo->guessExtension();
-                    $newFileName = $fileName . "." . $file_extension;
-                    $photo->move($photo_directory, $newFileName);
-                    $touristAttraction->setPhoto($newFileName);
+                $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $file_extension = $photo->guessExtension();
+                $newFileName = $fileName . "." . $file_extension;
+                $photo->move($photo_directory, $newFileName);
+                $touristAttraction->setPhoto($newFileName);
             }
             $firstName = $touristAttraction->getFirstName();
             $lastName = $touristAttraction->getLastName();
@@ -118,7 +137,7 @@ class TouristAttractionController extends AbstractController
      */
     public function delete(Request $request, TouristAttraction $touristAttraction): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$touristAttraction->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $touristAttraction->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($touristAttraction);
             $entityManager->flush();
@@ -127,6 +146,19 @@ class TouristAttractionController extends AbstractController
         return $this->redirectToRoute('tourist_attraction_index');
     }
 
+    /**
+     * @Route("/delete/delete_all", name="tourist_attraction_delete_all")
+     */
+    public function deleteAllTouristAttractions(TouristAttractionRepository $touristAttractionRepository)
+    {
+        $touristAttractions = $touristAttractionRepository->findAll();
+        foreach ($touristAttractions as $touristAttraction) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($touristAttraction);
+                $entityManager->flush();
+        }
+        return $this->redirectToRoute('tourist_attraction_index');
+    }
 
     /**
      * @Route("/create/VcarduserTA/{touristattractionid}", name="create_vcard_user_ta")
@@ -141,16 +173,18 @@ class TouristAttractionController extends AbstractController
         $vcard->addEmail($touristattraction->getEmail())
             ->addEmail($touristattraction->getEmail2())
             ->addCompany($touristattraction->getCompany())
-            ->addAddress('London', 'A123', 'street', 'worktown', null, 'workpostcode',
-                'Belgium','Work')
-           // ->addAddress($touristattraction->getBusinessStreet(), 'street')
-          //  ->addAddress($touristattraction->getBusinessCity(), 'city')
-         //   ->addAddress($touristattraction->getBusinessPostCode(), 'zip')
-         //   ->addAddress($touristattraction->getCountry()->getCountry())
+            ->addAddress('TBC', null,
+                $touristattraction->getBusinessStreet(),
+                $touristattraction->getBusinessCity(),
+                null,
+                $touristattraction->getBusinessPostCode(),
+                $touristattraction->getCountry()->getCountry())
+            ->addAddress($touristattraction->getBusinessPostCode(), 'zip')
+            ->addAddress($touristattraction->getCountry()->getCountry())
             ->addPhoneNumber($touristattraction->getBusinessPhone(), 'work')
             ->addPhoneNumber($touristattraction->getMobile(), 'home')
-            ->addURL($touristattraction->getWebPage())
-           ->addNote($touristattraction->getNotes());
+            ->addURL("https://www.example.com")
+            ->addNote($touristattraction->getNotes());
         $vcard->download();
         return new Response(null);
     }
@@ -158,14 +192,15 @@ class TouristAttractionController extends AbstractController
     /**
      * @Route("/gps/GoogleMap/show/{pin}", name="show_location_google_maps", methods={"GET"})
      */
-    public function showMap(String $pin,TouristAttractionRepository $touristAttractionRepository): Response
+    public function showMap(string $pin, TouristAttractionRepository $touristAttractionRepository): Response
     {
-        $get_latitude_longitude = explode(',',$pin);
+        $get_latitude_longitude = explode(',', $pin);
         return $this->render('tourist_attraction/GpsGoogleMaps.html.twig', [
-            'latitude'=>$get_latitude_longitude[0],
-            'longitude'=>$get_latitude_longitude[1]
+            'latitude' => $get_latitude_longitude[0],
+            'longitude' => $get_latitude_longitude[1]
         ]);
     }
+
     /**
      * @Route("/{id}/delete/attachment", name="tourist_attraction_delete_photo")
      */
@@ -175,5 +210,45 @@ class TouristAttractionController extends AbstractController
         $touristAttraction->setPhoto(null);
         $entityManager->flush();
         return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/touristattraction/importCyprusAHContacts", name="cyprusTouristAttractionImport")
+     */
+    public function userImportTouristAttraction(Request $request, SluggerInterface $slugger, TouristAttractionImportOutlookService $touristAttractionImportOutlookService): Response
+    {
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('File')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . 'csv';
+                try {
+                    $importFile->move(
+                        $this->getParameter('user_attachments_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+                $touristAttractionImportOutlookService->importTouristAttraction($newFilename);
+                return $this->redirectToRoute('tourist_attraction_index');
+            }
+        }
+        return $this->render('admin/import/index.html.twig', [
+            'form' => $form->createView(),
+            'heading' => 'Cyprus Tourist Attractions'
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/viewphoto", name="touristattraction_view_photo")
+     */
+    public function viewTouristAttractionPhotoFile(int $id, TouristAttraction $touristAttraction, EntityManagerInterface $entityManager)
+    {
+        $imagename = $touristAttraction->getPhoto();
+        return $this->render('static_text/image_view.html.twig', ['imagename' => $imagename]);
     }
 }

@@ -40,6 +40,16 @@ class HouseGuests
      */
     private $dateDeparture;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $departureNotes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $arrivalNotes;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +99,30 @@ class HouseGuests
     public function setDateDeparture(?\DateTimeInterface $dateDeparture): self
     {
         $this->dateDeparture = $dateDeparture;
+
+        return $this;
+    }
+
+    public function getDepartureNotes(): ?string
+    {
+        return $this->departureNotes;
+    }
+
+    public function setDepartureNotes(?string $departureNotes): self
+    {
+        $this->departureNotes = $departureNotes;
+
+        return $this;
+    }
+
+    public function getArrivalNotes(): ?string
+    {
+        return $this->arrivalNotes;
+    }
+
+    public function setArrivalNotes(?string $arrivalNotes): self
+    {
+        $this->arrivalNotes = $arrivalNotes;
 
         return $this;
     }

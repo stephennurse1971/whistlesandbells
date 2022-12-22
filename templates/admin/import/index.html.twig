@@ -6,10 +6,14 @@
 
 
     <h1 class="text-danger">Import from CSV files ({{ heading }})</h1>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success" type="submit">Import</button>
-    {{ form_end(form) }}
+    <div class="row">
+        <div class="col-4">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-success" type="submit">Import</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -17,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             bsCustomFileInput.init();
         });
     </script>

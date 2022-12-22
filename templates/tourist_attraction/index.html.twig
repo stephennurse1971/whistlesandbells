@@ -3,17 +3,31 @@
 {% block title %}Tourist Attractions{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Tourist Attractions</h1>
-    {% if is_granted('ROLE_GUEST') %}
-        <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">+</a>
-    {% endif %}
+    <h1 style="color: red">Tourist Attractions - By Type</h1>
+    <div class="row">
+        <div class="col-4">
+            {% if is_granted('ROLE_GUEST') %}
+                <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">+</a>
+                <a class="btn btn btn-secondary btn-sm" href="{{ path('tourist_attraction_index_by_place') }}">By
+                    Place</a>
+            {% endif %}
+        </div>
 
-    <a class="btn btn-outline-danger btn-sm" href="">Import from Outlook</a>
-    <a class="btn btn-outline-danger btn-sm" href="">Export To CSV</a>
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('cyprusTouristAttractionImport') }}">Import from Outlook</a>
+                <a class="btn btn-danger btn-sm" href="{{ path('tourist_attraction_delete_all') }}">Delete All</a>
+            {% endif %}
+            <a target="_blank" class="btn btn-outline-danger btn-sm" href="{{ path('app_home') }}">Export To CSV</a>
+        </div>
+    </div>
+    <hr>
 
     {% for type in types %}
         <h2 style="color: red"> {{ type }}</h2>
-        <table class="table table-responsive">
+        <table class="table ">
             <thead>
             <tr>
                 <th>Photo</th>
@@ -26,7 +40,10 @@
                 <th>Address</th>
                 <th style="text-align: center">GPS</th>
                 <th>Notes</th>
-                <th>#</th>
+                <th>VCF</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>Delete</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -37,18 +54,23 @@
                             {% if tourist_attraction.photo is not null %}
                                 {% set loc = asset('administration/attachments/touristattractionphotos')~"/"~tourist_attraction.photo %}
                                 <a class="btn btn-outline-danger btn-sm" target="_blank"
-                                   href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">
+                                   href="{{ path('touristattraction_view_photo', {'id': tourist_attraction.id}) }}">
                                     <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
                             {% endif %}
                         </td>
-                        <td><a target="_blank"
-                               href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">{{ tourist_attraction.fullName }}</a>
+                        <td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a target="_blank"
+                                   href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">{{ tourist_attraction.fullName }}</a>
+                            {% else %}
+                                {{ tourist_attraction.fullName }}
+                            {% endif %}
                         </td>
                         <td>{{ tourist_attraction.email }}</td>
                         <td>{{ tourist_attraction.email2 }}</td>
                         <td>{{ tourist_attraction.businessPhone }}</td>
                         <td>{{ tourist_attraction.mobile }}</td>
-                        <td>
+                        <td style="text-align: center">
                             {% if tourist_attraction.webPage is not empty %}
                                 {% if tourist_attraction.webPage starts with 'http' %}
                                     {% set web = tourist_attraction.webPage %}
@@ -60,11 +82,10 @@
                                 </a>
                             {% endif %}
                         </td>
-                        <td>
+                        <td style="text-align: center">
                             {% if tourist_attraction.businessStreet is not empty %}
                                 <i class="fa fa-home"
-                                   title="{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }},
-                                    {{ tourist_attraction.BusinessPostCode }}"></i>
+                                   title="{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }}, {{ tourist_attraction.BusinessPostCode }}"></i>
                             {% endif %}
                         </td>
                         <td style="text-align: center">
@@ -74,13 +95,24 @@
                                     <i class='fas fa-map-marker-alt text-danger'></i></a>
                             {% endif %}
                         </td>
-                        </td>
                         <td>{{ tourist_attraction.notes }}</td>
-                        <td>
+                        <td style="text-align: center">
                             <a class="btn btn-outline-info btn-sm"
                                href="{{ path('create_vcard_user_ta',{'touristattractionid': tourist_attraction.id}) }}"><i
-                                        style="font-size: 15px; color: blue" class="fas fa-address-card"></i></a>
+                                        style="font-size: 15px; color: blue" class="fas fa-credit-card"></i></a>
                         </td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td style="text-align: center">
+                                <form method="post"
+                                      action="{{ path('tourist_attraction_delete', {'id': tourist_attraction.id}) }}">
+                                    <input type="hidden" name="_token"
+                                           value="{{ csrf_token('delete' ~ tourist_attraction.id) }}">
+                                    <button class="btn btn-danger btn-sm">
+                                        <i style="font-size: 15px" class="fas fa-trash "></i>
+                                    </button>
+                                </form>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -97,7 +129,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[1, 'desc']],
+                "order": [[1, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

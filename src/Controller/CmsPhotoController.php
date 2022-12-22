@@ -148,5 +148,4 @@ class CmsPhotoController extends AbstractController
         return $this->render('static_text/image_view.html.twig', ['imagename' => $imagename]);
     }
 
-
 }

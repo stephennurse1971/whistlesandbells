@@ -25,8 +25,6 @@ class PhotosController extends AbstractController
     {
         $photos = $photosRepository->findAll();
         $photolocations = $photoLocationsRepository->findAll();
-
-
         return $this->render('photos/index.html.twig', [
             'photos' => $photos,
             'locations' => $photolocations

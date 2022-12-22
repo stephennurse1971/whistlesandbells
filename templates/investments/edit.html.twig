@@ -11,8 +11,6 @@
 
     {{ include('investments/_delete_form.html.twig') }}
     <br>
-    <br>
-    <br>
 
 {% endblock %}
 
@@ -20,18 +18,22 @@
     <script>
     var numberOfShares = $("#investments_numberOfShares").val();
     var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
+    var investmentAmount = $("#investments_investmentAmount").val();
 
-    if(numberOfShares != '' && purchaseSharePrice != '' ) {
-        var investmentAmount = parseFloat(numberOfShares) * parseFloat(purchaseSharePrice);
-        $("#investments_investmentAmount").val(investmentAmount).change();
+
+
+    if(numberOfShares != '' && investmentAmount != '' ) {
+        var purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+        $("#investments_numberOfShares").val(investmentAmount).change();
     }
     else
     {
-        $("#investments_investmentAmount").val(null).change();
+        $("#investments_numberOfShares").val(null).change();
     }
-    $("#investments_numberOfShares").change(function () {
+    $("#investments_investmentAmount").change(function () {
         var numberOfShares = $("#investments_numberOfShares").val();
         var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
+
         if(numberOfShares != '' && purchaseSharePrice != '' ) {
         var investmentAmount = parseFloat(numberOfShares) * parseFloat(purchaseSharePrice);
         $("#investments_investmentAmount").val(investmentAmount).change();

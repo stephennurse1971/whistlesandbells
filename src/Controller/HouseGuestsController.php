@@ -5,12 +5,16 @@ namespace App\Controller;
 use App\Entity\HouseGuests;
 use App\Form\HouseGuestsType;
 use App\Repository\HouseGuestsRepository;
+use App\Repository\UserRepository;
 use App\Services\HouseGuestPerDayList;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/houseguests")
@@ -23,7 +27,6 @@ class HouseGuestsController extends AbstractController
      */
     public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList): Response
     {
-
         $date = new \DateTime('now');
         $month = $date->format('m');
         $year = $date->format('Y');
@@ -43,37 +46,47 @@ class HouseGuestsController extends AbstractController
             $current_date = new \DateTime($current_date->modify("+1 day")->format('d-m-Y'));
         }
 
-        return $this->render('house_guests/calendarindex.html.twig', [
+   return $this->render('house_guests/calendarindex.html.twig', [
             'house_guests' => $lists = $houseGuestPerDayList->guestList(),
             'dates' => $dates
         ]);
     }
 
-
     /**
-     * @Route("/indexSimple", name="house_guests_index_simple", methods={"GET"})
+     * @Route("/new/{startdate}", name="house_guests_new", methods={"GET","POST"})
      */
-    public function indexSimple(HouseGuestsRepository $houseGuestsRepository): Response
+    public function new(String $startdate,Request $request, Security $security, MailerInterface $mailer,UserRepository $userRepository): Response
     {
-
-        return $this->render('house_guests/index.html.twig', [
-            'house_guests' => $houseGuestsRepository->findAll()
-        ]);
-    }
-
-    /**
-     * @Route("/new", name="house_guests_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
+        $logged_user = $security->getUser();
+        if(in_array("ROLE_ADMIN",$logged_user->getRoles()))
+        {
+            $user_list = $userRepository->findByRole('ROLE_GUEST');
+        }
+        else{
+            $user_list = $userRepository->findBy(['id'=>$logged_user->getId()]);
+        }
         $houseGuest = new HouseGuests();
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest,['user_list'=>$user_list,'arrival_date'=>$startdate]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($houseGuest);
             $entityManager->flush();
+            $senderEmail = $security->getUser()->getEmail();
+            $senderName = $security->getUser()->getFullName();
+
+            $recipient = 'nurse_stephen@hotmail.com';
+            $subject = 'New guest booking'. ' - ' . $senderName;
+            $html = 'New booking';
+            $email = (new Email())
+                ->to($recipient)
+                ->subject($subject)
+                ->from($senderEmail)
+                ->html($html);
+            $mailer->send($email);
+
+
             return $this->redirectToRoute('house_guests_index');
         }
 
@@ -96,9 +109,19 @@ class HouseGuestsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="house_guests_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, HouseGuests $houseGuest): Response
+    public function edit(Request $request, HouseGuests $houseGuest,Security $security,UserRepository $userRepository): Response
     {
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest);
+        $logged_user = $security->getUser();
+        if(in_array("ROLE_ADMIN",$logged_user->getRoles()))
+        {
+            $user_list = $userRepository->findByRole('ROLE_GUEST');
+        }
+        else{
+            $user_list = $userRepository->findBy(['id'=>$logged_user->getId()]);
+        }
+        $startdate = $houseGuest->getDateArrival()->format('d-m-y');
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest,['user_list'=>$user_list,'action'=>'edit']);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

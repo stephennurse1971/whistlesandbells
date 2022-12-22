@@ -5,61 +5,67 @@
 {% block body %}
     <h1 style="color: red">CMS Photos</h1>
     <a class="btn btn-success btn-sm" href="{{ path('cms_photo_new') }}">New</a>
-{% for site_page in site_pages %}
-    <h2 style="color: red">{{ site_page }}</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th style="width: 50px">Photo</th>
-            <th style="width: 50px">Tag</th>
-            <th style="width: 150px">Heading</th>
-            <th style="width: 500px">Title (English)</th>
-            <th style="width: 500px">Title (French)</th>
-            <th style="width: 500px">Title (German)</th>
-            <th style="width: 200px">Hyperlink</th>
-            <th style="width: 50px">Photo</th>
-            <th style="width: 200px">#</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for cms_photo in cms_photos  %}
-            {% if cms_photo.sitePage == site_page %}
+    {% for site_page in site_pages %}
+        <h2 style="color: red">{{ site_page }}</h2>
+        <table class="table">
+            <thead>
             <tr>
-                <td>
-
-                    {% set loc = asset('administration/attachments/websitephotos')~"/"~cms_photo.photo %}
-                    <a class="btn btn-outline-danger btn-sm" target="_blank" href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
-                    <img height="50" width="50" src="{{ loc }}"class="rounded-circle"></a>
-                </td>
-                <td>{{ cms_photo.name }}</td>
-                <td>{{ cms_photo.heading }}</td>
-
-                <td>{{ cms_photo.title }}</td>
-                <td>{{ cms_photo.titleFR }}</td>
-                <td>{{ cms_photo.titleDE }}</td>
-                <td>
-                    {% if  cms_photo.link is not empty %}
-                        {% if  cms_photo.link starts with 'http' %}
-                            {% set web =  cms_photo.link %}
-                        {% else %}
-                            {% set web = 'https://'~ cms_photo.link %}
-                        {% endif %}
-                        <a target="_blank" title="{{ cms_photo.link }}" href="{{ web }}">
-                            {{ web }}
-                        </a>
-                    {% endif %}
-                </td>
-                <td>
-                    <a style="text-align: center" title="{{ cms_photo.photo }}" target="_blank" href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}"><i class="fas fa-paperclip"></i></a>
-                </td>
-                <td><a class="btn btn-outline-danger btn-sm" target="_blank" href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a></td>
+                <th style="width: 50px">Photo</th>
+                <th style="width: 50px">Tag</th>
+                <th style="width: 150px">Heading</th>
+                <th style="width: 500px">Title (English)</th>
+                <th style="width: 500px">Title (French)</th>
+                <th style="width: 500px">Title (German)</th>
+                <th style="width: 200px">Hyperlink</th>
+                <th style="width: 50px">Photo</th>
+                <th style="width: 200px">#</th>
             </tr>
-            {% endif %}
-        {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <br>
+            </thead>
+            <tbody>
+            {% for cms_photo in cms_photos %}
+                {% if cms_photo.sitePage == site_page %}
+                    <tr>
+                        <td>
+                            {% set loc = asset('administration/attachments/websitephotos')~"/"~cms_photo.photo %}
+                            <a class="btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">
+                                <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                        </td>
+                        <td>
+                            <a target="_blank"
+                               href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">{{ cms_photo.name }}</a>
+                        </td>
+                        <td>{{ cms_photo.heading }}</td>
+
+                        <td>{{ cms_photo.title }}</td>
+                        <td>{{ cms_photo.titleFR }}</td>
+                        <td>{{ cms_photo.titleDE }}</td>
+                        <td>
+                            {% if  cms_photo.link is not empty %}
+                                {% if  cms_photo.link starts with 'http' %}
+                                    {% set web =  cms_photo.link %}
+                                {% else %}
+                                    {% set web = 'https://'~ cms_photo.link %}
+                                {% endif %}
+                                <a target="_blank" title="{{ cms_photo.link }}" href="{{ web }}">
+                                    {{ web }}
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a style="text-align: center" title="{{ cms_photo.photo }}" target="_blank"
+                               href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}"><i
+                                        class="fas fa-paperclip"></i></a>
+                        </td>
+                        <td><a class="btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <br>
     {% endfor %}
     <hr>
 

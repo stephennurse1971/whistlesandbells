@@ -25,7 +25,7 @@ class TouristAttractionType extends AbstractType
             ->add('company')
             ->add('type', ChoiceType::class, [
                 'multiple' => false,
-                'required' =>false,
+                'required' =>true,
                 'expanded' => false,
                 'choices' => [
                     'Beach' => 'Beach',
@@ -52,6 +52,7 @@ class TouristAttractionType extends AbstractType
                 'class' => Country::class,
                 'choice_label' => 'country',
                 'required' => true,
+//                'data-choice'=>'1',
                 'empty_data' => null,
             ])
             ->add('gpsLocation')

@@ -241,6 +241,16 @@ class User implements UserInterface
      */
     private $lastEdited;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $festiveMessage;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $festiveMessageDate;
+
 
     public function __construct()
     {
@@ -948,6 +958,30 @@ class User implements UserInterface
     public function setLastEdited(?\DateTimeInterface $lastEdited): self
     {
         $this->lastEdited = $lastEdited;
+
+        return $this;
+    }
+
+    public function getFestiveMessage(): ?bool
+    {
+        return $this->festiveMessage;
+    }
+
+    public function setFestiveMessage(?bool $festiveMessage): self
+    {
+        $this->festiveMessage = $festiveMessage;
+
+        return $this;
+    }
+
+    public function getFestiveMessageDate(): ?\DateTimeInterface
+    {
+        return $this->festiveMessageDate;
+    }
+
+    public function setFestiveMessageDate(?\DateTimeInterface $festiveMessageDate): self
+    {
+        $this->festiveMessageDate = $festiveMessageDate;
 
         return $this;
     }
