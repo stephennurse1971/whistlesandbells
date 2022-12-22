@@ -23,7 +23,7 @@
         {% if investment.shareCert is not empty %}
             <strong>
                 <a target="_blank"
-                   href="{{ path('investment_viewfile',{fileName:investment.shareCert}) }}"> {{ investment.shareCert }}  </a>
+                   href="{{ path('investment_viewfile',{ id:investment.id, filetype:'shareCert' }) }}"> {{ investment.shareCert }}  </a>
             </strong><br>
 
             {% if investment.shareCert is not empty %}
@@ -39,7 +39,7 @@
         {% if investment.eisCert is not empty %}
             <strong>
                 <a target="_blank"
-                   href="{{ path('investment_viewfile',{fileName:investment.eisCert}) }}"> {{ investment.eisCert }}  </a>
+                   href="{{ path('investment_viewfile',{ id:investment.id, filetype:'eisCert' }) }}"> {{ investment.eisCert }}  </a>
             </strong><br>
 
             {% if investment.eisCert is not empty %}
@@ -55,7 +55,7 @@
         {% if investment.otherDocs is not empty %}
             <strong>
                 <a target="_blank"
-                   href="{{ path('investment_viewfile',{fileName:investment.otherDocs}) }}"> {{ investment.otherDocs }}  </a>
+                   href="{{ path('investment_viewfile',{ id:investment.id, filetype:'otherDocs' }) }}"> {{ investment.otherDocs }}  </a>
             </strong><br>
 
             {% if investment.otherDocs is not empty %}
