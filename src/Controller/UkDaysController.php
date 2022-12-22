@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/uk/days")
+ * @Route("/ukdays")
  */
 class UkDaysController extends AbstractController
 {

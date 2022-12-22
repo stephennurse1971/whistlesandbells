@@ -124,10 +124,8 @@ class ToDoListController extends AbstractController
      */
     public function toDoListFileLaunch(string $fileName): Response
     {
-
         $publicResourcesFolderPath = $this->getParameter('files_upload_default_directory');
         return new BinaryFileResponse($publicResourcesFolderPath."/".$fileName);
-
     }
 
 

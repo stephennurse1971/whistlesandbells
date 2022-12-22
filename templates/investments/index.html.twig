@@ -130,21 +130,21 @@
                 <td style="text-align: center">
                     {% if investment.shareCert is not empty %}
                         <a title="{{ investment.shareCert }}" target="_blank"
-                           href="{{ path('investments_show',{id : investment.id, type: 'ShareCert'}) }}"><i
+                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'shareCert' }) }}"><i
                                     class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     {% if investment.eisCert is not empty %}
                         <a title="{{ investment.eisCert }}" target="_blank"
-                           href="{{ path('investments_show',{id : investment.id, type: 'EISCert'}) }}"><i
+                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'eisCert' }) }}"><i
                                     class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     {% if investment.otherDocs is not empty %}
                         <a title="{{ investment.otherDocs }}" target="_blank"
-                           href="{{ path('investments_show',{id : investment.id, type: 'OtherDocs'}) }}"><i
+                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'otherDocs' }) }}"><i
                                     class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>

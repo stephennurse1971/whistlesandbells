@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Investments;
+use App\Entity\UkDays;
 use App\Form\InvestmentsType;
 use App\Repository\FxRatesRepository;
 use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -79,15 +82,14 @@ class InvestmentsController extends AbstractController
             'eis_cert'=>$eis_cert,
             'other_docs'=>$other_docs,
             'currency'=>$currency,
-            'edit'=>true
-        ]);
+            'edit'=>true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $share_cert = $form['shareCert']->getData();
             if($share_cert)
             {
-                $share_cert_directory = $this->getParameter('tax_documents_attachments_directory');
+                $share_cert_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($share_cert->getClientOriginalName(),PATHINFO_FILENAME);
                 $file_extension = $share_cert->guessExtension();
                 $newFileName = $fileName.".".$file_extension;
@@ -95,11 +97,10 @@ class InvestmentsController extends AbstractController
                 $investment->setShareCert($newFileName);
             }
 
-
             $eisCert = $form['eisCert']->getData();
             if($eisCert)
             {
-                $eis_cert_directory = $this->getParameter('tax_documents_attachments_directory');
+                $eis_cert_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($eisCert->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $eisCert->guessExtension();
                 $newFileName = $fileName.".".$file_extension;
@@ -107,11 +108,10 @@ class InvestmentsController extends AbstractController
                 $investment->setEisCert($newFileName);
             }
 
-
             $other_docs = $form['otherDocs']->getData();
             if($other_docs)
             {
-                $other_docs_directory = $this->getParameter('tax_documents_attachments_directory');
+                $other_docs_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($other_docs->getClientOriginalName(),PATHINFO_FILENAME);
                 $file_extension = $other_docs->guessExtension();
                 $newFileName = $fileName.".".$file_extension;
@@ -143,4 +143,51 @@ class InvestmentsController extends AbstractController
 
         return $this->redirectToRoute('investments_index');
     }
+
+
+
+    /**
+     * @Route("/{id}/delete/attachment1", name="investments_delete_attachment1")
+     */
+    public function deleteAttachment1(Request $request, Investments $investments, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $investments->setShareCert('');
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/{id}/delete/attachment2", name="investments_delete_attachment2")
+     */
+    public function deleteAttachment2(Request $request, Investments $investments, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $investments->setEisCert('');
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/{id}/delete/attachment3", name="investments_delete_attachment3")
+     */
+    public function deleteAttachment3(Request $request, Investments $investments, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $investments->setOtherDocs('');
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+    /**
+     * @Route("/view/file/{filetype}/{id}", name="investment_viewfile", methods={"GET"})
+     */
+    public function investmentFileLaunch(Investments $investments): Response
+    {
+        $fileName = $investments->$filetype();
+        $publicResourcesFolderPath = $this->getParameter('investments_attachment_directory');
+        return new BinaryFileResponse($publicResourcesFolderPath."/".$fileName);
+    }
+
+
+
 }

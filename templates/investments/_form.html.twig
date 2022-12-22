@@ -20,8 +20,50 @@
 
     <div class="col-md-3">
         <h2>Documents</h2>
+        {% if investment.shareCert is not empty %}
+            <strong>
+                <a target="_blank"
+                   href="{{ path('investment_viewfile',{fileName:investment.shareCert}) }}"> {{ investment.shareCert }}  </a>
+            </strong><br>
+
+            {% if investment.shareCert is not empty %}
+                <a class="btn btn-sm btn-danger" href="{{ path('investments_delete_attachment1',{id:investment.id}) }}">Delete
+                    attachment</a>
+            {% endif %}
+
+        {% endif %}
         {{ form_row(form.shareCert) }}
+
+
+
+        {% if investment.eisCert is not empty %}
+            <strong>
+                <a target="_blank"
+                   href="{{ path('investment_viewfile',{fileName:investment.eisCert}) }}"> {{ investment.eisCert }}  </a>
+            </strong><br>
+
+            {% if investment.eisCert is not empty %}
+                <a class="btn btn-sm btn-danger" href="{{ path('investments_delete_attachment2',{id:investment.id}) }}">Delete
+                    attachment</a>
+            {% endif %}
+
+        {% endif %}
         {{ form_row(form.eisCert) }}
+
+
+
+        {% if investment.otherDocs is not empty %}
+            <strong>
+                <a target="_blank"
+                   href="{{ path('investment_viewfile',{fileName:investment.otherDocs}) }}"> {{ investment.otherDocs }}  </a>
+            </strong><br>
+
+            {% if investment.otherDocs is not empty %}
+                <a class="btn btn-sm btn-danger" href="{{ path('investments_delete_attachment3',{id:investment.id}) }}">Delete
+                    attachment</a>
+            {% endif %}
+
+        {% endif %}
         {{ form_row(form.otherDocs) }}
     </div>
 </div>
