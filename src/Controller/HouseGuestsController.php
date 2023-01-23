@@ -79,20 +79,21 @@ class HouseGuestsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($houseGuest);
             $entityManager->flush();
+
             $senderEmail = $security->getUser()->getEmail();
-            $senderName = $security->getUser()->getFullName();
+            $guest =$houseGuest->getGuestName()->getFullName();
+            $arrivalDate =$houseGuest->getDateArrival()->format('d-M-Y');
+            $departureDate =$houseGuest->getDateDeparture()->format('d-M-Y');
 
             $recipient = 'nurse_stephen@hotmail.com';
-            $subject = 'New guest booking'. ' - ' . $senderName;
-            $html = 'New booking';
+            $subject = 'New guest booking'. ' - ' . $guest;
+            $html = '<p>New booking for '. $guest .' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate .'</p>' ;
             $email = (new Email())
                 ->to($recipient)
                 ->subject($subject)
                 ->from($senderEmail)
                 ->html($html);
             $mailer->send($email);
-
-
             return $this->redirectToRoute('house_guests_index');
         }
 
@@ -115,7 +116,7 @@ class HouseGuestsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="house_guests_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, HouseGuests $houseGuest,Security $security,UserRepository $userRepository): Response
+    public function edit(Request $request, HouseGuests $houseGuest,Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
     {
         $logged_user = $security->getUser();
         if(in_array("ROLE_ADMIN",$logged_user->getRoles()))
@@ -131,7 +132,20 @@ class HouseGuestsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()->getManager()->flush();$senderEmail = $security->getUser()->getEmail();
+            $guest =$houseGuest->getGuestName()->getFullName();
+            $arrivalDate =$houseGuest->getDateArrival()->format('d-M-Y');
+            $departureDate =$houseGuest->getDateDeparture()->format('d-M-Y');
+
+            $recipient = 'nurse_stephen@hotmail.com';
+            $subject = 'New guest booking'. ' - ' . $guest;
+            $html = '<p>New booking for '. $guest .' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate .'</p>' ;
+            $email = (new Email())
+                ->to($recipient)
+                ->subject($subject)
+                ->from($senderEmail)
+                ->html($html);
+            $mailer->send($email);
 
             return $this->redirectToRoute('house_guests_index');
         }
