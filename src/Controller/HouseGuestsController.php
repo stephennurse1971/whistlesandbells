@@ -57,6 +57,9 @@ class HouseGuestsController extends AbstractController
      */
     public function new(String $startdate,Request $request, Security $security, MailerInterface $mailer,UserRepository $userRepository): Response
     {
+        $defaultDepartureDate = new \DateTime($startdate);
+        $defaultDepartureDate = $defaultDepartureDate->modify("+1 day");
+
         $logged_user = $security->getUser();
         if(in_array("ROLE_ADMIN",$logged_user->getRoles()))
         {
@@ -66,7 +69,10 @@ class HouseGuestsController extends AbstractController
             $user_list = $userRepository->findBy(['id'=>$logged_user->getId()]);
         }
         $houseGuest = new HouseGuests();
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest,['user_list'=>$user_list,'arrival_date'=>$startdate]);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest,['user_list'=>$user_list]);
+        $houseGuest->setDateArrival(new \DateTime($startdate));
+        $houseGuest->setDateDeparture($defaultDepartureDate);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -120,7 +126,7 @@ class HouseGuestsController extends AbstractController
             $user_list = $userRepository->findBy(['id'=>$logged_user->getId()]);
         }
         $startdate = $houseGuest->getDateArrival()->format('d-m-y');
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest,['user_list'=>$user_list,'action'=>'edit']);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest,['user_list'=>$user_list]);
 
         $form->handleRequest($request);
 

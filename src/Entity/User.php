@@ -252,6 +252,8 @@ class User implements UserInterface
     private $festiveMessageDate;
 
 
+
+
     public function __construct()
     {
         $this->logs = new ArrayCollection();
@@ -985,6 +987,5 @@ class User implements UserInterface
 
         return $this;
     }
-
 
 }

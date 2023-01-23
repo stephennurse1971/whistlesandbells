@@ -64,7 +64,6 @@ class TouristAttractionController extends AbstractController
             if ($photo) {
                 $files_name = [];
                 $photo_directory = $this->getParameter('tourist_attraction_photos_directory');
-
                 $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $photo->guessExtension();
                 $newFileName = $fileName . "." . $file_extension;
@@ -109,15 +108,12 @@ class TouristAttractionController extends AbstractController
             if ($photo) {
                 $files_name = [];
                 $photo_directory = $this->getParameter('tourist_attraction_photos_directory');
-
                 $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $photo->guessExtension();
                 $newFileName = $fileName . "." . $file_extension;
                 $photo->move($photo_directory, $newFileName);
                 $touristAttraction->setPhoto($newFileName);
             }
-
-
             $firstName = $touristAttraction->getFirstName();
             $lastName = $touristAttraction->getLastName();
             $touristAttraction->setFullName($firstName . ' ' . $lastName);

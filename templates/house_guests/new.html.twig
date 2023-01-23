@@ -9,3 +9,19 @@
 
     <a class="btn btn-outline-info btn-sm" href="{{ path('house_guests_index') }}">Return to list</a>
 {% endblock %}
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#house_guests_notes'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <script>
+        var arrival_date =  "{{ house_guest.dateArrival|date('Y-m-d') }}";
+        $("#house_guests_dateArrival").val(arrival_date);
+
+        var depature_date = "{{ house_guest.dateDeparture|date('Y-m-d') }}";
+        $("#house_guests_dateDeparture").val(depature_date);
+    </script>
+{% endblock %}

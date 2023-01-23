@@ -36,12 +36,3 @@
 
 
 
-{% block additionaljs %}
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#house_guests_notes'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-{% endblock %}
