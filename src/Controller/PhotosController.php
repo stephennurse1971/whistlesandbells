@@ -71,7 +71,7 @@ class PhotosController extends AbstractController
      */
     public function new(string $location = null, Request $request, EntityManagerInterface $manager, PhotoLocationsRepository $locationsRepository): Response
     {
-        phpinfo();
+
         $photo = new Photos();
         $form = $this->createForm(PhotosType::class, $photo, ['location' => $locationsRepository->findOneBy(['location' => $location])]);
         $form->handleRequest($request);
