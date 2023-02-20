@@ -251,6 +251,16 @@ class User implements UserInterface
      */
     private $festiveMessageDate;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $entryConflict;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $importTime;
+
 
 
 
@@ -984,6 +994,30 @@ class User implements UserInterface
     public function setFestiveMessageDate(?\DateTimeInterface $festiveMessageDate): self
     {
         $this->festiveMessageDate = $festiveMessageDate;
+
+        return $this;
+    }
+
+    public function getEntryConflict(): ?string
+    {
+        return $this->entryConflict;
+    }
+
+    public function setEntryConflict(?string $entryConflict): self
+    {
+        $this->entryConflict = $entryConflict;
+
+        return $this;
+    }
+
+    public function getImportTime(): ?\DateTimeInterface
+    {
+        return $this->importTime;
+    }
+
+    public function setImportTime(?\DateTimeInterface $importTime): self
+    {
+        $this->importTime = $importTime;
 
         return $this;
     }

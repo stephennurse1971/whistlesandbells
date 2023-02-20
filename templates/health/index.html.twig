@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Health index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Health index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Weight</th>
+            <th>Diastolic</th>
+            <th>Systolic</th>
+            <th>Heart Rate</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for health in healths %}
+            <tr>
+                <td data-sort="{{ health.date ? health.date|date('Y-m-d') : '' }}">
+                    <a href="{{ path('health_edit', {'id': health.id}) }}">{{ health.date ? health.date|date('d-M-Y') : '' }}</a>
+                </td>
+                <td>{{ health.weight }}</td>
+                <td>{{ health.diastolic }}</td>
+                <td>{{ health.systolic }}</td>
+                <td>{{ health.heartRate }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('health_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[0, 'desc'],  [2, 'desc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -42,6 +42,7 @@
             <th>www</th>
             <th>Birthday</th>
             <th>Notes</th>
+            <th>!</th>
             <th>Admin</th>
             <th>Family</th>
             <th>Contact</th>
@@ -54,6 +55,7 @@
                 <th style="color: red;">#</th>
                 <th style="color: red;">#</th>
                 <th style="color: red;">Last edited</th>
+                <th style="color: red;">Imported </th>
             {% endif %}
         </tr>
         </thead>
@@ -161,6 +163,11 @@
                 <td>
                     {% if user.notes is not empty %}
                         <i class="fa fa-info-circle" title="{{ user.notes }}"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.entryConflict is not empty %}
+                        !
                     {% endif %}
                 </td>
 
@@ -375,9 +382,14 @@
                             {{ user.inviteDate|date('d-M-Y') }}
                         {% endif %}
                     </td>
-                    <td>
+                    <td data-sort="{{ user.lastEdited|date('Y-m-d') }}">
                         {% if user.lastEdited is not empty %}
                             {{ user.lastEdited|date('d-M-Y') }}
+                        {% endif %}
+                    </td>
+                    <td data-sort="{{ user.importTime|date('Y-m-d H:i') }}">
+                        {% if user.importTime is not empty %}
+                            {{ user.importTime|date('d-M-Y H:i') }}
                         {% endif %}
                     </td>
                 {% endif %}

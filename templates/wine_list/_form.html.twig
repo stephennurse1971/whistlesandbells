@@ -1,0 +1,34 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-3">
+        <h3><b>Name</b></h3>
+        {{ form_row(form.name) }}
+        {{ form_row(form.year) }}
+        {{ form_row(form.colour) }}
+        {{ form_row(form.grape) }}
+        {{ form_row(form.labelPicture) }}
+
+        {% if wine_list.labelPicture %}
+            {% set loc = asset('administration/img/winelist')~"/"~wine_list.labelPicture %}
+            <a class="btn btn-outline-danger btn-sm" target="_blank"
+               href="{{ path('winelist_viewlabel', {'id': wine_list.id}) }}">
+                <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+        {% else %}
+           {{ wine_list.labelPicture }}
+        {% endif %}
+
+
+
+    </div>
+    <div class="col-md-4">
+        <h3><b>Name</b></h3>
+        {{ form_row(form.description) }}
+        {{ form_row(form.price) }}
+        {{ form_row(form.supermarket) }}
+        {{ form_row(form.marks) }}
+    </div>
+</div>
+{{ form_widget(form) }}
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

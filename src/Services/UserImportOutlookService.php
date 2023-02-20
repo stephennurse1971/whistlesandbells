@@ -15,16 +15,17 @@ class UserImportOutlookService
 {
     public function importUser(string $fileName)
     {
+        $now = new \DateTime('now');
         $salutation = '';
         $firstName = '';
         $lastName = '';
         $company = '';
         $businessStreet = '';
-        $businessCity= '';
+        $businessCity = '';
         $businessPostalCode = '';
         $businessCountry = '';
         $homeStreet = '';
-        $homeCity= '';
+        $homeCity = '';
         $homePostalCode = '';
         $homeCountry = '';
         $businessPhone = '';
@@ -71,29 +72,29 @@ class UserImportOutlookService
             $homePostalCode = trim($oneLineFromCsv[20]);
             $homeCountry = trim($oneLineFromCsv[21]);
 
-            if (count($oneLineFromCsv)>=31) {
+            if (count($oneLineFromCsv) >= 31) {
                 $businessPhone = trim($oneLineFromCsv[31]);
-                $businessPhone = str_replace([' ',"(0)" ,"(",")","-","Switchboard","+"],"",$businessPhone);
-                if($businessPhone != ''){
-                    $businessPhone = "+".$businessPhone;
+                $businessPhone = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $businessPhone);
+                if ($businessPhone != '') {
+                    $businessPhone = "+" . $businessPhone;
                 }
 
                 $homePhone = trim($oneLineFromCsv[37]);
-                $homePhone = str_replace([' ',"(0)" ,"(",")","-","Switchboard","+"],"",$homePhone);
-                if($homePhone != ''){
-                    $homePhone = "+".$homePhone;
+                $homePhone = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $homePhone);
+                if ($homePhone != '') {
+                    $homePhone = "+" . $homePhone;
                 }
 
                 $homePhone2 = trim($oneLineFromCsv[38]);
-                $homePhone2 = str_replace([' ',"(0)" ,"(",")","-","Switchboard","+"],"",$homePhone2);
-                if($homePhone2 != ''){
-                    $homePhone2 = "+".$homePhone2;
+                $homePhone2 = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $homePhone2);
+                if ($homePhone2 != '') {
+                    $homePhone2 = "+" . $homePhone2;
                 }
 
                 $mobile1 = trim($oneLineFromCsv[40]);
-                $mobile1 = str_replace([' ',"(0)" ,"(",")","-","Switchboard","+"],"",$mobile1);
-                if($mobile1 != ''){
-                    $mobile1 = "+".$mobile1;
+                $mobile1 = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $mobile1);
+                if ($mobile1 != '') {
+                    $mobile1 = "+" . $mobile1;
                 }
                 $birthday = trim(strtolower($oneLineFromCsv[52]));
                 $email = trim(strtolower($oneLineFromCsv[57]));
@@ -105,77 +106,129 @@ class UserImportOutlookService
                     $birthday_string = $birthday_array[1] . "/" . $birthday_array[0] . "/" . $birthday_array[2];
                 }
             }
-            if (count($oneLineFromCsv)>=91) {
+            if (count($oneLineFromCsv) >= 91) {
                 $webPage = trim(strtolower($oneLineFromCsv[91]));
             }
-            if (count($oneLineFromCsv)<91) {
+            if (count($oneLineFromCsv) < 91) {
                 $webPage = '';
             }
 
             if (!$email) {
                 continue;
             }
-
             if ($company == "Personal - Cyprus Tourist Attraction") {
                 continue;
             }
 
 
-            $user = $this->userRepository->findOneBy(['email' => $email]);
+            $old_user = $this->userRepository->findOneBy(['email' => $email]);
+              if($old_user){
+                  if($old_user->getFirstName() == $firstName &&
+                      $old_user->getLastName() == $lastName &&
+                      $old_user->getCompany() == $company &&
+                      $old_user->getMobile() == $mobile1
+                  )
+                  {
+                      Continue;
+                  }
+                  else{
+                      $new_user = new User();
+                      $new_user->setSalutation($salutation)
+                          ->setEmail($email.'Duplicate')
+                          ->setFirstName($firstName)
+                          ->setLastName($lastName)
+                          ->setFullName($firstName . ' ' . $lastName)
+                          ->setCompany($company)
+                          ->setBusinessStreet($businessStreet)
+                          ->setBusinessCity($businessCity)
+                          ->setBusinessPostalCode($businessPostalCode)
+                          ->setBusinessCountry($businessCountry)
+                          ->setHomeStreet($homeStreet)
+                          ->setHomeCity($homeCity)
+                          ->setHomePostalCode($homePostalCode)
+                          ->setHomeCountry($homeCountry)
+                          ->setBusinessPhone($businessPhone)
+                          ->setHomePhone($homePhone)
+                          ->setHomePhone2($homePhone2)
+                          ->setMobile($mobile1)
+                          ->setEmail2($email2)
+                          ->setEmail3($email3)
+                          ->setWebPage($webPage)
+                          ->setRoles(['ROLE_USER'])
+                          ->setNotes($notes)
+                          ->setEntryConflict('Conflict')
+                          ->setPlainPassword('password')
+                          ->setPassword('password')
+                          ->setImportTime($now);                      ;
+                      if ($birthday != '0/0/00') {
+                          $new_user->setBirthday(new \DateTime($birthday_string));
+                      }
+                      if ($company == "Personal - Headhunter") {
+                          $new_user->setRoles(['ROLE_RECRUITER']);
+                      }
+                      if ($company == "Personal - Family") {
+                          $new_user->setRoles(['ROLE_FAMILY']);
+                      }
 
-            if (!$user) {
-                $user = new User();
-                $user->setSalutation($salutation)
-                    ->setFirstName($firstName)
-                    ->setLastName($lastName)
-                    ->setFullName($firstName . ' ' . $lastName)
-                    ->setCompany($company)
+                      $this->manager->persist($new_user);
+                      $this->manager->flush();
+                  }
+              }
 
-                    ->setBusinessStreet($businessStreet)
-                    ->setBusinessCity($businessCity)
-                    ->setBusinessPostalCode($businessPostalCode)
-                    ->setBusinessCountry($businessCountry)
+           else {
+               $new_user = new User();
+               $new_user->setSalutation($salutation)
+                   ->setFirstName($firstName)
+                   ->setLastName($lastName)
+                   ->setFullName($firstName . ' ' . $lastName)
+                   ->setCompany($company)
+                   ->setBusinessStreet($businessStreet)
+                   ->setBusinessCity($businessCity)
+                   ->setBusinessPostalCode($businessPostalCode)
+                   ->setBusinessCountry($businessCountry)
+                   ->setHomeStreet($homeStreet)
+                   ->setHomeCity($homeCity)
+                   ->setHomePostalCode($homePostalCode)
+                   ->setHomeCountry($homeCountry)
+                   ->setBusinessPhone($businessPhone)
+                   ->setHomePhone($homePhone)
+                   ->setHomePhone2($homePhone2)
+                   ->setMobile($mobile1)
+                   ->setEmail($email)
+                   ->setEmail2($email2)
+                   ->setEmail3($email3)
+                   ->setWebPage($webPage)
+                   ->setRoles(['ROLE_USER'])
+                   ->setNotes($notes)
+                   ->setPlainPassword('password')
+                   ->setPassword('password')
+                   ->setImportTime($now);
+               if ($birthday != '0/0/00') {
+                   $new_user->setBirthday(new \DateTime($birthday_string));
+               }
+               if ($company == "Personal - Headhunter") {
+                   $new_user->setRoles(['ROLE_RECRUITER']);
+               }
+               if ($company == "Personal - Family") {
+                   $new_user->setRoles(['ROLE_FAMILY']);
+               }
 
-                    ->setHomeStreet($homeStreet)
-                    ->setHomeCity($homeCity)
-                    ->setHomePostalCode($homePostalCode)
-                    ->setHomeCountry($homeCountry)
+               $this->manager->persist($new_user);
+               $this->manager->flush();
+           }
 
-                    ->setBusinessPhone($businessPhone)
-                    ->setHomePhone($homePhone)
-                    ->setHomePhone2($homePhone2)
-                    ->setMobile($mobile1)
-                    ->setEmail($email)
-                    ->setEmail2($email2)
-                    ->setEmail3($email3)
-                    ->setWebPage($webPage)
-                    ->setRoles(['ROLE_USER'])
-                    ->setNotes($notes)
-                    ->setPlainPassword('password')
-                    ->setPassword('password');
-                if ($birthday != '0/0/00') {
-                    $user->setBirthday(new \DateTime($birthday_string));
-                }
-                if ($company == "Personal - Headhunter") {
-                    $user->setRoles(['ROLE_RECRUITER']);
-                }
-                if ($company == "Personal - Family") {
-                    $user->setRoles(['ROLE_FAMILY']);
-                }
 
-                $this->manager->persist($user);
-                $this->manager->flush();
-            }
         }
+
         $today = new \DateTime('now');
         $outlookImportDate = $this->staticTextRepository->findOneBy(['id' => 1]);
-        $outlookImportDate -> setLastOutlookDownload($today);
+        $outlookImportDate->setLastOutlookDownload($today);
         $this->manager->flush();
 
         return null;
     }
 
-    public function __construct(ContainerInterface $container, UserRepository $userRepository,StaticTextRepository $staticTextRepository, EntityManagerInterface $manager)
+    public function __construct(ContainerInterface $container, UserRepository $userRepository, StaticTextRepository $staticTextRepository, EntityManagerInterface $manager)
     {
         $this->container = $container;
         $this->manager = $manager;

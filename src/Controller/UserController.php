@@ -395,8 +395,7 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
         }
-        $referer = $request->server->get('HTTP_REFERER');
-        return $this->redirect($referer);
+        return $this->redirectToRoute('user_index');
     }
 
 

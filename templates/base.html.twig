@@ -167,11 +167,14 @@
                                 <a class="dropdown-item" href="{{ path('cyprus') }}">Cyprus</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('house_guests_index') }}">House Guest</a>
+                                <a class="dropdown-item" href="{{ path('whattobring') }}">What To Bring</a>
 
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('tourist_attraction_index') }}">Tourist
                                     attractions</a>
                                 <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('wine_list_index') }}">Wine List</a>
                             </div>
                         </li>
                     {% endif %}
@@ -191,7 +194,6 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a title={{ StaticText.content.emailAddress }} class="dropdown-item"
                                href="mailto:{{ StaticText.content.emailAddress }}">
-                                {#                                <i class="fa fa-envelope" style="color:black;font-size:16px"></i> #}
                                 @ {{ StaticText.content.emailAddress }}
                             </a>
                             <a class="dropdown-item" title="{{ StaticText.content.mobileNumber }}"
@@ -199,13 +201,14 @@
                                 <i style="color: #0f6848"
                                    class="fa fa-whatsapp"></i> {{ StaticText.content.mobileNumber }}</a>
                             <a class="dropdown-item" title={{ StaticText.content.skype }}
-                            href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue"
-                                                                                class="fa fa-skype"></i> {{ StaticText.content.skype }}
+                            href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue" class="fa fa-skype"></i> {{ StaticText.content.skype }}
                             </a>
+                            {% if is_granted('ROLE_USER') %}
                             <a target="_blank" title="{{ StaticText.content.address }} "
-                               href="{{ path('/homeaddress') }}"> <i style="color: royalblue"
-                                                                     class="fa fa-car"></i> {{ StaticText.content.address }}
-                            </a></a>
+                               href="{{ path('/homeaddress') }}"> <i style="color: royalblue" class="fa fa-car"></i> {{ StaticText.content.address }}
+                            </a>
+                            {% endif %}
+
                         </div>
                     </li>
 
@@ -247,6 +250,9 @@
                                 <a class="dropdown-item" href="{{ path('uk_days_index') }}">UK Days</a>
                                 <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">File
                                     Attachments</a>
+
+                                <a class="dropdown-item" href="{{ path('health_index') }}">Health</a>
+                                <a class="dropdown-item" href="{{ path('flying_index') }}">Flying</a>
                             </div>
                         </li>
                     {% endif %}
