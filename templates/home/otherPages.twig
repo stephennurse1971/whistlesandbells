@@ -3,7 +3,13 @@
 {% block title %}Dynamic Title{% endblock %}
 
 {% block body %}
-    <h3 style="color: red">Dynamic</h3>
+    <h3 style="color: red">
+        {% if is_granted('ROLE_ADMIN') %}
+        <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text1.id}) }}">{{ Text1.name }}</a>
+        {% else %}
+        {{ Text1.name }}
+        {% endif %}
+    </h3>
     <!-- Start Css3 Preloader  -->
 <section class="preloader">
     <div class="spinner">
@@ -131,9 +137,9 @@
                         <div class="col-sm-6">
                             <div class="user-service-list">
                                 <ul>
-                                    <li><span><i class="icofont icofont-check"></i></span>100% Dedicated</li>
-                                    <li><span><i class="icofont icofont-check"></i></span>Moneyback Protection</li>
-                                    <li><span><i class="icofont icofont-check"></i></span>24/7 hours support</li>
+                                    <li><span><i class="icofont icofont-check"></i></span>200% Dedicated</li>
+                                    <li><span><i class="icofont icofont-check"></i></span>xxx Moneyback Protection</li>
+                                    <li><span><i class="icofont icofont-check"></i></span>yyy 24/7 hours support</li>
                                 </ul>
                             </div>
 

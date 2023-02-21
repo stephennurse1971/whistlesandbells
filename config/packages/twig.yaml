@@ -6,4 +6,5 @@ twig:
         StaticText: '@App\Services\StaticText'
         TaxYear: '@App\Services\TaxYear'
         FindUser: '@App\Services\FindUser'
+        UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
 

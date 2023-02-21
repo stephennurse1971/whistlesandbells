@@ -173,7 +173,7 @@ class HouseGuestsController extends AbstractController
     }
 
     /**
-     * @Route("/whattobring", name="whattobring", methods={"GET"})
+     * @Route("/houseguest/whattobring", name="whattobring", methods={"GET"})
      */
     public function whatToBring(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {

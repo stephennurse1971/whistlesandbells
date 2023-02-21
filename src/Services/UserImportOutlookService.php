@@ -126,7 +126,19 @@ class UserImportOutlookService
                   if($old_user->getFirstName() == $firstName &&
                       $old_user->getLastName() == $lastName &&
                       $old_user->getCompany() == $company &&
-                      $old_user->getMobile() == $mobile1
+                      $old_user->getBusinessStreet() == $businessStreet &&
+                      $old_user->getBusinessCity() == $businessCity &&
+                      $old_user->getBusinessPostalCode() == $businessPostalCode &&
+                      $old_user->getBusinessCountry() == $businessCountry &&
+                      $old_user->getHomeStreet() == $homeStreet &&
+                      $old_user->getHomeCity() == $homeCity &&
+                      $old_user->getHomePostalCode() == $homePostalCode &&
+                      $old_user->getHomeCountry() == $homeCountry &&
+                      $old_user->getHomePhone() == $homePhone &&
+                      $old_user->getHomePhone2() == $homePhone2 &&
+                      $old_user->getMobile() == $mobile1 &&
+                      $old_user->getWebPage() == $webPage &&
+                      $old_user->getNotes() == $notes
                   )
                   {
                       Continue;
@@ -212,19 +224,15 @@ class UserImportOutlookService
                if ($company == "Personal - Family") {
                    $new_user->setRoles(['ROLE_FAMILY']);
                }
-
                $this->manager->persist($new_user);
                $this->manager->flush();
            }
-
-
         }
 
         $today = new \DateTime('now');
         $outlookImportDate = $this->staticTextRepository->findOneBy(['id' => 1]);
         $outlookImportDate->setLastOutlookDownload($today);
         $this->manager->flush();
-
         return null;
     }
 

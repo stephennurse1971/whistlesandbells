@@ -41,6 +41,7 @@ class PhotosController extends AbstractController
                 'location' => $locationName
             ])
         ]);
+
         return $this->render('photos/showByLocation.html.twig', [
             'photos' => $photos,
             'location' => $locationsRepository->findOneBy(['location' => $locationName]),
@@ -82,15 +83,17 @@ class PhotosController extends AbstractController
                 $photo_single = new Photos();
                 $originalFilename = pathinfo($single_photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $originalFilename . '.' . $single_photo->guessExtension();
-                $single_photo->move(
-                    $this->getParameter('photos_upload_default_directory'),
-                    $newFilename
-                );
-                $photo_single->setLocation($photo->getLocation());
-                $photo_single->setPhotoFile($newFilename);
-                $photo_single->setRotate(0);
-                $manager->persist($photo_single);
-                $manager->flush();
+               if(!file_exists($this->getParameter('photos_upload_default_directory').$newFilename)) {
+                   $single_photo->move(
+                       $this->getParameter('photos_upload_default_directory'),
+                       $newFilename
+                   );
+                   $photo_single->setLocation($photo->getLocation());
+                   $photo_single->setPhotoFile($newFilename);
+                   $photo_single->setRotate(0);
+                   $manager->persist($photo_single);
+                   $manager->flush();
+               }
             }
             return $this->redirectToRoute('photos_index');
         }
@@ -179,7 +182,26 @@ class PhotosController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         foreach ($photosRepository->findAll() as $photo) {
             $entityManager->remove($photo);
+        }
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
 
+    /**
+     * @Route("/deleteAllByLocation/photos/{location}", name="photos_delete_all_by_location",)
+     */
+    public
+    function deleteAllByLocation(Request $request, string $location, PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository, EntityManagerInterface $entityManager): Response
+    {
+
+        $referer = $request->server->get('HTTP_REFERER');
+        foreach ($photosRepository->findBy([
+                'location' => $photoLocationsRepository->findOneBy([
+                    'location' => $location
+                ])
+            ]
+        ) as $photo) {
+            $entityManager->remove($photo);
         }
         $entityManager->flush();
         return $this->redirect($referer);

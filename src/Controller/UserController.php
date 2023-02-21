@@ -355,7 +355,6 @@ class UserController extends AbstractController
      */
     public function editAuto(string $role, Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-
         $get_roles = $user->getRoles();
         if (!in_array($role, $get_roles)) {
             $get_roles[] = $role;

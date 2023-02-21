@@ -1,16 +1,18 @@
-    {% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Photos Index{% endblock %}
 
 {% block body %}
+
     {% if is_granted ('ROLE_ADMIN') %}
         <div class="row">
             <div class="col-8"></div>
             <div class="col-4">
                 <a class="btn btn-outline-primary btn-sm" href="{{ path('photo_locations_index') }}">List locations</a>
                 <a class="btn btn-outline-success btn-sm" href="{{ path('photo_locations_new') }}">+</a>
-                <a class="btn btn-outline-danger btn-sm" href="{{ path('photos_delete_all') }}">Delete All Photos</a>
             </div>
+
+
         </div>
     {% else %}
         <h1 style="color: red">
@@ -25,13 +27,15 @@
     <div class="mt-1 mb-1">
         {% for location in locations %}
             {% if location.publicPrivate =="Public" %}
-                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                <a class="btn btn-success btn-sm" target="_blank"
                    href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
             {% endif %}
             {% if app.user is not null %}
-                {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN') and location.publicPrivate == "Private") %}
-                    <a class="btn btn-outline-info btn-sm" target="_blank"
+            {% if location.publicPrivate =="Private" %}
+                {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
+                    <a class="btn btn-outline-danger btn-sm" target="_blank"
                        href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
+                {% endif %}
                 {% endif %}
             {% endif %}
         {% endfor %}
@@ -44,6 +48,7 @@
                 <th style="width: 50px">Photo</th>
                 <th style="width: 50px">Date</th>
                 <th style="width: 250px">Location</th>
+                <th style="width: 250px">File</th>
                 <th style="width: 10px; text-align: center">Rotate</th>
                 <th style="width: 50px"></th>
                 <th style="width: 500px"></th>
@@ -63,6 +68,7 @@
                     </td>
                     <td>{{ photo.location.date|date('d-M-Y') }}</td>
                     <td>{{ photo.location.location }}</td>
+                    <td>{{ photo.photoFile }}</td>
                     <td style="text-align: center">
                         {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">

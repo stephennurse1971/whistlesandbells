@@ -83,7 +83,7 @@ class User implements UserInterface
     private $logs;
 
     /**
-     * @ORM\OneToMany(targetEntity=HouseGuests::class, mappedBy="guestName", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=HouseGuests::class, mappedBy="guestName")
      */
     private $houseGuests;
 
