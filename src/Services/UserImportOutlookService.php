@@ -58,7 +58,6 @@ class UserImportOutlookService
         }
 
         foreach ($alldatatsFromCsv as $oneLineFromCsv) {
-
             $salutation = trim($oneLineFromCsv[0]);
             $firstName = trim($oneLineFromCsv[1]);
             $lastName = trim($oneLineFromCsv[3]);
@@ -71,26 +70,22 @@ class UserImportOutlookService
             $homeCity = trim($oneLineFromCsv[18]);
             $homePostalCode = trim($oneLineFromCsv[20]);
             $homeCountry = trim($oneLineFromCsv[21]);
-
             if (count($oneLineFromCsv) >= 31) {
                 $businessPhone = trim($oneLineFromCsv[31]);
                 $businessPhone = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $businessPhone);
                 if ($businessPhone != '') {
                     $businessPhone = "+" . $businessPhone;
                 }
-
                 $homePhone = trim($oneLineFromCsv[37]);
                 $homePhone = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $homePhone);
                 if ($homePhone != '') {
                     $homePhone = "+" . $homePhone;
                 }
-
                 $homePhone2 = trim($oneLineFromCsv[38]);
                 $homePhone2 = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $homePhone2);
                 if ($homePhone2 != '') {
                     $homePhone2 = "+" . $homePhone2;
                 }
-
                 $mobile1 = trim($oneLineFromCsv[40]);
                 $mobile1 = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $mobile1);
                 if ($mobile1 != '') {
@@ -119,7 +114,6 @@ class UserImportOutlookService
             if ($company == "Personal - Cyprus Tourist Attraction") {
                 continue;
             }
-
 
             $old_user = $this->userRepository->findOneBy(['email' => $email]);
               if($old_user){

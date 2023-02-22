@@ -4,11 +4,14 @@
     <h1><span class="text-danger">Users: Telephone Check</span></h1>
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_non_admin') }}">Delete All Users (excl
-            Admin)</a>
-        <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_AX') }}">Delete AX Users (excl Admin)</a>
-        <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_Personal') }}">Delete Personal Users (excl
-            Admin) </a>
+        <div class="col-5">
+            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users (excl
+                Admin)</a>
+            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl
+                Admin)</a>
+            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users
+                (excl Admin) </a>
+        </div>
     {% endif %}
 
     <table class="table">

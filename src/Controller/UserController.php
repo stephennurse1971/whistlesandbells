@@ -13,6 +13,7 @@ use App\Repository\ProspectEmployerRepository;
 use App\Repository\RecruiterEmailsRepository;
 use App\Repository\StaticTextRepository;
 use App\Repository\UserRepository;
+use App\Services\UserIsHouseGuest;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
 
@@ -176,43 +177,47 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/delete_all_AX", name="/user/delete_all_AX")
+     * @Route("/delete_all_AX", name="user_delete_all_AX")
      */
-    public function deleteAllAXUsers(UserRepository $userRepository)
+    public function deleteAllAXUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
         $allAXUser = $userRepository->findByCompany('AX');
         foreach ($allAXUser as $AXUser) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($AXUser);
-            $entityManager->flush();
+            if (!in_array('ROLE_ADMIN', $AXUser->getRoles()) && !in_array('ROLE_SUPER_ADMIN',$AXUser->getRoles()) &&
+                $userIsHouseGuest->userExist($AXUser) == false) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($AXUser);
+                $entityManager->flush();
+            }
         }
         return $this->redirectToRoute('user_index');
     }
 
     /**
-     * @Route("/delete_all_Personal", name="/user/delete_all_Personal")
+     * @Route("/delete_all_Personal", name="user_delete_all_Personal")
      */
-    public function deleteAllPersonalUsers(UserRepository $userRepository)
+    public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
         $allPersonalUser = $userRepository->findByCompany('Personal');
-        foreach ($allPersonalUser as $PersonalUser) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($PersonalUser);
-            $entityManager->flush();
-        }
+        foreach ($allPersonalUser as $PersonalUser)
+            if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) && !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
+                $userIsHouseGuest->userExist($PersonalUser) == false) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($PersonalUser);
+                $entityManager->flush();
+            }
         return $this->redirectToRoute('user_index');
     }
 
     /**
-     * @Route("/delete_all_non_admin", name="/user/delete_all_non_admin")
+     * @Route("/delete_all_non_admin", name="user_delete_all_non_admin")
      */
-    public function deleteAllNonAdminUsers(UserRepository $userRepository)
+    public function deleteAllNonAdminUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
-
         $users = $userRepository->findAll();
         foreach ($users as $user) {
             $roles = $user->getRoles();
-            if (!in_array('ROLE_ADMIN', $roles) && !in_array('ROLE_SUPER_ADMIN', $roles)) {
+            if (!in_array('ROLE_ADMIN', $roles) && !in_array('ROLE_SUPER_ADMIN', $roles) && $userIsHouseGuest->userExist($user) == false) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($user);
                 $entityManager->flush();
@@ -445,7 +450,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{userid}/festive-email", name="user_festive_email", methods={"GET"})
      */
-    public function festiveEmail(EntityManagerInterface $manager,int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
+    public function festiveEmail(EntityManagerInterface $manager, int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
     {
         $sender = $staticTextRepository->find(1)->getEmailAddress();
         $user = $userRepository->find($userid);
@@ -469,7 +474,6 @@ class UserController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);
     }
-
 
 
     /**

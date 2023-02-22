@@ -5,11 +5,11 @@
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <div class="row">
             <div class="col-5">
-                <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_non_admin') }}">Delete All Users (excl
+                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users (excl
                     Admin)</a>
-                <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_AX') }}">Delete AX Users (excl
+                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl
                     Admin)</a>
-                <a class="btn btn-danger btn-sm" href="{{ path('/user/delete_all_Personal') }}">Delete Personal Users
+                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users
                     (excl Admin) </a>
             </div>
             <div class="col-3">
@@ -18,9 +18,13 @@
                 <a class="btn btn-success btn-sm" href="{{ path('user_new') }}">New user</a>
             </div>
             <div class="col-4">
-                <a class="btn btn-outline-primary btn-sm" href="{{ path('userImport',{ source: 'Outlook'}) }}" data-toggle="modal" data-target="#exampleModalCenter">Import from
+                {% if FindUser.checkConflict  %}
+                <a class="btn btn-outline-primary btn-sm"  data-toggle="modal" data-target="#exampleModalCenter">Import from
                     Outlook</a>
-
+{% else %}
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('userImport',{ source: 'Outlook'}) }}" >Import from
+        Outlook</a>
+    {% endif %}
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -84,7 +88,12 @@
 
         <tbody>
         {% for user in users %}
-            <tr>
+            {% if user.entryConflict is empty %}
+                <tr>
+            {% else %}
+                <tr style="background-color: antiquewhite">
+            {% endif %}
+
                 <td>
                     {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
                         <b><a target="_blank"
