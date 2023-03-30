@@ -65,6 +65,8 @@ return array(
     'Symfony\\Bridge\\ProxyManager\\' => array($vendorDir . '/symfony/proxy-manager-bridge'),
     'Symfony\\Bridge\\Doctrine\\' => array($vendorDir . '/symfony/doctrine-bridge'),
     'SymfonyCasts\\Bundle\\ResetPassword\\' => array($vendorDir . '/symfonycasts/reset-password-bundle/src'),
+    'Spatie\\IcalendarGenerator\\' => array($vendorDir . '/spatie/icalendar-generator/src'),
+    'Spatie\\Enum\\' => array($vendorDir . '/spatie/enum/src'),
     'Sensio\\Bundle\\FrameworkExtraBundle\\' => array($vendorDir . '/sensio/framework-extra-bundle/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),

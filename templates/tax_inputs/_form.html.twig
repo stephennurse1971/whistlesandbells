@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>Investment Details</h2>
+        {{ form_row(form.year) }}
+        {{ form_row(form.employmentEarnings) }}
+        {{ form_row(form.interestEarnings) }}
+        {{ form_row(form.otherEarnings) }}
+        {{ form_row(form.incomeOffsetBPRAorEISLosses) }}
+        {{ form_row(form.taxDeductedAtSource) }}
+    </div>
+</div>
+
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

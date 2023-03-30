@@ -7,6 +7,7 @@ use App\Entity\Investments;
 use App\Entity\MarketData;
 use App\Entity\TaxDocuments;
 use App\Repository\FxRatesRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -97,13 +98,21 @@ class InvestmentsType extends AbstractType
             ->add('EISPurchaseYear1', EntityType::class,[
                 'class'=>TaxDocuments::class,
                 'choice_label'=>'Year',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.year', 'ASC');
+                },
                 'label' => 'EIS Purchase Tax Year 1',
                 'required' => false
             ])
             ->add('EISPurchaseYear2', EntityType::class,[
                 'class'=>TaxDocuments::class,
                 'choice_label'=>'Year',
-                'label' => 'EIS Purchase Tax Year 2',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.year', 'ASC');
+                },
+                'label' => 'EIS Purchase Tax Year (LookBack)',
                 'required' => false
             ])
             ->add('eISPurchaseYear1Percentage',TextType::class,[

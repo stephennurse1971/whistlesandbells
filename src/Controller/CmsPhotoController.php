@@ -123,7 +123,6 @@ class CmsPhotoController extends AbstractController
             $entityManager->remove($cmsPhoto);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('cms_photo_index');
     }
 

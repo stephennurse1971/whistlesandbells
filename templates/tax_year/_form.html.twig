@@ -1,7 +1,25 @@
 {{ form_start(form) }}
 <div class="row">
     <div class="col-md-3">
-        {{ form_widget(form) }}
+        <h2>Tax Years</h2>
+        {{ form_row(form.taxYearRange) }}
+        {{ form_row(form.start_date) }}
+        {{ form_row(form.end_date) }}
+    </div>
+    <div class="col-md-2">
+        <h2>Tax Bands</h2>
+        {{ form_row(form.taxBand1PersonalAllowance) }}
+        {{ form_row(form.taxBand2BasicRate) }}
+        {{ form_row(form.taxBand3HigherRate) }}
+        {{ form_row(form.taxBand4AdditionalRate) }}
+    </div>
+
+    <div class="col-md-1">
+        <h2>Tax Rate</h2>
+        {{ form_row(form.taxBand1Rate) }}
+        {{ form_row(form.taxBand2Rate) }}
+        {{ form_row(form.taxBand3Rate) }}
+        {{ form_row(form.taxBand4Rate) }}
     </div>
 </div>
 

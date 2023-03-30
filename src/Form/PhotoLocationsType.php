@@ -47,6 +47,7 @@ class PhotoLocationsType extends AbstractType
                 'class' => User::class,
                 'choices' => $sorted_users,
                 'choice_label' => 'fullName',
+                'required' => false,
                 'multiple' => true,
                 'mapped' => false,
                 'data'=>$options['users']

@@ -151,7 +151,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/webdesign", name="webdesign", methods={"GET"})
+     * @Route("/Webdesign", name="webdesign", methods={"GET"})
      */
     public function webDesign(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {
@@ -264,7 +264,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/cyprus", name="cyprus", methods={"GET"})
+     * @Route("/Cyprus", name="cyprus", methods={"GET"})
      */
     public function cyprus(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {
@@ -287,6 +287,35 @@ class HomeController extends AbstractController
             ]),
             'Photo3' => $cmsPhotoRepository->findOneBy([
                 'name' => 'Cyprus3'
+            ]),
+        ]);
+    }
+
+    /**
+     * @Route("/WhatToBring", name="whattobring", methods={"GET"})
+     */
+    public function whatToBring(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
+    {
+        return $this->render('home/otherPages.twig', [
+
+            'Text1' => $cmsCopyRepository->findOneBy([
+                'name' => 'ComingToCyprus1'
+            ]),
+            'Text2' => $cmsCopyRepository->findOneBy([
+                'name' => 'ComingToCyprus2'
+            ]),
+            'Text3' => $cmsCopyRepository->findOneBy([
+                'name' => 'ComingToCyprus3'
+            ]),
+
+            'Photo1' => $cmsPhotoRepository->findOneBy([
+                'name' => 'ComingToCyprus1'
+            ]),
+            'Photo2' => $cmsPhotoRepository->findOneBy([
+                'name' => 'ComingToCyprus2'
+            ]),
+            'Photo3' => $cmsPhotoRepository->findOneBy([
+                'name' => 'ComingToCyprus3'
             ]),
         ]);
     }

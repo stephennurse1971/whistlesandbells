@@ -11,12 +11,15 @@ use App\Repository\UserRepository;
 use App\Services\HouseGuestPerDayList;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Spatie\IcalendarGenerator\Components\Calendar;
+use Spatie\IcalendarGenerator\Components\Event;
 
 /**
  * @Route("/houseguests")
@@ -59,6 +62,7 @@ class HouseGuestsController extends AbstractController
      */
     public function new(String $startdate,Request $request, Security $security, MailerInterface $mailer,UserRepository $userRepository): Response
     {
+        $calendar = new Calendar;
         $defaultDepartureDate = new \DateTime($startdate);
         $defaultDepartureDate = $defaultDepartureDate->modify("+1 day");
 
@@ -87,6 +91,24 @@ class HouseGuestsController extends AbstractController
             $arrivalDate =$houseGuest->getDateArrival()->format('d-M-Y');
             $departureDate =$houseGuest->getDateDeparture()->format('d-M-Y');
 
+      $meetingStartTime = new \DateTime('now');
+           $meetingEndTime = new \DateTime('now');
+           $meetingEndTime->modify("+1 day");
+            $fs = new Filesystem();
+
+//temporary folder, it has to be writable
+            $tmpFolder = $this->getParameter('temporary_attachment_directory');
+
+
+
+
+
+
+
+
+
+
+
             $recipient = 'nurse_stephen@hotmail.com';
             $subject = 'New guest booking'. ' - ' . $guest;
             $html = '<p>New booking for '. $guest .' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate .'</p>' ;
@@ -94,9 +116,12 @@ class HouseGuestsController extends AbstractController
                 ->to($recipient)
                 ->subject($subject)
                 ->from($senderEmail)
-                ->html($html);
+                ->html($html)
+               // ->attachFromPath($this->getParameter('temporary_attachment_directory')."meeting.ics")
+            ;
             $mailer->send($email);
             return $this->redirectToRoute('house_guests_index');
+
         }
 
         return $this->render('house_guests/new.html.twig', [
@@ -172,35 +197,7 @@ class HouseGuestsController extends AbstractController
         return $this->redirectToRoute('house_guests_index');
     }
 
-    /**
-     * @Route("/houseguest/whattobring", name="whattobring", methods={"GET"})
-     */
-    public function whatToBring(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/otherPages.twig', [
 
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'ComingToCyprus1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'ComingToCyprus2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'ComingToCyprus3'
-            ]),
-
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'ComingToCyprus1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'ComingToCyprus2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'ComingToCyprus3'
-            ]),
-
-        ]);
-    }
 
 
 

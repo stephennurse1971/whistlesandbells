@@ -32,6 +32,46 @@ class TaxYear
      */
     private $taxYearRange;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $taxBand1PersonalAllowance;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $taxBand2BasicRate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $taxBand3HigherRate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $taxBand4AdditionalRate;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $taxBand1Rate;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $taxBand2Rate;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $taxBand3Rate;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $taxBand4Rate;
+
 
     public function getId(): ?int
     {
@@ -74,5 +114,99 @@ class TaxYear
         return $this;
     }
 
+    public function getTaxBand1PersonalAllowance(): ?int
+    {
+        return $this->taxBand1PersonalAllowance;
+    }
 
+    public function setTaxBand1PersonalAllowance(?int $taxBand1PersonalAllowance): self
+    {
+        $this->taxBand1PersonalAllowance = $taxBand1PersonalAllowance;
+
+        return $this;
+    }
+
+    public function getTaxBand2BasicRate(): ?int
+    {
+        return $this->taxBand2BasicRate;
+    }
+
+    public function setTaxBand2BasicRate(?int $taxBand2BasicRate): self
+    {
+        $this->taxBand2BasicRate = $taxBand2BasicRate;
+
+        return $this;
+    }
+
+    public function getTaxBand3HigherRate(): ?int
+    {
+        return $this->taxBand3HigherRate;
+    }
+
+    public function setTaxBand3HigherRate(?int $taxBand3HigherRate): self
+    {
+        $this->taxBand3HigherRate = $taxBand3HigherRate;
+
+        return $this;
+    }
+
+    public function getTaxBand4AdditionalRate(): ?int
+    {
+        return $this->taxBand4AdditionalRate;
+    }
+
+    public function setTaxBand4AdditionalRate(?int $taxBand4AdditionalRate): self
+    {
+        $this->taxBand4AdditionalRate = $taxBand4AdditionalRate;
+
+        return $this;
+    }
+
+    public function getTaxBand1Rate(): ?float
+    {
+        return $this->taxBand1Rate;
+    }
+
+    public function setTaxBand1Rate(?float $taxBand1Rate): self
+    {
+        $this->taxBand1Rate = $taxBand1Rate;
+
+        return $this;
+    }
+
+    public function getTaxBand2Rate(): ?float
+    {
+        return $this->taxBand2Rate;
+    }
+
+    public function setTaxBand2Rate(?float $taxBand2Rate): self
+    {
+        $this->taxBand2Rate = $taxBand2Rate;
+
+        return $this;
+    }
+
+    public function getTaxBand3Rate(): ?float
+    {
+        return $this->taxBand3Rate;
+    }
+
+    public function setTaxBand3Rate(?float $taxBand3Rate): self
+    {
+        $this->taxBand3Rate = $taxBand3Rate;
+
+        return $this;
+    }
+
+    public function getTaxBand4Rate(): ?float
+    {
+        return $this->taxBand4Rate;
+    }
+
+    public function setTaxBand4Rate(?float $taxBand4Rate): self
+    {
+        $this->taxBand4Rate = $taxBand4Rate;
+
+        return $this;
+    }
 }

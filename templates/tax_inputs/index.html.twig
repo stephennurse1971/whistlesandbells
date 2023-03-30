@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tax Inputs{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tax Inputs</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="width: 120px">Year</th>
+            <th style="width: 150px; text-align: right">Employment Earnings</th>
+            <th style="width: 150px; text-align: right">Interest Earnings</th>
+            <th style="width: 150px; text-align: right">Other Earnings</th>
+            <th style="width: 150px; text-align: right">Income Offset (BPRA/EIS Losses)</th>
+            <th style="width: 150px; text-align: right">Tax Deducted At Source</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tax_input in tax_inputs %}
+            <tr>
+                <td>
+                    <a href="{{ path('tax_inputs_edit', {'id': tax_input.id}) }}"> {{ tax_input.year.taxYearRange }}</a>
+                </td>
+                <td style="text-align: right">{{ tax_input.employmentEarnings |number_format(0)}}</td>
+                <td style="text-align: right">{{ tax_input.interestEarnings|number_format(0) }}</td>
+                <td style="text-align: right">{{ tax_input.otherEarnings |number_format(0)}}</td>
+                <td style="text-align: right">{{ tax_input.incomeOffsetBPRAorEISLosses|number_format(0) }}</td>
+                <td style="text-align: right">{{ tax_input.taxDeductedAtSource|number_format(0) }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('tax_inputs_new') }}">New</a>
+{% endblock %}

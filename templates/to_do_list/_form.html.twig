@@ -1,5 +1,7 @@
 <style>
-    .ck-editor__editable {min-height: 1100px;}
+    .ck-editor__editable {
+        min-height: 1100px;
+    }
 </style>
 
 {{ form_start(form) }}
@@ -11,25 +13,26 @@
         {{ form_row(form.completionDate) }}
         {{ form_row(form.assignedTo) }}
         {% for file in to_do_list.file %}
-          <strong>
-              <a target="_blank" href="{{ path('to_do_list_viewfile',{fileName:file}) }}"> {{ file }}  </a>
-          </strong>
+            <strong>
+                <a target="_blank" href="{{ path('to_do_list_viewfile',{fileName:file}) }}"> {{ file }}  </a>
+            </strong>
             <br>
         {% endfor %}
         {% if to_do_list.file is not empty %}
             <a class="btn btn-sm btn-danger" href="{{ path('todolist_delete_attachment',{id:to_do_list.id}) }}">Delete
                 attachment</a>
         {% endif %}
-<div class="mt-1"></div>
+
+        <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+        <div class="mt-1"></div>
         {{ form_row(form.file) }}
     </div>
     <div class="col-md-9">
         <h2></h2>
         {{ form_row(form.description) }}
-
     </div>
 </div>
-<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{#<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>#}
 {{ form_end(form) }}
 
 {% block additionaljs %}

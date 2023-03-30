@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: Tax Inputs{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: Tax Inputs</h1>
+
+    {{ include('tax_inputs/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('tax_inputs_index') }}">Return to list</a>
+
+    {{ include('tax_inputs/_delete_form.html.twig') }}
+{% endblock %}

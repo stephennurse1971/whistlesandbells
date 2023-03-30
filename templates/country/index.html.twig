@@ -30,3 +30,17 @@
 
     <a class="btn btn-success btn-sm mt-2" href="{{ path('country_new') }}">New</a>
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[1, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

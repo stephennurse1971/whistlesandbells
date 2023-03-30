@@ -107,6 +107,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/egeloen/ckeditor-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jeroendesloovere/vcard" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/behat/transliterator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/enum" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/icalendar-generator" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
