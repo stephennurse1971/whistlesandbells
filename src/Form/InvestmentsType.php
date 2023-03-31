@@ -61,11 +61,11 @@ class InvestmentsType extends AbstractType
                 'label' => 'Date',
                 'required' => false,
                 'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetime'
-                ],
-                'html5'=>false,
-                'format'=>'d-m-Y'
+//                'attr' => [
+//                    'class' => 'datetime'
+//                ],
+//                'html5'=>false,
+//                'format'=>'d-m-Y'
             ])
             ->add('investmentAmount')
             ->add('taxScheme', EntityType::class, [
