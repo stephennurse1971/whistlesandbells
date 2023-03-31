@@ -24,71 +24,60 @@
             noCalendar: false,
             dateFormat: "Y-m-d H:i:s",
             minuteIncrement: 15
-            //minDate: "today",
         });
     </script>
+
+
     <script>
-    var numberOfShares = $("#investments_numberOfShares").val();
-    var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
-    var investmentAmount = $("#investments_investmentAmount").val();
 
-
-
-    if(numberOfShares != '' && investmentAmount != '' ) {
-        var purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
-        $("#investments_numberOfShares").val(investmentAmount).change();
-    }
-    else
-    {
-        $("#investments_numberOfShares").val(null).change();
-    }
-    $("#investments_investmentAmount").change(function () {
+        var investmentAmount = $("#investments_investmentAmount").val();
         var numberOfShares = $("#investments_numberOfShares").val();
-        var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
 
-        if(numberOfShares != '' && purchaseSharePrice != '' ) {
-        var investmentAmount = parseFloat(numberOfShares) * parseFloat(purchaseSharePrice);
-        $("#investments_investmentAmount").val(investmentAmount).change();
-        }
-        else
-        {
-            $("#investments_investmentAmount").val(null).change();
-        }
-    });
+        var purchaseSharePrice =  '';
 
-    $("#investments_purchaseSharePrice").change(function () {
-        var numberOfShares = $("#investments_numberOfShares").val();
-        var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
-        if(numberOfShares != '' && purchaseSharePrice != '' ) {
-            var investmentAmount = parseFloat(numberOfShares) * parseFloat(purchaseSharePrice);
-            $("#investments_investmentAmount").val(investmentAmount).change();
-        }
-        else
-        {
-            $("#investments_investmentAmount").val(null).change();
-        }
-    });
 
-    var currency = $("#investments_currency option:selected").text();
-   if(currency == 'GBP')
-   {
-       $('.initial-amount-GBP').css('display','none');
-   }
-   $("#investments_currency").change(function () {
-       var selectedCurrency = $("#investments_currency option:selected").text();
-       if(selectedCurrency == 'GBP')
-       {
-           $('.initial-amount-GBP').css('display','none');
-       }
-       else{
-           $('.initial-amount-GBP').css('display','block');
-       }
-   });
+             purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+            $("#investments_purchaseSharePrice").val(purchaseSharePrice);
+
+        $("#investments_investmentAmount").change(function () {
+            var investmentAmount = $("#investments_investmentAmount").val();
+            var numberOfShares = $("#investments_numberOfShares").val();
+            var purchaseSharePrice = '';
+
+                purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+
+                $("#investments_purchaseSharePrice").val(purchaseSharePrice);
+
+
+        });
+
+        $("#investments_numberOfShares").change(function () {
+            var investmentAmount = $("#investments_investmentAmount").val();
+            var numberOfShares = $("#investments_numberOfShares").val();
+            var purchaseSharePrice = '';
+
+                purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+                $("#investments_purchaseSharePrice").val(purchaseSharePrice);
+
+        });
+
+        var currency = $("#investments_currency option:selected").text();
+        if (currency == 'GBP') {
+            $('.initial-amount-GBP').css('display', 'none');
+        }
+        $("#investments_currency").change(function () {
+            var selectedCurrency = $("#investments_currency option:selected").text();
+            if (selectedCurrency == 'GBP') {
+                $('.initial-amount-GBP').css('display', 'none');
+            } else {
+                $('.initial-amount-GBP').css('display', 'block');
+            }
+        });
 
     </script>
 
     <script>
-        $("#investments_investmentDate").change(function (){
+        $("#investments_investmentDate").change(function () {
             var date = $("#investments_investmentDate").val();
             var date = date.split("-");
             var year = parseInt(date[0]);
@@ -96,7 +85,7 @@
             var day = parseInt(date[2]);
             var yearRange = '';
             var lookBack = '';
-            if( month < 4 ) {
+            if (month < 4) {
                 var previousYear = year - 1;
                 var previousYearLookback = previousYear - 1;
                 yearRange = previousYear + "-" + year;
@@ -104,28 +93,25 @@
                 $("#investments_EISPurchaseYear1").val(yearRange).change();
                 $("#investments_EISPurchaseYear2").val(lookBack).change();
 
-            }
-            else if(month == 4) {
-                if (day < 5 ) {
+            } else if (month == 4) {
+                if (day < 5) {
                     var previousYear = year - 1;
                     var previousYearLookback = previousYear - 1;
                     yearRange = previousYear + "-" + year;
                     lookBack = previousYearLookback + "-" + previousYear;
                     $("#investments_EISPurchaseYear1").val(yearRange).change();
                     $("#investments_EISPurchaseYear2").val(lookBack).change();
-                }
-                else{
-                    yearRange = ""+year+"-"+(year+1);
-                    var previousYear = year - 1 ;
-                    lookBack = previousYear +"-"+ year;
+                } else {
+                    yearRange = "" + year + "-" + (year + 1);
+                    var previousYear = year - 1;
+                    lookBack = previousYear + "-" + year;
                     $("#investments_EISPurchaseYear1").val(yearRange).change();
                     $("#investments_EISPurchaseYear2").val(lookBack).change();
                 }
-            }
-            else{
-                yearRange = ""+year+"-"+(year+1);
-                var previousYear = year - 1 ;
-                lookBack = previousYear +"-"+ year;
+            } else {
+                yearRange = "" + year + "-" + (year + 1);
+                var previousYear = year - 1;
+                lookBack = previousYear + "-" + year;
                 $("#investments_EISPurchaseYear1").val(yearRange).change();
                 $("#investments_EISPurchaseYear2").val(lookBack).change();
             }

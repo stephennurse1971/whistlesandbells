@@ -56,7 +56,11 @@ class InvestmentsType extends AbstractType
                 'data' => $currency,
                 'required' => false
             ])
-            ->add('purchaseSharePrice')
+            ->add('purchaseSharePrice',TextType::class,[
+                'attr'=>[
+                    'readonly'=>true
+                ]
+            ])
             ->add('investmentDate', DateType::class, [
                 'label' => 'Date',
                 'required' => false,

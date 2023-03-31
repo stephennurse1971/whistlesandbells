@@ -92,7 +92,7 @@ class InvestmentsController extends AbstractController
      */
     public function edit(Request $request, Investments $investment): Response
     {
-        $referer = $request->headers->get('Referer');
+//        $referer = $request->headers->get('Referer');
         $currency = $investment->getCurrency();
         $share_cert = $investment->getShareCert();
         $eis_cert = $investment->getEisCert();
@@ -137,7 +137,8 @@ class InvestmentsController extends AbstractController
             }
 
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirect($referer);
+//            return $this->redirect($referer);
+            return $this->redirectToRoute('investments_index');
         }
 
         return $this->render('investments/edit.html.twig', [
