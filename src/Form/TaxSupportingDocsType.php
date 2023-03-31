@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\TaxDocuments;
 use App\Entity\TaxSupportingDocs;
+use App\Entity\TaxYear;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -33,8 +34,8 @@ class TaxSupportingDocsType extends AbstractType
                 ]
             ])
             ->add('taxYear',EntityType::class,[
-                'class'=>TaxDocuments::class,
-                'choice_label'=>'year'
+                'class'=>TaxYear::class,
+                'choice_label'=>'taxYearRange'
             ])
         ;
     }

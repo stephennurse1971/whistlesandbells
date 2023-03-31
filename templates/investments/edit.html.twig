@@ -16,6 +16,18 @@
 
 {% block additionaljs %}
     <script>
+        $("input.datetime").flatpickr({
+            altInput: true,
+            altFormat: "d-m-Y",
+            time_24hr: true,
+            enableTime: false,
+            noCalendar: false,
+            dateFormat: "Y-m-d H:i:s",
+            minuteIncrement: 15
+            //minDate: "today",
+        });
+    </script>
+    <script>
     var numberOfShares = $("#investments_numberOfShares").val();
     var purchaseSharePrice = $("#investments_purchaseSharePrice").val();
     var investmentAmount = $("#investments_investmentAmount").val();
@@ -73,5 +85,52 @@
        }
    });
 
-        </script>
+    </script>
+
+    <script>
+        $("#investments_investmentDate").change(function (){
+            var date = $("#investments_investmentDate").val();
+            var date = date.split("-");
+            var year = parseInt(date[0]);
+            var month = parseInt(date[1]);
+            var day = parseInt(date[2]);
+            var yearRange = '';
+            var lookBack = '';
+            if( month < 4 ) {
+                var previousYear = year - 1;
+                var previousYearLookback = previousYear - 1;
+                yearRange = previousYear + "-" + year;
+                lookBack = previousYearLookback + "-" + previousYear;
+                $("#investments_EISPurchaseYear1").val(yearRange).change();
+                $("#investments_EISPurchaseYear2").val(lookBack).change();
+
+            }
+            else if(month == 4) {
+                if (day < 5 ) {
+                    var previousYear = year - 1;
+                    var previousYearLookback = previousYear - 1;
+                    yearRange = previousYear + "-" + year;
+                    lookBack = previousYearLookback + "-" + previousYear;
+                    $("#investments_EISPurchaseYear1").val(yearRange).change();
+                    $("#investments_EISPurchaseYear2").val(lookBack).change();
+                }
+                else{
+                    yearRange = ""+year+"-"+(year+1);
+                    var previousYear = year - 1 ;
+                    lookBack = previousYear +"-"+ year;
+                    $("#investments_EISPurchaseYear1").val(yearRange).change();
+                    $("#investments_EISPurchaseYear2").val(lookBack).change();
+                }
+            }
+            else{
+                yearRange = ""+year+"-"+(year+1);
+                var previousYear = year - 1 ;
+                lookBack = previousYear +"-"+ year;
+                $("#investments_EISPurchaseYear1").val(yearRange).change();
+                $("#investments_EISPurchaseYear2").val(lookBack).change();
+            }
+        })
+
+    </script>
+
 {% endblock additionaljs %}

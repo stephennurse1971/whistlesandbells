@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Investments;
+use App\Entity\TaxYear;
 use App\Entity\UkDays;
 use App\Form\InvestmentsType;
 use App\Repository\FxRatesRepository;
 use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
+use App\Repository\TaxYearRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -27,11 +29,28 @@ class InvestmentsController extends AbstractController
     {
         return $this->render('investments/index.html.twig', [
             'investmentsCurrent' => $investmentsRepository->findBy([
-                'investmentSaleDate' =>null
+                'investmentSaleDate' => null
             ]),
             'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/tax_summary", name="investments_index_tax_consequences", methods={"GET"})
+     */
+    public function indexTaxConsequences(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
+    {
+
+        return $this->render('investments/taxConsequencesInvestmentindex.html.twig', [
+            'investmentsCurrent' => $investmentsRepository->findBy([
+                'investmentSaleDate' => null
+            ]),
+            'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
+            'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
+            'fxRates' => $fxRatesRepository->findAll(),
+            'taxYears' => $taxYearRepository->findAllByAsc()
         ]);
     }
 
@@ -41,7 +60,7 @@ class InvestmentsController extends AbstractController
     public function new(Request $request): Response
     {
         $investment = new Investments();
-        $form = $this->createForm(InvestmentsType::class, $investment,['edit'=>false]);
+        $form = $this->createForm(InvestmentsType::class, $investment, ['edit' => false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -73,55 +92,52 @@ class InvestmentsController extends AbstractController
      */
     public function edit(Request $request, Investments $investment): Response
     {
+        $referer = $request->headers->get('Referer');
         $currency = $investment->getCurrency();
-        $share_cert = $investment->getShareCert() ;
+        $share_cert = $investment->getShareCert();
         $eis_cert = $investment->getEisCert();
         $other_docs = $investment->getOtherDocs();
-        $form = $this->createForm(InvestmentsType::class, $investment,[
-            'share_cert'=>$share_cert,
-            'eis_cert'=>$eis_cert,
-            'other_docs'=>$other_docs,
-            'currency'=>$currency,
-            'edit'=>true]);
+        $form = $this->createForm(InvestmentsType::class, $investment, [
+            'share_cert' => $share_cert,
+            'eis_cert' => $eis_cert,
+            'other_docs' => $other_docs,
+            'currency' => $currency,
+            'edit' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $share_cert = $form['shareCert']->getData();
-            if($share_cert)
-            {
+            if ($share_cert) {
                 $share_cert_directory = $this->getParameter('investments_attachment_directory');
-                $fileName = pathinfo($share_cert->getClientOriginalName(),PATHINFO_FILENAME);
+                $fileName = pathinfo($share_cert->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $share_cert->guessExtension();
-                $newFileName = $fileName.".".$file_extension;
-                $share_cert->move($share_cert_directory,$newFileName);
+                $newFileName = $fileName . "." . $file_extension;
+                $share_cert->move($share_cert_directory, $newFileName);
                 $investment->setShareCert($newFileName);
             }
 
             $eisCert = $form['eisCert']->getData();
-            if($eisCert)
-            {
+            if ($eisCert) {
                 $eis_cert_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($eisCert->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $eisCert->guessExtension();
-                $newFileName = $fileName.".".$file_extension;
-                $eisCert->move($eis_cert_directory,$newFileName);
+                $newFileName = $fileName . "." . $file_extension;
+                $eisCert->move($eis_cert_directory, $newFileName);
                 $investment->setEisCert($newFileName);
             }
 
             $other_docs = $form['otherDocs']->getData();
-            if($other_docs)
-            {
+            if ($other_docs) {
                 $other_docs_directory = $this->getParameter('investments_attachment_directory');
-                $fileName = pathinfo($other_docs->getClientOriginalName(),PATHINFO_FILENAME);
+                $fileName = pathinfo($other_docs->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $other_docs->guessExtension();
-                $newFileName = $fileName.".".$file_extension;
-                $other_docs->move($other_docs_directory,$newFileName);
+                $newFileName = $fileName . "." . $file_extension;
+                $other_docs->move($other_docs_directory, $newFileName);
                 $investment->setOtherDocs($newFileName);
             }
 
-
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('investments_index');
+            return $this->redirect($referer);
         }
 
         return $this->render('investments/edit.html.twig', [
@@ -135,7 +151,7 @@ class InvestmentsController extends AbstractController
      */
     public function delete(Request $request, Investments $investment): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$investment->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $investment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($investment);
             $entityManager->flush();
@@ -143,7 +159,6 @@ class InvestmentsController extends AbstractController
 
         return $this->redirectToRoute('investments_index');
     }
-
 
 
     /**
@@ -178,6 +193,7 @@ class InvestmentsController extends AbstractController
         $entityManager->flush();
         return $this->redirect($referer);
     }
+
     /**
      * @Route("/view/file/{filetype}/{id}", name="investment_viewfile", methods={"GET"})
      */
@@ -185,9 +201,8 @@ class InvestmentsController extends AbstractController
     {
         $fileName = $investments->$filetype();
         $publicResourcesFolderPath = $this->getParameter('investments_attachment_directory');
-        return new BinaryFileResponse($publicResourcesFolderPath."/".$fileName);
+        return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
     }
-
 
 
 }

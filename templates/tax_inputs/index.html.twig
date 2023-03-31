@@ -36,3 +36,17 @@
 
     <a class="btn btn-success btn-sm" href="{{ path('tax_inputs_new') }}">New</a>
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

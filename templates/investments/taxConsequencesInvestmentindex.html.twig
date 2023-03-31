@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Investments - Tax Effects{% endblock %}
+
+{% block body %}
+
+    <h1 style="color: red">Tax Summary</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="width: 250px">Investment</th>
+            <th style="width: 20px">EIS/SEIS/VCT..</th>
+            <th style="text-align: right; border-right:1px solid black; width: 120px">£ Amount</th>
+            <th style="text-align: right">Investment Date</th>
+            <th style="text-align: right; border-right:1px solid black">Sale Date</th>
+
+            {% for taxYear in taxYears %}
+                <th style="border-right:1px solid lightgray; text-align: right">{{ taxYear.taxYearRange }}</th>
+            {% endfor %}
+
+
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for investment in investmentsCurrent %}
+            {% set totalTaxOffset = 0 %}
+            {% set totalIncomeOffset = 0 %}
+
+            {% set currentFXRate = 0 %}
+            {% for fxRate in fxRates %}
+                {% if investment.currency.fx == fxRate.fx %}
+                    {% set currentFXRate = fxRate.currentFxRate %}
+                {% endif %}
+            {% endfor %}
+            {% set investmentChildID = 'investment'~investment.id %}
+            <tr>
+
+                <td>
+                    {% if investment.investmentCompany is not null %}
+                        <a target="_blank"
+                           href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
+                    {% else %}
+                        <a target="_blank" href="{{ path('investments_edit', {'id': investment.id}) }}">--</a>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">{{ investment.taxScheme.name }}</td>
+
+                <td style="text-align: right;border-right:1px solid black">
+                    {% if investment.currency.fx == 'GBP' %}
+                        {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }}
+                    {% else %}
+                        <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }} ">
+                            *{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>
+                    {% endif %}
+                </td>
+
+                <td style="text-align: right"
+                    data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
+                <td style="text-align: right; border-right:1px solid black"
+                    data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
+
+                {% for taxYear in taxYears %}
+                    <td style="border-right:1px solid lightgray; text-align: right">
+                        <div class="row">
+                            <div class="col-6">
+                                {% set taxOffset = 0 %}
+                                {% if investment.eisPurchaseYear1 == taxYear %}
+                                    {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                {% endif %}
+                                {% if investment.eisPurchaseYear2 == taxYear %}
+                                    {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                {% endif %}
+                                {{ taxOffset |number_format(0) }}
+                            </div>
+                            <div class="col-6">
+                                {% set incomeOffset = 0 %}
+                                {% if investment.eisPurchaseYear1 == taxYear %}
+                                    {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                {% endif %}
+                                {% if investment.eisPurchaseYear2 == taxYear %}
+                                    {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                {% endif %}
+                                {{ incomeOffset |number_format(0) }}
+                            </div>
+                        </div>
+                    </td>
+                {% endfor %}
+            </tr>
+
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+{#    Total Tax Offset: {{ totalTaxOffset }}#}
+{#    Total Income Offset: {{ totalIncomeOffset }}#}
+{% endblock %}
+
+
+
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -49,15 +49,11 @@ class TaxDocuments
      */
     private $taxSupportingDocs;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Investments::class, mappedBy="EISPurchaseYear1")
-     */
-    private $EISPurchaseYear2;
+
 
     public function __construct()
     {
         $this->taxSupportingDocs = new ArrayCollection();
-        $this->EISPurchaseYear2 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,30 +154,4 @@ class TaxDocuments
     /**
      * @return Collection|Investments[]
      */
-    public function getEISPurchaseYear2(): Collection
-    {
-        return $this->EISPurchaseYear2;
-    }
-
-    public function addEISPurchaseYear2(Investments $eISPurchaseYear2): self
-    {
-        if (!$this->EISPurchaseYear2->contains($eISPurchaseYear2)) {
-            $this->EISPurchaseYear2[] = $eISPurchaseYear2;
-            $eISPurchaseYear2->setEISPurchaseYear1($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEISPurchaseYear2(Investments $eISPurchaseYear2): self
-    {
-        if ($this->EISPurchaseYear2->removeElement($eISPurchaseYear2)) {
-            // set the owning side to null (unless already changed)
-            if ($eISPurchaseYear2->getEISPurchaseYear1() === $this) {
-                $eISPurchaseYear2->setEISPurchaseYear1(null);
-            }
-        }
-
-        return $this;
-    }
-}
+   }

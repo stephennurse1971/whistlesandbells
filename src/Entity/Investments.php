@@ -19,8 +19,6 @@ class Investments
      */
     private $id;
 
-
-
     /**
      * @ORM\Column(type="date", nullable=true)
      */
@@ -31,10 +29,7 @@ class Investments
      */
     private $investmentAmount;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $investmentEIS;
+
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -78,25 +73,8 @@ class Investments
      */
     private $EISPurchaseYear2Percentage;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
-     */
-    private $EISPurchaseYear1;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
-     */
-    private $EISPurchaseYear2;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
-     */
-    private $EISSaleYear1;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxDocuments::class)
-     */
-    private $EISSaleYear2;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -132,6 +110,31 @@ class Investments
      * @ORM\Column(type="float", nullable=true)
      */
     private $initialInvestmentAmountGBP;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxYear::class)
+     */
+    private $eisPurchaseYear1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxYear::class)
+     */
+    private $eisPurchaseYear2;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxYear::class)
+     */
+    private $eisSaleYear1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxYear::class)
+     */
+    private $eisSaleYear2;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxSchemes::class)
+     */
+    private $taxScheme;
 
 
 
@@ -171,17 +174,7 @@ class Investments
         return $this;
     }
 
-    public function getInvestmentEIS(): ?bool
-    {
-        return $this->investmentEIS;
-    }
 
-    public function setInvestmentEIS(bool $investmentEIS): self
-    {
-        $this->investmentEIS = $investmentEIS;
-
-        return $this;
-    }
 
     public function getInvestmentSoldPrice(): ?float
     {
@@ -299,53 +292,7 @@ class Investments
         return $this;
     }
 
-    public function getEISPurchaseYear1(): ?TaxDocuments
-    {
-        return $this->EISPurchaseYear1;
-    }
 
-    public function setEISPurchaseYear1(?TaxDocuments $EISPurchaseYear1): self
-    {
-        $this->EISPurchaseYear1 = $EISPurchaseYear1;
-
-        return $this;
-    }
-
-    public function getEISPurchaseYear2(): ?TaxDocuments
-    {
-        return $this->EISPurchaseYear2;
-    }
-
-    public function setEISPurchaseYear2(?TaxDocuments $EISPurchaseYear2): self
-    {
-        $this->EISPurchaseYear2 = $EISPurchaseYear2;
-
-        return $this;
-    }
-
-    public function getEISSaleYear1(): ?TaxDocuments
-    {
-        return $this->EISSaleYear1;
-    }
-
-    public function setEISSaleYear1(?TaxDocuments $EISSaleYear1): self
-    {
-        $this->EISSaleYear1 = $EISSaleYear1;
-
-        return $this;
-    }
-
-    public function getEISSaleYear2(): ?TaxDocuments
-    {
-        return $this->EISSaleYear2;
-    }
-
-    public function setEISSaleYear2(?TaxDocuments $EISSaleYear2): self
-    {
-        $this->EISSaleYear2 = $EISSaleYear2;
-
-        return $this;
-    }
 
     public function getEISSaleYear1Percentage(): ?float
     {
@@ -427,6 +374,66 @@ class Investments
     public function setInitialInvestmentAmountGBP(?float $initialInvestmentAmountGBP): self
     {
         $this->initialInvestmentAmountGBP = $initialInvestmentAmountGBP;
+
+        return $this;
+    }
+
+    public function getEisPurchaseYear1(): ?TaxYear
+    {
+        return $this->eisPurchaseYear1;
+    }
+
+    public function setEisPurchaseYear1(?TaxYear $eisPurchaseYear1): self
+    {
+        $this->eisPurchaseYear1 = $eisPurchaseYear1;
+
+        return $this;
+    }
+
+    public function getEisPurchaseYear2(): ?TaxYear
+    {
+        return $this->eisPurchaseYear2;
+    }
+
+    public function setEisPurchaseYear2(?TaxYear $eisPurchaseYear2): self
+    {
+        $this->eisPurchaseYear2 = $eisPurchaseYear2;
+
+        return $this;
+    }
+
+    public function getEisSaleYear1(): ?TaxYear
+    {
+        return $this->eisSaleYear1;
+    }
+
+    public function setEisSaleYear1(?TaxYear $eisSaleYear1): self
+    {
+        $this->eisSaleYear1 = $eisSaleYear1;
+
+        return $this;
+    }
+
+    public function getEisSaleYear2(): ?TaxYear
+    {
+        return $this->eisSaleYear2;
+    }
+
+    public function setEisSaleYear2(?TaxYear $eisSaleYear2): self
+    {
+        $this->eisSaleYear2 = $eisSaleYear2;
+
+        return $this;
+    }
+
+    public function getTaxScheme(): ?TaxSchemes
+    {
+        return $this->taxScheme;
+    }
+
+    public function setTaxScheme(?TaxSchemes $taxScheme): self
+    {
+        $this->taxScheme = $taxScheme;
 
         return $this;
     }

@@ -84,8 +84,9 @@
         .dropdown-menu {
             background: #fffefe;;
         }
-        #photo_locations_enabledUsers{
-            min-height : 1000px;
+
+        #photo_locations_enabledUsers {
+            min-height: 1000px;
         }
     </style>
     <style>
@@ -141,8 +142,10 @@
                                 Others
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital consulting</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private Equity</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital
+                                    consulting</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private
+                                    Equity</a>
                                 <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>
                                 <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
                                 <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
@@ -201,12 +204,14 @@
                                 <i style="color: #0f6848"
                                    class="fa fa-whatsapp"></i> {{ StaticText.content.mobileNumber }}</a>
                             <a class="dropdown-item" title={{ StaticText.content.skype }}
-                            href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue" class="fa fa-skype"></i> {{ StaticText.content.skype }}
+                            href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue"
+                                                                                class="fa fa-skype"></i> {{ StaticText.content.skype }}
                             </a>
                             {% if is_granted('ROLE_USER') %}
-                            <a target="_blank" title="{{ StaticText.content.address }} "
-                               href="{{ path('/homeaddress') }}"> <i style="color: royalblue" class="fa fa-car"></i> {{ StaticText.content.address }}
-                            </a>
+                                <a target="_blank" title="{{ StaticText.content.address }} "
+                                   href="{{ path('/homeaddress') }}"> <i style="color: royalblue"
+                                                                         class="fa fa-car"></i> {{ StaticText.content.address }}
+                                </a>
                             {% endif %}
 
                         </div>
@@ -262,9 +267,7 @@
                         <li class="nav-item dropdown">
                             <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
                                id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Investments & Tax
-                            </a>
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Investments</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('investments_index') }}">Investments</a>
                                 <hr>
@@ -273,20 +276,28 @@
                                 <a class="dropdown-item" href="{{ path('investment_future_comms_index') }}">Investment
                                     Docs</a>
                                 <hr>
-                                <a class="dropdown-item" href="{{ path('market_data_index') }}">Share Prices</a>
-                                <a class="dropdown-item" href="{{ path('fx_rates_index') }}">FX Rates</a>
-                                <a class="dropdown-item" href="{{ path('market_data_index') }}">FX Rates</a>
-                                <hr>
-
-                                <a class="dropdown-item" href="{{ path('tax_inputs_index') }}">Tax Inputs</a>
-                                <a class="dropdown-item" href="{{ path('tax_documents_index') }}">Tax Filings</a>
-                                <hr>
                                 <a class="dropdown-item" href="{{ path('jpm_ic_history_index') }}">IC Record</a>
                             </div>
                         </li>
                     {% endif %}
 
-                    <!-- Nav Item #10 - Users -->
+                    <!-- Nav Item #10 - Tax -->
+                    {% if is_granted('ROLE_ACCOUNTANT') %}
+                        <li class="nav-item dropdown">
+                            <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
+                               id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tax</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" href="{{ path('investments_index_tax_consequences') }}">Tax summary</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('tax_inputs_index') }}">Tax Inputs</a>
+                                <a class="dropdown-item" href="{{ path('tax_documents_index') }}">Tax Filings</a>
+                            </div>
+                        </li>
+                    {% endif %}
+
+                    <!-- Nav Item #11 - Users -->
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item dropdown">
                             <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
@@ -296,7 +307,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('user_index') }}">Users - All</a>
-                                <a class="dropdown-item" href="{{ path('user_index_edited_since_download') }}">Users - Edited</a>
+                                <a class="dropdown-item" href="{{ path('user_index_edited_since_download') }}">Users -
+                                    Edited</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
                                 <a class="dropdown-item" href="{{ path('user_index_telnumbers') }}">Users - Tel
@@ -330,17 +342,26 @@
                                 Settings
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a target="_blank" class="dropdown-item" href="{{ path('photo_locations_index') }}">Photo locations</a>
-                                <a target="_blank" class="dropdown-item" href="{{ path('country_index') }}">Countries</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('photo_locations_index') }}">Photo
+                                    locations</a>
+                                <a target="_blank" class="dropdown-item"
+                                   href="{{ path('country_index') }}">Countries</a>
                                 <hr>
-                                <a target="_blank" class="dropdown-item" href="{{ path('tax_year_index') }}">Tax Years and Bands</a>
-                                <a target="_blank" class="dropdown-item" href="{{ path('file_upload') }}">File upload</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('tax_year_index') }}">Tax Years & Bands</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('tax_schemes_index') }}">Tax Schemes</a>
                                 <hr>
-                                <a target="_blank" class="dropdown-item" href="{{ path('static_text_index') }}">CMS Static Text</a>
-                                <a target="_blank" class="dropdown-item" href="{{ path('cms_copy_index') }}">CMS Copy</a>
-                                <a target="_blank" class="dropdown-item" href="{{ path('cms_photo_index') }}">CMS Photos</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('file_upload') }}">File
+                                    upload</a>
                                 <hr>
-                                <a target="_blank" class="dropdown-item" href="{{ path('curriculum_vitae_index') }}">CV - Segments</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('static_text_index') }}">CMS
+                                    Static Text</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('cms_copy_index') }}">CMS
+                                    Copy</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('cms_photo_index') }}">CMS
+                                    Photos</a>
+                                <hr>
+                                <a target="_blank" class="dropdown-item" href="{{ path('curriculum_vitae_index') }}">CV
+                                    - Segments</a>
                             </div>
                         </li>
                     {% endif %}

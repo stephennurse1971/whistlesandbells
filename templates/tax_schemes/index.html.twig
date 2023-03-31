@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tax Schemes Rules{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tax Schemes Rules</h1>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th style="width: 150px">Name</th>
+            <th style="width: 150px; text-align: right">Purchase: Income Offset</th>
+            <th style="width: 150px; text-align: right; border-right: solid black 1px">Purchase: Tax Offset</th>
+            <th style="width: 150px; text-align: right">Sale: Income Offset</th>
+            <th style="width: 150px; text-align: right; border-right: solid black 1px">Sale: Tax Offset</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tax_scheme in tax_schemes %}
+            <tr>
+                <td><a href="{{ path('tax_schemes_edit', {'id': tax_scheme.id}) }}">{{ tax_scheme.name }}</a></td>
+                <td style="text-align: right">{{ (tax_scheme.purchaseIncomeOffset*100 |number_format('0')) }}%</td>
+                <td style="text-align: right; border-right: solid black 1px">{{ (tax_scheme.purchaseTaxOffset*100 |number_format('0')) }}
+                    %
+                </td>
+                <td style="text-align: right">{{ (tax_scheme.saleIncomeOffset*100 |number_format('0')) }}%</td>
+                <td style="text-align: right; border-right: solid black 1px">{{ (tax_scheme.saleTaxOffset*100 |number_format('0')) }}
+                    %
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <a class="btn btn-success btn-sm" href="{{ path('tax_schemes_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

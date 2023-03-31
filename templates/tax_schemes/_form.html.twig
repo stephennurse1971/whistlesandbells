@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        <h2>Tax Schemes Details</h2>
+        {{ form_row(form.name) }}
+        {{ form_row(form.purchaseIncomeOffset) }}
+        {{ form_row(form.purchaseTaxOffset) }}
+        {{ form_row(form.saleIncomeOffset) }}
+        {{ form_row(form.saleTaxOffset) }}
+    </div>
+</div>
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

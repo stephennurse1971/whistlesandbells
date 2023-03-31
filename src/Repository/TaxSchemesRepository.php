@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TaxYear;
+use App\Entity\TaxSchemes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method TaxYear|null find($id, $lockMode = null, $lockVersion = null)
- * @method TaxYear|null findOneBy(array $criteria, array $orderBy = null)
- * @method TaxYear[]    findAll()
- * @method TaxYear[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TaxSchemes|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TaxSchemes|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TaxSchemes[]    findAll()
+ * @method TaxSchemes[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TaxYearRepository extends ServiceEntityRepository
+class TaxSchemesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TaxYear::class);
+        parent::__construct($registry, TaxSchemes::class);
     }
 
     // /**
-    //  * @return TaxYear[] Returns an array of TaxYear objects
+    //  * @return TaxSchemes[] Returns an array of TaxSchemes objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TaxYearRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TaxYear
+    public function findOneBySomeField($value): ?TaxSchemes
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')
@@ -47,13 +47,4 @@ class TaxYearRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findAllByAsc()
-    {
-        return $this->createQueryBuilder('t')
-
-            ->orderBy('t.taxYearRange', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
 }

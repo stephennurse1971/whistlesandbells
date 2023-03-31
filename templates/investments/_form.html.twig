@@ -4,12 +4,11 @@
     <div class="col-md-3">
         <h2>Investment Details</h2>
         {{ form_row(form.investmentCompany) }}
-        {{ form_row(form.investmentDate) }}
         {{ form_row(form.currency) }}
         {{ form_row(form.investmentAmount) }}
         {{ form_row(form.purchaseSharePrice) }}
         {{ form_row(form.numberOfShares) }}
-        {{ form_row(form.investmentEIS) }}
+        {{ form_row(form.taxScheme) }}
         <div class="initial-amount-GBP">
             {{ form_row(form.initialInvestmentAmountGBP) }}
         </div>
@@ -62,39 +61,76 @@
                 <a class="btn btn-sm btn-danger" href="{{ path('investments_delete_attachment3',{id:investment.id}) }}">Delete
                     attachment</a>
             {% endif %}
-
         {% endif %}
         {{ form_row(form.otherDocs) }}
+        <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
     </div>
 </div>
 <br>
 <hr>
+
+
 <div class="row">
-    <div class="col-md-2">
-        <h2>EIS Purchase</h2>
-        {{ form_row(form.EISPurchaseYear1) }}
-        {{ form_row(form.EISPurchaseYear2) }}
-    </div>
-    <div class="col-md-1">
-        <h2>%</h2>
-        {{ form_row(form.eISPurchaseYear1Percentage) }}
-        {{ form_row(form.eISPurchaseYear2Percentage) }}
+    <div class="col-md-3">
+        <h2>Purchase Tax Years</h2>
+
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(form.investmentDate) }}
+            </div>
+            <div class="col-6">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(form.EISPurchaseYear1) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.eISPurchaseYear1Percentage) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(form.EISPurchaseYear2) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.eISPurchaseYear2Percentage) }}
+            </div>
+        </div>
     </div>
 
     <div class="col-md-1">
     </div>
 
-    <div class="col-md-2">
-        <h2>EIS Sale</h2>
-        {{ form_row(form.eISSaleYear1) }}
-        {{ form_row(form.eISSaleYear2) }}
-        {{ form_row(form.investmentSaleDate) }}
-        {{ form_row(form.investmentSoldPrice) }}
-    </div>
-    <div class="col-md-1">
-        <h2>%</h2>
-        {{ form_row(form.eISSaleYear1Percentage) }}
-        {{ form_row(form.eISSaleYear2Percentage) }}
+
+    <div class="col-md-3">
+        <h2>Sale Tax Years</h2>
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(form.investmentSaleDate) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.investmentSoldPrice) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(form.eISSaleYear1) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.eISSaleYear1Percentage) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(form.eISSaleYear2) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.eISSaleYear2Percentage) }}
+            </div>
+        </div>
     </div>
 </div>
 

@@ -22,11 +22,6 @@ class TaxSupportingDocs
      */
     private $date;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxDocuments::class, inversedBy="taxSupportingDocs")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $taxYear;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -42,6 +37,11 @@ class TaxSupportingDocs
      * @ORM\Column(type="text", nullable=true)
      */
     private $detailedComments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxYear::class)
+     */
+    private $taxYear;
 
     public function getId(): ?int
     {
@@ -60,17 +60,7 @@ class TaxSupportingDocs
         return $this;
     }
 
-    public function getTaxYear(): ?TaxDocuments
-    {
-        return $this->taxYear;
-    }
 
-    public function setTaxYear(?TaxDocuments $taxYear): self
-    {
-        $this->taxYear = $taxYear;
-
-        return $this;
-    }
 
     public function getComments(): ?string
     {
@@ -104,6 +94,18 @@ class TaxSupportingDocs
     public function setDetailedComments(?string $detailedComments): self
     {
         $this->detailedComments = $detailedComments;
+
+        return $this;
+    }
+
+    public function getTaxYear(): ?TaxYear
+    {
+        return $this->taxYear;
+    }
+
+    public function setTaxYear(?TaxYear $taxYear): self
+    {
+        $this->taxYear = $taxYear;
 
         return $this;
     }
