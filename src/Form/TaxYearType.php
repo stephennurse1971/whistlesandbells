@@ -31,9 +31,6 @@ class TaxYearType extends AbstractType
             ->add('taxBand3HigherRate', NumberType::class, [
                 'label' => 'Tax Band 3 (Higher Rate)'
             ])
-            ->add('taxBand4AdditionalRate', NumberType::class, [
-                'label' => 'Tax Band 4 (Additional Rate)'
-            ])
             ->add('taxBand1Rate', NumberType::class, [
                 'label' => 'Tax Band 1 Rate'
             ])

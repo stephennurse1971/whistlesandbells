@@ -47,10 +47,6 @@ class TaxYear
      */
     private $taxBand3HigherRate;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $taxBand4AdditionalRate;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -150,17 +146,6 @@ class TaxYear
         return $this;
     }
 
-    public function getTaxBand4AdditionalRate(): ?int
-    {
-        return $this->taxBand4AdditionalRate;
-    }
-
-    public function setTaxBand4AdditionalRate(?int $taxBand4AdditionalRate): self
-    {
-        $this->taxBand4AdditionalRate = $taxBand4AdditionalRate;
-
-        return $this;
-    }
 
     public function getTaxBand1Rate(): ?float
     {
