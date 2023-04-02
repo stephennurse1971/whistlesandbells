@@ -4,8 +4,8 @@
 
 {% block body %}
     <h1 style="color: red">Wine List</h1>
-    <a class="btn btn-success btn-sm" href="{{ path('wine_list_new') }}">New</a>
-    <table class="table">
+    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('wine_list_new') }}">New wine</a>
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th>Label</th>
@@ -23,18 +23,23 @@
         {% for wine_list in wine_lists %}
             <tr>
                 {% set loc = asset('/administration/img/winelist')~"/"~wine_list.labelPicture %}
-                <td title="{{ wine_list.labelPicture }}">
-                    <img height="50" width="50" src="{{ loc }}" class="rounded-circle">
+                <td title="{{ wine_list.name }}  ({{ wine_list.year }})">
+                    <a target="_blank" href="{{ path('winelist_viewlabel', {id: wine_list.id}) }}"><img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+
                 </td>
                 <td>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('wine_list_edit', {'id': wine_list.id}) }}">{{ wine_list.name }}</a>
+                {% else %}
+                    {{ wine_list.name }}
+                    {% endif %}
                 </td>
-                <td>{{ wine_list.year }}</td>
+                <td style="text-align: right">>{{ wine_list.year }}</td>
                 <td>{{ wine_list.colour }}</td>
                 <td>{{ wine_list.grape }}</td>
                 <td>{{ wine_list.description }}</td>
-                <td>{{ wine_list.price }}</td>
-                <td>{{ wine_list.marks }}</td>
+                <td style="text-align: right">{{ wine_list.price |number_format(2, '.', ',') }}</td>
+                <td style="text-align: center">{{ wine_list.marks }}</td>
                 <td>{{ wine_list.supermarket }}</td>
             </tr>
         {% endfor %}

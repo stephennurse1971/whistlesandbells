@@ -4,11 +4,8 @@
 
 {% block body %}
     <h1 style="color: red;">Edit Investments</h1>
-
     {{ include('investments/_form.html.twig', {'button_label': 'Update'}) }}
-
     <a class="btn btn-info btn-sm mt-2" href="{{ path('investments_index') }}">Return to list</a>
-
     {{ include('investments/_delete_form.html.twig') }}
     <br>
 
@@ -29,36 +26,25 @@
 
 
     <script>
-
         var investmentAmount = $("#investments_investmentAmount").val();
         var numberOfShares = $("#investments_numberOfShares").val();
-
-        var purchaseSharePrice =  '';
-
-
-             purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
-            $("#investments_purchaseSharePrice").val(purchaseSharePrice);
-
+        var purchaseSharePrice = '';
+        purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+        $("#investments_purchaseSharePrice").val(purchaseSharePrice);
         $("#investments_investmentAmount").change(function () {
             var investmentAmount = $("#investments_investmentAmount").val();
             var numberOfShares = $("#investments_numberOfShares").val();
             var purchaseSharePrice = '';
-
-                purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
-
-                $("#investments_purchaseSharePrice").val(purchaseSharePrice);
-
-
+            purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+            $("#investments_purchaseSharePrice").val(purchaseSharePrice);
         });
 
         $("#investments_numberOfShares").change(function () {
             var investmentAmount = $("#investments_investmentAmount").val();
             var numberOfShares = $("#investments_numberOfShares").val();
             var purchaseSharePrice = '';
-
-                purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
-                $("#investments_purchaseSharePrice").val(purchaseSharePrice);
-
+            purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+            $("#investments_purchaseSharePrice").val(purchaseSharePrice);
         });
 
         var currency = $("#investments_currency option:selected").text();
@@ -73,7 +59,6 @@
                 $('.initial-amount-GBP').css('display', 'block');
             }
         });
-
     </script>
 
     <script>
@@ -116,7 +101,48 @@
                 $("#investments_EISPurchaseYear2").val(lookBack).change();
             }
         })
+    </script>
 
+    <script>
+        $("#investments_investmentSaleDate").change(function () {
+            var date = $("#investments_investmentSaleDate").val();
+            var date = date.split("-");
+            var year = parseInt(date[0]);
+            var month = parseInt(date[1]);
+            var day = parseInt(date[2]);
+            var yearRange = '';
+            var lookBack = '';
+            if (month < 4) {
+                var previousYear = year - 1;
+                var previousYearLookback = previousYear - 1;
+                yearRange = previousYear + "-" + year;
+                lookBack = previousYearLookback + "-" + previousYear;
+                $("#investments_eISSaleYear1").val(yearRange).change();
+                $("#investments_eISSaleYear2").val(lookBack).change();
+
+            } else if (month == 4) {
+                if (day < 5) {
+                    var previousYear = year - 1;
+                    var previousYearLookback = previousYear - 1;
+                    yearRange = previousYear + "-" + year;
+                    lookBack = previousYearLookback + "-" + previousYear;
+                    $("#investments_eISSaleYear1").val(yearRange).change();
+                    $("#investments_eISSaleYear2").val(lookBack).change();
+                } else {
+                    yearRange = "" + year + "-" + (year + 1);
+                    var previousYear = year - 1;
+                    lookBack = previousYear + "-" + year;
+                    $("#investments_eISSaleYear1").val(yearRange).change();
+                    $("#investments_eISSaleYear2").val(lookBack).change();
+                }
+            } else {
+                yearRange = "" + year + "-" + (year + 1);
+                var previousYear = year - 1;
+                lookBack = previousYear + "-" + year;
+                $("#investments_eISSaleYear1").val(yearRange).change();
+                $("#investments_eISSaleYear2").val(lookBack).change();
+            }
+        })
     </script>
 
 {% endblock additionaljs %}

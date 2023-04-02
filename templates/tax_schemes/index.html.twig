@@ -13,6 +13,7 @@
             <th style="width: 150px; text-align: right; border-right: solid black 1px">Purchase: Tax Offset</th>
             <th style="width: 150px; text-align: right">Sale: Income Offset</th>
             <th style="width: 150px; text-align: right; border-right: solid black 1px">Sale: Tax Offset</th>
+            <th style="width: 150px; text-align: center; border-right: solid black 1px">Summary: Include</th>
         </tr>
         </thead>
         <tbody>
@@ -27,6 +28,15 @@
                 <td style="text-align: right; border-right: solid black 1px">{{ (tax_scheme.saleTaxOffset*100 |number_format('0')) }}
                     %
                 </td>
+                <td data-sort="{{ tax_scheme.includeTaxSummary }}" style="text-align: center; border-right: solid black 1px">
+                    {% if tax_scheme.includeTaxSummary ==1 %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+
+                </td>
+
             </tr>
         {% endfor %}
         </tbody>
@@ -41,7 +51,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc']],
+                "order": [[5, 'desc'],[2, 'desc'],[0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

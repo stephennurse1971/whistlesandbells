@@ -33,9 +33,6 @@ class TaxInputsType extends AbstractType
             ->add('otherEarnings', TextType::class, [
                 'label' => 'Other Earnings'
             ])
-            ->add('incomeOffsetBPRAorEISLosses', TextType::class, [
-                'label' => 'Income Offset (BPRA or EIS Losses)'
-            ])
             ->add('taxDeductedAtSource', TextType::class, [
                 'label' => 'Tax Deducted At Source'
             ]);

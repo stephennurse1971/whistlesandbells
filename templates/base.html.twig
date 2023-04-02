@@ -289,9 +289,10 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tax</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                <a class="dropdown-item" href="{{ path('investments_index_tax_consequences') }}">Tax summary</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('investments_index_tax_consequences') }}">Tax summary - Investments</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('tax_inputs_overview_index') }}">Tax summary - Self-Assessment</a>
                                 <hr>
-                                <a class="dropdown-item" href="{{ path('tax_inputs_index') }}">Tax Inputs</a>
+                                <a class="dropdown-item" href="{{ path('tax_inputs_index') }}">Employemnt Income</a>
                                 <a class="dropdown-item" href="{{ path('tax_documents_index') }}">Tax Filings</a>
                             </div>
                         </li>

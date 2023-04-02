@@ -28,9 +28,14 @@
         </div>
         <br>
         <br>
-        <button onclick="fillForm()"><i class="fa fa-info-circle"> </i></button> <br>
-{#        <button onclick="fillForm2()"><i class="fa fa-info-circle text-danger"> </i></button> <br>#}
-{#        <button onclick="fillForm3()"><i class="fa fa-info-circle text-primary"> </i></button> <br>#}
+
+        {% if app.environment=='dev' %}
+            <button onclick="fillForm()"><i class="fa fa-info-circle"> </i></button> <br>
+            <button onclick="fillForm2()"><i class="fa fa-info-circle text-danger"> </i></button> <br>
+            <button onclick="fillForm3()"><i class="fa fa-info-circle text-primary"> </i></button> <br>
+        {% endif %}
+
+
         <br>
         <a href="{{ path('app_forgot_password_request') }}">Forgot password</a>
     </form>
@@ -38,23 +43,23 @@
 
 {% block javascripts %}
     <script>
-        function fillForm(){
+        function fillForm() {
             $("#inputEmail").val("nurse_stephen@hotmail.com").change();
             $("#inputPassword").val("Descartes99").change();
         }
     </script>
 
-{#    <script>#}
-{#        function fillForm2(){#}
-{#            $("#inputEmail").val("sjwn71@gmail.com").change();#}
-{#            $("#inputPassword").val("Descartes99!").change();#}
-{#        }#}
-{#    </script>#}
+    <script>
+        function fillForm2() {
+            $("#inputEmail").val("ghtinkyaw@gmail.com").change();
+            $("#inputPassword").val("password").change();
+        }
+    </script>
 
-{#    <script>#}
-{#        function fillForm3(){#}
-{#            $("#inputEmail").val("stephen.nurse@jpmorgan.com").change();#}
-{#            $("#inputPassword").val("Descartes99!").change();#}
-{#        }#}
-{#    </script>#}
+    <script>
+        function fillForm3() {
+            $("#inputEmail").val("geoff@thedecimalplace.co.uk").change();
+            $("#inputPassword").val("password").change();
+        }
+    </script>
 {% endblock %}

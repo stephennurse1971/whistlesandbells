@@ -31,6 +31,7 @@ class InvestmentsController extends AbstractController
             'investmentsCurrent' => $investmentsRepository->findBy([
                 'investmentSaleDate' => null
             ]),
+            'investmentsAll' => $investmentsRepository->findAll(),
             'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
@@ -47,6 +48,7 @@ class InvestmentsController extends AbstractController
             'investmentsCurrent' => $investmentsRepository->findBy([
                 'investmentSaleDate' => null
             ]),
+            'investmentsAll' => $investmentsRepository->findAll(),
             'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
@@ -67,7 +69,6 @@ class InvestmentsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($investment);
             $entityManager->flush();
-
             return $this->redirectToRoute('investments_index');
         }
 

@@ -57,6 +57,11 @@ class MarketData
      */
     private $investorSite;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $cashInstrument;
+
 
 
 
@@ -158,6 +163,18 @@ class MarketData
     public function setInvestorSite(?string $investorSite): self
     {
         $this->investorSite = $investorSite;
+
+        return $this;
+    }
+
+    public function getCashInstrument(): ?bool
+    {
+        return $this->cashInstrument;
+    }
+
+    public function setCashInstrument(?bool $cashInstrument): self
+    {
+        $this->cashInstrument = $cashInstrument;
 
         return $this;
     }

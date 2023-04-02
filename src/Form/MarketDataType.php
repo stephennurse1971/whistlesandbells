@@ -13,8 +13,9 @@ class MarketDataType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sharePrice')
             ->add('shareCompany')
+            ->add('cashInstrument')
+            ->add('sharePrice')
             ->add('companiesHouse')
             ->add('weblink')
             ->add('login')

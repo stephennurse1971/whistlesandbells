@@ -1,34 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tax Inputs{% endblock %}
+{% block title %}Tax: Employment and Other Income{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Tax Inputs</h1>
-
-    <table class="table">
+    <h1 style="color: red">Tax: Employment and Other Income</h1>
+    <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('tax_inputs_overview_index') }}">Self-Assessment</a>
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th style="width: 120px">Year</th>
             <th style="width: 150px; text-align: right">Employment Earnings</th>
             <th style="width: 150px; text-align: right">Interest Earnings</th>
             <th style="width: 150px; text-align: right">Other Earnings</th>
-            <th style="width: 150px; text-align: right">Income Offset (BPRA/EIS Losses)</th>
             <th style="width: 150px; text-align: right">Tax Deducted At Source</th>
-            <th>#</th>
         </tr>
         </thead>
         <tbody>
-        {% for tax_input in tax_inputs %}
+        {% for taxinput in taxinputs %}
             <tr>
                 <td>
-                    <a href="{{ path('tax_inputs_edit', {'id': tax_input.id}) }}"> {{ tax_input.year.taxYearRange }}</a>
+                    <a href="{{ path('tax_inputs_edit', {'id': taxinput.id}) }}"> {{ taxinput.year.taxYearRange }}</a>
                 </td>
-                <td style="text-align: right">{{ tax_input.employmentEarnings |number_format(0)}}</td>
-                <td style="text-align: right">{{ tax_input.interestEarnings|number_format(0) }}</td>
-                <td style="text-align: right">{{ tax_input.otherEarnings |number_format(0)}}</td>
-                <td style="text-align: right">{{ tax_input.incomeOffsetBPRAorEISLosses|number_format(0) }}</td>
-                <td style="text-align: right">{{ tax_input.taxDeductedAtSource|number_format(0) }}</td>
-                <td></td>
+                <td style="text-align: right">{{ taxinput.employmentEarnings |number_format(0) }}</td>
+                <td style="text-align: right">{{ taxinput.interestEarnings|number_format(0) }}</td>
+                <td style="text-align: right">{{ taxinput.otherEarnings |number_format(0) }}</td>
+                <td style="text-align: right">{{ taxinput.taxDeductedAtSource|number_format(0) }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -44,7 +40,7 @@
                 'pageLength': 100,
                 "order": [[0, 'asc']],
                 "paging": false,
-                "searching": true,
+                "searching": false,
                 "bInfo": false
             });
         });

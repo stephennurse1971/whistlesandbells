@@ -121,8 +121,8 @@ class WineListController extends AbstractController
      */
     public function viewUserPhoto(int $id, WineList $wineList, EntityManagerInterface $entityManager)
     {
-        $imagename = $wineList->getPhoto();
-        return $this->render('user/image_view.html.twig', ['imagename' => $imagename]);
+        $imagename = $wineList->getLabelPicture();
+        return $this->render('wine_list/image_view.html.twig', ['imagename' => $imagename]);
     }
 
 

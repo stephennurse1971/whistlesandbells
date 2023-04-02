@@ -5,8 +5,6 @@
 {% block body %}
 
     <h1 style="color: red">Investments
-
-
         <a target="_blank" href="{{ path('market_data_index') }}"><i class="fas fa-chart-line"></i></a>
         <a target="_blank" href="{{ path('fx_rates_index') }}"><i class="fas fa-euro-sign"></i></a>
     </h1>
@@ -50,7 +48,7 @@
         {% set MTMTotal = 0 %}
         {% set PnLTotal = 0 %}
         {% set CGTTotal = 0 %}
-        {% for investment in investmentsCurrent %}
+        {% for investment in investmentsAll %}
             {% set currentFXRate = 0 %}
             {% for fxRate in fxRates %}
                 {% if investment.currency.fx == fxRate.fx %}
@@ -239,7 +237,6 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                {#                </td> #}
             </div>
         {% endfor %}
         </tbody>

@@ -1,0 +1,244 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tax Self-Assessment Self-Assessment{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Tax Self-Assessment Overview</h1>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th style="border-right:1px solid black; width: 300px"></th>
+            {% for taxYear in taxYears %}
+                <th style="border-right:1px solid lightgray; text-align: right; width: 100px">{{ taxYear.taxYearRange }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+        <tbody>
+        <tr>
+            <td data-sort="01" style="border-right:1px solid black; text-align: left"><b>Employment
+                    Earnings</b>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            <a target="_blank" href="{{ path('tax_inputs_edit',{id: taxinput.id}) }}">
+                                {{ taxinput.employmentEarnings |number_format(0) }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td data-sort="02" style="border-right:1px solid black; text-align: left"><b>Interest Income</b>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            {{ taxinput.interestEarnings |number_format(0) }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td data-sort="03" style="border-right:1px solid black; text-align: left"><b>Other Income</b>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            {{ taxinput.otherEarnings |number_format(0) }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td data-sort="04" style="border-right:1px solid black; text-align: left"><b>Income Offsets (EIS Losses,
+                    BRPA)</b></td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            {% set Losses = 1000 %}
+                            Placeholder {{ Losses }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td data-sort="05"
+                style="border-right:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black; background-color: whitesmoke; text-align: left">
+                <b>Total Taxable Income</b>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray;border-bottom: 1px solid black; border-top: 1px solid black; background-color: whitesmoke; text-align: right">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            {{ (taxinput.employmentEarnings + taxinput.interestEarnings + taxinput.otherEarnings - 1000) |number_format(0) }} - Lossess
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+
+
+        <tr>
+            <td data-sort="08" style="border-right:1px solid black;border-bottom:1px solid black; text-align: left"><b>Income
+                    tax on All
+                    Income</b>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; border-bottom:1px solid black; text-align: right">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            Compute
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+
+        </tbody>
+    </table>
+
+    <br><br>
+
+{#    <----------------------------- Second Table - Tax rates ------------------------>#}
+
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th style="border-right:1px solid black; width: 300px"></th>
+            {% for taxYear in taxYears %}
+                <th style="border-right:1px solid lightgray; text-align: right">{{ taxYear.taxYearRange }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+        <tbody>
+        <tr>
+            <td data-sort="01" style="border-right:1px solid black; text-align: left; width: 390px">
+                <a target="_blank" href="{{ path('tax_year_index') }}"><b>Personal Allowance</b></a></td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    <a target="_blank"
+                       href="{{ path('tax_year_edit',{id: taxYear.id}) }}">{{ taxYear.taxBand1PersonalAllowance|number_format(0) }}
+                        @ {{ (taxYear.taxBand1Rate*100)|number_format(0) }}%</a>
+                </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td data-sort="01" style="border-right:1px solid black; text-align: left; width: 390px">
+                <a target="_blank" href="{{ path('tax_year_index') }}"><b>Basic Rate</b></a></td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    <a target="_blank"
+                       href="{{ path('tax_year_edit',{id: taxYear.id}) }}"> Then to {{ taxYear.taxBand2BasicRate|number_format(0) }}
+                        @ {{ (taxYear.taxBand2Rate*100)|number_format(0) }}%</a>
+                </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td data-sort="01" style="border-right:1px solid black; text-align: left; width: 390px">
+                <a target="_blank" href="{{ path('tax_year_index') }}"><b>Higher Rate</b></a></td>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    <a target="_blank"
+                       href="{{ path('tax_year_edit',{id: taxYear.id}) }}"> Then to {{ taxYear.taxBand3HigherRate|number_format(0) }}
+                        @ {{ (taxYear.taxBand3Rate*100)|number_format(0) }}%</a>
+                </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td data-sort="01" style="border-right:1px solid black; text-align: left; width: 390px">
+                <a target="_blank" href="{{ path('tax_year_index') }}"><b>Additional Rate</b></a></td>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    <a target="_blank"
+                       href="{{ path('tax_year_edit',{id: taxYear.id}) }}"> Then @ {{ (taxYear.taxBand4Rate*100)|number_format(0) }}%</a>
+                </td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td data-sort="06" style="border-right:1px solid black; text-align: left; background-color: whitesmoke"><b>Check:
+                    Income tax on Employment Income (Calculated)</b>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right; background-color: whitesmoke">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            {{ taxinput.employmentEarnings |number_format(0)}} <br>
+                            At Basic Rate Amount: {{ taxYear.taxBand2BasicRate|number_format(0) }} @ {{ (taxYear.taxBand2Rate*100) }}% <br>
+                            At Higher Rate Amount: {{taxYear.taxBand3HigherRate|number_format(0) }} @ {{ (taxYear.taxBand3Rate*100) }}% <br>
+                            At Additional Rate Amount: The rest <br>
+
+                            BasicRate: {{ 1 * max(0,min(taxinput.employmentEarnings,taxYear.taxBand2BasicRate) )  }} <br>
+                            HigherRate: {{ 1 * max(0,min(taxinput.employmentEarnings,(taxYear.taxBand2BasicRate + taxYear.taxBand3HigherRate))-taxYear.taxBand2BasicRate )  }} <br>
+                            AdditionalRate: {{ 1 * max(0,min(taxinput.employmentEarnings,(taxYear.taxBand2BasicRate + taxYear.taxBand3HigherRate))-taxYear.taxBand3HigherRate)  }}
+
+
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td data-sort="07" style="border-right:1px solid black; text-align: left; background-color: whitesmoke"><b>...
+                    on P60</b>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right; background-color: whitesmoke">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            {{ taxinput.taxDeductedAtSource |number_format(0) }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

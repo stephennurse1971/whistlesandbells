@@ -5,6 +5,9 @@
 {% block body %}
 
     <h1 style="color: red">Tax Summary</h1>
+    <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('tax_inputs_overview_index') }}">Self-Assessment</a>
+    <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('investments_index') }}">Investments</a>
+
 
     <table class="table">
         <thead>
@@ -14,17 +17,14 @@
             <th style="text-align: right; border-right:1px solid black; width: 120px">£ Amount</th>
             <th style="text-align: right">Investment Date</th>
             <th style="text-align: right; border-right:1px solid black">Sale Date</th>
-
             {% for taxYear in taxYears %}
                 <th style="border-right:1px solid lightgray; text-align: right">{{ taxYear.taxYearRange }}</th>
             {% endfor %}
-
-
         </tr>
         </thead>
         <tbody>
 
-        {% for investment in investmentsCurrent %}
+        {% for investment in investmentsAll %}
             {% set totalTaxOffset = 0 %}
             {% set totalIncomeOffset = 0 %}
 
@@ -62,40 +62,53 @@
                     data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
 
                 {% for taxYear in taxYears %}
-                    <td style="border-right:1px solid lightgray; text-align: right">
-                        <div class="row">
-                            <div class="col-6">
-                                {% set taxOffset = 0 %}
-                                {% if investment.eisPurchaseYear1 == taxYear %}
-                                    {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
-                                {% endif %}
-                                {% if investment.eisPurchaseYear2 == taxYear %}
-                                    {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
-                                {% endif %}
-                                {{ taxOffset |number_format(0) }}
-                            </div>
-                            <div class="col-6">
-                                {% set incomeOffset = 0 %}
-                                {% if investment.eisPurchaseYear1 == taxYear %}
-                                    {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
-                                {% endif %}
-                                {% if investment.eisPurchaseYear2 == taxYear %}
-                                    {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
-                                {% endif %}
-                                {{ incomeOffset |number_format(0) }}
-                            </div>
+                    {% if investment.eISPurchaseYear1 is not null and taxYear.taxYearRange == investment.eISPurchaseYear1.taxYearRange %}
+                        <td style="border-right:1px solid lightgray; text-align: right; background-color: lightgreen">
+
+                    {% elseif investment.eISPurchaseYear2 is not null and taxYear.taxYearRange == investment.eISPurchaseYear2.taxYearRange %}
+                        <td style="border-right:1px solid lightgray; text-align: right; background-color: lightgreen">
+
+                    {% elseif investment.eISSaleYear1 is not null and taxYear.taxYearRange == investment.eISSaleYear1.taxYearRange %}
+                        <td style="border-right:1px solid lightgray; text-align: right; background-color: palegoldenrod">
+
+                    {% elseif investment.eISSaleYear2 is not null and taxYear.taxYearRange == investment.eISSaleYear2.taxYearRange %}
+                        <td style="border-right:1px solid lightgray; text-align: right; background-color: palegoldenrod">
+
+                    {% else %}
+                        <td style="border-right:1px solid lightgray; text-align: right">
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-6">
+                            {% set taxOffset = 0 %}
+                            {% if investment.eisPurchaseYear1 == taxYear %}
+                                {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                            {% endif %}
+                            {% if investment.eisPurchaseYear2 == taxYear %}
+                                {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                            {% endif %}
+                            {{ taxOffset |number_format(0) }}
                         </div>
+                        <div class="col-6">
+                            {% set incomeOffset = 0 %}
+                            {% if investment.eisPurchaseYear1 == taxYear %}
+                                {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                            {% endif %}
+                            {% if investment.eisPurchaseYear2 == taxYear %}
+                                {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                            {% endif %}
+                            {{ incomeOffset |number_format(0) }}
+                        </div>
+                    </div>
                     </td>
                 {% endfor %}
             </tr>
-
-
         {% endfor %}
         </tbody>
     </table>
 
-{#    Total Tax Offset: {{ totalTaxOffset }}#}
-{#    Total Income Offset: {{ totalIncomeOffset }}#}
+    {#    Total Tax Offset: {{ totalTaxOffset }} #}
+    {#    Total Income Offset: {{ totalIncomeOffset }} #}
 {% endblock %}
 
 
@@ -106,7 +119,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+                "order": [[3, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": false

@@ -17,6 +17,7 @@ class TaxSchemesType extends AbstractType
             ->add('purchaseTaxOffset')
             ->add('saleIncomeOffset')
             ->add('saleTaxOffset')
+            ->add('includeTaxSummary')
         ;
     }
 

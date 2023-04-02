@@ -32,10 +32,7 @@ class TaxInputs
      */
     private $otherEarnings;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $incomeOffsetBPRAorEISLosses;
+
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -89,17 +86,7 @@ class TaxInputs
         return $this;
     }
 
-    public function getIncomeOffsetBPRAorEISLosses(): ?float
-    {
-        return $this->incomeOffsetBPRAorEISLosses;
-    }
 
-    public function setIncomeOffsetBPRAorEISLosses(?float $incomeOffsetBPRAorEISLosses): self
-    {
-        $this->incomeOffsetBPRAorEISLosses = $incomeOffsetBPRAorEISLosses;
-
-        return $this;
-    }
 
     public function getTaxDeductedAtSource(): ?float
     {

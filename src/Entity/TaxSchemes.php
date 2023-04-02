@@ -42,6 +42,11 @@ class TaxSchemes
      */
     private $saleTaxOffset;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $includeTaxSummary;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class TaxSchemes
     public function setSaleTaxOffset(?float $saleTaxOffset): self
     {
         $this->saleTaxOffset = $saleTaxOffset;
+
+        return $this;
+    }
+
+    public function getIncludeTaxSummary(): ?bool
+    {
+        return $this->includeTaxSummary;
+    }
+
+    public function setIncludeTaxSummary(?bool $includeTaxSummary): self
+    {
+        $this->includeTaxSummary = $includeTaxSummary;
 
         return $this;
     }
