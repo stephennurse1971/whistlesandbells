@@ -94,7 +94,6 @@ class InvestmentsController extends AbstractController
      */
     public function edit(Request $request, Investments $investment): Response
     {
-//        $referer = $request->headers->get('Referer');
         $currency = $investment->getCurrency();
         $share_cert = $investment->getShareCert();
         $eis_cert = $investment->getEisCert();
@@ -106,6 +105,7 @@ class InvestmentsController extends AbstractController
             'currency' => $currency,
             'edit' => true]);
         $form->handleRequest($request);
+        $newFileNameSuffix = $investment->getInvestmentCompany()->getShareCompany()."_".$investment->getInvestmentAmount()."_".$investment->getInvestmentDate()->format('d-M-y');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $share_cert = $form['shareCert']->getData();
@@ -113,7 +113,7 @@ class InvestmentsController extends AbstractController
                 $share_cert_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($share_cert->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $share_cert->guessExtension();
-                $newFileName = $fileName . "." . $file_extension;
+                $newFileName = "Share_Certificate_" . $newFileNameSuffix.".".$file_extension;
                 $share_cert->move($share_cert_directory, $newFileName);
                 $investment->setShareCert($newFileName);
             }
@@ -123,7 +123,7 @@ class InvestmentsController extends AbstractController
                 $eis_cert_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($eisCert->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $eisCert->guessExtension();
-                $newFileName = $fileName . "." . $file_extension;
+                $newFileName = "EIS_Certificate_" . $newFileNameSuffix.".".$file_extension;
                 $eisCert->move($eis_cert_directory, $newFileName);
                 $investment->setEisCert($newFileName);
             }
@@ -133,13 +133,12 @@ class InvestmentsController extends AbstractController
                 $other_docs_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($other_docs->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $other_docs->guessExtension();
-                $newFileName = $fileName . "." . $file_extension;
+                $newFileName = $fileName . "_". $newFileNameSuffix.".".$file_extension;
                 $other_docs->move($other_docs_directory, $newFileName);
                 $investment->setOtherDocs($newFileName);
             }
 
             $this->getDoctrine()->getManager()->flush();
-//            return $this->redirect($referer);
             return $this->redirectToRoute('investments_index');
         }
 
@@ -200,12 +199,24 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/view/file/{filetype}/{id}", name="investment_viewfile", methods={"GET"})
      */
-    public function investmentFileLaunch(Investments $investments): Response
+    public function investmentFileLaunch(string $filetype,Investments $investments): Response
     {
-        $fileName = $investments->$filetype();
+        if($filetype == 'shareCert'){
+            $fileName = $investments->getShareCert();
+        }
+        elseif($filetype == 'eisCert'){
+            $fileName = $investments->getEisCert();
+        }
+        elseif($filetype == 'otherDocs'){
+            $fileName = $investments->getOtherDocs();
+        }
+
+
         $publicResourcesFolderPath = $this->getParameter('investments_attachment_directory');
         return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
     }
+
+
 
 
 }

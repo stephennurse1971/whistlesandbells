@@ -144,5 +144,12 @@
             }
         })
     </script>
-
+    <script>
+        {% if investment.eisSaleYear1 is not null and investment.eisSaleYear2 is not null %}
+        var investment_eisSaleYear1 =  "{{ investment.eISSaleYear1.taxYearRange }}";
+        var investment_eisSaleYear2 =  "{{ investment.eISSaleYear2.taxYearRange }}";
+        $("#investments_eISSaleYear1").val(investment_eisSaleYear1).change();
+        $("#investments_eISSaleYear2").val(investment_eisSaleYear2).change();
+        {% endif %}
+    </script>
 {% endblock additionaljs %}

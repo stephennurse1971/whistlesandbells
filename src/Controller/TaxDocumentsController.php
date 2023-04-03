@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Investments;
 use App\Entity\TaxDocuments;
 use App\Form\TaxDocumentsType;
 use App\Repository\ChaveyDownRepository;
 use App\Repository\TaxDocumentsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,6 +98,8 @@ class TaxDocumentsController extends AbstractController
      */
     public function edit(Request $request, TaxDocuments $taxDocument): Response
     {
+        $year = $taxDocument->getYear();
+
         $P11D_file_name = $taxDocument->getP11D();
         $p60_file_name = $taxDocument->getP60();
         $selfAssessment_file_name = $taxDocument->getSelfAssessment();
@@ -113,7 +117,7 @@ class TaxDocumentsController extends AbstractController
                 $p11D_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($p11D->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p11D->guessExtension();
-                $newFileName = $fileName . "." . $file_extension;
+                $newFileName = "P11D_" . $year."." . $file_extension;
                 $p11D->move($p11D_directory, $newFileName);
                 $taxDocument->setP11D($newFileName);
             }
@@ -123,7 +127,7 @@ class TaxDocumentsController extends AbstractController
 
                 $fileName = pathinfo($p60->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p60->guessExtension();
-                $newFileName = $fileName . "." . $file_extension;
+                $newFileName = "P60_" . $year."." . $file_extension;
                 $p60->move($p60_directory, $newFileName);
                 $taxDocument->setP60($newFileName);
             }
@@ -133,7 +137,7 @@ class TaxDocumentsController extends AbstractController
 
                 $fileName = pathinfo($selfAssessment->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $selfAssessment->guessExtension();
-                $newFileName = $fileName . "." . $file_extension;
+                $newFileName = "SelfAssessment_" . $year."." . $file_extension;
                 $selfAssessment->move($selfAssessment_directory, $newFileName);
                 $taxDocument->setSelfAssessment($newFileName);
             }
@@ -200,4 +204,59 @@ class TaxDocumentsController extends AbstractController
 
         return $this->redirectToRoute('tax_documents_index');
     }
+
+    /**
+     * @Route("/{id}/delete/P11Dattachment", name="investments_delete_p11D_attachment")
+     */
+    public function deleteAttachmentP11D(Request $request, TaxDocuments $taxDocuments, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $taxDocuments->setP11D('');
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/{id}/delete/P60attachment", name="investments_delete_p60_attachment")
+     */
+    public function deleteAttachmentP60(Request $request, TaxDocuments $taxDocuments, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $taxDocuments->setP60('');
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/{id}/delete/selfassessment_attachment", name="investments_delete_selfassessment_attachment")
+     */
+    public function deleteAttachmentOther(Request $request, TaxDocuments $taxDocuments, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $taxDocuments->setSelfAssessment('');
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/view/file/{filetype}/{id}", name="taxdocument_viewfile", methods={"GET"})
+     */
+    public function investmentFileLaunch(string $filetype,TaxDocuments $taxDocuments): Response
+    {
+        if($filetype == 'SelfAssessment'){
+            $fileName = $taxDocuments->getSelfAssessment();
+        }
+        elseif($filetype == 'P11D'){
+            $fileName = $taxDocuments->getP11D();
+        }
+        elseif($filetype == 'P60'){
+            $fileName = $taxDocuments->getP60();
+        }
+
+
+        $publicResourcesFolderPath = $this->getParameter('investments_attachment_directory');
+        return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
+    }
+
+
 }

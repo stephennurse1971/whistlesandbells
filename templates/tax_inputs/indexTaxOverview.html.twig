@@ -168,11 +168,11 @@
 
         <tr>
             <td data-sort="07"
-                style="border-right:1px solid black;border-bottom:1px solid black; text-align: left; color: red">
+                style="border-right:1px solid black;border-bottom:1px solid black; text-align: left; color: red; background-color: whitesmoke; ">
                 <b>Income tax on All Income</b>
             </td>
             {% for taxYear in taxYears %}
-                <td style="border-right:1px solid lightgray; border-bottom:1px solid black; text-align: right">
+                <td style="border-right:1px solid lightgray; border-bottom:1px solid black; text-align: right;background-color: whitesmoke; ">
                     {% set IncomeOffset = 0 %}
                     {% for investment in investments %}
                         {% if investment.eisPurchaseYear1 is not null %}
