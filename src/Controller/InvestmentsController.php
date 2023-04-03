@@ -39,9 +39,9 @@ class InvestmentsController extends AbstractController
     }
 
     /**
-     * @Route("/tax_summary", name="investments_index_tax_consequences", methods={"GET"})
+     * @Route("/tax_summary_on_investments/{show}", name="investments_index_tax_consequences", methods={"GET"})
      */
-    public function indexTaxConsequences(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
+    public function indexTaxConsequences(string $show, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
     {
 
         return $this->render('investments/taxConsequencesInvestmentindex.html.twig', [
@@ -52,7 +52,8 @@ class InvestmentsController extends AbstractController
             'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
-            'taxYears' => $taxYearRepository->findAllByAsc()
+            'taxYears' => $taxYearRepository->findAllByAsc(),
+            'show' => $show
         ]);
     }
 
