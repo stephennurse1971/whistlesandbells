@@ -87,6 +87,7 @@
                             {% if investment.eisPurchaseYear2 == taxYear %}
                                 {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                             {% endif %}
+
                             {{ taxOffset |number_format(0) }}
                         </div>
                         <div class="col-6">
@@ -97,6 +98,15 @@
                             {% if investment.eisPurchaseYear2 == taxYear %}
                                 {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                             {% endif %}
+
+{#                            NEEDS CORRECTING BELOW#}
+                            {% if investment.eisSaleYear1 == taxYear %}
+                                {% set incomeOffset = incomeOffset + ( investment.taxScheme.saleIncomeOffset*  (investment.eISSaleYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                            {% endif %}
+                            {% if investment.eisSaleYear2 == taxYear %}
+                                {% set incomeOffset = incomeOffset + ( investment.taxScheme.saleIncomeOffset*  (investment.eISSaleYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                            {% endif %}
+
                             {{ incomeOffset |number_format(0) }}
                         </div>
                     </div>

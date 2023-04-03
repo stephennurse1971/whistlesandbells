@@ -3,6 +3,11 @@
 {% block title %}Tax Self-Assessment Self-Assessment{% endblock %}
 
 {% block body %}
+    <style>
+        td,th{
+            width:150px
+        }
+    </style>
     <h1 style="color: red">Tax Self-Assessment Overview</h1>
 
     <table class="table table-responsive">
@@ -10,7 +15,7 @@
         <tr>
             <th style="border-right:1px solid black; width: 300px"></th>
             {% for taxYear in taxYears %}
-                <th style="border-right:1px solid lightgray; text-align: right; width: 100px">{{ taxYear.taxYearRange }}</th>
+                <th style="border-right:1px solid lightgray; text-align: right">{{ taxYear.taxYearRange }}</th>
             {% endfor %}
         </tr>
         </thead>
@@ -18,7 +23,7 @@
 
         <tbody>
         <tr>
-            <td data-sort="01" style="border-right:1px solid black; text-align: left">
+            <td data-sort="01" style="border-right:1px solid black; text-align: left ">
                 <a target="_blank"
                    href="{{ path('tax_inputs_index') }}"><b>Employment Earnings</b></a>
             </td>
@@ -66,10 +71,48 @@
             <td data-sort="04" style="border-right:1px solid black; text-align: left">
                 <b>Income Offsets (EIS Losses, BRPA)</b></td>
             {% for taxYear in taxYears %}
+
                 <td style="border-right:1px solid lightgray; text-align: right">
                     {% set IncomeOffset = 0 %}
                     {% for investment in investments %}
+                        {% if investment.eisPurchaseYear1 is not null %}
+                            {% if investment.eisPurchaseYear1.id ==taxYear.id %}
+                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISPurchaseYear1Percentage * investment.taxScheme.purchaseIncomeOffset/100) %}
+                            {% endif %}
+                        {% endif %}
+                        {% if investment.eisPurchaseYear2 is not null %}
+                            {% if investment.eisPurchaseYear2.id ==taxYear.id %}
+                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISPurchaseYear2Percentage * investment.taxScheme.purchaseIncomeOffset/100) %}
+                            {% endif %}
+                        {% endif %}
+                        {% if investment.eisSaleYear1 is not null %}
+                            {% if investment.eisSaleYear1.id ==taxYear.id %}
+                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISSaleYear1Percentage * investment.taxScheme.saleIncomeOffset/100) %}
+                            {% endif %}
+                        {% endif %}
+                        {% if investment.eisSaleYear2 is not null %}
+                            {% if investment.eisSaleYear2.id ==taxYear.id %}
+                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISSaleYear2Percentage * investment.taxScheme.saleIncomeOffset/100) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ (IncomeOffset*-1)|number_format('0') }}
 
+                </td>
+            {% endfor %}
+
+        </tr>
+
+
+        <tr>
+            <td data-sort="05"
+                style="border-right:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black; background-color: whitesmoke; text-align: left">
+                <b>Total Taxable Income</b>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray;border-bottom: 1px solid black; border-top: 1px solid black; background-color: whitesmoke; text-align: right">
+                    {% set IncomeOffset = 0 %}
+                    {% for investment in investments %}
                         {% if investment.eisPurchaseYear1 is not null %}
                             {% if investment.eisPurchaseYear1.id ==taxYear.id %}
                                 {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISPurchaseYear1Percentage * investment.taxScheme.purchaseIncomeOffset/100) %}
@@ -93,26 +136,11 @@
                                 {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISSaleYear2Percentage * investment.taxScheme.saleIncomeOffset/100) %}
                             {% endif %}
                         {% endif %}
-
                     {% endfor %}
-                    {{ (IncomeOffset*-1)|number_format('0') }}
-                </td>
-             {% endfor %}
-        </tr>
 
-
-
-
-
-        <tr>
-            <td data-sort="05" style="border-right:1px solid black;border-bottom: 1px solid black;border-top: 1px solid black; background-color: whitesmoke; text-align: left"><b>Total Taxable Income</b>
-            </td>
-            {% for taxYear in taxYears %}
-                <td style="border-right:1px solid lightgray;border-bottom: 1px solid black; border-top: 1px solid black; background-color: whitesmoke; text-align: right">
                     {% for taxinput in taxinputs %}
                         {% if taxinput.year.id == taxYear.id %}
-                            {{ (taxinput.employmentEarnings + taxinput.interestEarnings + taxinput.otherEarnings ) |number_format(0) }}
-
+                            {{ (taxinput.employmentEarnings + taxinput.interestEarnings + taxinput.otherEarnings - IncomeOffset) |number_format(0) }}
                         {% endif %}
                     {% endfor %}
                 </td>
@@ -139,14 +167,41 @@
         </tr>
 
         <tr>
-            <td data-sort="07" style="border-right:1px solid black;border-bottom:1px solid black; text-align: left; color: red">
-                <b>Income tax on All Income (CORRECT - include Income Offsets )</b>
+            <td data-sort="07"
+                style="border-right:1px solid black;border-bottom:1px solid black; text-align: left; color: red">
+                <b>Income tax on All Income</b>
             </td>
             {% for taxYear in taxYears %}
                 <td style="border-right:1px solid lightgray; border-bottom:1px solid black; text-align: right">
+                    {% set IncomeOffset = 0 %}
+                    {% for investment in investments %}
+                        {% if investment.eisPurchaseYear1 is not null %}
+                            {% if investment.eisPurchaseYear1.id ==taxYear.id %}
+                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISPurchaseYear1Percentage * investment.taxScheme.purchaseIncomeOffset/100) %}
+                            {% endif %}
+                        {% endif %}
+                        {% if investment.eisPurchaseYear2 is not null %}
+                            {% if investment.eisPurchaseYear2.id ==taxYear.id %}
+                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISPurchaseYear2Percentage * investment.taxScheme.purchaseIncomeOffset/100) %}
+                            {% endif %}
+                        {% endif %}
+                        {% if investment.eisSaleYear1 is not null %}
+                            {% if investment.eisSaleYear1.id ==taxYear.id %}
+                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISSaleYear1Percentage * investment.taxScheme.saleIncomeOffset/100) %}
+                            {% endif %}
+                        {% endif %}
+                        {% if investment.eisSaleYear2 is not null %}
+                            {% if investment.eisSaleYear2.id ==taxYear.id %}
+                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISSaleYear2Percentage * investment.taxScheme.saleIncomeOffset/100) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+
+
                     {% for taxinput in taxinputs %}
                         {% if taxinput.year.id == taxYear.id %}
-                            {% set TotalIncome = taxinput.employmentEarnings + taxinput.interestEarnings+ taxinput.otherEarnings %}
+                            {% set TotalIncome = taxinput.employmentEarnings + taxinput.interestEarnings+ taxinput.otherEarnings -IncomeOffset %}
                             {% set BasicRate = max(0,min(TotalIncome,taxYear.taxBand2BasicRate) ) %}
                             {% set HigherRate= max(0,(min(TotalIncome, taxYear.taxBand3HigherRate)-BasicRate)) %}
                             {% set AdditionalRate=  max(0, TotalIncome -taxYear.taxBand3HigherRate) %}
@@ -202,7 +257,7 @@
                 <b>Net tax Due</b></td>
             {% for taxYear in taxYears %}
                 <td style="border-right:1px solid lightgray; text-align: right">
-                   xxx
+                    xxx
                 </td>
             {% endfor %}
         </tr>
@@ -229,26 +284,23 @@
         </tr>
 
 
-
-
-
         </tbody>
     </table>
 
     <br><br>
 
     {#    <----------------------------- Second Table - Tax rates ------------------------> #}
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
     <table class="table table-responsive">
         <thead>
@@ -263,7 +315,7 @@
 
         <tbody>
         <tr>
-            <td data-sort="01" style="border-right:1px solid black; text-align: left; width: 390px">
+            <td data-sort="01" style="border-right:1px solid black; text-align:left">
                 <a target="_blank" href="{{ path('tax_year_index') }}"><b>Personal Allowance</b></a></td>
             {% for taxYear in taxYears %}
                 <td style="border-right:1px solid lightgray; text-align: right">
@@ -274,7 +326,7 @@
             {% endfor %}
         </tr>
         <tr>
-            <td data-sort="01" style="border-right:1px solid black; text-align: left; width: 390px">
+            <td data-sort="01" style="border-right:1px solid black; text-align: left">
                 <a target="_blank" href="{{ path('tax_year_index') }}"><b>Basic Rate</b></a></td>
             {% for taxYear in taxYears %}
                 <td style="border-right:1px solid lightgray; text-align: right">
@@ -286,7 +338,7 @@
             {% endfor %}
         </tr>
         <tr>
-            <td data-sort="01" style="border-right:1px solid black; text-align: left; width: 390px">
+            <td data-sort="01" style="border-right:1px solid black; text-align: left">
                 <a target="_blank" href="{{ path('tax_year_index') }}"><b>Higher Rate</b></a></td>
             </td>
             {% for taxYear in taxYears %}
@@ -299,7 +351,7 @@
             {% endfor %}
         </tr>
         <tr>
-            <td data-sort="01" style="border-right:1px solid black; text-align: left; width: 390px">
+            <td data-sort="01" style="border-right:1px solid black; text-align: left">
                 <a target="_blank" href="{{ path('tax_year_index') }}"><b>Additional Rate</b></a></td>
             </td>
             {% for taxYear in taxYears %}
