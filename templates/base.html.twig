@@ -129,17 +129,13 @@
                         </a>
                     </li>
 
-                    <!-- Nav Item #2 - About Me -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_home') }}">About Me</a>
-                    </li>
 
-                    <!-- Nav Item #2a - Temporary -->
+                    <!-- Nav Item #2 - Interests -->
                     {% if is_granted('ROLE_GUEST') %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Others
+                                Interests
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital

@@ -13,7 +13,8 @@
             <thead>
             <tr>
                 <th style="width: 50px">Name</th>
-                <th style="width: 900px">Content [English]</th>
+                <th style="width: 250px">Title [English]</th>
+                <th style="width: 650px">Content [English]</th>
                 <th style="width: 50px">DE/FR</th>
                 <th style="width: 20px">Hyperlink</th>
                 <th style="width: 100px">#</th>
@@ -31,6 +32,7 @@
                                 <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">TBD</a>
                             {% endif %}
                         </td>
+                        <td>{{ (cms_copy.contentTitle |slice (0, 250))|raw }}</td>
                         <td>{{ (cms_copy.contentText |slice (0, 250))|raw }}</td>
                         <td>
                             {% if cms_copy.contentTextFR is not empty %}

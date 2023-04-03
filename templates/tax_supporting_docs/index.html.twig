@@ -18,7 +18,7 @@
         <tbody>
         {% for tax_supporting_doc in tax_supporting_docs %}
             <tr>
-                <td>{{ tax_supporting_doc.taxYear.year }}</td>
+                <td> </td>
                 <td><a href="{{ path('tax_supporting_docs_show', {'id': tax_supporting_doc.id}) }}">{{ tax_supporting_doc.date ? tax_supporting_doc.date|date('d-M-Y') : '' }}</a></td>
                 <td>{{ tax_supporting_doc.comments }}</td>
                 <td>

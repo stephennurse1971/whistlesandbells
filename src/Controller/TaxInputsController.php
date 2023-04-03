@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Investments;
 use App\Entity\TaxInputs;
+use App\Entity\TaxSchemes;
 use App\Form\TaxInputsType;
+use App\Repository\InvestmentsRepository;
 use App\Repository\TaxInputsRepository;
+use App\Repository\TaxSchemesRepository;
 use App\Repository\TaxYearRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,11 +33,13 @@ class TaxInputsController extends AbstractController
     /**
      * @Route("/taxOverview", name="tax_inputs_overview_index", methods={"GET"})
      */
-    public function indexTaxOverview(TaxInputsRepository $taxInputsRepository, TaxYearRepository $taxYearRepository): Response
+    public function indexTaxOverview(TaxInputsRepository $taxInputsRepository, InvestmentsRepository $investmentsRepository,TaxSchemesRepository $taxSchemesRepository,TaxYearRepository $taxYearRepository): Response
     {
         return $this->render('tax_inputs/indexTaxOverview.html.twig', [
             'taxinputs' => $taxInputsRepository->findAll(),
-            'taxYears' => $taxYearRepository->findAllByAsc()
+            'taxYears' => $taxYearRepository->findAllByAsc(),
+            'investments' => $investmentsRepository->findAll(),
+            'taxschemes'=> $taxSchemesRepository->findAll()
         ]);
     }
 

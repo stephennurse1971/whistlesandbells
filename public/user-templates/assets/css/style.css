@@ -168,7 +168,7 @@ button:focus {outline:0!important;}
 
 
 #default-breadcrumb {
-    background: url(../images/about-me-banner.jpg) no-repeat center center ;
+    background: url(../public/images/about-me-banner.jpg) no-repeat center center ;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
