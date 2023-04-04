@@ -63,7 +63,6 @@
     <table class="table table-responsive">
         <thead>
         <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Company</th>
             <th title="Home/Business">Address</th>
@@ -99,7 +98,6 @@
             {% else %}
                 <tr style="background-color: antiquewhite">
             {% endif %}
-            <td>{{ user.id }}</td>
             <td>
                 {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
                     <b><a target="_blank"
@@ -150,7 +148,9 @@
             </td>
 
             <td style="text-align: center">
-                {% if user.email is not empty %}
+                {% set instring = '@no_email.com' in user.email %}
+
+                {% if user.email is not empty and instring != 1 %}
                     <a title="{{ user.email }}" href="mailto:{{ user.email }}">
                         <i class="fa fa-envelope"></i>
                     </a>

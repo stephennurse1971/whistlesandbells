@@ -94,6 +94,12 @@ class InvestmentsController extends AbstractController
      */
     public function edit(Request $request, Investments $investment): Response
     {
+        $investmentDate= new \DateTime('now');
+        $investmentDate = $investmentDate->format('d-m-y');
+        if($investment->getInvestmentDate()){
+            $investmentDate= $investment->getInvestmentDate()->format('d-m-y');
+        }
+
         $currency = $investment->getCurrency();
         $share_cert = $investment->getShareCert();
         $eis_cert = $investment->getEisCert();
@@ -105,7 +111,7 @@ class InvestmentsController extends AbstractController
             'currency' => $currency,
             'edit' => true]);
         $form->handleRequest($request);
-        $newFileNameSuffix = $investment->getInvestmentCompany()->getShareCompany()."_".$investment->getInvestmentAmount()."_".$investment->getInvestmentDate()->format('d-M-y');
+        $newFileNameSuffix = $investment->getInvestmentCompany()->getShareCompany()."_".$investment->getInvestmentAmount()."_".$investmentDate;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $share_cert = $form['shareCert']->getData();

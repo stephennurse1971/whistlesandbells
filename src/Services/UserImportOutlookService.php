@@ -109,7 +109,7 @@ class UserImportOutlookService
             }
 
             if (!$email) {
-                continue;
+                $email=$firstName.$lastName."NoEmail@no_email.com";
             }
             if ($company == "Personal - Cyprus Tourist Attraction") {
                 continue;

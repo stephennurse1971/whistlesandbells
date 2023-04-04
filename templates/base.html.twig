@@ -464,6 +464,18 @@
             console.error(error);
         });
 
+    ClassicEditor
+        .create(document.querySelector('#market_data_comment'))
+        .catch(error => {
+            console.error(error);
+        });
+    ClassicEditor
+        .create(document.querySelector('#investments_comment'))
+        .catch(error => {
+            console.error(error);
+        });
+
+
 </script>
 <script>
     $("input.datetime").flatpickr({
@@ -489,13 +501,10 @@
             var isMobile = detectMob();
             if (isMobile) {
                 $('body').addClass('mobile');
-
-
             }
         });
         if (window.innerWidth < 800) {
             $('footer').removeClass('fixed-bottom');
-
         }
 
         function fixedImageOrientation() {
