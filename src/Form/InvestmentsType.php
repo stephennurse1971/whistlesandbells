@@ -72,6 +72,7 @@ class InvestmentsType extends AbstractType
 //                'format'=>'d-m-Y'
             ])
             ->add('investmentAmount')
+
             ->add('taxScheme', EntityType::class, [
                 'class' => TaxSchemes::class,
                 'choice_label' => 'name',
@@ -166,7 +167,9 @@ class InvestmentsType extends AbstractType
                 },
                 'label' => 'Sale: Tax LookBack',
                 'required' => false
-            ]);
+            ])
+            ->add('comment')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

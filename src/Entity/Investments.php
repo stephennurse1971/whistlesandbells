@@ -136,6 +136,11 @@ class Investments
      */
     private $taxScheme;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
 
 
 
@@ -434,6 +439,18 @@ class Investments
     public function setTaxScheme(?TaxSchemes $taxScheme): self
     {
         $this->taxScheme = $taxScheme;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

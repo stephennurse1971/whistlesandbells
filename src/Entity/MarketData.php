@@ -62,6 +62,11 @@ class MarketData
      */
     private $cashInstrument;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
 
 
 
@@ -175,6 +180,18 @@ class MarketData
     public function setCashInstrument(?bool $cashInstrument): self
     {
         $this->cashInstrument = $cashInstrument;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
