@@ -13,18 +13,41 @@
             <th style="width: 150px; text-align: right">Interest Earnings</th>
             <th style="width: 150px; text-align: right">Other Earnings</th>
             <th style="width: 150px; text-align: right">Tax Deducted At Source</th>
+            <th style="width: 150px; text-align: right">P11D</th>
+            <th style="width: 150px; text-align: right">P60</th>
+            <th style="width: 150px; text-align: right">P45</th>
+            <th style="width: 150px; text-align: right">Self Assessment</th>
+
         </tr>
         </thead>
         <tbody>
         {% for taxinput in taxinputs %}
             <tr>
-                <td>
-                    <a href="{{ path('tax_inputs_edit', {'id': taxinput.id}) }}"> {{ taxinput.year.taxYearRange }}</a>
-                </td>
+                <td><a href="{{ path('tax_inputs_edit', {'id': taxinput.id}) }}"> {{ taxinput.year.taxYearRange }}</a></td>
                 <td style="text-align: right">{{ taxinput.employmentEarnings |number_format(0) }}</td>
                 <td style="text-align: right">{{ taxinput.interestEarnings|number_format(0) }}</td>
                 <td style="text-align: right">{{ taxinput.otherEarnings |number_format(0) }}</td>
                 <td style="text-align: right">{{ taxinput.taxDeductedAtSource|number_format(0) }}</td>
+                <td style="text-align: right;width: 150px">
+                    {% if taxinput.p11D is not empty %}
+                        <a title= "{{ taxinput.p11D }}" target="_blank" href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'P11D'}) }}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;width: 150px">
+                    {% if taxinput.p60 is not empty %}
+                        <a title= "{{ taxinput.p60 }}" target="_blank" href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'P60'}) }}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;width: 150px">
+                    {% if taxinput.p45 is not empty %}
+                        <a title= "{{ taxinput.p45 }}" target="_blank" href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'P45'}) }}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;width: 150px">
+                    {% if taxinput.selfAssessment is not empty %}
+                        <a title= "{{ taxinput.selfAssessment }}" target="_blank" href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}"><i class="fa fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
