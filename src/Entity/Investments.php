@@ -31,10 +31,6 @@ class Investments
 
 
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $investmentSoldPrice;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -140,6 +136,11 @@ class Investments
      * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $sale_share_price;
 
 
 
@@ -451,6 +452,18 @@ class Investments
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getSaleSharePrice(): ?float
+    {
+        return $this->sale_share_price;
+    }
+
+    public function setSaleSharePrice(?float $sale_share_price): self
+    {
+        $this->sale_share_price = $sale_share_price;
 
         return $this;
     }

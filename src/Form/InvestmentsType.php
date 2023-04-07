@@ -80,7 +80,7 @@ class InvestmentsType extends AbstractType
                 'label' => 'Tax Scheme',
                 'required' => true
             ])
-            ->add('investmentSoldPrice')
+            ->add('saleSharePrice')
             ->add('investmentSaleDate', DateType::class, [
                 'label' => 'Date',
                 'required' => false,

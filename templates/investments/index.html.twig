@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h1 style="color: red">Investments xxx
+    <h1 style="color: red">Investments
         <a target="_blank" href="{{ path('market_data_index') }}"><i class="fas fa-chart-line"></i></a>
         <a target="_blank" href="{{ path('fx_rates_index') }}"><i class="fas fa-euro-sign"></i></a>
     </h1>
@@ -12,23 +12,25 @@
     <table class="table">
         <thead>
         <tr>
+            <th>-</th>
             <th>Asset Class</th>
             <th>Investment</th>
-            <th style="text-align: right">Investment Date</th>
+            <th style="text-align: left">Investment Date</th>
 
             <th>Tax Scheme</th>
             <th style="text-align: right">Ccy</th>
-            <th style="text-align: center;border-right:1px solid black">£ invested</th>
+            <th style="text-align: right;border-right:1px solid black">£ invested</th>
 
             <th style="text-align: right; background-color: lightgreen">Tax Year</th>
             <th style="text-align: right; background-color: lightgreen">£</th>
             <th style="text-align: right; background-color: lightgreen">Tax Year LookBack</th>
-            <th style="text-align: right; background-color: lightgreen; border-right:1px solid black">£</th>
+            <th style="text-align: right; background-color: lightgreen ">£</th>
+            <th style="text-align: right; background-color: lightgreen; border-right:1px solid black">Tax subsidy</th>
 
-            <th style="text-align: right">Share Price - Invested</th>
-            <th style="text-align: right">Share Price -Now (£)</th>
+            <th style="text-align: right">Share Price (Purchase)</th>
+            <th style="text-align: right">Share Price (Sale/Current) (£)</th>
             <th style="text-align: right">MTM (£)</th>
-            <th style="text-align: right;border-right:1px solid black">PnL</th>
+            <th style="text-align: right;border-right:1px solid black">PV</th>
 
 
             <th style="text-align: right;border-right:1px gray; background-color: palegoldenrod">Sale Date</th>
@@ -51,9 +53,10 @@
         </tr>
         </thead>
         <tbody>
-        {% set MTMTotal = 0 %}
-        {% set PnLTotal = 0 %}
-        {% set CGTTotal = 0 %}
+        {% set TaxSubsidyPurchase_Total = 0 %}
+        {% set MTM_Total = 0 %}
+        {% set PV_Total = 0 %}
+        {% set CGT_Total = 0 %}
         {% for investment in investmentsAll %}
             {% set currentFXRate = 0 %}
             {% for fxRate in fxRates %}
@@ -62,186 +65,248 @@
                 {% endif %}
             {% endfor %}
             {% set investmentChildID = 'investment'~investment.id %}
-            <tr>
 
 
-                <td>{{ investment.investmentCompany.assetClass }}</td>
+            <td>{{ investment.taxScheme.includeTaxSummary }}</td>
+            <td>{{ investment.investmentCompany.assetClass }}</td>
 
-                <td>
-                    {% if Investment.findFutureComms(investment.id) == 1 %}
-                        <button class="toggle-investment-child btn btn-outline-warning btn-sm"
-                                data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
-                        </button>
-                    {% endif %}
-                    {% if investment.investmentCompany is not null %}
-                        <a target="_blank"
-                           href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
-                    {% else %}
-                        <a target="_blank" href="{{ path('investments_edit', {'id': investment.id}) }}">--</a>
-                    {% endif %}
-                </td>
-
-                <td data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
-
-                <!-- Is EIS, SEIS, VCT etc -->
-                {% if investment.taxScheme is not null %}
+            <td>
+                {% if Investment.findFutureComms(investment.id) == 1 %}
+                    <button class="toggle-investment-child btn btn-outline-warning btn-sm"
+                            data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
+                    </button>
                 {% endif %}
-                <td style="text-align: center">
-                    {% if investment.taxScheme is not null %}
-                        {{ investment.taxScheme.name }}
-                    {% endif %}
-                </td>
+                {% if investment.investmentCompany is not null %}
+                    <a target="_blank"
+                       href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
+                {% else %}
+                    <a target="_blank" href="{{ path('investments_edit', {'id': investment.id}) }}">--</a>
+                {% endif %}
+            </td>
 
-                <!-- Currency -->
-                <td>{{ investment.currency.fx }}</td>
+            <td data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
 
-                <td style="text-align: right;border-right:1px solid black">
-                    {% if investment.currency.fx == 'GBP' %}
-                        {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }}
-                    {% else %}
-                        <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }} ">
-                            *{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>
-                    {% endif %}
-                </td>
+            <!-- Is EIS, SEIS, VCT etc -->
+            {% if investment.taxScheme is not null %}
+            {% endif %}
+            <td style="text-align: center">
+                {% if investment.taxScheme is not null %}
+                    {{ investment.taxScheme.name }}
+                {% endif %}
+            </td>
 
-                <!-- EIS Years (Purchase) -->
-                <td style="text-align: right">
+            <!-- Currency -->
+            <td>{{ investment.currency.fx }}</td>
+
+            <td style="text-align: right;border-right:1px solid black">
+                {% if investment.currency.fx == 'GBP' %}
+                    {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }}
+                {% else %}
+                    <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }} ">
+                        *{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>
+                {% endif %}
+            </td>
+
+            <!-- EIS Years (Purchase) -->
+            <td style="text-align: right">
+                {% if investment.taxScheme.includeTaxSummary == 0 %}
+                    -
+                {% else %}
                     {% if investment.EISPurchaseYear1 is not null %}
                         {{ investment.EISPurchaseYear1.taxYearRange }}
                     {% endif %}
-                </td>
-                <td style="text-align: right">{{ (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)|number_format(0,'.') }}</td>
-                <td style="text-align: right">
+                {% endif %}
+            </td>
+            <td style="text-align: right">
+                {% if investment.taxScheme.includeTaxSummary == 0 %}
+                    -
+                {% else %}
+                    {{ (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)|number_format(0,'.') }}
+                {% endif %}
+            </td>
+            <td style="text-align: right">
+                {% if investment.taxScheme.includeTaxSummary == 0 %}
+                    -
+                {% else %}
                     {% if investment.EISPurchaseYear2 is not null %}
                         {{ investment.EISPurchaseYear2.taxYearRange }}
                     {% endif %}
-                </td>
-                <td style="text-align: right;border-right:1px solid black">{{ (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)|number_format(0,'.') }}</td>
+                {% endif %}
+            </td>
+            <td style="text-align: right">
+                {% if investment.taxScheme.includeTaxSummary == 0 %}
+                    -
+                {% else %}
+                    {{ (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)|number_format(0,'.') }}
+                {% endif %}
+            </td>
 
-                <!-- MTM (£) -->
-                <td style="text-align: right">
+            <td style="text-align: right;border-right:1px solid black">
+                {% set TaxSubsidyPurchase =100 %}
+                {{ TaxSubsidyPurchase|number_format('0') }}
+                {% set TaxSubsidyPurchase_Total = TaxSubsidyPurchase_Total + TaxSubsidyPurchase %}
+
+            </td>
+            <!-- EIS Years (Purchase) End -->
+
+
+            <!-- Share price invested -->
+            <td style="text-align: right">
+                {% if investment.taxScheme.includeTaxSummary == 0 %}
+                    -
+                {% else %}
                     {% if investment.numberOfShares >0 %}
                         {{ (investment.investmentAmount/investment.numberOfShares) | number_format (2, '.') }}
                     {% endif %}
-                </td>
-                <td style="text-align: right">{{ investment.investmentCompany.sharePrice | number_format (2, '.') }}</td>
-                <td style="text-align: right">
-                    {% if investment.currency.fx == 'GBP' %}
-                        <a title="{{ investment.investmentCompany.sharePrice | number_format (2, '.') }}"</a> {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }}
+                {% endif %}
+            </td>
 
-                        {% set MTMAdd = (investment.numberOfShares*investment.investmentCompany.sharePrice) %}
-                        {% set MTMTotal = MTMTotal + MTMAdd %}
+            <!-- Share price now or sold -->
+
+            {% if investment.investmentSaleDate is null %}
+                <td style="text-align: right">
+                    {% if investment.taxScheme.includeTaxSummary == 0 %}
+                        -
                     {% else %}
-                        <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }} ">
-                            {{ (investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate )| number_format (0, '.') }} </a>
-                        {% set MTMAdd = (investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate) %}
-                        {% set MTMTotal = MTMTotal + MTMAdd %}
+                        {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}
                     {% endif %}
                 </td>
+            {% else %}
+                <td style="text-align: right; background-color: ghostwhite">
+                    {{ investment.saleSharePrice | number_format (2, '.') }} *
+                </td>
+            {% endif %}
 
-                <!-- PnL (£) -->
-                <td style="text-align: right;border-right:1px solid black">
-                    {% if investment.currency.fx == 'GBP' %}
-                        {{ ( (investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice))  | number_format (0, '.') }}
 
-                        {% set PnLAdd = ((investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice)) %}
-                        {% set PnLTotal = PnLTotal + PnLAdd %}
+            <!-- MTM gain or Crystallized Gain -->
+
+            <td style="text-align: right">
+                {% if investment.investmentSaleDate is null %}
+                    {% if investment.taxScheme.includeTaxSummary == 0 %}
+                        {% set MTM = 0 %}
                     {% else %}
-                        <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }} ">
-                            {{ (investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate )| number_format (0, '.') }} </a>
-                        {% set PnLAdd =  ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate)) %}
-                        {% set PnLTotal = PnLTotal + PnLAdd %}
+                        {% set MTM = ((investment.investmentCompany.sharePrice - investment.purchaseSharePrice) * investment.numberOfShares) %}
                     {% endif %}
-                </td>
+                {% else %}
+                    {% set MTM =  ((investment.saleSharePrice - investment.purchaseSharePrice) * investment.numberOfShares) %}
+                {% endif %}
+                {{ MTM |number_format ('0') }}
+                {% set MTM_Total = MTM_Total + MTM %}
+            </td>
+
+            {#            {% if investment.currency.fx == 'GBP' %} #}
+            {#                {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }} #}
+            {#            {% else %} #}
+            {#                {{ (investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate )| number_format (0, '.') }}   #}
+            {#            {% endif %} #}
 
 
-                <!-- Sale Date -->
-                <td style="text-align: right;border-right:1px gray"
-                    data-sort="{{ investment.currency.fx }}{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
-                <td style="text-align: right;border-right:1px solid gray">
-                    {% if investment.investmentSoldPrice is not null %}
-                        {{ investment.investmentSoldPrice|number_format('0') }}
-                    {% endif %}
-                </td>
-
-                <!-- EIS Years (Sale) -->
-                <td style="text-align: right">
-                    {% if investment.EISSaleYear1 is not null %}
-                        {{ investment.EISSaleYear1.taxYearRange }}
-                    {% endif %}
-                </td>
-                <td style="text-align: right">
-                    {% if investment.EISSaleYear1 is not null %}
-                        {% set Loss = investment.investmentAmount -investment.investmentSoldPrice %}
-                        {% set InitialTaxOffset = investment.investmentAmount * investment.taxScheme.purchaseTaxOffset %}
-                        {% set IncomeOffset = max(0, Loss - InitialTaxOffset) %}
-                        {{ (IncomeOffset * investment.EISSaleYear1Percentage/100)|number_format('0') }}
-                    {% endif %}
-                </td>
-                <td style="text-align: right">
-                    {% if investment.EISSaleYear2 is not null %}
-                        {{ investment.EISSaleYear2.taxYearRange }}
-                    {% endif %}
-                </td>
-                <td style="text-align: right;border-right:1px solid black">
-                    {% if investment.EISSaleYear2 is not null %}
-                        {% set Loss = investment.investmentAmount -investment.investmentSoldPrice %}
-                        {% set InitialTaxOffset = investment.investmentAmount * investment.taxScheme.purchaseTaxOffset %}
-                        {% set IncomeOffset = max(0, Loss - InitialTaxOffset) %}
-                        {{ (IncomeOffset * investment.EISSaleYear2Percentage/100)|number_format('0') }}
-                    {% endif %}
-                </td>
+            <!-- PV (£) -->
 
 
-                <!-- CGT (£) -->
-                <td style="text-align: right;border-right:1px solid black">
+            <td style="text-align: right;border-right:1px solid black">
+                {% if investment.taxScheme.includeTaxSummary == 0 %}
+                    {% set PV = investment.investmentAmount %}
+                {% endif %}
+                {% if investment.investmentSaleDate is null and investment.taxScheme.includeTaxSummary == 1 %}
+                    {% set PV = ((investment.investmentCompany.sharePrice ) * investment.numberOfShares) %}
+                {% else %}
+                    {% set PV=0 %}
+                {% endif %}
 
-                    {#                    {% if investment.currency.fx == 'GBP' %} #}
-                    {#                        {% if investment.taxScheme.name is not null %} #}
-                    {#                            {% if investment.taxScheme.name == 'EIS' %} #}
+                {{ PV |number_format ('0') }}
 
-
-                    {#                                {{ ( (investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice)) * 0.2 | number_format (0, '.') }} #}
-                    {#                            {% else %} #}
-                    {#                                11 #}
-                    {#                            {% endif %} #}
-                    {#                        {% else %} #}
-                    {#                            <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }} "> #}
-                    {#                                {{ ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate ) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate)) *0.2 | number_format (0, '.') }} </a> #}
-                    {#                            {% set CGTAdd =  ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate))*0.2 %} #}
-                    {#                            {% set CGTTotal = CGTTotal + CGTAdd %} #}
-                    {#                        {% endif %} #}
-                    {#                    {% endif %} #}
-                </td>
-
-                <!-- Share cert and other docs -->
-                <td style="text-align: center">
-                    {% if investment.shareCert is not empty %}
-                        <a title="{{ investment.shareCert }}" target="_blank"
-                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'shareCert' }) }}"><i
-                                    class="fa fa-paperclip"></i></a>
-                    {% endif %}
-                </td>
-                <td style="text-align: center">
-                    {% if investment.eisCert is not empty %}
-                        <a title="{{ investment.eisCert }}" target="_blank"
-                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'eisCert' }) }}"><i
-                                    class="fa fa-paperclip"></i></a>
-                    {% endif %}
-                </td>
-                <td style="text-align: center">
-                    {% if investment.otherDocs is not empty %}
-                        <a title="{{ investment.otherDocs }}" target="_blank"
-                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'otherDocs' }) }}"><i
-                                    class="fa fa-paperclip"></i></a>
-                    {% endif %}
-                </td>
+                {% set PV_Total = PV_Total + PV %}
+            </td>
 
 
-                <td style="text-align: center">
-                    <a class="btn btn-success btn-sm mt-2"
-                       href="{{ path('investment_future_comms_new', {'id': investment.investmentCompany.id}) }}">+</a>
-                </td>
+            <!-- Sale Date -->
+            <td style="text-align: right;border-right:1px gray"
+                data-sort="{{ investment.currency.fx }}{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
+            <td style="text-align: right;border-right:1px solid gray">
+                {% if investment.saleSharePrice is not null %}
+                    {{ investment.saleSharePrice }}
+                {% endif %}
+            </td>
+
+            <!-- EIS Years (Sale) -->
+            <td style="text-align: right">
+                {% if investment.EISSaleYear1 is not null %}
+                    {{ investment.EISSaleYear1.taxYearRange }}
+                {% endif %}
+            </td>
+            <td style="text-align: right">
+                {% if investment.EISSaleYear1 is not null %}
+                    {% set Loss = investment.investmentAmount -investment.saleSharePrice %}
+                    {% set InitialTaxOffset = investment.investmentAmount * investment.taxScheme.purchaseTaxOffset %}
+                    {% set IncomeOffset = max(0, Loss - InitialTaxOffset) %}
+                    {{ (IncomeOffset * investment.EISSaleYear1Percentage/100)|number_format('0') }}
+                {% endif %}
+            </td>
+            <td style="text-align: right">
+                {% if investment.EISSaleYear2 is not null %}
+                    {{ investment.EISSaleYear2.taxYearRange }}
+                {% endif %}
+            </td>
+            <td style="text-align: right;border-right:1px solid black">
+                {% if investment.EISSaleYear2 is not null %}
+                    {% set Loss = investment.investmentAmount -investment.saleSharePrice %}
+                    {% set InitialTaxOffset = investment.investmentAmount * investment.taxScheme.purchaseTaxOffset %}
+                    {% set IncomeOffset = max(0, Loss - InitialTaxOffset) %}
+                    {{ (IncomeOffset * investment.EISSaleYear2Percentage/100)|number_format('0') }}
+                {% endif %}
+            </td>
+
+
+            <!-- CGT (£) -->
+            <td style="text-align: right;border-right:1px solid black">
+
+                {#                    {% if investment.currency.fx == 'GBP' %} #}
+                {#                        {% if investment.taxScheme.name is not null %} #}
+                {#                            {% if investment.taxScheme.name == 'EIS' %} #}
+
+
+                {#                                {{ ( (investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice)) * 0.2 | number_format (0, '.') }} #}
+                {#                            {% else %} #}
+                {#                                11 #}
+                {#                            {% endif %} #}
+                {#                        {% else %} #}
+                {#                            <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }} "> #}
+                {#                                {{ ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate ) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate)) *0.2 | number_format (0, '.') }} </a> #}
+                {#                            {% set CGTAdd =  ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate))*0.2 %} #}
+                {#                            {% set CGTTotal = CGTTotal + CGTAdd %} #}
+                {#                        {% endif %} #}
+                {#                    {% endif %} #}
+            </td>
+
+            <!-- Share cert and other docs -->
+            <td style="text-align: center">
+                {% if investment.shareCert is not empty %}
+                    <a title="{{ investment.shareCert }}" target="_blank"
+                       href="{{ path('investment_viewfile',{ id:investment.id, filetype:'shareCert' }) }}"><i
+                                class="fa fa-paperclip"></i></a>
+                {% endif %}
+            </td>
+            <td style="text-align: center">
+                {% if investment.eisCert is not empty %}
+                    <a title="{{ investment.eisCert }}" target="_blank"
+                       href="{{ path('investment_viewfile',{ id:investment.id, filetype:'eisCert' }) }}"><i
+                                class="fa fa-paperclip"></i></a>
+                {% endif %}
+            </td>
+            <td style="text-align: center">
+                {% if investment.otherDocs is not empty %}
+                    <a title="{{ investment.otherDocs }}" target="_blank"
+                       href="{{ path('investment_viewfile',{ id:investment.id, filetype:'otherDocs' }) }}"><i
+                                class="fa fa-paperclip"></i></a>
+                {% endif %}
+            </td>
+
+
+            <td style="text-align: center">
+                <a class="btn btn-success btn-sm mt-2"
+                   href="{{ path('investment_future_comms_new', {'id': investment.investmentCompany.id}) }}">+</a>
+            </td>
             </tr>
 
             <div id="{{ investmentChildID }}" class="investmentsChildren">
@@ -274,9 +339,11 @@
         {% endfor %}
         </tbody>
     </table>
-    <b> Total MTM (£): </b> {{ MTMTotal | number_format (0, '.') }}<br>
-    <b> Total PnL (£): </b> {{ PnLTotal | number_format (0, '.') }}<br>
-    <b> Total CGT (£): </b> {{ CGTTotal | number_format (0, '.') }}<br>
+
+    <b> Total TaxSubsidy (£): </b> {{ TaxSubsidyPurchase_Total | number_format ('0') }}<br>
+    <b> Total MTM (£): </b> {{ MTM_Total | number_format ('0') }}<br>
+    <b> Total PnL (£): </b> {{ PV_Total | number_format ('0') }}<br>
+    <b> Total CGT (£): </b> {{ CGT_Total | number_format ('0') }}<br>
     <br>
     <hr>
 

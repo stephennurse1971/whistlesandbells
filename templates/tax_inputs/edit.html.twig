@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Tax Inputs{% endblock %}
+{% block title %}Edit: Employment Income ({{ tax_input.year.taxYearRange }}){% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Tax Inputs</h1>
+    <h1 style="color: red">Edit: Tax Inputs ({{ tax_input.year.taxYearRange }})</h1>
 
     {{ include('tax_inputs/_form.html.twig', {'button_label': 'Update'}) }}
 

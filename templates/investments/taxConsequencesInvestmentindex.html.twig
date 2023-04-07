@@ -10,10 +10,10 @@
 
     {% if show == "TaxEffect" %}
         <a target="_blank" class="btn btn-primary btn-sm"
-           href="{{ path('investments_index_tax_consequences',{'show': 'Notional'}) }}">Show Notional</a>
+           href="{{ path('investments_tax_consequences',{'show': 'Notional'}) }}">Show Notional</a>
     {% else %}
         <a target="_blank" class="btn btn-secondary btn-sm"
-           href="{{ path('investments_index_tax_consequences',{'show': 'TaxEffect'}) }}">Show Tax Effect</a>
+           href="{{ path('investments_tax_consequences',{'show': 'TaxEffect'}) }}">Show Tax Effect</a>
     {% endif %}
 
     <table class="table">
@@ -23,7 +23,8 @@
             <th style="width: 20px">EIS/SEIS/VCT..</th>
             <th style="text-align: right; border-right:1px solid black; width: 120px">£ Amount</th>
             <th style="text-align: right">Investment Date</th>
-            <th style="text-align: right; border-right:1px solid black">Sale Date</th>
+            <th style="text-align: right">Sale Date</th>
+            <th style="text-align: right; border-right:1px solid black">Sale Proceeds</th>
             {% for taxYear in taxYears %}
                 <th style="border-right:1px solid lightgray; text-align: right">{{ taxYear.taxYearRange }}</th>
             {% endfor %}
@@ -31,7 +32,7 @@
         </thead>
         <tbody>
 
-        {% for investment in investmentsAll %}
+        {% for investment in investments %}
             {% set totalTaxOffset = 0 %}
             {% set totalIncomeOffset = 0 %}
 
@@ -43,7 +44,6 @@
             {% endfor %}
             {% set investmentChildID = 'investment'~investment.id %}
             <tr>
-
                 <td>
                     {% if investment.investmentCompany is not null %}
                         <a target="_blank"
@@ -65,8 +65,13 @@
 
                 <td style="text-align: right"
                     data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
-                <td style="text-align: right; border-right:1px solid black"
+                <td style="text-align: right"
                     data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
+
+                <td style="text-align: right; border-right:1px solid black">
+                    {{(investment.saleSharePrice * investment.numberOfShares)|number_format (0, '.') }}
+                </td>
+
 
                 {% for taxYear in taxYears %}
                     {% if investment.eISPurchaseYear1 is not null and taxYear.taxYearRange == investment.eISPurchaseYear1.taxYearRange %}
@@ -122,12 +127,22 @@
                                 {% endif %}
                             {% endif %}
 
-                            {#                            NEEDS CORRECTING BELOW #}
-                            {% if investment.eisSaleYear1 == taxYear %}
-                                {% set incomeOffset = incomeOffset + ( investment.taxScheme.saleIncomeOffset*  (investment.eISSaleYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
-                            {% endif %}
-                            {% if investment.eisSaleYear2 == taxYear %}
-                                {% set incomeOffset = incomeOffset + ( investment.taxScheme.saleIncomeOffset*  (investment.eISSaleYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                            {#                            Loss on Sale #}
+                            {% if investment.investmentSaleDate is not null %}
+                                {% set Loss =  (investment.purchaseSharePrice - investment.saleSharePrice )/investment.purchaseSharePrice %}
+                                {% set ClaimableLoss =  Loss -(investment.taxScheme.purchaseIncomeOffset + investment.taxScheme.purchaseTaxOffset) %}
+                                {% set ClaimableLossAmount = ClaimableLoss * investment.investmentAmount %}
+
+                                {% if investment.eisSaleYear1 == taxYear %}
+                                    {#                                    Loss: {{ Loss *100 }}% #}
+                                    {#                                    Claimable loss: {{ ClaimableLoss *100 }}% #}
+                                    {#                                    Claimable loss amount: £{{ ClaimableLossAmount }} #}
+                                    {% set incomeOffset = incomeOffset +  (investment.eISSaleYear1Percentage * ClaimableLossAmount/100) %}
+                                {% endif %}
+
+                                {% if investment.eisSaleYear2 == taxYear %}
+                                    {% set incomeOffset = incomeOffset +  (investment.eISSaleYear2Percentage * ClaimableLossAmount/100) %}
+                                {% endif %}
                             {% endif %}
 
                             {{ incomeOffset |number_format(0) }}
@@ -136,12 +151,34 @@
                     </td>
                 {% endfor %}
             </tr>
+
         {% endfor %}
+
+        <tr>
+            <td style="text-align: left; background-color: whitesmoke">Total</td>
+            <td style="background-color: whitesmoke"></td>
+            <td data-sort="999" style="border-right:1px solid black; background-color: whitesmoke"></td>
+            <td data-sort="9999" style="background-color: whitesmoke"></td>
+            <td style="background-color: whitesmoke"></td>
+            <td style="border-right:1px solid black; background-color: whitesmoke"></td>
+
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right; background-color: whitesmoke; font: bold">
+                    <div class="row">
+                        <div class="col-6">
+                            a
+                        </div>
+                        <div class="col-6">
+                            b
+                        </div>
+                    </div>
+                </td>
+            {% endfor %}
+
+        </tr>
         </tbody>
     </table>
 
-    {#    Total Tax Offset: {{ totalTaxOffset }} #}
-    {#    Total Income Offset: {{ totalIncomeOffset }} #}
 {% endblock %}
 
 

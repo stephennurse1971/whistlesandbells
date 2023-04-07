@@ -9,6 +9,7 @@ use App\Form\InvestmentsType;
 use App\Repository\FxRatesRepository;
 use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
+use App\Repository\TaxSchemesRepository;
 use App\Repository\TaxYearRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,6 +28,7 @@ class InvestmentsController extends AbstractController
      */
     public function index(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, FxRatesRepository $fxRatesRepository): Response
     {
+
         return $this->render('investments/index.html.twig', [
             'investmentsCurrent' => $investmentsRepository->findBy([
                 'investmentSaleDate' => null
@@ -39,17 +41,21 @@ class InvestmentsController extends AbstractController
     }
 
     /**
-     * @Route("/tax_summary_on_investments/{show}", name="investments_index_tax_consequences", methods={"GET"})
+     * @Route("/tax_summary_of_investments/{show}", name="investments_tax_consequences", methods={"GET"})
      */
-    public function indexTaxConsequences(string $show, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
+    public function indexTaxConsequences(string $show, TaxSchemesRepository $taxSchemesRepository,InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
     {
 
+        $investments = [];
+        $all_investments = $investmentsRepository->findAll();
+        foreach($all_investments as $investment){
+            if($investment->getTaxScheme()->getIncludeTaxSummary() == 1 ){
+                $investments[] = $investment;
+            }
+        }
+
         return $this->render('investments/taxConsequencesInvestmentindex.html.twig', [
-            'investmentsCurrent' => $investmentsRepository->findBy([
-                'investmentSaleDate' => null
-            ]),
-            'investmentsAll' => $investmentsRepository->findAll(),
-            'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
+            'investments' => $investments,
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
             'taxYears' => $taxYearRepository->findAllByAsc(),
