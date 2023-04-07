@@ -28,7 +28,7 @@
             <th style="text-align: right; background-color: lightgreen; border-right:1px solid black">Tax subsidy</th>
 
             <th style="text-align: right">Share Price (Purchase)</th>
-            <th style="text-align: right">Share Price (Sale/Current) (£)</th>
+            <th style="text-align: right">Share Price (Current/Sale*) (£)</th>
             <th style="text-align: right">MTM (£)</th>
             <th style="text-align: right;border-right:1px solid black">PV</th>
 
@@ -57,20 +57,17 @@
         {% set MTM_Total = 0 %}
         {% set PV_Total = 0 %}
         {% set CGT_Total = 0 %}
+        {% set FXEffect =1  %}
         {% for investment in investmentsAll %}
-            {% set currentFXRate = 0 %}
-            {% for fxRate in fxRates %}
-                {% if investment.currency.fx == fxRate.fx %}
-                    {% set currentFXRate = fxRate.currentFxRate %}
-                {% endif %}
-            {% endfor %}
+            {% if investment.currency.fx != "GBP" %}
+                {% set FXEffect = 1.1244 * investment.investmentAmount / investment.initialInvestmentAmountGBP %}
+            {% endif %}
             {% set investmentChildID = 'investment'~investment.id %}
-
 
             <td>{{ investment.taxScheme.includeTaxSummary }}</td>
             <td>{{ investment.investmentCompany.assetClass }}</td>
 
-            <td>
+            <td data-sort="{{ investment.investmentCompany.shareCompany }}">
                 {% if Investment.findFutureComms(investment.id) == 1 %}
                     <button class="toggle-investment-child btn btn-outline-warning btn-sm"
                             data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
@@ -156,13 +153,12 @@
                     -
                 {% else %}
                     {% if investment.numberOfShares >0 %}
-                        {{ (investment.investmentAmount/investment.numberOfShares) | number_format (2, '.') }}
+                        {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
                     {% endif %}
                 {% endif %}
             </td>
 
             <!-- Share price now or sold -->
-
             {% if investment.investmentSaleDate is null %}
                 <td style="text-align: right">
                     {% if investment.taxScheme.includeTaxSummary == 0 %}
@@ -179,37 +175,27 @@
 
 
             <!-- MTM gain or Crystallized Gain -->
-
             <td style="text-align: right">
                 {% if investment.investmentSaleDate is null %}
                     {% if investment.taxScheme.includeTaxSummary == 0 %}
                         {% set MTM = 0 %}
                     {% else %}
-                        {% set MTM = ((investment.investmentCompany.sharePrice - investment.purchaseSharePrice) * investment.numberOfShares) %}
+                        {% set MTM =  (( (investment.investmentCompany.sharePrice *FXEffect) - investment.purchaseSharePrice) * investment.numberOfShares) %}
                     {% endif %}
                 {% else %}
-                    {% set MTM =  ((investment.saleSharePrice - investment.purchaseSharePrice) * investment.numberOfShares) %}
+                    {% set MTM =  (((investment.saleSharePrice *FXEffect) - investment.purchaseSharePrice) * investment.numberOfShares) %}
                 {% endif %}
                 {{ MTM |number_format ('0') }}
                 {% set MTM_Total = MTM_Total + MTM %}
             </td>
 
-            {#            {% if investment.currency.fx == 'GBP' %} #}
-            {#                {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }} #}
-            {#            {% else %} #}
-            {#                {{ (investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate )| number_format (0, '.') }}   #}
-            {#            {% endif %} #}
-
-
             <!-- PV (£) -->
-
-
             <td style="text-align: right;border-right:1px solid black">
                 {% if investment.taxScheme.includeTaxSummary == 0 %}
-                    {% set PV = investment.investmentAmount %}
+                    {% set PV = investment.investmentAmount *FXEffect %}
                 {% endif %}
                 {% if investment.investmentSaleDate is null and investment.taxScheme.includeTaxSummary == 1 %}
-                    {% set PV = ((investment.investmentCompany.sharePrice ) * investment.numberOfShares) %}
+                    {% set PV = ((investment.investmentCompany.sharePrice ) * investment.numberOfShares *FXEffect) %}
                 {% else %}
                     {% set PV=0 %}
                 {% endif %}
