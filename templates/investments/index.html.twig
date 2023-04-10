@@ -64,7 +64,7 @@
             {% if investment.currency.fx != "GBP" %}
                 {% set InitialFXRate =  investment.investmentAmount/investment.initialInvestmentAmountGBP %}
                 {% set CurrentFXRate = USDGBPFXrate.currentFxRate/investment.currency.currentFxRate %}
-                {% set FXEffect = InitialFXRate/CurrentFXRate %}
+                {% set FXEffect = CurrentFXRate/InitialFXRate %}
             {% endif %}
             {% set investmentChildID = 'investment'~investment.id %}
 
