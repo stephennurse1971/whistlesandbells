@@ -194,7 +194,7 @@
     <!-- MTM gain or Crystallized Gain -->
     <td style="text-align: right">
         {% if investment.investmentSaleDate is null %}
-            {% if investment.taxScheme.includeTaxSummary == 0 %}
+            {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
                 {% set MTM = 0 %}
             {% else %}
                 {% if investment.currency.fx == "GBP" %}
@@ -218,7 +218,7 @@
     <!-- PV (£) -->
     <td style="text-align: right;border-right:1px solid black">
         {% set PV =0 %}
-        {% if investment.taxScheme.includeTaxSummary == 0 %}
+        {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
             {% if investment.currency.fx == "GBP" %}
                 {% set PV = investment.investmentAmount * FXEffect %}
             {% else %}
