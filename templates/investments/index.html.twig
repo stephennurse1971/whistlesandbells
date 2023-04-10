@@ -199,10 +199,10 @@
             <td style="text-align: right;border-right:1px solid black">
                 {% set PV=0 %}
                 {% if investment.taxScheme.includeTaxSummary == 0 %}
-                    {% set PV = investment.investmentAmount * CurrentFXRate/InitialFXRate %}
+                    {% set PV = investment.investmentAmount * FXEffect %}
                 {% endif %}
                 {% if investment.investmentSaleDate is null and investment.taxScheme.includeTaxSummary == 1 %}
-                    {% set PV = investment.investmentAmount * CurrentFXRate/InitialFXRate %}
+                    {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice* FXEffect %}
                 {% endif %}
 
                 {{ PV |number_format ('0') }}
