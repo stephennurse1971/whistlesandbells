@@ -82,7 +82,7 @@
         {% else %}
             <a target="_blank" href="{{ path('investments_edit', {'id': investment.id}) }}">--</a>
         {% endif %}
-        {% if investment.taxScheme.includeTaxSummary == 0 %}
+        {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
         <a title="Exclude from Tax Summary">*</a>
         {% endif %}
 
