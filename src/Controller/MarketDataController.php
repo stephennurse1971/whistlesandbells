@@ -20,8 +20,10 @@ class MarketDataController extends AbstractController
      */
     public function index(MarketDataRepository $marketDataRepository): Response
     {
+        $assetclasses = ['Pubs', 'Storage', 'EIS', 'Pension', 'Shares', 'Bank Account', 'EBT', 'Loans'];
         return $this->render('market_data/index.html.twig', [
             'market_datas' => $marketDataRepository->findAll(),
+            'asset_classes' => $assetclasses
         ]);
     }
 
@@ -83,7 +85,7 @@ class MarketDataController extends AbstractController
      */
     public function delete(Request $request, MarketData $marketDatum): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$marketDatum->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $marketDatum->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($marketDatum);
             $entityManager->flush();

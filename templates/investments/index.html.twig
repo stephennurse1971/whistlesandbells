@@ -177,7 +177,7 @@
     {% if investment.investmentSaleDate is null %}
         <td style="text-align: right">
             {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
-                -
+            <a target="_blank" href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">-</a>
             {% else %}
                 <a target="_blank" href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
                     {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}
