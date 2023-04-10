@@ -200,14 +200,14 @@
                 {% if investment.currency.fx == "GBP" %}
                     {% set MTM =  (( investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1) * investment.investmentAmount %}
                 {% else %}
-                    {% set MTM =   (( FXEffect* investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1) * investment.initialInvestmentAmountGBP %}
+{#                    {% set MTM =   (( FXEffect* investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1) * investment.initialInvestmentAmountGBP %}#}
                 {% endif %}
             {% endif %}
         {% else %}
             {% if investment.currency.fx == "GBP" %}
                 {% set MTM =  (investment.investmentCompany.sharePrice/ investment.purchaseSharePrice) * investment.investmentAmount %}
             {% else %}
-                {% set MTM =   ( FXEffect* investment.investmentCompany.sharePrice/ investment.purchaseSharePrice) * investment.initialInvestmentAmountGBP %}
+{#                {% set MTM =   ( FXEffect* investment.investmentCompany.sharePrice/ investment.purchaseSharePrice) * investment.initialInvestmentAmountGBP %}#}
 
             {% endif %}
         {% endif %}
