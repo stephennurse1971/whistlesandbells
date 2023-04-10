@@ -37,6 +37,9 @@ class InvestmentsController extends AbstractController
             'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
+            'USDGBPFXrate'=>$fxRatesRepository->findOneBy([
+                'fx'=> 'GBP'
+            ])
         ]);
     }
 

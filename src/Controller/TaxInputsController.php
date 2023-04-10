@@ -101,6 +101,7 @@ class TaxInputsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $p11D = $form['p11D']->getData();
+
             if ($p11D) {
                 $p11D_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($p11D->getClientOriginalName(), PATHINFO_FILENAME);
@@ -109,6 +110,7 @@ class TaxInputsController extends AbstractController
                 $p11D->move($p11D_directory, $newFileName);
                 $taxInput->setP11D($newFileName);
             }
+
             $p60 = $form['p60']->getData();
             if ($p60) {
                 $p60_directory = $this->getParameter('tax_documents_attachments_directory');
@@ -118,6 +120,7 @@ class TaxInputsController extends AbstractController
                 $p60->move($p60_directory, $newFileName);
                 $taxInput->setP60($newFileName);
             }
+
             $p45 = $form['p45']->getData();
             if ($p45) {
                 $p45_directory = $this->getParameter('tax_documents_attachments_directory');
@@ -127,6 +130,7 @@ class TaxInputsController extends AbstractController
                 $p45->move($p45_directory, $newFileName);
                 $taxInput->setP45($newFileName);
             }
+
             $selfAssessment = $form['selfAssessment']->getData();
             if ($selfAssessment) {
                 $selfAssessment_directory = $this->getParameter('tax_documents_attachments_directory');
@@ -136,6 +140,7 @@ class TaxInputsController extends AbstractController
                 $selfAssessment->move($selfAssessment_directory, $newFileName);
                 $taxInput->setSelfAssessment($newFileName);
             }
+
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('tax_inputs_index');
         }

@@ -4,8 +4,8 @@
 
 {% block body %}
     <style>
-        td,th{
-            width:150px
+        td, th {
+            width: 150px
         }
     </style>
     <h1 style="color: red">Tax Self-Assessment Overview</h1>
@@ -38,6 +38,48 @@
                 </td>
             {% endfor %}
         </tr>
+        <tr>
+            <td data-sort="02" style="border-right:1px solid black; text-align: left ">
+                <a target="_blank"
+                   href="{{ path('tax_inputs_index') }}"><b>Docs</b></a>
+            </td>
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; text-align: right">
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+
+                            {% if taxinput.p11D is not empty %}
+                                <a title="{{ taxinput.p11D }}" target="_blank"
+                                   href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'P11D'}) }}">P11D <i
+                                            class="fa fa-paperclip"></i></a>
+                            {% endif %}
+
+                            {% if taxinput.p60 is not empty %}
+                                <a title="{{ taxinput.p60 }}" target="_blank"
+                                   href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'P60'}) }}">P60 <i
+                                            class="fa fa-paperclip"></i></a>
+                            {% endif %}
+
+
+                            {% if taxinput.p45 is not empty %}
+                                <a title="{{ taxinput.p45 }}" target="_blank"
+                                   href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'P45'}) }}">P45<i
+                                            class="fa fa-paperclip"></i></a>
+                            {% endif %}
+
+                            {% if taxinput.selfAssessment is not empty %}
+                                <a title="{{ taxinput.selfAssessment }}" target="_blank"
+                                   href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">SA<i
+                                            class="fa fa-paperclip"></i></a>
+                            {% endif %}
+
+                        {% endif %}
+                    {% endfor %}
+
+                </td>
+            {% endfor %}
+        </tr>
+
 
         <tr>
             <td data-sort="02" style="border-right:1px solid black; text-align: left"><b>Interest Income</b>
@@ -68,8 +110,9 @@
         </tr>
 
         <tr>
-            <td data-sort="04" style="border-right:1px solid black; text-align: left">
-                <b>Income Offsets (EIS Losses, BRPA)</b></td>
+            <td data-sort="04" style="border-right:1px solid black; text-align: left"><b>Income Offsets (EIS Losses, BRPA)</b>
+                <a href="{{ path('investments_tax_consequences',{'show': 'TaxEffect'}) }}" target="_blank">Link</a>
+                </td>
             {% for taxYear in taxYears %}
 
                 <td style="border-right:1px solid lightgray; text-align: right">

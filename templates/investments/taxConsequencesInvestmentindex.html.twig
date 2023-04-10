@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h1 style="color: red">Tax Summary</h1>
+    <h1 style="color: red">Investments: Tax Effects Summary</h1>
     <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('tax_inputs_overview_index') }}">Self-Assessment</a>
     <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('investments_index') }}">Investments</a>
 
@@ -44,7 +44,7 @@
             {% endfor %}
             {% set investmentChildID = 'investment'~investment.id %}
             <tr>
-                <td>
+                <td data-sort="{{ investment.investmentCompany.shareCompany }}}">
                     {% if investment.investmentCompany is not null %}
                         <a target="_blank"
                            href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
@@ -155,8 +155,8 @@
         {% endfor %}
 
         <tr>
-            <td style="text-align: left; background-color: whitesmoke">Total</td>
-            <td style="background-color: whitesmoke"></td>
+            <td data-sort="999"  style="text-align: left; background-color: whitesmoke">Total</td>
+            <td data-sort="999"  style="background-color: whitesmoke"></td>
             <td data-sort="999" style="border-right:1px solid black; background-color: whitesmoke"></td>
             <td data-sort="9999" style="background-color: whitesmoke"></td>
             <td style="background-color: whitesmoke"></td>

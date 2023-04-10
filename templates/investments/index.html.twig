@@ -9,15 +9,15 @@
         <a target="_blank" href="{{ path('fx_rates_index') }}"><i class="fas fa-euro-sign"></i></a>
     </h1>
 
-    <table class="table">
+    <table class="table" |filter(investment=> investment.investmentCompany != null)>
         <thead>
         <tr>
             <th>-</th>
             <th>Asset Class</th>
-            <th>Investment</th>
+            <th style="width: 350px">Investment</th>
             <th style="text-align: left">Investment Date</th>
 
-            <th>Tax Scheme</th>
+            <th style="width: 75px; text-align: right">Tax Scheme</th>
             <th style="text-align: right">Ccy</th>
             <th style="text-align: right;border-right:1px solid black">£ invested</th>
 
@@ -27,16 +27,14 @@
             <th style="text-align: right; background-color: lightgreen ">£</th>
             <th style="text-align: right; background-color: lightgreen; border-right:1px solid black">Tax subsidy</th>
 
-            <th style="text-align: right">Share Price (Purchase)</th>
-            <th style="text-align: right">Share Price (Current/Sale*) (£)</th>
+            <th style="text-align: right; width: 80px">Share Price (Purchase)</th>
+            <th style="text-align: right; width: 80px">Share Price (Current/Sale*) (£)</th>
             <th style="text-align: right">MTM (£)</th>
             <th style="text-align: right;border-right:1px solid black">PV</th>
 
 
             <th style="text-align: right;border-right:1px gray; background-color: palegoldenrod">Sale Date</th>
-            <th style="text-align: right;border-right:1px gray; background-color: palegoldenrod;border-right:1px solid gray">
-                Sale Price
-            </th>
+
 
             <th style="text-align: right; background-color: palegoldenrod">Tax Year</th>
             <th style="text-align: right; background-color: palegoldenrod">Income Offset (£)</th>
@@ -57,10 +55,16 @@
         {% set MTM_Total = 0 %}
         {% set PV_Total = 0 %}
         {% set CGT_Total = 0 %}
-        {% set FXEffect =1  %}
+
+
         {% for investment in investmentsAll %}
+            {% set FXEffect =1 %}
+            {% set InitialFXRate =1 %}
+            {% set CurrentFXRate =1 %}
             {% if investment.currency.fx != "GBP" %}
-                {% set FXEffect = 1.1244 * investment.investmentAmount / investment.initialInvestmentAmountGBP %}
+                {% set InitialFXRate =  investment.investmentAmount/investment.initialInvestmentAmountGBP %}
+                {% set CurrentFXRate = USDGBPFXrate.currentFxRate/investment.currency.currentFxRate %}
+                {% set FXEffect = InitialFXRate/CurrentFXRate %}
             {% endif %}
             {% set investmentChildID = 'investment'~investment.id %}
 
@@ -164,7 +168,9 @@
                     {% if investment.taxScheme.includeTaxSummary == 0 %}
                         -
                     {% else %}
-                        {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}
+                        <a target="_blank" href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
+                            {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}
+                        </a>
                     {% endif %}
                 </td>
             {% else %}
@@ -191,13 +197,12 @@
 
             <!-- PV (£) -->
             <td style="text-align: right;border-right:1px solid black">
+                {% set PV=0 %}
                 {% if investment.taxScheme.includeTaxSummary == 0 %}
-                    {% set PV = investment.investmentAmount *FXEffect %}
+                    {% set PV = investment.investmentAmount * CurrentFXRate/InitialFXRate %}
                 {% endif %}
                 {% if investment.investmentSaleDate is null and investment.taxScheme.includeTaxSummary == 1 %}
-                    {% set PV = ((investment.investmentCompany.sharePrice ) * investment.numberOfShares *FXEffect) %}
-                {% else %}
-                    {% set PV=0 %}
+                    {% set PV = investment.investmentAmount * CurrentFXRate/InitialFXRate %}
                 {% endif %}
 
                 {{ PV |number_format ('0') }}
@@ -208,12 +213,10 @@
 
             <!-- Sale Date -->
             <td style="text-align: right;border-right:1px gray"
-                data-sort="{{ investment.currency.fx }}{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
-            <td style="text-align: right;border-right:1px solid gray">
-                {% if investment.saleSharePrice is not null %}
-                    {{ investment.saleSharePrice }}
-                {% endif %}
+                data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">
+                {{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}
             </td>
+
 
             <!-- EIS Years (Sale) -->
             <td style="text-align: right">
@@ -250,8 +253,6 @@
                 {#                    {% if investment.currency.fx == 'GBP' %} #}
                 {#                        {% if investment.taxScheme.name is not null %} #}
                 {#                            {% if investment.taxScheme.name == 'EIS' %} #}
-
-
                 {#                                {{ ( (investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice)) * 0.2 | number_format (0, '.') }} #}
                 {#                            {% else %} #}
                 {#                                11 #}
@@ -295,6 +296,7 @@
             </td>
             </tr>
 
+
             <div id="{{ investmentChildID }}" class="investmentsChildren">
 
                 {#                <td colspan="12"> #}
@@ -323,15 +325,59 @@
                 </div>
             </div>
         {% endfor %}
+        <tr data-sort="99" style="background-color: whitesmoke; text-align: right">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="border-right:1px solid black"><b> xx</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="border-right:1px solid black">
+                <b> {{ TaxSubsidyPurchase_Total | number_format ('0') }}</b>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+                <b> {{ MTM_Total | number_format ('0') }}</b>
+            </td>
+            <td style="border-right:1px solid black">
+                <b> {{ PV_Total | number_format ('0') }}</b>
+            </td>
+
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td></td>
+            <td style="text-align: right; border-right:1px solid black">
+                </b> {{ CGT_Total | number_format ('0') }}</b>
+            </td>
+
+            <td style="text-align: right; border-right:1px solid black">
+                </b> {{ CGT_Total | number_format ('0') }}</b>
+            </td>
+            <td>
+                24
+            </td>
+            <td>
+                25
+            </td>
+            <td>
+                26
+            </td>
+            <td>
+                26
+            </td>
+        </tr>
         </tbody>
     </table>
 
-    <b> Total TaxSubsidy (£): </b> {{ TaxSubsidyPurchase_Total | number_format ('0') }}<br>
-    <b> Total MTM (£): </b> {{ MTM_Total | number_format ('0') }}<br>
-    <b> Total PnL (£): </b> {{ PV_Total | number_format ('0') }}<br>
-    <b> Total CGT (£): </b> {{ CGT_Total | number_format ('0') }}<br>
-    <br>
-    <hr>
+
 
 
     <a class="btn btn-success btn-sm mt-2" href="{{ path('investments_new') }}">New Investment</a>
@@ -359,7 +405,7 @@
                 "order": [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
                 "paging": false,
                 "searching": true,
-                "bInfo": true
+                "bInfo": false
             });
         });
     </script>
