@@ -168,6 +168,8 @@ class InvestmentsType extends AbstractType
                 'label' => 'Sale: Tax LookBack',
                 'required' => false
             ])
+            ->add('crystallisedGainLossInGBP')
+            ->add('lossDeductibleAgainstIncome')
             ->add('comment')
         ;
     }

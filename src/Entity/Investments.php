@@ -142,6 +142,18 @@ class Investments
      */
     private $sale_share_price;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $crystallisedGainLossInGBP;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $lossDeductibleAgainstIncome;
+
+
+
 
 
 
@@ -467,6 +479,32 @@ class Investments
 
         return $this;
     }
+
+    public function getCrystallisedGainLossInGBP(): ?float
+    {
+        return $this->crystallisedGainLossInGBP;
+    }
+
+    public function setCrystallisedGainLossInGBP(?float $crystallisedGainLossInGBP): self
+    {
+        $this->crystallisedGainLossInGBP = $crystallisedGainLossInGBP;
+
+        return $this;
+    }
+
+    public function getLossDeductibleAgainstIncome(): ?float
+    {
+        return $this->lossDeductibleAgainstIncome;
+    }
+
+    public function setLossDeductibleAgainstIncome(float $lossDeductibleAgainstIncome): self
+    {
+        $this->lossDeductibleAgainstIncome = $lossDeductibleAgainstIncome;
+
+        return $this;
+    }
+
+
 
 
 
