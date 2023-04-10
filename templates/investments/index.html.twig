@@ -125,7 +125,7 @@
         {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
             -
         {% else %}
-            {{ (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)|number_format(0,'.') }}
+            {{ (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /(100*InitialFXRate))|number_format(0,'.') }}
         {% endif %}
     </td>
     <td style="text-align: right">
@@ -141,7 +141,7 @@
         {% if investment.taxScheme is not null and  investment.taxScheme.includeTaxSummary == 0 %}
             -
         {% else %}
-            {{ (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)|number_format(0,'.') }}
+            {{ (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /(100*InitialFXRate))|number_format(0,'.') }}
         {% endif %}
     </td>
 
@@ -200,14 +200,14 @@
                 {% if investment.currency.fx == "GBP" %}
                     {% set MTM =  (( investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1) * investment.investmentAmount %}
                 {% else %}
-{#                    {% set MTM =   (( FXEffect* investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1) * investment.initialInvestmentAmountGBP %}#}
+                    {% set MTM =   (( FXEffect* investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1) * investment.initialInvestmentAmountGBP %}
                 {% endif %}
             {% endif %}
         {% else %}
             {% if investment.currency.fx == "GBP" %}
-                {% set MTM =  (investment.investmentCompany.sharePrice/ investment.purchaseSharePrice) * investment.investmentAmount %}
+                {% set MTM =  ((investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1) * investment.investmentAmount %}
             {% else %}
-{#                {% set MTM =   ( FXEffect* investment.investmentCompany.sharePrice/ investment.purchaseSharePrice) * investment.initialInvestmentAmountGBP %}#}
+                {% set MTM =   ( FXEffect * (investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1 ) * investment.initialInvestmentAmountGBP %}
 
             {% endif %}
         {% endif %}
@@ -360,7 +360,6 @@
     <tfoot>
 
     <tr data-sort="99" style="background-color: whitesmoke; text-align: right">
-        <td>Totals</td>
         <td></td>
         <td></td>
         <td></td>
