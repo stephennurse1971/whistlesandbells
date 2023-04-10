@@ -176,7 +176,7 @@
     <!-- Share price now or sold -->
     {% if investment.investmentSaleDate is null %}
         <td style="text-align: right">
-            {% if investment.taxScheme.includeTaxSummary == 0 %}
+            {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
                 -
             {% else %}
                 <a target="_blank" href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
