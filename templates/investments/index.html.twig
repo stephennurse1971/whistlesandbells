@@ -146,6 +146,8 @@
     </td>
 
     <td style="text-align: right;border-right:1px solid black">
+        {% if investment.taxScheme is not null%}
+
         {% set TaxSubsidyPurchase =0 %}
         {% if investment.currency.fx =="GBP" %}
             {% set TaxSubsidyPurchase = investment.investmentAmount * investment.taxScheme.purchaseTaxOffset %}
@@ -155,13 +157,14 @@
         {{ TaxSubsidyPurchase|number_format('0') }}
         {% set TaxSubsidyPurchase_Total = TaxSubsidyPurchase_Total + TaxSubsidyPurchase %}
 
+        {% endif %}
     </td>
     <!-- EIS Years (Purchase) End -->
 
 
     <!-- Share price invested -->
     <td style="text-align: right">
-        {% if investment.taxScheme.includeTaxSummary == 0 %}
+        {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
             -
         {% else %}
             {% if investment.numberOfShares >0 %}
