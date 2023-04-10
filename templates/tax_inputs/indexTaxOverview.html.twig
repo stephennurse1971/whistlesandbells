@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tax Self-Assessment Self-Assessment{% endblock %}
+{% block title %}Tax Self-Assessment{% endblock %}
 
 {% block body %}
     <style>
@@ -50,7 +50,8 @@
 
                             {% if taxinput.p11D is not empty %}
                                 <a title="{{ taxinput.p11D }}" target="_blank"
-                                   href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'P11D'}) }}">P11D <i
+                                   href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'P11D'}) }}">P11D
+                                    <i
                                             class="fa fa-paperclip"></i></a>
                             {% endif %}
 
@@ -110,9 +111,10 @@
         </tr>
 
         <tr>
-            <td data-sort="04" style="border-right:1px solid black; text-align: left"><b>Income Offsets (EIS Losses, BRPA)</b>
+            <td data-sort="04" style="border-right:1px solid black; text-align: left"><b>Income Offsets (EIS Losses,
+                    BRPA)</b>
                 <a href="{{ path('investments_tax_consequences',{'show': 'TaxEffect'}) }}" target="_blank">Link</a>
-                </td>
+            </td>
             {% for taxYear in taxYears %}
 
                 <td style="border-right:1px solid lightgray; text-align: right">
@@ -199,12 +201,17 @@
                 <td style="border-right:1px solid lightgray; border-bottom:1px solid black; text-align: right">
                     {% for taxinput in taxinputs %}
                         {% if taxinput.year.id == taxYear.id %}
-                            {% set BasicRate = max(0,min(taxinput.employmentEarnings,taxYear.taxBand2BasicRate) ) %}
-                            {% set HigherRate= max(0,(min(taxinput.employmentEarnings, taxYear.taxBand3HigherRate)-BasicRate)) %}
-                            {% set AdditionalRate=  max(0, taxinput.employmentEarnings -taxYear.taxBand3HigherRate) %}
-                            {{ ( (BasicRate * taxYear.taxBand2Rate) + (HigherRate* taxYear.taxBand3Rate) + (AdditionalRate* taxYear.taxBand4Rate))|number_format('0') }}
+                            {#                            {% set BasicRate = max(0,min(taxinput.employmentEarnings,taxYear.taxBand2BasicRate) ) %} #}
+                            {#                            {% set HigherRate= max(0,(min(taxinput.employmentEarnings, taxYear.taxBand3HigherRate)-BasicRate)) %} #}
+                            {#                            {% set AdditionalRate=  max(0, taxinput.employmentEarnings -taxYear.taxBand3HigherRate) %} #}
+                            {#                            {{ ( (BasicRate * taxYear.taxBand2Rate) + (HigherRate* taxYear.taxBand3Rate) + (AdditionalRate* taxYear.taxBand4Rate))|number_format('0') }} #}
+                            {#                           <br> #}
+                            {#                            Service: #}
+                            {{ TaxYearCalcs.taxDueOnIncomeByYear(taxYear, taxinput.employmentEarnings)|number_format('0') }}
                         {% endif %}
                     {% endfor %}
+                    <br>
+
                 </td>
             {% endfor %}
         </tr>
@@ -214,41 +221,16 @@
                 style="border-right:1px solid black;border-bottom:1px solid black; text-align: left; color: red; background-color: whitesmoke; ">
                 <b>Income tax on All Income</b>
             </td>
+
             {% for taxYear in taxYears %}
                 <td style="border-right:1px solid lightgray; border-bottom:1px solid black; text-align: right;background-color: whitesmoke; ">
-                    {% set IncomeOffset = 0 %}
-                    {% for investment in investments %}
-                        {% if investment.eisPurchaseYear1 is not null %}
-                            {% if investment.eisPurchaseYear1.id ==taxYear.id %}
-                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISPurchaseYear1Percentage * investment.taxScheme.purchaseIncomeOffset/100) %}
-                            {% endif %}
-                        {% endif %}
-                        {% if investment.eisPurchaseYear2 is not null %}
-                            {% if investment.eisPurchaseYear2.id ==taxYear.id %}
-                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISPurchaseYear2Percentage * investment.taxScheme.purchaseIncomeOffset/100) %}
-                            {% endif %}
-                        {% endif %}
-                        {% if investment.eisSaleYear1 is not null %}
-                            {% if investment.eisSaleYear1.id ==taxYear.id %}
-                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISSaleYear1Percentage * investment.taxScheme.saleIncomeOffset/100) %}
-                            {% endif %}
-                        {% endif %}
-                        {% if investment.eisSaleYear2 is not null %}
-                            {% if investment.eisSaleYear2.id ==taxYear.id %}
-                                {% set IncomeOffset = IncomeOffset + (investment.investmentAmount * investment.eISSaleYear2Percentage * investment.taxScheme.saleIncomeOffset/100) %}
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-
-
-
+                    {% set incomeOffset = 0 %}
+                    {% set incomeOffset = TaxYearCalcs.incomeOffsetsByYear(taxYear) %}
+                    O/S: {{ TaxYearCalcs.incomeOffsetsByYear(taxYear)|number_format('0') }} <br>
                     {% for taxinput in taxinputs %}
                         {% if taxinput.year.id == taxYear.id %}
-                            {% set TotalIncome = taxinput.employmentEarnings + taxinput.interestEarnings+ taxinput.otherEarnings -IncomeOffset %}
-                            {% set BasicRate = max(0,min(TotalIncome,taxYear.taxBand2BasicRate) ) %}
-                            {% set HigherRate= max(0,(min(TotalIncome, taxYear.taxBand3HigherRate)-BasicRate)) %}
-                            {% set AdditionalRate=  max(0, TotalIncome -taxYear.taxBand3HigherRate) %}
-                            {{ ( (BasicRate * taxYear.taxBand2Rate) + (HigherRate* taxYear.taxBand3Rate) + (AdditionalRate* taxYear.taxBand4Rate))|number_format('0') }}
+                            {% set TotalIncome = taxinput.employmentEarnings + taxinput.interestEarnings+ taxinput.otherEarnings - incomeOffset %}
+                            {{ TaxYearCalcs.taxDueOnIncomeByYear(taxYear, TotalIncome)|number_format('0') }}
                         {% endif %}
                     {% endfor %}
                 </td>
@@ -258,49 +240,33 @@
 
         <tr>
             <td data-sort="08" style="border-right:1px solid black; text-align: left">
-                <b>Tax reliefs (SEIS, EIS)</b></td>
+                <a target="_blank" href="{{ path('investments_tax_consequences',{'show': 'TaxEffect'}) }}">
+                    <b>Tax reliefs (SEIS, EIS)</b>
+                </a>
+            </td>
+
             {% for taxYear in taxYears %}
                 <td style="border-right:1px solid lightgray; text-align: right">
-                    {% set TaxReliefOffset = 0 %}
-                    {% for investment in investments %}
-
-                        {% if investment.eisPurchaseYear1 is not null %}
-                            {% if investment.eisPurchaseYear1.id ==taxYear.id %}
-                                {% set TaxReliefOffset = TaxReliefOffset + (investment.investmentAmount * investment.eISPurchaseYear1Percentage * investment.taxScheme.purchaseTaxOffset/100) %}
-                            {% endif %}
-                        {% endif %}
-
-                        {% if investment.eisPurchaseYear2 is not null %}
-                            {% if investment.eisPurchaseYear2.id ==taxYear.id %}
-                                {% set TaxReliefOffset = TaxReliefOffset + (investment.investmentAmount * investment.eISPurchaseYear2Percentage * investment.taxScheme.purchaseTaxOffset/100) %}
-                            {% endif %}
-                        {% endif %}
-
-                        {% if investment.eisSaleYear1 is not null %}
-                            {% if investment.eisSaleYear1.id ==taxYear.id %}
-                                {% set TaxReliefOffset = TaxReliefOffset + (investment.investmentAmount * investment.eISSaleYear1Percentage * investment.taxScheme.saleTaxOffset/100) %}
-                            {% endif %}
-                        {% endif %}
-
-                        {% if investment.eisSaleYear2 is not null %}
-                            {% if investment.eisSaleYear2.id ==taxYear.id %}
-                                {% set TaxReliefOffset = TaxReliefOffset + (investment.investmentAmount * investment.eISSaleYear2Percentage * investment.taxScheme.saleTaxOffset/100) %}
-                            {% endif %}
-                        {% endif %}
-
-                    {% endfor %}
-                    {{ (TaxReliefOffset*-1)|number_format('0') }}
+                    {{ TaxYearCalcs.taxReliefsByYear(taxYear)|number_format('0') }}
                 </td>
             {% endfor %}
         </tr>
 
 
         <tr>
-            <td data-sort="09" style="border-right:1px solid black; text-align: left">
+            <td data-sort="09" style="border-right:1px solid black; border-bottom:1px solid black; text-align: left;background-color: whitesmoke">
                 <b>Net tax Due</b></td>
+
             {% for taxYear in taxYears %}
-                <td style="border-right:1px solid lightgray; text-align: right">
-                    xxx
+                <td style="border-right:1px solid lightgray; border-bottom:1px solid black; text-align: right;background-color: whitesmoke">
+                    {% set incomeOffset = 0 %}
+                    {% set incomeOffset = TaxYearCalcs.incomeOffsetsByYear(taxYear) %}
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            {% set TotalIncome  = taxinput.employmentEarnings + taxinput.interestEarnings+ taxinput.otherEarnings - incomeOffset %}
+                            {{ (TaxYearCalcs.taxDueOnIncomeByYear(taxYear, TotalIncome) - TaxYearCalcs.taxReliefsByYear(taxYear)) |number_format('0') }}
+                        {% endif %}
+                    {% endfor %}
                 </td>
             {% endfor %}
         </tr>
@@ -317,11 +283,19 @@
 
 
         <tr>
-            <td data-sort="11" style="border-right:1px solid black; text-align: left">
+            <td data-sort="11" style="border-right:1px solid black; border-bottom:1px solid black; text-align: left;background-color: whitesmoke">
                 <b>Refund owed</b></td>
-            {% for taxinput in taxinputs %}
-                <td style="border-right:1px solid lightgray; text-align: right">
-                    xx
+
+            {% for taxYear in taxYears %}
+                <td style="border-right:1px solid lightgray; border-bottom:1px solid black; text-align: right;background-color: whitesmoke">
+                    {% set incomeOffset = 0 %}
+                    {% set incomeOffset = TaxYearCalcs.incomeOffsetsByYear(taxYear) %}
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year.id == taxYear.id %}
+                            {% set TotalIncome  = taxinput.employmentEarnings + taxinput.interestEarnings+ taxinput.otherEarnings - incomeOffset %}
+                            {{ (TaxYearCalcs.taxDueOnIncomeByYear(taxYear, TotalIncome) - TaxYearCalcs.taxReliefsByYear(taxYear) -taxinput.taxDeductedAtSource ) |number_format('0') }}
+                        {% endif %}
+                    {% endfor %}
                 </td>
             {% endfor %}
         </tr>
@@ -449,14 +423,6 @@
     </table>
 
 
-
-
-
-
-
-
-
-
 {% endblock %}
 
 
@@ -465,7 +431,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc']],
+                "order": false,
                 "paging": false,
                 "searching": false,
                 "bInfo": false

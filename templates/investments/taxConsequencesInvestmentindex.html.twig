@@ -69,7 +69,7 @@
                     data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">{{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}</td>
 
                 <td style="text-align: right; border-right:1px solid black">
-                    {{(investment.saleSharePrice * investment.numberOfShares)|number_format (0, '.') }}
+                    {{ (investment.saleSharePrice * investment.numberOfShares)|number_format (0, '.') }}
                 </td>
 
 
@@ -109,7 +109,9 @@
                             {% endif %}
 
                             {{ taxOffset |number_format(0) }}
+                            {% set totalTaxOffset = totalTaxOffset + taxOffset %}
                         </div>
+
                         <div class="col-6">
                             {% set incomeOffset = 0 %}
                             {% if investment.eisPurchaseYear1 == taxYear %}
@@ -146,37 +148,64 @@
                             {% endif %}
 
                             {{ incomeOffset |number_format(0) }}
+                            {% set totalIncomeOffset = totalIncomeOffset + incomeOffset %}
                         </div>
                     </div>
                     </td>
+
                 {% endfor %}
             </tr>
 
         {% endfor %}
-
+        <tfoot>
         <tr>
-            <td data-sort="999"  style="text-align: left; background-color: whitesmoke">Total</td>
-            <td data-sort="999"  style="background-color: whitesmoke"></td>
-            <td data-sort="999" style="border-right:1px solid black; background-color: whitesmoke"></td>
-            <td data-sort="9999" style="background-color: whitesmoke"></td>
-            <td style="background-color: whitesmoke"></td>
-            <td style="border-right:1px solid black; background-color: whitesmoke"></td>
+            <td style="text-align: left; background-color: whitesmoke;border-bottom:1px solid black">Total</td>
+            <td style="background-color: whitesmoke;border-bottom:1px solid black"></td>
+            <td style="background-color: whitesmoke;border-bottom:1px solid black"></td>
+            <td style="background-color: whitesmoke;border-bottom:1px solid black"></td>
+            <td style="background-color: whitesmoke;border-bottom:1px solid black"></td>
+            <td style="background-color: whitesmoke;border-bottom:1px solid black"></td>
 
             {% for taxYear in taxYears %}
-                <td style="border-right:1px solid lightgray; text-align: right; background-color: whitesmoke; font: bold">
+                <td style="border-right:1px solid lightgray; text-align: right; background-color: whitesmoke;border-bottom:1px solid black">
                     <div class="row">
                         <div class="col-6">
-                            a
+                            {% set totalTaxOffset = 0 %}
+
+                            {% for investment in investments %}
+                                {% set taxOffset = 0 %}
+                                {% if investment.eisPurchaseYear1 == taxYear %}
+                                    {% if show == "TaxEffect" %}
+                                        {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% else %}
+                                        {% set taxOffset = taxOffset + ( 1 *  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% endif %}
+                                    {% set totalTaxOffset = totalTaxOffset + taxOffset %}
+                                {% endif %}
+                                {% if investment.eisPurchaseYear2 == taxYear %}
+                                    {% if show == "TaxEffect" %}
+                                        {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% else %}
+                                        {% set taxOffset = taxOffset + ( 1   *  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% endif %}
+                                    {% set totalTaxOffset = totalTaxOffset + taxOffset %}
+                                {% endif %}
+
+                            {% endfor %}
+                            {{ totalTaxOffset|number_format('0') }}
+
+
                         </div>
-                        <div class="col-6">
-                            b
-                        </div>
+                    </div>
+                    <div class="col-6">
+                        {#                            <b>{{ totalIncomeOffset|number_format('0') }}</b> #}
+                    </div>
                     </div>
                 </td>
             {% endfor %}
 
         </tr>
-        </tbody>
+        </tfoot>
     </table>
 
 {% endblock %}

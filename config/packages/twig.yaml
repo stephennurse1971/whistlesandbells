@@ -7,4 +7,5 @@ twig:
         TaxYear: '@App\Services\TaxYear'
         FindUser: '@App\Services\FindUser'
         UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
+        TaxYearCalcs: '@App\Services\TaxYearCalcs'
 
