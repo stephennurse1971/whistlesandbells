@@ -113,7 +113,7 @@
 
     <!-- EIS Years (Purchase) -->
     <td style="text-align: right">
-        {% if investment.taxScheme.includeTaxSummary == 0 %}
+        {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
             -
         {% else %}
             {% if investment.EISPurchaseYear1 is not null %}
@@ -122,14 +122,14 @@
         {% endif %}
     </td>
     <td style="text-align: right">
-        {% if investment.taxScheme.includeTaxSummary == 0 %}
+        {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
             -
         {% else %}
             {{ (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)|number_format(0,'.') }}
         {% endif %}
     </td>
     <td style="text-align: right">
-        {% if investment.taxScheme.includeTaxSummary == 0 %}
+        {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
             -
         {% else %}
             {% if investment.EISPurchaseYear2 is not null %}
@@ -138,7 +138,7 @@
         {% endif %}
     </td>
     <td style="text-align: right">
-        {% if investment.taxScheme.includeTaxSummary == 0 %}
+        {% if investment.taxScheme is not null and  investment.taxScheme.includeTaxSummary == 0 %}
             -
         {% else %}
             {{ (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)|number_format(0,'.') }}
