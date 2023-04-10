@@ -24,7 +24,43 @@
         });
     </script>
     <script>
-        $("#investments_investmentDate").change(function (){
+        var investmentAmount = $("#investments_investmentAmount").val();
+        var numberOfShares = $("#investments_numberOfShares").val();
+        var purchaseSharePrice = '';
+        purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+        $("#investments_purchaseSharePrice").val(purchaseSharePrice);
+        $("#investments_investmentAmount").change(function () {
+            var investmentAmount = $("#investments_investmentAmount").val();
+            var numberOfShares = $("#investments_numberOfShares").val();
+            var purchaseSharePrice = '';
+            purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+            $("#investments_purchaseSharePrice").val(purchaseSharePrice);
+        });
+
+        $("#investments_numberOfShares").change(function () {
+            var investmentAmount = $("#investments_investmentAmount").val();
+            var numberOfShares = $("#investments_numberOfShares").val();
+            var purchaseSharePrice = '';
+            purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
+            $("#investments_purchaseSharePrice").val(purchaseSharePrice);
+        });
+
+        var currency = $("#investments_currency option:selected").text();
+        if (currency == 'GBP') {
+            $('.initial-amount-GBP').css('display', 'none');
+        }
+        $("#investments_currency").change(function () {
+            var selectedCurrency = $("#investments_currency option:selected").text();
+            if (selectedCurrency == 'GBP') {
+                $('.initial-amount-GBP').css('display', 'none');
+            } else {
+                $('.initial-amount-GBP').css('display', 'block');
+            }
+        });
+    </script>
+
+    <script>
+        $("#investments_investmentDate").change(function () {
             var date = $("#investments_investmentDate").val();
             var date = date.split("-");
             var year = parseInt(date[0]);
@@ -32,7 +68,7 @@
             var day = parseInt(date[2]);
             var yearRange = '';
             var lookBack = '';
-            if( month < 4 ) {
+            if (month < 4) {
                 var previousYear = year - 1;
                 var previousYearLookback = previousYear - 1;
                 yearRange = previousYear + "-" + year;
@@ -40,37 +76,78 @@
                 $("#investments_EISPurchaseYear1").val(yearRange).change();
                 $("#investments_EISPurchaseYear2").val(lookBack).change();
 
-            }
-            else if(month == 4) {
-                if (day < 5 ) {
+            } else if (month == 4) {
+                if (day < 5) {
                     var previousYear = year - 1;
                     var previousYearLookback = previousYear - 1;
                     yearRange = previousYear + "-" + year;
                     lookBack = previousYearLookback + "-" + previousYear;
                     $("#investments_EISPurchaseYear1").val(yearRange).change();
                     $("#investments_EISPurchaseYear2").val(lookBack).change();
-                }
-                else{
-                    yearRange = ""+year+"-"+(year+1);
-                    var previousYear = year - 1 ;
-                    lookBack = previousYear +"-"+ year;
+                } else {
+                    yearRange = "" + year + "-" + (year + 1);
+                    var previousYear = year - 1;
+                    lookBack = previousYear + "-" + year;
                     $("#investments_EISPurchaseYear1").val(yearRange).change();
                     $("#investments_EISPurchaseYear2").val(lookBack).change();
                 }
-            }
-            else{
-                yearRange = ""+year+"-"+(year+1);
-                var previousYear = year - 1 ;
-                lookBack = previousYear +"-"+ year;
+            } else {
+                yearRange = "" + year + "-" + (year + 1);
+                var previousYear = year - 1;
+                lookBack = previousYear + "-" + year;
                 $("#investments_EISPurchaseYear1").val(yearRange).change();
                 $("#investments_EISPurchaseYear2").val(lookBack).change();
             }
         })
-
     </script>
 
     <script>
-        $("#investments_taxScheme").val("Standard").change();
-    </script>           var previousYear = year - 1 ;
+        $("#investments_investmentSaleDate").change(function () {
+            var date = $("#investments_investmentSaleDate").val();
+            var date = date.split("-");
+            var year = parseInt(date[0]);
+            var month = parseInt(date[1]);
+            var day = parseInt(date[2]);
+            var yearRange = '';
+            var lookBack = '';
+            if (month < 4) {
+                var previousYear = year - 1;
+                var previousYearLookback = previousYear - 1;
+                yearRange = previousYear + "-" + year;
+                lookBack = previousYearLookback + "-" + previousYear;
+                $("#investments_eISSaleYear1").val(yearRange).change();
+                $("#investments_eISSaleYear2").val(lookBack).change();
 
-{% endblock %}
+            } else if (month == 4) {
+                if (day < 5) {
+                    var previousYear = year - 1;
+                    var previousYearLookback = previousYear - 1;
+                    yearRange = previousYear + "-" + year;
+                    lookBack = previousYearLookback + "-" + previousYear;
+                    $("#investments_eISSaleYear1").val(yearRange).change();
+                    $("#investments_eISSaleYear2").val(lookBack).change();
+                } else {
+                    yearRange = "" + year + "-" + (year + 1);
+                    var previousYear = year - 1;
+                    lookBack = previousYear + "-" + year;
+                    $("#investments_eISSaleYear1").val(yearRange).change();
+                    $("#investments_eISSaleYear2").val(lookBack).change();
+                }
+            } else {
+                yearRange = "" + year + "-" + (year + 1);
+                var previousYear = year - 1;
+                lookBack = previousYear + "-" + year;
+                $("#investments_eISSaleYear1").val(yearRange).change();
+                $("#investments_eISSaleYear2").val(lookBack).change();
+            }
+        })
+    </script>
+    <script>
+        {% if investment.eisSaleYear1 is not null and investment.eisSaleYear2 is not null %}
+        var investment_eisSaleYear1 =  "{{ investment.eISSaleYear1.taxYearRange }}";
+        var investment_eisSaleYear2 =  "{{ investment.eISSaleYear2.taxYearRange }}";
+        $("#investments_eISSaleYear1").val(investment_eisSaleYear1).change();
+        $("#investments_eISSaleYear2").val(investment_eisSaleYear2).change();
+        {% endif %}
+    </script>
+{% endblock additionaljs %}

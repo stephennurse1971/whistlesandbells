@@ -33,8 +33,8 @@ class MarketDataType extends AbstractType
                     'Loans' => 'Loans'
                 ]
             ])
-            ->add('comment')
             ->add('assetSold')
+            ->add('comment')
         ;
     }
 
