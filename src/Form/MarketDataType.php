@@ -34,6 +34,7 @@ class MarketDataType extends AbstractType
                 ]
             ])
             ->add('comment')
+            ->add('assetSold')
         ;
     }
 

@@ -67,6 +67,11 @@ class MarketData
      */
     private $comment;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $assetSold;
+
 
 
 
@@ -192,6 +197,18 @@ class MarketData
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getAssetSold(): ?bool
+    {
+        return $this->assetSold;
+    }
+
+    public function setAssetSold(?bool $assetSold): self
+    {
+        $this->assetSold = $assetSold;
 
         return $this;
     }
