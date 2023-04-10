@@ -60,7 +60,7 @@
     {% set FXEffect =1 %}
     {% set InitialFXRate =1 %}
     {% set CurrentFXRate =1 %}
-    {% if investment.currency.fx != "GBP" %}
+    {% if investment.currency.fx != "GBP" and investment.initialInvestmentAmountGBP >0%}
         {% set InitialFXRate =  investment.investmentAmount/investment.initialInvestmentAmountGBP %}
         {% set CurrentFXRate = USDGBPFXrate.currentFxRate/investment.currency.currentFxRate %}
         {% set FXEffect = InitialFXRate/CurrentFXRate %}
