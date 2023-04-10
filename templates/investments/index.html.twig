@@ -225,7 +225,7 @@
                 {% set PV = investment.initialInvestmentAmountGBP * FXEffect %}
             {% endif %}
         {% endif %}
-        {% if investment.investmentSaleDate is null and investment.taxScheme.includeTaxSummary == 1 %}
+        {% if investment.investmentSaleDate is null and investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 1 %}
 
             {% if investment.currency.fx == "GBP" %}
                 {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice %}
