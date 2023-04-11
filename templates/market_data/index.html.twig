@@ -5,97 +5,108 @@
 {% block body %}
     <h1 style="color: red;">Share prices</h1>
 
-    {% for asset_class in asset_classes %}
-        <h2>{{ asset_class }}</h2>
-        <table class="table table-responsive">
-            <thead>
+    {#    {% for asset_class in asset_classes %} #}
+    {#        <h2>{{ asset_class }}</h2> #}
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>
+                Asset Class
+                <a target="_blank" href="{{ path('asset_classes_index') }}">+</a>
+            </th>
+            <th>Cash</th>
+            <th>Active/ Sold</th>
+            <th style="width: 250px;">Company</th>
+            <th style="text-align: right">Share Price</th>
+            <th style="width: 50px;">Corporate website</th>
+            <th style="width: 50px;">Companies House</th>
+            <th>Investor site</th>
+            <th>Login</th>
+            <th>Password</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for market_data in market_datas %}
+            {#                {% if market_data.assetClass == asset_class %} #}
+            {% set weblink = 'https://find-and-update.company-information.service.gov.uk/company/'~market_data.companiesHouse %}
             <tr>
-                <th>Cash</th>
-                <th>Active/ Sold</th>
-                <th style="width: 250px;">Company</th>
-                <th style="text-align: right">Share Price</th>
-                <th style="width: 50px;">Corporate website</th>
-                <th style="width: 50px;">Companies House</th>
-                <th>Investor site</th>
-                <th>Login</th>
-                <th>Password</th>
-                <th>#</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for market_data in market_datas %}
-                {% if market_data.assetClass == asset_class %}
-                    {% set weblink = 'https://find-and-update.company-information.service.gov.uk/company/'~market_data.companiesHouse %}
-                    <tr>
-                        <td style="text-align: center" data-sort="{{ market_data.cashInstrument }}">
-                            {% if  market_data.cashInstrument == 0 %}
-                                <i style="color: green" class="fa fa-check"></i>
-                            {% else %}
-                                <i style="color: red" class="fa fa-remove"></i>
-                            {% endif %}
-                        </td>
-                        <td style="text-align: center" data-sort="{{ market_data.assetSold }}">
-                            {% if  market_data.assetSold == 1 %}
-                                <i style="color: red" class="fa fa-remove"></i>
-                            {% else %}
-                                <i style="color: green" class="fa fa-check"></i>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="{{ path('market_data_edit', {'id': market_data.id}) }}">{{ market_data.shareCompany }}</a>
-                        </td>
-                        <td style="text-align: right">
-                            {% if market_data.sharePrice<5 %}
-                                {{ market_data.sharePrice|number_format(2) }}
-                            {% else %}
-                                {{ market_data.sharePrice|number_format(0) }}
-                            {% endif %}
-                        </td>
-                        <td style="text-align: center">
-                            {% if market_data.weblink is not empty %}
-                                <a title="{{ market_data.weblink }}" target="_blank"
-                                   href="{{ market_data.weblink }}"><i class="fas fa-globe"
-                                                                       style="color:blue; text-align: center"></i></a>
-                            {% endif %}
-                        </td>
+                <td style="text-align: center">
+                    {% if market_data.assetClass is not null %}
+                        {{ market_data.assetClass.assetClass }}
+                    {% endif %}
 
-                        <td style="text-align: center">
-                            {% if market_data.companiesHouse != "NA" %}
-                                <a title={{ weblink }} target="_blank" href={{ weblink }}>
-                                    <i class="fas fa-link" style="color:blue; text-align: center"></i></a>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if  market_data.investorSite is not empty %}
-                                {% if  market_data.investorSite starts with 'http' %}
-                                    {% set web =  market_data.investorSite %}
-                                {% else %}
-                                    {% set web = 'https://'~ market_data.investorSite %}
-                                {% endif %}
-                                <a target="_blank" title="{{ market_data.investorSite }}" href="{{ web }}">
-                                    {{ web }}
-                                </a>
-                            {% endif %}
-                        </td>
-                        <td>{{ market_data.login }}</td>
-                        <td>{{ market_data.password }}</td>
-                        <td>
-                            {% if market_data.login is not null %}
-                            <a class="btn btn-success btn-sm" target="_blank" href="{{ market_data.investorSite }}">Login</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
-        <br>
-        <br>
-        <hr>
-        <br>
-        <br>
-        <br>
-    {% endfor %}
+                </td>
+                <td style="text-align: center" data-sort="{{ market_data.cashInstrument }}">
+                    {% if  market_data.cashInstrument == 0 %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: center" data-sort="{{ market_data.assetSold }}">
+                    {% if  market_data.assetSold == 1 %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% else %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    <a target="_blank" href="{{ path('market_data_edit', {'id': market_data.id}) }}">{{ market_data.shareCompany }}</a>
+                </td>
+                <td style="text-align: right">
+                    {% if market_data.sharePrice<5 %}
+                        {{ market_data.sharePrice|number_format(2) }}
+                    {% else %}
+                        {{ market_data.sharePrice|number_format(0) }}
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if market_data.weblink is not empty %}
+                        <a title="{{ market_data.weblink }}" target="_blank"
+                           href="{{ market_data.weblink }}"><i class="fas fa-globe"
+                                                               style="color:blue; text-align: center"></i></a>
+                    {% endif %}
+                </td>
+
+                <td style="text-align: center">
+                    {% if market_data.companiesHouse != "NA" %}
+                        <a title={{ weblink }} target="_blank" href={{ weblink }}>
+                            <i class="fas fa-link" style="color:blue; text-align: center"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if  market_data.investorSite is not empty %}
+                        {% if  market_data.investorSite starts with 'http' %}
+                            {% set web =  market_data.investorSite %}
+                        {% else %}
+                            {% set web = 'https://'~ market_data.investorSite %}
+                        {% endif %}
+                        <a target="_blank" title="{{ market_data.investorSite }}" href="{{ web }}">
+                            {{ web }}
+                        </a>
+                    {% endif %}
+                </td>
+                <td>{{ market_data.login }}</td>
+                <td>{{ market_data.password }}</td>
+                <td>
+                    {% if market_data.login is not null %}
+                        <a class="btn btn-success btn-sm" target="_blank"
+                           href="{{ market_data.investorSite }}">Login</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {#                {% endif %} #}
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+    <br>
+    {#    {% endfor %} #}
 
 
     <a target="_blank" class="btn btn-success btn-sm mt-2" href="{{ path('market_data_new') }}">New</a>
@@ -106,7 +117,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [ [2, 'asc'],[1, 'asc']],
+                "order": [[2, 'asc'], [1, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

@@ -202,7 +202,9 @@
                     {% set MTM = 0 %}
                     -
                 {% else %}
-                    {% set MTM =   ( FXEffect * (investment.investmentCompany.sharePrice/ investment.purchaseSharePrice)-1 ) * investment.initialInvestmentAmountGBP %}
+                    {% if investment.currency.fx == "GBP" %}
+                        {% set MTM =  ((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+                    {% endif %}
                     {{ MTM |number_format ('0') }}
                 {% endif %}
 

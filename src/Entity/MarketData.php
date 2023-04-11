@@ -37,10 +37,7 @@ class MarketData
      */
     private $weblink;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $assetClass;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -71,6 +68,11 @@ class MarketData
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $assetSold;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=AssetClasses::class)
+     */
+    private $assetClass;
 
 
 
@@ -129,17 +131,7 @@ class MarketData
         return $this;
     }
 
-    public function getAssetClass(): ?string
-    {
-        return $this->assetClass;
-    }
 
-    public function setAssetClass(?string $assetClass): self
-    {
-        $this->assetClass = $assetClass;
-
-        return $this;
-    }
 
     public function getLogin(): ?string
     {
@@ -209,6 +201,18 @@ class MarketData
     public function setAssetSold(?bool $assetSold): self
     {
         $this->assetSold = $assetSold;
+
+        return $this;
+    }
+
+    public function getAssetClass(): ?AssetClasses
+    {
+        return $this->assetClass;
+    }
+
+    public function setAssetClass(?AssetClasses $assetClass): self
+    {
+        $this->assetClass = $assetClass;
 
         return $this;
     }

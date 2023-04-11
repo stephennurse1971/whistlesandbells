@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\MarketData;
 use App\Form\MarketDataType;
+use App\Repository\AssetClassesRepository;
 use App\Repository\MarketDataRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +19,11 @@ class MarketDataController extends AbstractController
     /**
      * @Route("/", name="market_data_index", methods={"GET"})
      */
-    public function index(MarketDataRepository $marketDataRepository): Response
+    public function index(MarketDataRepository $marketDataRepository, AssetClassesRepository $assetClassesRepository): Response
     {
-        $assetclasses = ['Pubs', 'Storage', 'EIS', 'Pension', 'Shares', 'Bank Account', 'EBT', 'Loans'];
         return $this->render('market_data/index.html.twig', [
             'market_datas' => $marketDataRepository->findAll(),
-            'asset_classes' => $assetclasses
+            'asset_classes' => $assetClassesRepository->findAll(),
         ]);
     }
 

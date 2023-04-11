@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\AssetClasses;
 use App\Entity\MarketData;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,17 +23,11 @@ class MarketDataType extends AbstractType
             ->add('login')
             ->add('password')
             ->add('investorSite')
-            ->add('assetClass', ChoiceType::class, [
-                'choices' => [
-                    'Pubs' => 'Pubs',
-                    'Storage' => 'Storage',
-                    'EIS' => 'EIS',
-                    'Pension' => 'Pension',
-                    'Shares' => 'Shares',
-                    'Bank Account' => 'Bank Account',
-                    'EBT' => 'EBT',
-                    'Loans' => 'Loans'
-                ]
+            ->add('assetClass', EntityType::class, [
+                'class' => AssetClasses::class,
+                'choice_label' => 'assetClass',
+                'label' => 'Asset Class',
+                'required' => false
             ])
             ->add('assetSold')
             ->add('comment')
