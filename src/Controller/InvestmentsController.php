@@ -84,7 +84,7 @@ class InvestmentsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($investment);
             $entityManager->flush();
-            return $this->redirectToRoute('investments_index');
+            return $this->redirectToRoute('investments_index',['grouping'=>'All'] );
         }
 
         return $this->render('investments/new.html.twig', [
@@ -159,7 +159,7 @@ class InvestmentsController extends AbstractController
             }
 
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('investments_index');
+            return $this->redirectToRoute('investments_index',['grouping'=>'All'] );
         }
 
         return $this->render('investments/edit.html.twig', [
@@ -179,7 +179,7 @@ class InvestmentsController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('investments_index');
+        return $this->redirectToRoute('investments_index',['grouping'=>'All'] );
     }
 
 
