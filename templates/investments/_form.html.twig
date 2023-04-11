@@ -17,7 +17,7 @@
     <div class="col-md-1">
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-3 asset_class_dependent_docs">
         <h2>Documents</h2>
         {% if investment.shareCert is not empty %}
             <strong>
@@ -79,7 +79,7 @@
 
 <div class="row">
     <div class="col-md-3">
-        <h2>Purchase Tax Years</h2>
+        <h2>Purchase</h2>
 
         <div class="row">
             <div class="col-6">
@@ -87,24 +87,24 @@
             </div>
 
         </div>
-        <div class="row">
-            <div class="col-6">
-                -
-                <br>-
-                <br>-
-            </div>
+{#        <div class="row">#}
+{#            <div class="col-6">#}
+{#                -#}
+{#                <br>-#}
+{#                <br>-#}
+{#            </div>#}
 
-        </div>
+{#        </div>#}
 
-        <div class="row">
-            <div class="col-6">
+        <div class="row asset_class_dependent_tax">
+            <div class="col-6 ">
                 {{ form_row(form.EISPurchaseYear1) }}
             </div>
             <div class="col-6">
                 {{ form_row(form.eISPurchaseYear1Percentage) }}
             </div>
         </div>
-        <div class="row">
+        <div class="row asset_class_dependent_tax">
             <div class="col-6">
                 {{ form_row(form.EISPurchaseYear2) }}
             </div>
@@ -119,10 +119,13 @@
 
 
     <div class="col-md-3">
-        <h2>Sale Tax Years</h2>
+        <h2>Sale</h2>
         <div class="row">
             <div class="col-6">
                 {{ form_row(form.investmentSaleDate) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.saleSharePrice) }}
             </div>
 
         </div>
@@ -136,7 +139,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row asset_class_dependent_tax">
             <div class="col-6">
                 {{ form_row(form.eISSaleYear1) }}
             </div>
@@ -144,7 +147,7 @@
                 {{ form_row(form.eISSaleYear1Percentage) }}
             </div>
         </div>
-        <div class="row">
+        <div class="row asset_class_dependent_tax">
             <div class="col-6">
                 {{ form_row(form.eISSaleYear2) }}
             </div>

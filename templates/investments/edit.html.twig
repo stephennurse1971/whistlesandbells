@@ -5,7 +5,7 @@
 {% block body %}
     <h1 style="color: red;">{{ investment.investmentCompany.shareCompany }}</h1>
     {{ include('investments/_form.html.twig', {'button_label': 'Update'}) }}
-    <a class="btn btn-info btn-sm mt-2" href="{{ path('investments_index') }}">Return to list</a>
+    <a class="btn btn-info btn-sm mt-2" href="{{ path('investments_index', {'grouping': 'All'}) }}">Return to list</a>
     {{ include('investments/_delete_form.html.twig') }}
     <br>
 
@@ -24,7 +24,6 @@
         });
     </script>
 
-
     <script>
         var investmentAmount = $("#investments_investmentAmount").val();
         var numberOfShares = $("#investments_numberOfShares").val();
@@ -37,6 +36,10 @@
             var purchaseSharePrice = '';
             purchaseSharePrice = parseFloat(investmentAmount) / parseFloat(numberOfShares);
             $("#investments_purchaseSharePrice").val(purchaseSharePrice);
+            var currency = $("#investments_currency option:selected").text();
+            if (currency == 'GBP') {
+                $('#investments_initialInvestmentAmountGBP').val(investmentAmount);
+            }
         });
 
         $("#investments_numberOfShares").change(function () {
@@ -49,14 +52,15 @@
 
         var currency = $("#investments_currency option:selected").text();
         if (currency == 'GBP') {
-            $('.initial-amount-GBP').css('display', 'none');
+            var investmentAmount = $("#investments_investmentAmount").val();
+            $('#investments_initialInvestmentAmountGBP').val(investmentAmount);
         }
+
         $("#investments_currency").change(function () {
             var selectedCurrency = $("#investments_currency option:selected").text();
             if (selectedCurrency == 'GBP') {
-                $('.initial-amount-GBP').css('display', 'none');
-            } else {
-                $('.initial-amount-GBP').css('display', 'block');
+                var investmentAmount = $("#investments_investmentAmount").val();
+                $('#investments_initialInvestmentAmountGBP').val(investmentAmount);
             }
         });
     </script>
@@ -151,5 +155,46 @@
         $("#investments_eISSaleYear1").val(investment_eisSaleYear1).change();
         $("#investments_eISSaleYear2").val(investment_eisSaleYear2).change();
         {% endif %}
+    </script>
+    <script>
+        var company =  $("#investments_investmentCompany option:selected").val();
+        var url = '/admin/investments/ajax/company/assetclass/'+company;
+        $.get(url, function(data, status){
+            if(data.tax == 0){
+                $('.asset_class_dependent_tax').hide();
+            }
+            else{
+                $('.asset_class_dependent_tax').show();
+            }
+            if(data.docs==0){
+                $('.asset_class_dependent_docs').hide();
+            }
+            else{
+                $('.asset_class_dependent_docs').show();
+            }
+        });
+        $("#investments_investmentCompany").change(function (){
+            var company =  $("#investments_investmentCompany option:selected").val();
+            var url = '/admin/investments/ajax/company/assetclass/'+company;
+            $.get(url, function(data, status){
+
+                if(data.tax == 0){
+                    $('.asset_class_dependent_tax').hide();
+                }
+                else{
+                    $('.asset_class_dependent_tax').show();
+                }
+                if(data.docs==0){
+                    $('.asset_class_dependent_docs').hide();
+                }
+                else{
+                    $('.asset_class_dependent_docs').show();
+                }
+            });
+        });
+
+        {# var company = parseInt(company);#}
+        {#var test = "{{ Investment.assetClass(2) }}".replace(2,company);#}
+        {#alert(test);#}
     </script>
 {% endblock additionaljs %}

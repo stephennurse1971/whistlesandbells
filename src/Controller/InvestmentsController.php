@@ -6,14 +6,17 @@ use App\Entity\Investments;
 use App\Entity\TaxYear;
 use App\Entity\UkDays;
 use App\Form\InvestmentsType;
+use App\Repository\AssetClassesRepository;
 use App\Repository\FxRatesRepository;
 use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
 use App\Repository\TaxSchemesRepository;
 use App\Repository\TaxYearRepository;
+use App\Services\Investment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,9 +27,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class InvestmentsController extends AbstractController
 {
     /**
-     * @Route("/", name="investments_index", methods={"GET"})
+     * @Route("/index/{grouping}", name="investments_index", methods={"GET"})
      */
-    public function index(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, FxRatesRepository $fxRatesRepository): Response
+    public function index(string $grouping,InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository,AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
     {
 
         return $this->render('investments/index.html.twig', [
@@ -35,11 +38,13 @@ class InvestmentsController extends AbstractController
             ]),
             'investmentsAll' => $investmentsRepository->findAll(),
             'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
+            'asset_classes'=>$assetClassesRepository->findAll(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
             'USDGBPFXrate'=>$fxRatesRepository->findOneBy([
                 'fx'=> 'GBP'
-            ])
+            ]),
+            'grouping'=>$grouping
         ]);
     }
 
@@ -230,7 +235,15 @@ class InvestmentsController extends AbstractController
         $publicResourcesFolderPath = $this->getParameter('investments_attachment_directory');
         return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
     }
-
+    /**
+     * @Route("/ajax/company/assetclass/{id}", name="investment_ajax_find_company_asset_class")
+     */
+    public function ajaxFindCompanyAssetClass(int $id,Investment $investment): Response
+    {
+        $asset_class = $investment->getAssetClass($id);
+        $json_data = json_encode($asset_class);
+        return new JsonResponse($asset_class);
+    }
 
 
 

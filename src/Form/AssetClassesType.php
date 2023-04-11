@@ -13,6 +13,9 @@ class AssetClassesType extends AbstractType
     {
         $builder
             ->add('assetClass')
+            ->add('showTaxYearDetails')
+            ->add('showSharePrices')
+            ->add('showDocs')
         ;
     }
 

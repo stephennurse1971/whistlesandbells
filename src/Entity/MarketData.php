@@ -54,10 +54,7 @@ class MarketData
      */
     private $investorSite;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $cashInstrument;
+
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -169,17 +166,6 @@ class MarketData
         return $this;
     }
 
-    public function getCashInstrument(): ?bool
-    {
-        return $this->cashInstrument;
-    }
-
-    public function setCashInstrument(?bool $cashInstrument): self
-    {
-        $this->cashInstrument = $cashInstrument;
-
-        return $this;
-    }
 
     public function getComment(): ?string
     {

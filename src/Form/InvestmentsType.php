@@ -119,7 +119,8 @@ class InvestmentsType extends AbstractType
                         ->orderBy('u.taxYearRange', 'ASC');
                 },
                 'label' => 'Purchase: Tax Year 1',
-                'required' => false
+                'required' => false,
+
             ])
             ->add('EISPurchaseYear2', EntityType::class, [
                 'class' => TaxYear::class,

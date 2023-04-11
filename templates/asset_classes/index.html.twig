@@ -7,10 +7,14 @@
 
     <table class="table table-responsive">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Asset Class</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Asset Class</th>
+            <th>Show Tax Years</th>
+            <th>Show Share Prices</th>
+            <th>Show Docs</th>
+
+        </tr>
         </thead>
         <tbody>
         {% for asset_class in asset_classes %}
@@ -19,14 +23,35 @@
                 <td>
                     <a href="{{ path('asset_classes_edit', {'id': asset_class.id}) }}">{{ asset_class.assetClass }}</a>
                 </td>
+                <td style="text-align: center">
+                    {% if asset_class.showTaxYearDetails == 1 %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
 
+                <td style="text-align: center">
+                    {% if asset_class.showSharePrices == 1 %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if asset_class.showDocs == 1 %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
-<br>
-<br>
-<br>
+    <br>
+    <br>
+    <br>
     <a class="btn btn-success btn-sm" href="{{ path('asset_classes_new') }}">New</a>
 {% endblock %}
 
