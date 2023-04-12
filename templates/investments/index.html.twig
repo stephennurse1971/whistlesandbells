@@ -47,6 +47,7 @@
                 <th style="text-align: right; width: 80px">Share Price (Purchase)</th>
                 <th style="text-align: right; width: 80px">Share Price (Current/Sale*) (£)</th>
                 <th style="text-align: right">MTM or Gain/Loss Crystallised(£)</th>
+                <th style="text-align: right">PV (Local)</th>
                 <th style="text-align: right;border-right:1px solid black">PV (£)</th>
 
                 <th style="text-align: right;border-right:1px gray; background-color: palegoldenrod">Sale Date</th>
@@ -243,6 +244,19 @@
                         {% set MTM_Total = MTM_Total + MTM %}
                     </td>
 
+                    <!-- PV (Local) -->
+                    <td style="text-align: right">
+                        {% set PV =0 %}
+                        {% if investment.investmentSaleDate is not null %}
+                            {% set PV = 0 %}
+                        {% else %}
+                            {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice %}
+                        {% endif %}
+
+                        {{ PV |number_format ('0') }}
+
+                        {% set PV_Total = PV_Total + PV %}
+                    </td>
                     <!-- PV (£) -->
                     <td style="text-align: right;border-right:1px solid black">
                         {% set PV =0 %}
@@ -395,6 +409,7 @@
                 <td>
                     <b> {{ MTM_Total | number_format ('0') }}</b>
                 </td>
+                <td style="border-bottom: black 1px"></td>
                 <td style="border-right:1px solid black">
                     <b> {{ PV_Total | number_format ('0') }}</b>
                 </td>
