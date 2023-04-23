@@ -50,6 +50,16 @@ class HouseGuests
      */
     private $arrivalNotes;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $flightFromLondon;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $flightToLondon;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,6 +133,30 @@ class HouseGuests
     public function setArrivalNotes(?string $arrivalNotes): self
     {
         $this->arrivalNotes = $arrivalNotes;
+
+        return $this;
+    }
+
+    public function getFlightFromLondon(): ?float
+    {
+        return $this->flightFromLondon;
+    }
+
+    public function setFlightFromLondon(?float $flightFromLondon): self
+    {
+        $this->flightFromLondon = $flightFromLondon;
+
+        return $this;
+    }
+
+    public function getFlightToLondon(): ?float
+    {
+        return $this->flightToLondon;
+    }
+
+    public function setFlightToLondon(float $flightToLondon): self
+    {
+        $this->flightToLondon = $flightToLondon;
 
         return $this;
     }
