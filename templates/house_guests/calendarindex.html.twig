@@ -9,6 +9,9 @@
     <thead>
     <tr>
         <th>Date</th>
+        <th>Flight From London</th>
+        <th>Flight To London</th>
+
         <th>Book</th>
         <th>Travel Notes</th>
         <th>Notes</th>
@@ -27,7 +30,12 @@
         {% endif %}
 
         <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
-
+        <td>
+            Flight from London
+        </td>
+        <td>
+            Flight to London
+        </td>
         <td>
             {% set flag = 0 %}
             {% for house_guest in house_guests %}
@@ -47,6 +55,7 @@
                    href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
             {% endif %}
         </td>
+
 
         <td>
             {% for house_guest in house_guests %}

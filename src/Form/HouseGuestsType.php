@@ -41,7 +41,11 @@ class HouseGuestsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
 
-            ]);
+            ])
+            ->add('flightFromLondon')
+            ->add('flightToLondon')
+
+        ;
 
     }
 
