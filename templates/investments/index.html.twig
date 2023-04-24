@@ -27,7 +27,7 @@
             <thead>
             <tr>
                 <th>Asset Class</th>
-                <th>ID</th>
+{#                <th>ID</th>#}
                 <th style="width: 50px">FYI</th>
                 <th style="width: 350px">Investment</th>
                 <th style="text-align: left">Investment Date</th>
@@ -94,9 +94,9 @@
                         <a target="_blank"
                            href="{{ path('asset_classes_edit',{'id':investment.investmentCompany.assetClass.id}) }}">{{ investment.investmentCompany.assetClass.assetClass }}</a>
                     </td>
-                    <td>
-                        {{ investment.id }}
-                    </td>
+{#                    <td>#}
+{#                        {{ investment.id }}#}
+{#                    </td>#}
                     <td>
                         FXEffect : {{ FXEffect |slice(0,4) }}<br>
                         {{ investment.taxScheme.name }}

@@ -41,7 +41,7 @@
                                href="{{ path('market_data_edit', {'id': market_data.id}) }}">{{ market_data.shareCompany }}</a>
                         </td>
                         <td style="text-align: right">
-                            {% if market_data.sharePrice<5 %}
+                            {% if market_data.sharePrice<5 and market_data.sharePrice>-5  %}
                                 {{ market_data.sharePrice|number_format(2) }}
                             {% else %}
                                 {{ market_data.sharePrice|number_format(0) }}
