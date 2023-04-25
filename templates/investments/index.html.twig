@@ -27,7 +27,6 @@
             <thead>
             <tr>
                 <th>Asset Class</th>
-{#                <th>ID</th>#}
                 <th style="width: 50px">FYI</th>
                 <th style="width: 350px">Investment</th>
                 <th style="text-align: left">Investment Date</th>
@@ -94,9 +93,6 @@
                         <a target="_blank"
                            href="{{ path('asset_classes_edit',{'id':investment.investmentCompany.assetClass.id}) }}">{{ investment.investmentCompany.assetClass.assetClass }}</a>
                     </td>
-{#                    <td>#}
-{#                        {{ investment.id }}#}
-{#                    </td>#}
                     <td>
                         FXEffect : {{ FXEffect |slice(0,4) }}<br>
                         {{ investment.taxScheme.name }}
@@ -115,7 +111,11 @@
                             </button>
                         {% endif %}
                         {% if investment.investmentCompany.assetSold ==1 %}
-                            <i style="color: red" class="fa fa fa-remove"></i>
+                            {% if investment.investmentSaleDate is null or investment.saleSharePrice is null %}
+                                <i style="color: orange" class="fa fa fa-question-circle"></i>
+                            {% else %}
+                                <i style="color: red" class="fa fa fa-remove"></i>
+                            {% endif %}
                         {% else %}
                             <i style="color: green" class="fa fa fa-check"></i>
                         {% endif %}
@@ -204,16 +204,20 @@
                     <!-- Share price invested -->
                     <td style="text-align: right">
                         {% if investment.numberOfShares >0 %}
-                            {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
+                            {% if investment.purchaseSharePrice<5 and investment.purchaseSharePrice>-5 %}
+                                {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
+                            {% else %}
+                                {{ (investment.purchaseSharePrice) | number_format (0, '.') }}
+                            {% endif %}
                         {% else %}
                             -
                         {% endif %}
                     </td>
 
                     <!-- Share price now or sold -->
-                    {% if investment.investmentSaleDate is null %}
-                        <td style="text-align: right"
-                            title="{{ investment.investmentCompany.sharePrice|number_format('0') }}">
+                    <td style="text-align: right"
+                        title="{{ investment.investmentCompany.sharePrice|number_format('0') }}">
+                        {% if investment.investmentSaleDate is null %}
                             {% if investment.numberOfShares >0 and investment.taxScheme.includeTaxSummary ==1 %}
                                 <a target="_blank"
                                    href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
@@ -223,12 +227,16 @@
                                    href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
                                     - </a>
                             {% endif %}
-                        </td>
-                    {% else %}
-                        <td style="text-align: right; background-color: ghostwhite">
-                            {{ investment.saleSharePrice | number_format (2, '.') }} *
-                        </td>
-                    {% endif %}
+                        {% else %}
+
+                            {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}
+                                {{ (investment.saleSharePrice) | number_format (2, '.') }}*
+                            {% else %}
+                                {{ (investment.saleSharePrice) | number_format (0, '.') }}*
+                            {% endif %}
+                        {% endif %}
+                    </td>
+
 
 
                     <!-- MTM gain or Crystallized Gain -->
@@ -241,8 +249,8 @@
                             {% if investment.currency.fx == "GBP" %}
                                 {% if investment.investmentSaleDate is empty %}
                                     {% set MTM =  ((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
-                                    {% else %}
-                                        {% set MTM =  ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+                                {% else %}
+                                    {% set MTM =  ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
                                 {% endif %}
                             {% endif %}
 
@@ -404,7 +412,6 @@
                 <td style="border-bottom: black 1px"></td>
                 <td style="border-bottom: black 1px"></td>
                 <td style="border-bottom: black 1px"></td>
-                <td style="border-bottom: black 1px"></td>
                 <td style="border-right:1px solid black"><b> xx</b></td>
                 <td style="border-bottom: black 1px"></td>
                 <td style="border-bottom: black 1px"></td>
@@ -466,7 +473,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc'], [1, 'asc'], [2, 'asc'], [3, 'asc']],
+                "order": [ [2, 'asc'], [3, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

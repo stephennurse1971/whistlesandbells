@@ -47,6 +47,11 @@ class TaxSchemes
      */
     private $includeTaxSummary;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $cgtRate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class TaxSchemes
     public function setIncludeTaxSummary(?bool $includeTaxSummary): self
     {
         $this->includeTaxSummary = $includeTaxSummary;
+
+        return $this;
+    }
+
+    public function getCgtRate(): ?float
+    {
+        return $this->cgtRate;
+    }
+
+    public function setCgtRate(?float $cgtRate): self
+    {
+        $this->cgtRate = $cgtRate;
 
         return $this;
     }

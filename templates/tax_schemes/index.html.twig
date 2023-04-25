@@ -12,8 +12,9 @@
             <th style="width: 150px; text-align: right">Purchase: Income Offset</th>
             <th style="width: 150px; text-align: right; border-right: solid black 1px">Purchase: Tax Offset</th>
             <th style="width: 150px; text-align: right">Sale: Income Offset</th>
-            <th style="width: 150px; text-align: right; border-right: solid black 1px">Sale: Tax Offset</th>
-            <th style="width: 150px; text-align: center; border-right: solid black 1px">Include in tax Summary</th>
+            <th style="width: 150px; text-align: right">Sale: Tax Offset</th>
+            <th style="width: 150px; text-align: right; border-right: solid black 1px">Sale: CGT</th>
+            <th style="width: 150px; text-align: center; border-right: solid black 1px">Include in Tax Summary</th>
         </tr>
         </thead>
         <tbody>
@@ -25,7 +26,10 @@
                     %
                 </td>
                 <td style="text-align: right">{{ (tax_scheme.saleIncomeOffset*100 |number_format('0')) }}%</td>
-                <td style="text-align: right; border-right: solid black 1px">{{ (tax_scheme.saleTaxOffset*100 |number_format('0')) }}
+                <td style="text-align: right">{{ (tax_scheme.saleTaxOffset*100 |number_format('0')) }}
+                    %
+                </td>
+                <td style="text-align: right; border-right: solid black 1px">{{ (tax_scheme.cgtRate*100 |number_format('0')) }}
                     %
                 </td>
                 <td data-sort="{{ tax_scheme.includeTaxSummary }}" style="text-align: center; border-right: solid black 1px">
