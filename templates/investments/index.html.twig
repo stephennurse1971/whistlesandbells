@@ -203,36 +203,40 @@
 
                     <!-- Share price invested -->
                     <td style="text-align: right">
-                        {% if investment.numberOfShares >0 %}
-                            {% if investment.purchaseSharePrice<5 and investment.purchaseSharePrice>-5 %}
-                                {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
+                        {% if investment.taxScheme.tradedAsset == 1 %}
+                            {% if investment.numberOfShares >0 %}
+                                {% if investment.purchaseSharePrice<5 and investment.purchaseSharePrice>-5 %}
+                                    {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
+                                {% else %}
+                                    {{ (investment.purchaseSharePrice) | number_format (0, '.') }}
+                                {% endif %}
                             {% else %}
-                                {{ (investment.purchaseSharePrice) | number_format (0, '.') }}
+                                -
                             {% endif %}
-                        {% else %}
-                            -
                         {% endif %}
                     </td>
 
                     <!-- Share price now or sold -->
                     <td style="text-align: right"
                         title="{{ investment.investmentCompany.sharePrice|number_format('0') }}">
-                        {% if investment.investmentSaleDate is null %}
-                            {% if investment.numberOfShares >0 and investment.taxScheme.includeTaxSummary ==1 %}
-                                <a target="_blank"
-                                   href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
-                                    {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}</a>
+                        {% if investment.taxScheme.tradedAsset == 1 %}
+                            {% if investment.investmentSaleDate is null %}
+                                {% if investment.numberOfShares >0 and investment.taxScheme.includeTaxSummary ==1 %}
+                                    <a target="_blank"
+                                       href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
+                                        {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}</a>
+                                {% else %}
+                                    <a target="_blank"
+                                       href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
+                                        - </a>
+                                {% endif %}
                             {% else %}
-                                <a target="_blank"
-                                   href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
-                                    - </a>
-                            {% endif %}
-                        {% else %}
 
-                            {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}
-                                {{ (investment.saleSharePrice) | number_format (2, '.') }}*
-                            {% else %}
-                                {{ (investment.saleSharePrice) | number_format (0, '.') }}*
+                                {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}
+                                    {{ (investment.saleSharePrice) | number_format (2, '.') }}*
+                                {% else %}
+                                    {{ (investment.saleSharePrice) | number_format (0, '.') }}*
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     </td>
@@ -242,9 +246,9 @@
                     <!-- MTM gain or Crystallized Gain -->
                     <td style="text-align: right">
                         {% set MTM = 0 %}
-                        {% if investment.taxScheme.includeTaxSummary ==0 %}
+                        {% if investment.taxScheme.tradedAsset ==0 %}
                             {% set MTM = 0 %}
-                            -
+
                         {% else %}
                             {% if investment.currency.fx == "GBP" %}
                                 {% if investment.investmentSaleDate is empty %}
@@ -326,20 +330,26 @@
                     <!-- CGT (£) -->
                     <td style="text-align: right;border-right:1px solid black">
 
-                        {#                    {% if investment.currency.fx == 'GBP' %} #}
-                        {#                        {% if investment.taxScheme.name is not null %} #}
-                        {#                            {% if investment.taxScheme.name == 'EIS' %} #}
-                        {#                                {{ ( (investment.numberOfShares*investment.investmentCompany.sharePrice) - (investment.numberOfShares*investment.purchaseSharePrice)) * 0.2 | number_format (0, '.') }} #}
-                        {#                            {% else %} #}
-                        {#                                11 #}
-                        {#                            {% endif %} #}
-                        {#                        {% else %} #}
-                        {#                            <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.investmentCompany.sharePrice)| number_format (0, '.') }} "> #}
-                        {#                                {{ ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate ) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate)) *0.2 | number_format (0, '.') }} </a> #}
-                        {#                            {% set CGTAdd =  ((investment.numberOfShares*investment.investmentCompany.sharePrice*currentFXRate) - (investment.numberOfShares*investment.purchaseSharePrice*currentFXRate))*0.2 %} #}
-                        {#                            {% set CGTTotal = CGTTotal + CGTAdd %} #}
-                        {#                        {% endif %} #}
-                        {#                    {% endif %} #}
+                    {% set CGT= 0 %}
+                    {% if investment.taxScheme.tradedAsset ==0 %}
+                        {% set CGT = 0 %}
+
+                    {% else %}
+                        {% if investment.currency.fx == "GBP" %}
+                            {% if investment.investmentSaleDate is empty %}
+                                {% set CGTAdd =  0 %}
+                            {% else %}
+                                {% set CGTAdd =  ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount *investment.taxScheme.cgtRate %}
+                            {% endif %}
+                        {% endif %}
+
+                        {{ CGT |number_format ('0') }}
+                    {% endif %}
+
+
+                    {% set CGT_Total = CGT_Total + CGT %}
+
+
                     </td>
 
                     <!-- Share cert and other docs -->
@@ -473,7 +483,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [ [2, 'asc'], [3, 'asc']],
+                "order": [[2, 'asc'], [3, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

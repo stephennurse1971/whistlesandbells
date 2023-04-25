@@ -40,6 +40,10 @@ class InvestmentsType extends AbstractType
         $builder
             ->add('investmentCompany', EntityType::class, [
                 'class' => MarketData::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.shareCompany', 'ASC');
+                },
                 'choice_label' => 'shareCompany',
                 'label' => 'Company',
                 'required' => false

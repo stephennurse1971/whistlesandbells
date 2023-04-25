@@ -18,6 +18,7 @@ class TaxSchemesType extends AbstractType
             ->add('saleIncomeOffset')
             ->add('saleTaxOffset')
             ->add('cgtRate')
+            ->add('tradedAsset')
             ->add('includeTaxSummary')
         ;
     }

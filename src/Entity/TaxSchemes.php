@@ -52,6 +52,11 @@ class TaxSchemes
      */
     private $cgtRate;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $tradedAsset;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class TaxSchemes
     public function setCgtRate(?float $cgtRate): self
     {
         $this->cgtRate = $cgtRate;
+
+        return $this;
+    }
+
+    public function getTradedAsset(): ?bool
+    {
+        return $this->tradedAsset;
+    }
+
+    public function setTradedAsset(?bool $tradedAsset): self
+    {
+        $this->tradedAsset = $tradedAsset;
 
         return $this;
     }
