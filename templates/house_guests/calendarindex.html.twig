@@ -5,6 +5,7 @@
 {% block body %}
     <h1 style="color: red">House Guests Calendar</h1>
 
+    <a class="btn btn-outline-secondary btn-sm" href="{{ path('app_home') }}">Scrape flights</a>
     <table class="table table-responsive">
         <thead>
         <tr>
@@ -31,11 +32,13 @@
 
             <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
             <td style="text-align: center">
-                {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO/'.{{  date| date('Y-m-d')}}.'?sort=bestflight_a&fs=stops=0' %}
-                <a target="_blank" href="{{URL1 }}">From £55</a>
+{#                {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO/'.{{  date| date('Y-m-d')}}.'?sort=bestflight_a&fs=stops=0' %}#}
+                {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO/2023-05-25?sort=bestflight_a&fs=stops=0' %}
+                <a target="_blank" href="{{URL1 }}">From £xx (Scrape)</a>
             </td>
             <td style="text-align: center">
-                <a target="_blank" href="{{ path('app_home') }}">From £66</a>
+                {% set URL2 = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0' %}
+                <a target="_blank" href="{{ URL2 }}">From £yy (Scrape)</a>
             </td>
             <td>
                 {% set flag = 0 %}

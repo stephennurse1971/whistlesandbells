@@ -11,7 +11,8 @@
         <thead>
         <tr>
             <th >FX</th>
-            <th style="text-align: right">Current Rate ($1 =x)</th>
+            <th style="text-align: right">Quoted FX</th>
+            <th style="text-align: right">FX Rate (1 = £x)</th>
             <th>Live FX Rate link</th>
             <th style=" text-align: right">#</th>
         </tr>
@@ -20,11 +21,15 @@
         <tbody>
         {% for fx_rate in fx_rates %}
             <tr>
-
                 <td>{{ fx_rate.fx }}</td>
                 <td style="text-align: right">
                     <a href="{{ path('fx_rates_edit', {'id': fx_rate.id}) }}">{{ fx_rate.currentFxRate |number_format(4) }}</a>
                 </td>
+                <td style="text-align: right">
+                    {{ (fx_rate.currentFxRate / USDGBPFXrate.currentFxRate) |number_format(4) }}
+                </td>
+
+
                 <td style="text-align: center">
                     <a target="_blank" title="{{ fx_rate.liveRateLink }}" href="{{ fx_rate.liveRateLink }}"><i
                                 class="fa fa-globe"></i></a>

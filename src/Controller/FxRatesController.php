@@ -23,6 +23,9 @@ class FxRatesController extends AbstractController
     {
         return $this->render('fx_rates/index.html.twig', [
             'fx_rates' => $fxRatesRepository->findAll(),
+            'USDGBPFXrate'=>$fxRatesRepository->findOneBy([
+                'fx'=> 'GBP'
+            ]),
         ]);
     }
 
