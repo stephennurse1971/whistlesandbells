@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1 style="color: red;">Share prices</h1>
-
+    <a target="_blank" class="btn btn-success btn-sm mt-2" href="{{ path('market_data_new') }}">New</a>
     {% for asset_class in asset_classes %}
         <h2>{{ asset_class.assetClass }}
             <a target="_blank" href="{{ path('asset_classes_index') }}">+</a>
