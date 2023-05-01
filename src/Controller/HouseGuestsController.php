@@ -190,16 +190,10 @@ class HouseGuestsController extends AbstractController
      */
     public function getPrice(FlightPrice $flightPrice): Response
     {
-       $flightPrice->getPrice();
-       return new Response(null);
+       $flightPrice->getPrice_LON_PFO();
+        $flightPrice->getPrice_PFO_LON();
+      return $this->redirectToRoute('house_guests_index');
     }
 
-    /**
-     * @Route("/flight/price/scrape/pfo-london", name="house_guests_flight_price_scrape_pfo_london")
-     */
-    public function getPricePfoLondon(FlightPrice $flightPrice): Response
-    {
-        $flightPrice->getPricePfoLondon();
-        return $this->redirectToRoute('house_guests_index');
-    }
+
 }

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Flight Stats{% endblock %}
+{% block title %}Edit: Flight Price ({{ flight_stat.date|date('d-M-Y') }}){% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Flight Stats</h1>
+    <h1 style="color: red">Edit: Flight Price </h1>
 
     {{ include('flight_stats/_form.html.twig', {'button_label': 'Update'}) }}
 
