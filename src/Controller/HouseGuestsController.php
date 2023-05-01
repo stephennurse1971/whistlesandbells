@@ -100,16 +100,6 @@ class HouseGuestsController extends AbstractController
 //temporary folder, it has to be writable
             $tmpFolder = $this->getParameter('temporary_attachment_directory');
 
-
-
-
-
-
-
-
-
-
-
             $recipient = 'nurse_stephen@hotmail.com';
             $subject = 'New guest booking'. ' - ' . $guest;
             $html = '<p>New booking for '. $guest .' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate .'</p>' ;
@@ -214,9 +204,5 @@ class HouseGuestsController extends AbstractController
         $flightPrice->getPricePfoLondon();
         return $this->redirectToRoute('house_guests_index');
     }
-
-
-
-
 
 }
