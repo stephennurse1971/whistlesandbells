@@ -9,6 +9,7 @@ use App\Repository\CmsPhotoRepository;
 use App\Repository\FlightStatsRepository;
 use App\Repository\HouseGuestsRepository;
 use App\Repository\UserRepository;
+use App\Services\FlightPrice;
 use App\Services\HouseGuestPerDayList;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -184,5 +185,21 @@ class HouseGuestsController extends AbstractController
 
         return $this->redirectToRoute('house_guests_index');
     }
+    /**
+     * @Route("/flight/price/scrape/london-pfo", name="house_guests_flight_price_scrape_london_pfo")
+     */
+    public function getPrice(FlightPrice $flightPrice): Response
+    {
+       $flightPrice->getPrice();
+       return new Response(null);
+    }
 
+    /**
+     * @Route("/flight/price/scrape/pfo-london", name="house_guests_flight_price_scrape_pfo_london")
+     */
+    public function getPricePfoLondon(FlightPrice $flightPrice): Response
+    {
+        $flightPrice->getPricePfoLondon();
+        return $this->redirectToRoute('house_guests_index');
+    }
 }

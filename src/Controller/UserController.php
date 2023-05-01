@@ -484,7 +484,8 @@ class UserController extends AbstractController
     {
         $author = $userRepository->find($authorId);
         $recruiter = $userRepository->find($recruiterId);
-        $subject = $introductionRepository->find($authorId)->getSubjectLine();
+       // $subject = $introductionRepository->find($authorId)->getSubjectLine();
+        $subject = 'test';
         $additional_segment = '';
         $segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry]);
         if ($segment) {
@@ -492,12 +493,17 @@ class UserController extends AbstractController
         }
         $html = $this->renderView('emails/recruiter_intro_email.html.twig', [
             'user' => $author,
-            'content1' => $introductionRepository->find($authorId)->getIntroductoryEmail(),
-            'content2' => $introductionRepository->find($authorId)->getIntroductoryEmail2(),
-            'additional_segment' => $additional_segment
+//            'content1' => $introductionRepository->find($authorId)->getIntroductoryEmail(),
+//            'content2' => $introductionRepository->find($authorId)->getIntroductoryEmail2(),
+//            'additional_segment' => $additional_segment
+
+             'content1' =>'hi',
+            'content2' =>'hi',
+            'additional_segment' => 'hi'
         ]);
         $html = 'Dear ' . $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . ',' . $html;
-        $introduction_attachment = $introductionRepository->find($authorId)->getAttachment();
+       //$introduction_attachment  = $introductionRepository->find($authorId)->getAttachment();
+        $introduction_attachment  = 'hi';
 
         $recruiterEmail = new RecruiterEmails();
         if ($editable == "editable") {
@@ -507,7 +513,7 @@ class UserController extends AbstractController
                 ->setSendDate(new \DateTime('now'));
 
             $recruiterEmail->setAuthor($author->getEmail())
-                ->setSendTo('nurse_stephen@hotmail.com')
+                ->setSendTo('amankr.99.a@gmail.com')
 //            ->setSendTo($recruiter->getEmail())
                 ->setSendBcc($author->getEmail())
                 ->setSubject($subject)
@@ -539,15 +545,16 @@ class UserController extends AbstractController
         } else {
 
             $email = (new Email())
-                ->to('nurse_stephen@hotmail.com')
+                ->to('amankr.99.a@gmail.com')
                 ->bcc($author->getEmail())
                 ->subject($subject)
-                ->from($author->getEmail())
+               // ->from($author->getEmail())
+                ->from('info@stephen-nurse.com')
                 ->html($html);
-            if ($introduction_attachment) {
-                $attachment_path = $this->getParameter('files_upload_default_directory') . "/" . $introduction_attachment;
-                $email->attachFromPath($attachment_path);
-            }
+//            if ($introduction_attachment) {
+//                $attachment_path = $this->getParameter('files_upload_default_directory') . "/" . $introduction_attachment;
+//                $email->attachFromPath($attachment_path);
+//            }
             $recruiterEmail
                 ->setSendTo('nurse_stephen@hotmail.com')
                 ->setSendToFullName($recruiter->getFullName())
@@ -560,6 +567,7 @@ class UserController extends AbstractController
                 ->setBody($html)
                 ->setAttachment($introduction_attachment);
             $mailer->send($email);
+
             $manager->persist($recruiterEmail);
             $manager->flush();
             $referer = $request->headers->get('referer');
