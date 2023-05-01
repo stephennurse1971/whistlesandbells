@@ -13,7 +13,7 @@ class FlightStatsType extends AbstractType
     {
         $builder
             ->add('date', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
-                'label' => 'Departure date',
+                'label' => 'Date',
                 'required' => false,
                 'widget' => 'single_text',
             ])
