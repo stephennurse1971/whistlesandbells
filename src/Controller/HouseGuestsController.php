@@ -6,6 +6,7 @@ use App\Entity\HouseGuests;
 use App\Form\HouseGuestsType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
+use App\Repository\FlightStatsRepository;
 use App\Repository\HouseGuestsRepository;
 use App\Repository\UserRepository;
 use App\Services\HouseGuestPerDayList;
@@ -30,7 +31,7 @@ class HouseGuestsController extends AbstractController
     /**
      * @Route("/", name="house_guests_index", methods={"GET"})
      */
-    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList): Response
+    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository  $flightStatsRepository): Response
     {
         $date = new \DateTime('now');
         $month = $date->format('m');
@@ -51,31 +52,30 @@ class HouseGuestsController extends AbstractController
             $current_date = new \DateTime($current_date->modify("+1 day")->format('d-m-Y'));
         }
 
-   return $this->render('house_guests/calendarindex.html.twig', [
+        return $this->render('house_guests/calendarindex.html.twig', [
             'house_guests' => $lists = $houseGuestPerDayList->guestList(),
-            'dates' => $dates
+            'dates' => $dates,
+            'flights'=>$flightStatsRepository->findAll()
         ]);
     }
 
     /**
      * @Route("/new/{startdate}", name="house_guests_new", methods={"GET","POST"})
      */
-    public function new(String $startdate,Request $request, Security $security, MailerInterface $mailer,UserRepository $userRepository): Response
+    public function new(string $startdate, Request $request, Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
     {
         $calendar = new Calendar;
         $defaultDepartureDate = new \DateTime($startdate);
         $defaultDepartureDate = $defaultDepartureDate->modify("+1 day");
 
         $logged_user = $security->getUser();
-        if(in_array("ROLE_ADMIN",$logged_user->getRoles()))
-        {
+        if (in_array("ROLE_ADMIN", $logged_user->getRoles())) {
             $user_list = $userRepository->findByRole('ROLE_GUEST');
-        }
-        else{
-            $user_list = $userRepository->findBy(['id'=>$logged_user->getId()]);
+        } else {
+            $user_list = $userRepository->findBy(['id' => $logged_user->getId()]);
         }
         $houseGuest = new HouseGuests();
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest,['user_list'=>$user_list]);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list]);
         $houseGuest->setDateArrival(new \DateTime($startdate));
         $houseGuest->setDateDeparture($defaultDepartureDate);
 
@@ -87,37 +87,26 @@ class HouseGuestsController extends AbstractController
             $entityManager->flush();
 
             $senderEmail = $security->getUser()->getEmail();
-            $guest =$houseGuest->getGuestName()->getFullName();
-            $arrivalDate =$houseGuest->getDateArrival()->format('d-M-Y');
-            $departureDate =$houseGuest->getDateDeparture()->format('d-M-Y');
+            $guest = $houseGuest->getGuestName()->getFullName();
+            $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
+            $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
 
-      $meetingStartTime = new \DateTime('now');
-           $meetingEndTime = new \DateTime('now');
-           $meetingEndTime->modify("+1 day");
+            $meetingStartTime = new \DateTime('now');
+            $meetingEndTime = new \DateTime('now');
+            $meetingEndTime->modify("+1 day");
             $fs = new Filesystem();
 
-//temporary folder, it has to be writable
+//            temporary folder, it has to be writable
             $tmpFolder = $this->getParameter('temporary_attachment_directory');
 
-
-
-
-
-
-
-
-
-
-
             $recipient = 'nurse_stephen@hotmail.com';
-            $subject = 'New guest booking'. ' - ' . $guest;
-            $html = '<p>New booking for '. $guest .' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate .'</p>' ;
+            $subject = 'New guest booking' . ' - ' . $guest;
+            $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
             $email = (new Email())
                 ->to($recipient)
                 ->subject($subject)
                 ->from($senderEmail)
-                ->html($html)
-               // ->attachFromPath($this->getParameter('temporary_attachment_directory')."meeting.ics")
+                ->html($html)// ->attachFromPath($this->getParameter('temporary_attachment_directory')."meeting.ics")
             ;
             $mailer->send($email);
             return $this->redirectToRoute('house_guests_index');
@@ -143,30 +132,29 @@ class HouseGuestsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="house_guests_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, HouseGuests $houseGuest,Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
+    public function edit(Request $request, HouseGuests $houseGuest, Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
     {
         $logged_user = $security->getUser();
-        if(in_array("ROLE_ADMIN",$logged_user->getRoles()))
-        {
+        if (in_array("ROLE_ADMIN", $logged_user->getRoles())) {
             $user_list = $userRepository->findByRole('ROLE_GUEST');
-        }
-        else{
-            $user_list = $userRepository->findBy(['id'=>$logged_user->getId()]);
+        } else {
+            $user_list = $userRepository->findBy(['id' => $logged_user->getId()]);
         }
         $startdate = $houseGuest->getDateArrival()->format('d-m-y');
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest,['user_list'=>$user_list]);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();$senderEmail = $security->getUser()->getEmail();
-            $guest =$houseGuest->getGuestName()->getFullName();
-            $arrivalDate =$houseGuest->getDateArrival()->format('d-M-Y');
-            $departureDate =$houseGuest->getDateDeparture()->format('d-M-Y');
+            $this->getDoctrine()->getManager()->flush();
+            $senderEmail = $security->getUser()->getEmail();
+            $guest = $houseGuest->getGuestName()->getFullName();
+            $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
+            $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
 
             $recipient = 'nurse_stephen@hotmail.com';
-            $subject = 'New guest booking'. ' - ' . $guest;
-            $html = '<p>New booking for '. $guest .' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate .'</p>' ;
+            $subject = 'New guest booking' . ' - ' . $guest;
+            $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
             $email = (new Email())
                 ->to($recipient)
                 ->subject($subject)
@@ -196,11 +184,5 @@ class HouseGuestsController extends AbstractController
 
         return $this->redirectToRoute('house_guests_index');
     }
-
-
-
-
-
-
 
 }
