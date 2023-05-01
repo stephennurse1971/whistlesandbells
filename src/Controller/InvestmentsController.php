@@ -29,35 +29,54 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/index/{grouping}", name="investments_index", methods={"GET"})
      */
-    public function index(string $grouping,InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository,AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
+    public function index(string $grouping, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
     {
+        if ($grouping == 'All') {
+           return $this->render('investments/indexAggregated.html.twig', [
+                'investmentsCurrent' => $investmentsRepository->findBy([
+                    'investmentSaleDate' => null
+                ]),
+                'investmentsAll' => $investmentsRepository->findAll(),
+                'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
+                'asset_classes' => $assetClassesRepository->findAll(),
+                'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
+                'fxRates' => $fxRatesRepository->findAll(),
+                'USDGBPFXrate' => $fxRatesRepository->findOneBy([
+                    'fx' => 'GBP'
+                ]),
+                'grouping' => $grouping
+            ]);
+        }
+        if ($grouping == 'AssetClass') {
+            return $this->render('investments/indexByAssetClass.html.twig', [
+                'investmentsCurrent' => $investmentsRepository->findBy([
+                    'investmentSaleDate' => null
+                ]),
+                'investmentsAll' => $investmentsRepository->findAll(),
+                'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
+                'asset_classes' => $assetClassesRepository->findAll(),
+                'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
+                'fxRates' => $fxRatesRepository->findAll(),
+                'USDGBPFXrate' => $fxRatesRepository->findOneBy([
+                    'fx' => 'GBP'
+                ]),
+                'grouping' => $grouping
+            ]);
 
-        return $this->render('investments/index.html.twig', [
-            'investmentsCurrent' => $investmentsRepository->findBy([
-                'investmentSaleDate' => null
-            ]),
-            'investmentsAll' => $investmentsRepository->findAll(),
-            'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
-            'asset_classes'=>$assetClassesRepository->findAll(),
-            'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
-            'fxRates' => $fxRatesRepository->findAll(),
-            'USDGBPFXrate'=>$fxRatesRepository->findOneBy([
-                'fx'=> 'GBP'
-            ]),
-            'grouping'=>$grouping
-        ]);
+
+    }
     }
 
     /**
      * @Route("/tax_summary_of_investments/{show}", name="investments_tax_consequences", methods={"GET"})
      */
-    public function indexTaxConsequences(string $show, TaxSchemesRepository $taxSchemesRepository,InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
+    public function indexTaxConsequences(string $show, TaxSchemesRepository $taxSchemesRepository, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
     {
 
         $investments = [];
         $all_investments = $investmentsRepository->findAll();
-        foreach($all_investments as $investment){
-            if($investment->getTaxScheme()->getIncludeTaxSummary() == 1 ){
+        foreach ($all_investments as $investment) {
+            if ($investment->getTaxScheme()->getIncludeTaxSummary() == 1) {
                 $investments[] = $investment;
             }
         }
@@ -84,7 +103,7 @@ class InvestmentsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($investment);
             $entityManager->flush();
-            return $this->redirectToRoute('investments_index',['grouping'=>'All'] );
+            return $this->redirectToRoute('investments_index', ['grouping' => 'All']);
         }
 
         return $this->render('investments/new.html.twig', [
@@ -108,10 +127,10 @@ class InvestmentsController extends AbstractController
      */
     public function edit(Request $request, Investments $investment): Response
     {
-        $investmentDate= new \DateTime('now');
+        $investmentDate = new \DateTime('now');
         $investmentDate = $investmentDate->format('d-m-y');
-        if($investment->getInvestmentDate()){
-            $investmentDate= $investment->getInvestmentDate()->format('d-m-y');
+        if ($investment->getInvestmentDate()) {
+            $investmentDate = $investment->getInvestmentDate()->format('d-m-y');
         }
 
         $currency = $investment->getCurrency();
@@ -125,7 +144,7 @@ class InvestmentsController extends AbstractController
             'currency' => $currency,
             'edit' => true]);
         $form->handleRequest($request);
-        $newFileNameSuffix = $investment->getInvestmentCompany()->getShareCompany()."_".$investment->getInvestmentAmount()."_".$investmentDate;
+        $newFileNameSuffix = $investment->getInvestmentCompany()->getShareCompany() . "_" . $investment->getInvestmentAmount() . "_" . $investmentDate;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $share_cert = $form['shareCert']->getData();
@@ -133,7 +152,7 @@ class InvestmentsController extends AbstractController
                 $share_cert_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($share_cert->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $share_cert->guessExtension();
-                $newFileName = "Share_Certificate_" . $newFileNameSuffix.".".$file_extension;
+                $newFileName = "Share_Certificate_" . $newFileNameSuffix . "." . $file_extension;
                 $share_cert->move($share_cert_directory, $newFileName);
                 $investment->setShareCert($newFileName);
             }
@@ -143,7 +162,7 @@ class InvestmentsController extends AbstractController
                 $eis_cert_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($eisCert->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $eisCert->guessExtension();
-                $newFileName = "EIS_Certificate_" . $newFileNameSuffix.".".$file_extension;
+                $newFileName = "EIS_Certificate_" . $newFileNameSuffix . "." . $file_extension;
                 $eisCert->move($eis_cert_directory, $newFileName);
                 $investment->setEisCert($newFileName);
             }
@@ -153,13 +172,13 @@ class InvestmentsController extends AbstractController
                 $other_docs_directory = $this->getParameter('investments_attachment_directory');
                 $fileName = pathinfo($other_docs->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $other_docs->guessExtension();
-                $newFileName = $fileName . "_". $newFileNameSuffix.".".$file_extension;
+                $newFileName = $fileName . "_" . $newFileNameSuffix . "." . $file_extension;
                 $other_docs->move($other_docs_directory, $newFileName);
                 $investment->setOtherDocs($newFileName);
             }
 
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('investments_index',['grouping'=>'All'] );
+            return $this->redirectToRoute('investments_index', ['grouping' => 'All']);
         }
 
         return $this->render('investments/edit.html.twig', [
@@ -179,7 +198,7 @@ class InvestmentsController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('investments_index',['grouping'=>'All'] );
+        return $this->redirectToRoute('investments_index', ['grouping' => 'All']);
     }
 
 
@@ -219,15 +238,13 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/view/file/{filetype}/{id}", name="investment_viewfile", methods={"GET"})
      */
-    public function investmentFileLaunch(string $filetype,Investments $investments): Response
+    public function investmentFileLaunch(string $filetype, Investments $investments): Response
     {
-        if($filetype == 'shareCert'){
+        if ($filetype == 'shareCert') {
             $fileName = $investments->getShareCert();
-        }
-        elseif($filetype == 'eisCert'){
+        } elseif ($filetype == 'eisCert') {
             $fileName = $investments->getEisCert();
-        }
-        elseif($filetype == 'otherDocs'){
+        } elseif ($filetype == 'otherDocs') {
             $fileName = $investments->getOtherDocs();
         }
 
@@ -235,16 +252,16 @@ class InvestmentsController extends AbstractController
         $publicResourcesFolderPath = $this->getParameter('investments_attachment_directory');
         return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
     }
+
     /**
      * @Route("/ajax/company/assetclass/{id}", name="investment_ajax_find_company_asset_class")
      */
-    public function ajaxFindCompanyAssetClass(int $id,Investment $investment): Response
+    public function ajaxFindCompanyAssetClass(int $id, Investment $investment): Response
     {
         $asset_class = $investment->getAssetClass($id);
         $json_data = json_encode($asset_class);
         return new JsonResponse($asset_class);
     }
-
 
 
 }

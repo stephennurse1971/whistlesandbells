@@ -10,8 +10,8 @@
         <thead>
         <tr>
             <th>Date</th>
-            <th>Flight From London</th>
-            <th>Flight To London</th>
+            <th> <a target="_blank" href="{{ path('flight_stats_index') }}">Flights from London</a></th>
+            <th>Flights To London</th>
 
             <th>Book</th>
             <th>Travel Notes</th>
@@ -32,13 +32,27 @@
 
             <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
             <td style="text-align: center">
-{#                {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO/'.{{  date| date('Y-m-d')}}.'?sort=bestflight_a&fs=stops=0' %}#}
+                {#                {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO/'.{{  date| date('Y-m-d')}}.'?sort=bestflight_a&fs=stops=0' %} #}
                 {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO/2023-05-25?sort=bestflight_a&fs=stops=0' %}
-                <a target="_blank" href="{{URL1 }}">From £xx (Scrape)</a>
+
+
+                {% for flight in flights %}
+                    {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO" %}
+                        <a target="_blank" href="{{ URL1 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
+
+                    {% endif %}
+                {% endfor %}
+
+
             </td>
             <td style="text-align: center">
                 {% set URL2 = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0' %}
-                <a target="_blank" href="{{ URL2 }}">From £yy (Scrape)</a>
+                {% for flight in flights %}
+                    {% if flight.date == date and flight.flightFrom=="PFO" and flight.flightTo =="LON" %}
+                        <a target="_blank" href="{{ URL1 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
+
+                    {% endif %}
+                {% endfor %}
             </td>
             <td>
                 {% set flag = 0 %}

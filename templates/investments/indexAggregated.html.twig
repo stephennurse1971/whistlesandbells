@@ -4,11 +4,9 @@
 
 {% block body %}
 
-    <h1 style="color: red">Investments
-
+    <h1 style="color: red">Investments Aggregated
         <a target="_blank" href="{{ path('market_data_index') }}"><i class="fas fa-chart-line"></i></a>
         <a target="_blank" href="{{ path('fx_rates_index') }}"><i class="fas fa-euro-sign"></i></a>
-
     </h1>
     <a class="btn btn-success btn-sm" href="{{ path('investments_new') }}">New Investment</a>
     {% if grouping == "All" %}
@@ -19,10 +17,10 @@
     {% endif %}
 
 
-    {% for asset_class in asset_classes %}
+{#    {% for asset_class in asset_classes %}#}
 
         <br><br><br>
-        <h2>{{ asset_class.assetClass }}</h2>
+{#        <h2>{{ asset_class.assetClass }}</h2>#}
         <table class="table table-responsive">
             <thead>
             <tr>
@@ -76,14 +74,15 @@
 
             {% for investment in investmentsAll %}
 
-                {% if investment.investmentCompany.assetClass.assetClass == asset_class.assetClass %}
+                {% if 1 == 1 %}
+{#                {% if investment.investmentCompany.assetClass.assetClass == asset_class.assetClass %}#}
 
                     {% set FXEffect =1 %}
                     {% set InitialFXRate =1 %}
                     {% set CurrentFXRate =1 %}
                     {% if investment.currency.fx != "GBP" %}
                         {% set InitialFXRate =  (investment.investmentAmount/(investment.initialInvestmentAmountGBP +0.00001)) %}
-                        {% set CurrentFXRate = investment.currency.currentFxRate / USDGBPFXrate.currentFxRate %}
+                        {% set CurrentFXRate =  USDGBPFXrate.currentFxRate /investment.currency.currentFxRate %}
                         {% set FXEffect = InitialFXRate/CurrentFXRate %}
                     {% endif %}
                     {% set investmentChildID = 'investment'~investment.id %}
@@ -94,13 +93,14 @@
                            href="{{ path('asset_classes_edit',{'id':investment.investmentCompany.assetClass.id}) }}">{{ investment.investmentCompany.assetClass.assetClass }}</a>
                     </td>
                     <td>
+                        Initial FX rate: {{ InitialFXRate| number_format (4, '.') }}<br>
+                        Current FX rate to GBP: {{ CurrentFXRate| number_format (4, '.') }}<br>
                         FXEffect : {{ FXEffect |slice(0,4) }}<br>
                         {{ investment.taxScheme.name }}
                         {{ investment.taxScheme.includeTaxSummary }} <br>
                         {% if investment.taxScheme is not null and investment.taxScheme.includeTaxSummary == 0 %}
                             <a title="Exclude from Tax Summary">*</a>
                         {% endif %}
-                        CurrentFX: {{ CurrentFXRate }} <br>
 
                     </td>
 
@@ -145,7 +145,7 @@
                         {% if investment.currency.fx == 'GBP' %}
                             {{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}
                         {% else %}
-                            <a title="{{ investment.currency.fx }} {{ (investment.numberOfShares*investment.purchaseSharePrice)| number_format (0, '.') }} ">
+                            <a title="{{ investment.currency.fx }} {{ (investment.investmentAmount)| number_format (0, '.') }} ">
                                 *{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>
                         {% endif %}
                     </td>
@@ -221,7 +221,7 @@
                         title="{{ investment.investmentCompany.sharePrice|number_format('0') }}">
                         {% if investment.taxScheme.tradedAsset == 1 %}
                             {% if investment.investmentSaleDate is null %}
-                                {% if investment.numberOfShares >0 and investment.taxScheme.includeTaxSummary ==1 %}
+                                {% if investment.numberOfShares >0 %}
                                     <a target="_blank"
                                        href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
                                         {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}</a>
@@ -252,13 +252,21 @@
                         {% else %}
                             {% if investment.currency.fx == "GBP" %}
                                 {% if investment.investmentSaleDate is empty %}
-                                    {% set MTM =  ((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+                                    {% set MTM = ((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
                                 {% else %}
-                                    {% set MTM =  ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+                                    {% set MTM = ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
                                 {% endif %}
+                            {% else %}
+                                {% if investment.investmentSaleDate is empty %}
+                                    {% set MTM = (((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
+                                {% else %}
+                                    {% set MTM = 0 %}
+                                    {% set MTM = (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
+                                {% endif %}
+
                             {% endif %}
 
-                            {{ MTM |number_format ('0') }}
+                            {{ MTM  |number_format ('0') }}
                         {% endif %}
 
                         {% set MTM_Total = MTM_Total + MTM %}
@@ -282,7 +290,7 @@
                         {% if investment.investmentSaleDate is not null %}
                             {% set PV = 0 %}
                         {% else %}
-                            {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice * CurrentFXRate %}
+                            {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice/ CurrentFXRate %}
                         {% endif %}
 
                         {{ PV |number_format ('0') }}
@@ -330,24 +338,24 @@
                     <!-- CGT (£) -->
                     <td style="text-align: right;border-right:1px solid black">
 
-                    {% set CGT= 0 %}
-                    {% if investment.taxScheme.tradedAsset ==0 %}
-                        {% set CGT = 0 %}
+                        {% set CGT= 0 %}
+                        {% if investment.taxScheme.tradedAsset ==0 %}
+                            {% set CGT = 0 %}
 
-                    {% else %}
-                        {% if investment.currency.fx == "GBP" %}
-                            {% if investment.investmentSaleDate is empty %}
-                                {% set CGTAdd =  0 %}
-                            {% else %}
-                                {% set CGTAdd =  ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount *investment.taxScheme.cgtRate %}
-                            {% endif %}
+                        {% else %}
+                                {% if investment.investmentSaleDate is empty %}
+                                    {% set CGTAdd = (((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.taxScheme.cgtRate %}
+                                {% else %}
+                                    {% set CGTAdd =  (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice) +(FXEffect-1))  * investment.investmentAmount *investment.taxScheme.cgtRate %}
+                                {% endif %}
+
+
+
+                            {{ CGT |number_format ('0') }}
                         {% endif %}
 
-                        {{ CGT |number_format ('0') }}
-                    {% endif %}
 
-
-                    {% set CGT_Total = CGT_Total + CGT %}
+                        {% set CGT_Total = CGT_Total + CGT %}
 
 
                     </td>
@@ -458,7 +466,7 @@
             </tfoot>
         </table>
 
-    {% endfor %}
+{#    {% endfor %}#}
 
 
 
@@ -485,7 +493,7 @@
                 'pageLength': 50,
                 "order": [[2, 'asc'], [3, 'asc']],
                 "paging": false,
-                "searching": false,
+                "searching": true,
                 "bInfo": false
             });
         });
