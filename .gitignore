@@ -15,3 +15,5 @@
 /public/administration/attachments/
 /public/administration/attachments/Files
 /public/photos/
+/public/scrape/flightPrice.json
+/package.json
