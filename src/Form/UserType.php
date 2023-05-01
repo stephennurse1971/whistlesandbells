@@ -26,22 +26,52 @@ class UserType extends AbstractType
                     'Ms.' => 'Ms.',
                     'Mrs.' => 'Mrs.'
                 ],])
-            ->add('firstName')
-            ->add('lastName')
-            ->add('jobTitle')
-            ->add('linkedIn')
-            ->add('company')
-            ->add('businessStreet')
-            ->add('businessCity')
-            ->add('businessPostalCode')
-            ->add('businessCountry')
-            ->add('homeStreet')
-            ->add('homeCity')
-            ->add('homePostalCode')
-            ->add('homeCountry')
+            ->add('firstName', TextType::class, [
+                'required' => false
+            ])
+            ->add('lastName', TextType::class, [
+                'required' => false
+            ])
+            ->add('jobTitle', TextType::class, [
+                'required' => false
+            ])
+            ->add('linkedIn', TextType::class, [
+                'required' => false
+            ])
+            ->add('company', TextType::class, [
+                'required' => false
+            ])
+            ->add('businessStreet', TextType::class, [
+                'required' => false
+            ])
+            ->add('businessCity', TextType::class, [
+                'required' => false
+            ])
+            ->add('businessPostalCode', TextType::class, [
+                'required' => false
+            ])
+            ->add('businessCountry', TextType::class, [
+                'required' => false
+            ])
+            ->add('homeStreet', TextType::class, [
+                'required' => false
+            ])
+            ->add('homeCity', TextType::class, [
+                'required' => false
+            ])
+            ->add('homePostalCode', TextType::class, [
+                'required' => false
+            ])
+            ->add('homeCountry', TextType::class, [
+                'required' => false
+            ])
             ->add('email')
-            ->add('email2')
-            ->add('email3')
+            ->add('email2', TextType::class, [
+                'required' => false
+            ])
+            ->add('email3', TextType::class, [
+                'required' => false
+            ])
             ->add('mobile', TextType::class, [
                 'required' => false
             ])
@@ -61,27 +91,21 @@ class UserType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false
             ])
-            ->add('webPage')
-            ->add('notes')
-            ->add('festiveMessage')
-            ->add('festiveMessageDate', DateType::class, [
-                'widget' => 'single_text',
+            ->add('webPage', TextType::class, [
                 'required' => false
             ])
-
+            ->add('notes', TextType::class, [
+                'required' => false
+            ])
             ->add('password', PasswordType::class, [
                 'mapped' => false,
             ])
             ->add('sendEmail', HiddenType::class, [
                 'mapped' => false,
                 'required' => false
-            ])
-            ->add('lastEdited', DateType::class, [
-                'required' => false,
-                'widget' => 'single_text'
             ]);
-       $logged_user_roles = $this->security->getUser()->getRoles();
-       $user_roles = $options['user']->getRoles();
+        $logged_user_roles = $this->security->getUser()->getRoles();
+        $user_roles = $options['user']->getRoles();
         if (in_array('ROLE_RECRUITER', $user_roles)) {
             $builder
                 ->add('recruitingArea')
@@ -102,6 +126,15 @@ class UserType extends AbstractType
         }
         if (in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
             $builder
+                ->add('lastEdited', DateType::class, [
+                    'required' => false,
+                    'widget' => 'single_text'
+                ])
+                ->add('festiveMessage')
+                ->add('festiveMessageDate', DateType::class, [
+                    'widget' => 'single_text',
+                    'required' => false
+                ])
                 ->add('inviteDate', DateType::class, [
                     'required' => false,
                     'widget' => 'single_text'
@@ -136,7 +169,7 @@ class UserType extends AbstractType
             'data_class' => User::class,
             'email1' => null,
             'email2' => null,
-            'user'=>null
+            'user' => null
         ]);
     }
 }
