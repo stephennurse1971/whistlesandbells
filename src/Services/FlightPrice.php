@@ -14,7 +14,7 @@ class FlightPrice
      $day_increment = 1;
      $flight_from = 'LON';
      $flight_to = 'PFO';
-     while($day_increment <= 60){
+     while($day_increment <= 2){
          $date = $now->format('Y-m-d');
          $url = "https://www.kayak.co.uk/flights/LON-PFO/".$date."?sort=bestflight_a&fs=stops=0";
          exec("node scrape/flightPrice.js"." " .$url." 2>&1");
@@ -56,7 +56,7 @@ class FlightPrice
         $day_increment = 1;
         $flight_from = 'PFO';
         $flight_to = 'LON';
-        while($day_increment <= 60){
+        while($day_increment <= 2){
             $date = $now->format('Y-m-d');
             $url = "https://www.kayak.co.uk/flights/PFO-LON/".$date."?sort=bestflight_a&fs=stops=0";
             exec("node scrape/flightPrice.js"." " .$url." 2>&1");
