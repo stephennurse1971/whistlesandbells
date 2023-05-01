@@ -10,8 +10,8 @@
         {{ form_row(form.birthday) }}
         {{ form_row(form.linkedIn) }}
         {% if form.recruitingArea is defined  and form.recruitingAreaList is defined %}
-        {{ form_row(form.recruitingArea) }}
-        {{ form_row(form.recruitingAreaList ) }}
+            {{ form_row(form.recruitingArea) }}
+            {{ form_row(form.recruitingAreaList ) }}
         {% endif %}
     </div>
     <div class="col-md-3">
@@ -24,10 +24,10 @@
         <hr>
         <br>
         {% if form.homeStreet is defined and form.homeCity is defined and form.homePostalCode is defined and form.homeCountry is defined %}
-        {{ form_row(form.homeStreet) }}
-        {{ form_row(form.homeCity) }}
-        {{ form_row(form.homePostalCode) }}
-        {{ form_row(form.homeCountry) }}
+            {{ form_row(form.homeStreet) }}
+            {{ form_row(form.homeCity) }}
+            {{ form_row(form.homePostalCode) }}
+            {{ form_row(form.homeCountry) }}
         {% endif %}
 
     </div>
@@ -55,10 +55,12 @@
         {% if form.role is defined and form.inviteDate is defined %}
             {{ form_row(form.role) }}
             {{ form_row(form.inviteDate) }}
+        {% endif %}
+        {% if 'ROLE_SUPER_ADMIN' in user.roles() %}
+            {{ form_row(form.festiveMessage) }}
+            {{ form_row(form.festiveMessageDate) }}
             {{ form_row(form.lastEdited) }}
         {% endif %}
-        {{ form_row(form.festiveMessage) }}
-        {{ form_row(form.festiveMessageDate) }}
     </div>
 </div>
 <hr>

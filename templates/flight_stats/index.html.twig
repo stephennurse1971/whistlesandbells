@@ -21,17 +21,25 @@
         </thead>
         <tbody>
         {% for flight_stat in flight_stats %}
-            <tr>
+            {% if flight_stat.date|date('D') == "Sat" or flight_stat.date|date('D') == "Sun" %}
+                <tr style="background-color: #bac8f3">
+            {% else %}
+                <tr>
+            {% endif %}
                 <td style="text-align: left"
-                    data-sort={{ flight_stat.date| date('Y-m-d') }}>{{ flight_stat.date | date('d-M-Y') }}</td>
+                    data-sort={{ flight_stat.date| date('Y-m-d') }}>{{ flight_stat.date | date('D d-M-Y') }}</td>
                 <td style="text-align: center">{{ flight_stat.flightFrom }}</td>
                 <td style="text-align: center">{{ flight_stat.flightTo }}</td>
                 <td style="text-align: right">{{ flight_stat.lowestPrice|number_format(2, '.', ',') }}</td>
-                <td>
+                <td style="width: 250px">
                     <a class="btn btn-outline-primary btn-sm"
                        href="{{ path('flight_stats_show', {'id': flight_stat.id}) }}">Show</a>
                     <a class="btn btn-outline-danger btn-sm"
                        href="{{ path('flight_stats_edit', {'id': flight_stat.id}) }}">Edit</a>
+                    <form class="d-inline" method="post" action="{{ path('flight_stats_delete', {'id': flight_stat.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ flight_stat.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}
@@ -40,3 +48,17 @@
 
     <a class="btn btn-success btn-sm" href="{{ path('flight_stats_new') }}">New</a>
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[0, 'desc'],  [1, 'desc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

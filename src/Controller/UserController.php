@@ -277,7 +277,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
+     * @Route("/{fullName}", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -287,25 +287,22 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @Route("/{fullName}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(int $id, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(string $fullName, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
-        if ($this->getUser()->getId() == $id || $hasAccess) {
-            $logged_user_id = $this->getUser()->getId();
+        if ($this->getUser()->getFullName() == $fullName || $hasAccess) {
+            $logged_user_fullName = $this->getUser()->getFullName();
             $plainPassword = $user->getPlainPassword();
             $roles = $user->getRoles();
             $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
             $logged_user_roles = $this->getUser()->getRoles();
-
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 if ($form->has('role')) {
                     $get_roles = $form->get('role')->getData();
-
                     $roles = $get_roles;
                     $user->setRoles($roles);
                 }
@@ -314,7 +311,6 @@ class UserController extends AbstractController
                     $user->setPassword($passwordEncoder->encodePassword($user, $password));
                     $user->setPlainPassword($password);
                 }
-
                 $firstName = $user->getFirstName();
                 $lastName = $user->getLastName();
                 $user->setFullName($firstName . ' ' . $lastName);
@@ -332,10 +328,10 @@ class UserController extends AbstractController
                         ->html($html);
                     $mailer->send($email);
                 }
-                if ($logged_user_id != $id) {
+                if ($logged_user_fullName != $fullName) {
                     return $this->redirectToRoute('user_index');
                 } else {
-                    $this->redirectToRoute('app_login');
+                    $this->redirectToRoute('app_home');
                 }
             }
 
