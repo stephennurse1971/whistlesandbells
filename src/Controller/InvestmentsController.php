@@ -10,6 +10,7 @@ use App\Repository\AssetClassesRepository;
 use App\Repository\FxRatesRepository;
 use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
+use App\Repository\TaxInputsRepository;
 use App\Repository\TaxSchemesRepository;
 use App\Repository\TaxYearRepository;
 use App\Services\Investment;
@@ -70,9 +71,8 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/tax_summary_of_investments/{show}", name="investments_tax_consequences", methods={"GET"})
      */
-    public function indexTaxConsequences(string $show, TaxSchemesRepository $taxSchemesRepository, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
+    public function indexTaxConsequences(string $show, TaxInputsRepository $taxInputsRepository, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, TaxYearRepository $taxYearRepository, FxRatesRepository $fxRatesRepository): Response
     {
-
         $investments = [];
         $all_investments = $investmentsRepository->findAll();
         foreach ($all_investments as $investment) {
@@ -82,6 +82,7 @@ class InvestmentsController extends AbstractController
         }
 
         return $this->render('investments/taxConsequencesInvestmentindex.html.twig', [
+            'taxinputs' => $taxInputsRepository->findAll(),
             'investments' => $investments,
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),

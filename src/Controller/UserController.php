@@ -509,7 +509,7 @@ class UserController extends AbstractController
                 ->setSendDate(new \DateTime('now'));
 
             $recruiterEmail->setAuthor($author->getEmail())
-                ->setSendTo('amankr.99.a@gmail.com')
+                ->setSendTo('sjwn71@gmail.com')
 //            ->setSendTo($recruiter->getEmail())
                 ->setSendBcc($author->getEmail())
                 ->setSubject($subject)

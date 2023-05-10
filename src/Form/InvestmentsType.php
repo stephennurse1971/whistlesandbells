@@ -60,9 +60,9 @@ class InvestmentsType extends AbstractType
                 'data' => $currency,
                 'required' => false
             ])
-            ->add('purchaseSharePrice',TextType::class,[
-                'attr'=>[
-                    'readonly'=>true
+            ->add('purchaseSharePrice', TextType::class, [
+                'attr' => [
+                    'readonly' => true
                 ]
             ])
             ->add('investmentDate', DateType::class, [
@@ -76,11 +76,10 @@ class InvestmentsType extends AbstractType
 //                'format'=>'d-m-Y'
             ])
             ->add('investmentAmount')
-
             ->add('taxScheme', EntityType::class, [
                 'class' => TaxSchemes::class,
                 'choice_label' => 'name',
-                'choice_value'=>'name',
+                'choice_value' => 'name',
                 'label' => 'Tax Scheme',
                 'required' => true
             ])
@@ -117,7 +116,7 @@ class InvestmentsType extends AbstractType
             ->add('EISPurchaseYear1', EntityType::class, [
                 'class' => TaxYear::class,
                 'choice_label' => 'taxYearRange',
-                'choice_value'=>'taxYearRange',
+                'choice_value' => 'taxYearRange',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
                         ->orderBy('u.taxYearRange', 'ASC');
@@ -129,7 +128,7 @@ class InvestmentsType extends AbstractType
             ->add('EISPurchaseYear2', EntityType::class, [
                 'class' => TaxYear::class,
                 'choice_label' => 'taxYearRange',
-                'choice_value'=>'taxYearRange',
+                'choice_value' => 'taxYearRange',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
                         ->orderBy('u.taxYearRange', 'ASC');
@@ -173,10 +172,55 @@ class InvestmentsType extends AbstractType
                 'label' => 'Sale: Tax LookBack',
                 'required' => false
             ])
-            ->add('crystallisedGainLossInGBP')
-            ->add('lossDeductibleAgainstIncome')
-            ->add('comment')
-        ;
+            ->add('crystallisedGainLossInGBP', TextType::class, [
+                'label' => 'Crystallised Gain/Loss in GBP',
+                'required' => false
+            ])
+            ->add('lossDeductibleAgainstIncome', TextType::class, [
+                'label' => 'Loss Deductible against Income',
+                'required' => false
+            ])
+            ->add('eisPurchaseYear1SelfAssessmentCheck', ChoiceType::class, [
+                'multiple' => false,
+                'label'=> 'Self Assessment P1',
+                'expanded' => false,
+//                'data' => 'TBC',
+                'choices' => [
+                    'Yes' => 'Yes',
+                    'No' => 'No',
+                    'TBC' => 'TBC'
+                ],])
+            ->add('eisPurchaseYear2SelfAssessmentCheck', ChoiceType::class, [
+                'multiple' => false,
+                'label'=> 'Self Assessment P2',
+                'expanded' => false,
+//                'data' => 'TBC',
+                'choices' => [
+                    'Yes' => 'Yes',
+                    'No' => 'No',
+                    'TBC' => 'TBC'
+                ],])
+            ->add('eisSaleYear1SelfAssessmentCheck', ChoiceType::class, [
+                'multiple' => false,
+                'label'=> 'Self Assessment S1',
+                'expanded' => false,
+//                'data' => 'TBC',
+                'choices' => [
+                    'Yes' => 'Yes',
+                    'No' => 'No',
+                    'TBC' => 'TBC'
+                ],])
+            ->add('eisSaleYear2SelfAssessmentCheck', ChoiceType::class, [
+                'multiple' => false,
+                'label'=> 'Self Assessment S2',
+                'expanded' => false,
+//                'data' => 'TBC',
+                'choices' => [
+                    'Yes' => 'Yes',
+                    'No' => 'No',
+                    'TBC' => 'TBC'
+                ],])
+            ->add('comment');
     }
 
     public function configureOptions(OptionsResolver $resolver)

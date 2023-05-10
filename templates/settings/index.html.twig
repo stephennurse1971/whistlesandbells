@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Settings</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Flight Stats Days</th>
+            <th>Flight Stats Start Date</th>
+            <th>Flight Stats Departure Airport</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for setting in settings %}
+            <tr>
+                <td><a href="{{ path('settings_edit', {'id': setting.id}) }}">{{ setting.id }}</a></td>
+                <td>{{ setting.flightStatsDays }}</td>
+                <td>{{ setting.flightStatsStartDate ? setting.flightStatsStartDate|date('d-M-y') : '' }}</td>
+                <td>{{ setting.flightStatsDepartureAirport }}</td>
+                <td>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('settings_new') }}">New</a>
+{% endblock %}

@@ -6,7 +6,8 @@
 
     <h1 style="color: red">Investments: Tax Effects Summary</h1>
     <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('tax_inputs_overview_index') }}">Self-Assessment</a>
-    <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('investments_index') }}">Investments</a>
+    <a target="_blank" class="btn btn-outline-secondary btn-sm"
+       href="{{ path('investments_index', {'grouping':'All'}) }}">Investments</a>
 
     {% if show == "TaxEffect" %}
         <a target="_blank" class="btn btn-primary btn-sm"
@@ -26,7 +27,26 @@
             <th style="text-align: right">Sale Date</th>
             <th style="text-align: right; border-right:1px solid black">Sale Proceeds</th>
             {% for taxYear in taxYears %}
-                <th style="border-right:1px solid lightgray; text-align: right">{{ taxYear.taxYearRange }}</th>
+                <th style="border-right:1px solid lightgray; text-align: right">
+                    <b>  {{ taxYear.taxYearRange }}</b>
+                    {% for taxinput in taxinputs %}
+                        {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
+                            <a title="{{ taxinput.selfAssessment }}" target="_blank"
+                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                <i style="color: red" class="fa fa-file-pdf"></i>
+                            </a>
+                        {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
+                            <i class="fa fa-question" style="color: gray"></i>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-6">
+                            Tax
+                        </div>
+                        <div class="col-6">
+                            Income
+                        </div>
+                </th>
             {% endfor %}
         </tr>
         </thead>
@@ -76,16 +96,12 @@
                 {% for taxYear in taxYears %}
                     {% if investment.eISPurchaseYear1 is not null and taxYear.taxYearRange == investment.eISPurchaseYear1.taxYearRange %}
                         <td style="border-right:1px solid lightgray; text-align: right; background-color: lightgreen">
-
                     {% elseif investment.eISPurchaseYear2 is not null and taxYear.taxYearRange == investment.eISPurchaseYear2.taxYearRange %}
                         <td style="border-right:1px solid lightgray; text-align: right; background-color: lightgreen">
-
                     {% elseif investment.eISSaleYear1 is not null and taxYear.taxYearRange == investment.eISSaleYear1.taxYearRange %}
                         <td style="border-right:1px solid lightgray; text-align: right; background-color: palegoldenrod">
-
                     {% elseif investment.eISSaleYear2 is not null and taxYear.taxYearRange == investment.eISSaleYear2.taxYearRange %}
                         <td style="border-right:1px solid lightgray; text-align: right; background-color: palegoldenrod">
-
                     {% else %}
                         <td style="border-right:1px solid lightgray; text-align: right">
                     {% endif %}
@@ -95,20 +111,105 @@
                             {% set taxOffset = 0 %}
                             {% if investment.eisPurchaseYear1 == taxYear %}
                                 {% if show == "TaxEffect" %}
-                                    {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% set taxOffset = ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                                 {% else %}
-                                    {% set taxOffset = taxOffset + ( 1 *  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% set taxOffset = ( 1 *  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                                 {% endif %}
+
+
                             {% endif %}
                             {% if investment.eisPurchaseYear2 == taxYear %}
                                 {% if show == "TaxEffect" %}
-                                    {% set taxOffset = taxOffset + ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% set taxOffset = ( investment.taxScheme.purchaseTaxOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                                 {% else %}
-                                    {% set taxOffset = taxOffset + ( 1   *  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% set taxOffset = ( 1   *  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                                 {% endif %}
                             {% endif %}
 
                             {{ taxOffset |number_format(0) }}
+
+                            {% if investment.eisPurchaseYear1 == taxYear and investment.eISPurchaseYear1Percentage > 0 and investment.taxScheme.purchaseTaxOffset>0 %}
+                                {% if investment.eisPurchaseYear1SelfAssessmentCheck == "Yes" %}
+                                    {% for taxinput in taxinputs %}
+                                        {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
+                                            <a title="{{ taxinput.selfAssessment }}" target="_blank"
+                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                                <i class="fa fa-check" style="color: green"></i>
+                                            </a>
+                                        {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
+                                            <i class="fa fa-check" style="color: green"></i>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                {% elseif investment.eisPurchaseYear1SelfAssessmentCheck == "No" %}
+                                    {% for taxinput in taxinputs %}
+                                        {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
+                                            <a title="{{ taxinput.selfAssessment }}" target="_blank"
+                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                                <i class="fa fa-remove" style="color: red"></i>
+                                            </a>
+                                        {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
+                                            <i class="fa fa-remove" style="color: red"></i>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                {% elseif investment.eisPurchaseYear1SelfAssessmentCheck == "TBC" or investment.eisPurchaseYear1SelfAssessmentCheck is null %}
+                                    {% for taxinput in taxinputs %}
+                                        {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
+                                            <a title="{{ taxinput.selfAssessment }}" target="_blank"
+                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                                <i class="fa fa-question" style="color: gray"></i>
+                                            </a>
+                                        {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
+                                            <i class="fa fa-question" style="color: gray"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+
+                            {% if investment.eisPurchaseYear2 == taxYear and investment.eISPurchaseYear2Percentage > 0 and investment.taxScheme.purchaseTaxOffset>0 %}
+                                {% if investment.eisPurchaseYear2SelfAssessmentCheck == "Yes" %}
+                                    {% for taxinput in taxinputs %}
+                                        {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
+                                            <a title="{{ taxinput.selfAssessment }}" target="_blank"
+                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                                <i class="fa fa-check" style="color: green"></i>
+                                            </a>
+                                        {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
+                                            <i class="fa fa-check" style="color: green"></i>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                {% elseif investment.eisPurchaseYear2SelfAssessmentCheck == "No" %}
+                                    {% for taxinput in taxinputs %}
+                                        {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
+                                            <a title="{{ taxinput.selfAssessment }}" target="_blank"
+                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                                <i class="fa fa-remove" style="color: red"></i>
+                                            </a>
+                                        {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
+                                            <i class="fa fa-remove" style="color: red"></i>
+                                        {% endif %}
+                                    {% endfor %}
+
+
+
+                                {% elseif investment.eisPurchaseYear2SelfAssessmentCheck == "TBC" or investment.eisPurchaseYear2SelfAssessmentCheck is null %}
+
+                                    {% for taxinput in taxinputs %}
+                                        {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
+                                            <a title="{{ taxinput.selfAssessment }}" target="_blank"
+                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                                <i class="fa fa-question" style="color: gray"></i>
+                                            </a>
+                                        {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
+                                            <i class="fa fa-question" style="color: gray"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+
+                            {% endif %}
+
                             {% set totalTaxOffset = totalTaxOffset + taxOffset %}
                         </div>
 
@@ -116,16 +217,16 @@
                             {% set incomeOffset = 0 %}
                             {% if investment.eisPurchaseYear1 == taxYear %}
                                 {% if show == "TaxEffect" %}
-                                    {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% set incomeOffset =  ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                                 {% else %}
-                                    {% set incomeOffset = incomeOffset + ( 1*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% set incomeOffset =  ( 1*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                                 {% endif %}
                             {% endif %}
                             {% if investment.eisPurchaseYear2 == taxYear %}
                                 {% if show == "TaxEffect" %}
-                                    {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% set incomeOffset =  ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                                 {% else %}
-                                    {% set incomeOffset = incomeOffset + ( 1*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% set incomeOffset =  ( 1*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
                                 {% endif %}
                             {% endif %}
 
@@ -148,6 +249,31 @@
                             {% endif %}
 
                             {{ incomeOffset |number_format(0) }}
+
+
+                            {% if investment.eisPurchaseYear1 == taxYear and investment.eISPurchaseYear1Percentage > 0 and investment.taxScheme.purchaseIncomeOffset>0 %}
+                                {% if investment.eisPurchaseYear1SelfAssessmentCheck == "Yes" %}
+                                    <i class="fa fa-check" style="color: green"></i>
+                                {% elseif investment.eisPurchaseYear1SelfAssessmentCheck == "No" %}
+                                    <i class="fa fa-remove" style="color: red"></i>
+                                {% elseif investment.eisPurchaseYear1SelfAssessmentCheck == "TBC" or investment.eisPurchaseYear1SelfAssessmentCheck is null %}
+                                    <i class="fa fa-question" style="color: gray"></i>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if investment.eisPurchaseYear2 == taxYear and investment.eISPurchaseYear2Percentage > 0 and investment.taxScheme.purchaseIncomeOffset>0 %}
+                                {% if investment.eisPurchaseYear2SelfAssessmentCheck == "Yes" %}
+                                    <i class="fa fa-check" style="color: green"></i>
+                                {% elseif investment.eisPurchaseYear2SelfAssessmentCheck == "No" %}
+                                    <i class="fa fa-remove" style="color: red"></i>
+                                {% elseif investment.eisPurchaseYear2SelfAssessmentCheck == "TBC" or investment.eisPurchaseYear2SelfAssessmentCheck is null %}
+                                    <i class="fa fa-question" style="color: gray"></i>
+                                {% endif %}
+                            {% endif %}
+
+
+
+
                             {% set totalIncomeOffset = totalIncomeOffset + incomeOffset %}
                         </div>
                     </div>
@@ -159,7 +285,7 @@
         {% endfor %}
         <tfoot>
         <tr>
-            <td style="text-align: left; background-color: whitesmoke;border-bottom:1px solid black">Total</td>
+            <td style="text-align: left; background-color: whitesmoke;border-bottom:1px solid black"><b>Total</b></td>
             <td style="background-color: whitesmoke;border-bottom:1px solid black"></td>
             <td style="background-color: whitesmoke;border-bottom:1px solid black"></td>
             <td style="background-color: whitesmoke;border-bottom:1px solid black"></td>
@@ -190,16 +316,38 @@
                                     {% endif %}
                                     {% set totalTaxOffset = totalTaxOffset + taxOffset %}
                                 {% endif %}
+                            {% endfor %}
+                            <b>
+                                {{ totalTaxOffset|number_format('0') }}
+                            </b>
+                        </div>
+
+                        <div class="col-6">
+                            {% set totalIncomeOffset = 0 %}
+
+                            {% for investment in investments %}
+                                {% set incomeOffset = 0 %}
+                                {% if investment.eisPurchaseYear1 == taxYear %}
+                                    {% if show == "TaxEffect" %}
+                                        {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% else %}
+                                        {% set incomeOffset = incomeOffset + ( 1 *  (investment.eISPurchaseYear1Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% endif %}
+                                    {% set totalIncomeOffset = totalIncomeOffset + incomeOffset %}
+                                {% endif %}
+                                {% if investment.eisPurchaseYear2 == taxYear %}
+                                    {% if show == "TaxEffect" %}
+                                        {% set incomeOffset = incomeOffset + ( investment.taxScheme.purchaseIncomeOffset*  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% else %}
+                                        {% set incomeOffset = incomeOffset + ( 1   *  (investment.eISPurchaseYear2Percentage * investment.numberOfShares*investment.purchaseSharePrice /100)) %}
+                                    {% endif %}
+                                    {% set totalIncomeOffset = totalIncomeOffset + incomeOffset %}
+                                {% endif %}
 
                             {% endfor %}
-                            {{ totalTaxOffset|number_format('0') }}
 
-
+                            <b>{{ totalIncomeOffset|number_format('0') }}</b>
                         </div>
-                    </div>
-                    <div class="col-6">
-                        {#                            <b>{{ totalIncomeOffset|number_format('0') }}</b> #}
-                    </div>
                     </div>
                 </td>
             {% endfor %}

@@ -281,10 +281,9 @@
                         {% else %}
                             {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice %}
                         {% endif %}
-
                         {{ PV |number_format ('0') }}
-
                     </td>
+
                     <!-- PV (£) -->
                     <td style="text-align: right;border-right:1px solid black">
                         {% set PV =0 %}
@@ -293,9 +292,7 @@
                         {% else %}
                             {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice/ CurrentFXRate %}
                         {% endif %}
-
                         {{ PV |number_format ('0') }}
-
                         {% set PV_Total = PV_Total + PV %}
                     </td>
 
@@ -315,10 +312,7 @@
                     </td>
                     <td style="text-align: right">
                         {% if investment.EISSaleYear1 is not null %}
-                            {% set Loss = investment.investmentAmount -investment.saleSharePrice %}
-                            {% set InitialTaxOffset = investment.investmentAmount * investment.taxScheme.purchaseTaxOffset %}
-                            {% set IncomeOffset = max(0, Loss - InitialTaxOffset) %}
-                            {{ (IncomeOffset * investment.EISSaleYear1Percentage/100)|number_format('0') }}
+                            {{ (investment.lossDeductibleAgainstIncome * investment.EISSaleYear1Percentage/100)|number_format('0') }}
                         {% endif %}
                     </td>
                     <td style="text-align: right">
@@ -326,12 +320,10 @@
                             {{ investment.EISSaleYear2.taxYearRange }}
                         {% endif %}
                     </td>
+
                     <td style="text-align: right;border-right:1px solid black">
                         {% if investment.EISSaleYear2 is not null %}
-                            {% set Loss = investment.investmentAmount -investment.saleSharePrice %}
-                            {% set InitialTaxOffset = investment.investmentAmount * investment.taxScheme.purchaseTaxOffset %}
-                            {% set IncomeOffset = max(0, Loss - InitialTaxOffset) %}
-                            {{ (IncomeOffset * investment.EISSaleYear2Percentage/100)|number_format('0') }}
+                            {{ (investment.lossDeductibleAgainstIncome * investment.EISSaleYear2Percentage/100)|number_format('0') }}
                         {% endif %}
                     </td>
 
@@ -344,11 +336,11 @@
                             {% set CGT = 0 %}
 
                         {% else %}
-                                {% if investment.investmentSaleDate is empty %}
-                                    {% set CGTAdd = (((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.taxScheme.cgtRate %}
-                                {% else %}
-                                    {% set CGTAdd =  (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice) +(FXEffect-1))  * investment.investmentAmount *investment.taxScheme.cgtRate %}
-                                {% endif %}
+                            {% if investment.investmentSaleDate is empty %}
+                                {% set CGTAdd = (((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.taxScheme.cgtRate %}
+                            {% else %}
+                                {% set CGTAdd =  (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice) +(FXEffect-1))  * investment.investmentAmount *investment.taxScheme.cgtRate %}
+                            {% endif %}
 
 
 

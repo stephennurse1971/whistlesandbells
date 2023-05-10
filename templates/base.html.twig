@@ -285,8 +285,11 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tax</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                <a class="dropdown-item" target="_blank" href="{{ path('investments_tax_consequences',{'show': 'TaxEffect'}) }}">Tax summary - Investments</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('tax_inputs_overview_index') }}">Tax summary - Self-Assessment</a>
+                                <a class="dropdown-item" target="_blank"
+                                   href="{{ path('investments_tax_consequences',{'show': 'TaxEffect'}) }}">Tax summary -
+                                    Investments</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('tax_inputs_overview_index') }}">Tax
+                                    summary - Self-Assessment</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('tax_inputs_index') }}">Employment Income</a>
                             </div>
@@ -343,9 +346,12 @@
                                 <a target="_blank" class="dropdown-item"
                                    href="{{ path('country_index') }}">Countries</a>
                                 <hr>
-                                <a target="_blank" class="dropdown-item" href="{{ path('tax_year_index') }}">Tax Years & Bands</a>
-                                <a target="_blank" class="dropdown-item" href="{{ path('tax_schemes_index') }}">Tax Schemes</a>
-                                <a target="_blank" class="dropdown-item" href="{{ path('asset_classes_index') }}">Asset Classes</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('tax_year_index') }}">Tax Years &
+                                    Bands</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('tax_schemes_index') }}">Tax
+                                    Schemes</a>
+                                <a target="_blank" class="dropdown-item" href="{{ path('asset_classes_index') }}">Asset
+                                    Classes</a>
                                 <hr>
                                 <a target="_blank" class="dropdown-item" href="{{ path('file_upload') }}">File
                                     upload</a>
@@ -359,6 +365,7 @@
                                 <hr>
 
                                 <a class="dropdown-item" href="{{ path('flight_stats_index') }}">Flights (Kayak)</a>
+                                <a class="dropdown-item" href="{{ path('settings_index') }}">Settings</a>
                                 <hr>
                                 <a target="_blank" class="dropdown-item" href="{{ path('curriculum_vitae_index') }}">CV
                                     - Segments</a>
