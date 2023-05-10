@@ -152,6 +152,26 @@ class Investments
      */
     private $lossDeductibleAgainstIncome;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $eisPurchaseYear1SelfAssessmentCheck;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $eisPurchaseYear2SelfAssessmentCheck;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $eisSaleYear1SelfAssessmentCheck;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $eisSaleYear2SelfAssessmentCheck;
+
 
 
 
@@ -500,6 +520,54 @@ class Investments
     public function setLossDeductibleAgainstIncome(float $lossDeductibleAgainstIncome): self
     {
         $this->lossDeductibleAgainstIncome = $lossDeductibleAgainstIncome;
+
+        return $this;
+    }
+
+    public function getEisPurchaseYear1SelfAssessmentCheck(): ?string
+    {
+        return $this->eisPurchaseYear1SelfAssessmentCheck;
+    }
+
+    public function setEisPurchaseYear1SelfAssessmentCheck(?string $eisPurchaseYear1SelfAssessmentCheck): self
+    {
+        $this->eisPurchaseYear1SelfAssessmentCheck = $eisPurchaseYear1SelfAssessmentCheck;
+
+        return $this;
+    }
+
+    public function getEisPurchaseYear2SelfAssessmentCheck(): ?string
+    {
+        return $this->eisPurchaseYear2SelfAssessmentCheck;
+    }
+
+    public function setEisPurchaseYear2SelfAssessmentCheck(?string $eisPurchaseYear2SelfAssessmentCheck): self
+    {
+        $this->eisPurchaseYear2SelfAssessmentCheck = $eisPurchaseYear2SelfAssessmentCheck;
+
+        return $this;
+    }
+
+    public function getEisSaleYear1SelfAssessmentCheck(): ?string
+    {
+        return $this->eisSaleYear1SelfAssessmentCheck;
+    }
+
+    public function setEisSaleYear1SelfAssessmentCheck(?string $eisSaleYear1SelfAssessmentCheck): self
+    {
+        $this->eisSaleYear1SelfAssessmentCheck = $eisSaleYear1SelfAssessmentCheck;
+
+        return $this;
+    }
+
+    public function getEisSaleYear2SelfAssessmentCheck(): ?string
+    {
+        return $this->eisSaleYear2SelfAssessmentCheck;
+    }
+
+    public function setEisSaleYear2SelfAssessmentCheck(?string $eisSaleYear2SelfAssessmentCheck): self
+    {
+        $this->eisSaleYear2SelfAssessmentCheck = $eisSaleYear2SelfAssessmentCheck;
 
         return $this;
     }

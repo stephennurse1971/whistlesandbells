@@ -97,19 +97,25 @@
         {#        </div> #}
 
         <div class="row asset_class_dependent_tax">
-            <div class="col-6 ">
+            <div class="col-4">
                 {{ form_row(form.EISPurchaseYear1) }}
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form_row(form.eISPurchaseYear1Percentage) }}
+            </div>
+            <div class="col-4">
+                {{ form_row(form.eisPurchaseYear1SelfAssessmentCheck) }}
             </div>
         </div>
         <div class="row asset_class_dependent_tax">
-            <div class="col-6">
+            <div class="col-4">
                 {{ form_row(form.EISPurchaseYear2) }}
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form_row(form.eISPurchaseYear2Percentage) }}
+            </div>
+            <div class="col-4">
+                {{ form_row(form.eisPurchaseYear2SelfAssessmentCheck) }}
             </div>
         </div>
     </div>
@@ -137,22 +143,29 @@
             <div class="col-6">
                 {{ form_row(form.lossDeductibleAgainstIncome) }}
             </div>
+
         </div>
 
         <div class="row asset_class_dependent_tax">
-            <div class="col-6">
+            <div class="col-4">
                 {{ form_row(form.eISSaleYear1) }}
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form_row(form.eISSaleYear1Percentage) }}
+            </div>
+            <div class="col-4">
+                {{ form_row(form.eisSaleYear1SelfAssessmentCheck) }}
             </div>
         </div>
         <div class="row asset_class_dependent_tax">
-            <div class="col-6">
+            <div class="col-4">
                 {{ form_row(form.eISSaleYear2) }}
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 {{ form_row(form.eISSaleYear2Percentage) }}
+            </div>
+            <div class="col-4">
+                {{ form_row(form.eisSaleYear2SelfAssessmentCheck) }}
             </div>
         </div>
     </div>

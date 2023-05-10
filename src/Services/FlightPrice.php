@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\FlightStats;
 use App\Repository\FlightStatsRepository;
+use App\Repository\SettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
@@ -14,7 +15,7 @@ class FlightPrice
      $day_increment = 1;
      $flight_from = 'LON';
      $flight_to = 'PFO';
-     while($day_increment <= 2){
+     while($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()){
          $date = $now->format('Y-m-d');
          $url = "https://www.kayak.co.uk/flights/LON-PFO/".$date."?sort=bestflight_a&fs=stops=0";
          exec("node scrape/flightPrice.js"." " .$url." 2>&1");
@@ -40,7 +41,9 @@ class FlightPrice
                      $flightStats->setDate(new \DateTime($date))
                          ->setFlightFrom($flight_from)
                          ->setFlightTo($flight_to)
-                         ->setLowestPrice($price);
+                         ->setLowestPrice($price)
+                         ->setScrapeDate(new \DateTime('now'))
+                     ;
                      $this->manager->persist($flightStats);
                      $this->manager->flush();
                  }
@@ -56,7 +59,7 @@ class FlightPrice
         $day_increment = 1;
         $flight_from = 'PFO';
         $flight_to = 'LON';
-        while($day_increment <= 2){
+        while($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()){
             $date = $now->format('Y-m-d');
             $url = "https://www.kayak.co.uk/flights/PFO-LON/".$date."?sort=bestflight_a&fs=stops=0";
             exec("node scrape/flightPrice.js"." " .$url." 2>&1");
@@ -82,7 +85,9 @@ class FlightPrice
                         $flightStats->setDate(new \DateTime($date))
                             ->setFlightFrom($flight_from)
                             ->setFlightTo($flight_to)
-                            ->setLowestPrice($price);
+                            ->setLowestPrice($price)
+                            ->setScrapeDate(new \DateTime('now'))
+                        ;
                         $this->manager->persist($flightStats);
                         $this->manager->flush();
                     }
@@ -93,9 +98,10 @@ class FlightPrice
             $day_increment++;
         }
     }
-  public function __construct(ContainerInterface $container,EntityManagerInterface $entityManager,FlightStatsRepository $flightStatsRepository){
+  public function __construct(ContainerInterface $container,EntityManagerInterface $entityManager,FlightStatsRepository $flightStatsRepository,SettingsRepository $settingsRepository){
       $this->container = $container;
       $this->manager = $entityManager;
       $this->fightStatsRepository = $flightStatsRepository;
+      $this->settingsRepository = $settingsRepository;
   }
 }

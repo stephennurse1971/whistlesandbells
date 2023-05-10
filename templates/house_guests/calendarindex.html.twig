@@ -35,7 +35,7 @@
                 {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO/'~  date| date("Y-m-d") ~'?sort=bestflight_a&fs=stops=0' %}
                 {% for flight in flights %}
                     {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO" %}
-                        <a target="_blank" href="{{ URL1 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
+                        <a title="{{ flight.scrapeDate| date('d-M-Y') }}" target="_blank" href="{{ URL1 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
 
                     {% endif %}
                 {% endfor %}

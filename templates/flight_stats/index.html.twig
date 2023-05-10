@@ -6,7 +6,8 @@
     <h1 style="color: red">Flight Prices</h1>
 
     <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete All</a>
-    <a class="btn btn-primary btn-sm" href="{{ path('flight_stats_index') }}">Scrape</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ path('house_guests_flight_price_scrape_london_pfo') }}">Scrape
+        flights</a>
     <br>
     <br>
     <table class="table table-responsive">
@@ -16,6 +17,7 @@
             <th>Flight From</th>
             <th>Flight To</th>
             <th>Lowest Price</th>
+            <th>Date scraped</th>
             <th>#</th>
         </tr>
         </thead>
@@ -26,21 +28,21 @@
             {% else %}
                 <tr>
             {% endif %}
-                <td style="text-align: left"
-                    data-sort={{ flight_stat.date| date('Y-m-d') }}>{{ flight_stat.date | date('D d-M-Y') }}</td>
-                <td style="text-align: center">{{ flight_stat.flightFrom }}</td>
-                <td style="text-align: center">{{ flight_stat.flightTo }}</td>
-                <td style="text-align: right">{{ flight_stat.lowestPrice|number_format(2, '.', ',') }}</td>
-                <td style="width: 250px">
-                    <a class="btn btn-outline-primary btn-sm"
-                       href="{{ path('flight_stats_show', {'id': flight_stat.id}) }}">Show</a>
-                    <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('flight_stats_edit', {'id': flight_stat.id}) }}">Edit</a>
-                    <form class="d-inline" method="post" action="{{ path('flight_stats_delete', {'id': flight_stat.id}) }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ flight_stat.id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
+            <td style="text-align: left"
+                data-sort={{ flight_stat.date| date('Y-m-d') }}>{{ flight_stat.date | date('D d-M-y') }}</td>
+            <td style="text-align: center">{{ flight_stat.flightFrom }}</td>
+            <td style="text-align: center">{{ flight_stat.flightTo }}</td>
+            <td style="text-align: right">{{ flight_stat.lowestPrice|number_format(2, '.', ',') }}</td>
+            <td style="text-align: right"
+                data-sort={{ flight_stat.scrapeDate| date('Y-m-d') }}>{{ flight_stat.scrapeDate | date('d-M-y') }}</td>
+            <td style="width: 250px">
+                <a class="btn btn-outline-danger btn-sm"
+                   href="{{ path('flight_stats_edit', {'id': flight_stat.id}) }}">Edit</a>
+                <form class="d-inline" method="post" action="{{ path('flight_stats_delete', {'id': flight_stat.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ flight_stat.id) }}">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -54,7 +56,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'desc'],  [1, 'desc']],
+                "order": [[0, 'desc'], [1, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

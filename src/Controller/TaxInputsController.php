@@ -37,13 +37,13 @@ class TaxInputsController extends AbstractController
     /**
      * @Route("/taxOverview", name="tax_inputs_overview_index", methods={"GET"})
      */
-    public function indexTaxOverview(TaxInputsRepository $taxInputsRepository, InvestmentsRepository $investmentsRepository,TaxSchemesRepository $taxSchemesRepository,TaxYearRepository $taxYearRepository): Response
+    public function indexTaxOverview(TaxInputsRepository $taxInputsRepository, InvestmentsRepository $investmentsRepository, TaxSchemesRepository $taxSchemesRepository, TaxYearRepository $taxYearRepository): Response
     {
         return $this->render('tax_inputs/indexTaxOverview.html.twig', [
             'taxinputs' => $taxInputsRepository->findAll(),
             'taxYears' => $taxYearRepository->findAllByAsc(),
             'investments' => $investmentsRepository->findAll(),
-            'taxschemes'=> $taxSchemesRepository->findAll()
+            'taxschemes' => $taxSchemesRepository->findAll()
         ]);
     }
 
@@ -106,7 +106,7 @@ class TaxInputsController extends AbstractController
                 $p11D_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($p11D->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p11D->guessExtension();
-                $newFileName = "P11D_" . $year."." . $file_extension;
+                $newFileName = "P11D_" . $year . "." . $file_extension;
                 $p11D->move($p11D_directory, $newFileName);
                 $taxInput->setP11D($newFileName);
             }
@@ -116,7 +116,7 @@ class TaxInputsController extends AbstractController
                 $p60_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($p60->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p60->guessExtension();
-                $newFileName = "P60_" . $year."." . $file_extension;
+                $newFileName = "P60_" . $year . "." . $file_extension;
                 $p60->move($p60_directory, $newFileName);
                 $taxInput->setP60($newFileName);
             }
@@ -126,7 +126,7 @@ class TaxInputsController extends AbstractController
                 $p45_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($p45->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $p45->guessExtension();
-                $newFileName = "P45_" . $year."." . $file_extension;
+                $newFileName = "P45_" . $year . "." . $file_extension;
                 $p45->move($p45_directory, $newFileName);
                 $taxInput->setP45($newFileName);
             }
@@ -136,7 +136,7 @@ class TaxInputsController extends AbstractController
                 $selfAssessment_directory = $this->getParameter('tax_documents_attachments_directory');
                 $fileName = pathinfo($selfAssessment->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $selfAssessment->guessExtension();
-                $newFileName = "SelfAssessment_" . $year."." . $file_extension;
+                $newFileName = "SelfAssessment_" . $year . "." . $file_extension;
                 $selfAssessment->move($selfAssessment_directory, $newFileName);
                 $taxInput->setSelfAssessment($newFileName);
             }
@@ -162,7 +162,7 @@ class TaxInputsController extends AbstractController
      */
     public function delete(Request $request, TaxInputs $taxInput): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$taxInput->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $taxInput->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($taxInput);
             $entityManager->flush();
@@ -196,7 +196,7 @@ class TaxInputsController extends AbstractController
     /**
      * @Route("/view/file/{filetype}/{id}", name="taxdocument_viewfile", methods={"GET"})
      */
-    public function investmentFileLaunch(string $filetype,TaxInputs $taxInputs): Response
+    public function investmentFileLaunch(string $filetype, TaxInputs $taxInputs): Response
     {
         $fileName = '';
         if ($filetype == 'SelfAssessment') {
@@ -212,7 +212,7 @@ class TaxInputsController extends AbstractController
             $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
             return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
         }
-return $this->render('error/file_not_found.html.twig');
+        return $this->render('error/file_not_found.html.twig');
     }
 
 
