@@ -470,6 +470,12 @@
         });
 
     ClassicEditor
+        .create(document.querySelector('#introduction_introductoryEmail2'))
+        .catch(error => {
+            console.error(error);
+        });
+
+    ClassicEditor
         .create(document.querySelector('#curriculum_vitae_jobDescription'))
         .catch(error => {
             console.error(error);

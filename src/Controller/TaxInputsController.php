@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Investments;
+use App\Entity\RecruiterEmails;
 use App\Entity\TaxDocuments;
 use App\Entity\TaxInputs;
 use App\Entity\TaxSchemes;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/tax/inputs")
+ * @Route("/taxinputs")
  */
 class TaxInputsController extends AbstractController
 {
@@ -193,27 +194,6 @@ class TaxInputsController extends AbstractController
         return $this->redirect($referer);
     }
 
-    /**
-     * @Route("/view/file/{filetype}/{id}", name="taxdocument_viewfile", methods={"GET"})
-     */
-    public function investmentFileLaunch(string $filetype, TaxInputs $taxInputs): Response
-    {
-        $fileName = '';
-        if ($filetype == 'SelfAssessment') {
-            $fileName = $taxInputs->getSelfAssessment();
-        } elseif ($filetype == 'P11D') {
-            $fileName = $taxInputs->getP11D();
-        } elseif ($filetype == 'P45') {
-            $fileName = $taxInputs->getP45();
-        } elseif ($filetype == 'P60') {
-            $fileName = $taxInputs->getP60();
-        }
-        if ($fileName != '') {
-            $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
-            return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
-        }
-        return $this->render('error/file_not_found.html.twig');
-    }
 
 
 }

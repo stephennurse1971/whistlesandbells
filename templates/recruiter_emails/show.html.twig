@@ -12,15 +12,15 @@
             <td>{{ recruiter_email.id }}</td>
         </tr>
         <tr>
-            <th>SendTo</th>
+            <th>To</th>
             <td>{{ recruiter_email.SendTo }}</td>
         </tr>
         <tr>
-            <th>SendCC</th>
+            <th>CC</th>
             <td>{{ recruiter_email.SendCC }}</td>
         </tr>
         <tr>
-            <th>SendBcc</th>
+            <th>Bcc</th>
             <td>{{ recruiter_email.SendBcc }}</td>
         </tr>
         <tr>
@@ -33,14 +33,20 @@
         </tr>
         <tr>
             <th>Attachment</th>
-            <td>{{ recruiter_email.attachment }}</td>
+
+            <td>
+                {% if recruiter_email.attachment is not empty %}
+                    <a target="_blank" href="{{ path('attachments_viewfile',{id : recruiter_email.id, filetype: 'Recruiter_Email'}) }}">
+                        {{ recruiter_email.attachment }}
+                    </a>
+                {% endif %}
         </tr>
         <tr>
-            <th>SendDate</th>
-            <td>{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('Y-m-d H:i:s') : '' }}</td>
+            <th>Date</th>
+            <td>{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('d-M-Y H:i') : '' }}</td>
         </tr>
         <tr>
-            <th>SendAuthor</th>
+            <th>Author</th>
             <td>{{ recruiter_email.AuthorFullName }}</td>
         </tr>
         </tbody>

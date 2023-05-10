@@ -2,10 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\RecruiterEmails;
+use App\Entity\TaxInputs;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
+use App\Repository\IntroductionRepository;
+use App\Repository\RecruiterEmailsRepository;
 use App\Repository\StaticTextRepository;
+use App\Repository\TaxInputsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -348,5 +354,50 @@ class HomeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})
+     */
+    public function investmentFileLaunch(int $id,string $filetype, TaxInputsRepository $taxInputsRepository, IntroductionRepository $introductionRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
+    {
+        $fileName = '';
+        $filepath = '';
+        if ($filetype == 'SelfAssessment') {
+            $fileName = $taxInputsRepository->find($id)->getSelfAssessment();
+            $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
+            $filepath = $publicResourcesFolderPath."/".$fileName;
+        } elseif ($filetype == 'P11D') {
+            $fileName = $taxInputsRepository->find($id)->getP11D();
+            $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
+            $filepath = $publicResourcesFolderPath."/".$fileName;
+        } elseif ($filetype == 'P45') {
+            $fileName = $taxInputsRepository->find($id)->getP45();
+            $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
+            $filepath = $publicResourcesFolderPath."/".$fileName;
+        } elseif ($filetype == 'P60') {
+            $fileName = $taxInputsRepository->find($id)->getP60();
+            $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
+            $filepath = $publicResourcesFolderPath."/".$fileName;
+        } elseif ($filetype == 'Recruiter_Attachment') {
+            $fileName = $introductionRepository->find($id)->getAttachment();
+            $publicResourcesFolderPath = $this->getParameter('recruiter_introductions_attachments_directory');
+            $filepath = $publicResourcesFolderPath."/".$fileName;
+        } elseif ($filetype == 'Recruiter_Email') {
+            $fileName = $recruiterEmailsRepository->find($id)->getAttachment();
+            $publicResourcesFolderPath = $this->getParameter('recruiter_introductions_attachments_directory');
+            $filepath = $publicResourcesFolderPath."/".$fileName;
+        }
+        if ($fileName != '') {
+            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+            $filepath = explode("public",$filepath);
+            $filepath = $filepath[1];
+            return $this->render('home/file_view.html.twig',[
+                'ext'=>$ext,
+                'tab_title'=>$fileName,
+                'filepath'=>$filepath,
+            ]);
+        }
+
+        return $this->render('error/file_not_found.html.twig');
+    }
 
 }

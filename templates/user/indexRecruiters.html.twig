@@ -164,8 +164,7 @@
                     {% for recruiterEmail in recruiterEmails %}
                         {% if recruiterEmail.Author == app.user.email and recruiterEmail.sendToFullName == user.fullName %}
                             <a target="_blank"
-                               href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-Y h:i') }}</a>
-
+                               href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-Y H:i') }}</a> <br>
                         {% endif %}
                     {% endfor %}
                 </td>
