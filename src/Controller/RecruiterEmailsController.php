@@ -23,7 +23,6 @@ class RecruiterEmailsController extends AbstractController
     {
         return $this->render('recruiter_emails/index.html.twig', [
             'recruiter_emails' => $recruiterEmailsRepository->findAll(),
-
         ]);
     }
 
@@ -40,7 +39,6 @@ class RecruiterEmailsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($recruiterEmail);
             $entityManager->flush();
-
             return $this->redirectToRoute('recruiters_index');
         }
 
@@ -70,7 +68,6 @@ class RecruiterEmailsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('recruiter_emails_index');
         }
 
@@ -108,6 +105,4 @@ class RecruiterEmailsController extends AbstractController
         }
         return $this->redirectToRoute('recruiter_emails_index');
     }
-
-
 }

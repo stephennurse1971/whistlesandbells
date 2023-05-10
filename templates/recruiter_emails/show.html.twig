@@ -12,16 +12,28 @@
             <td>{{ recruiter_email.id }}</td>
         </tr>
         <tr>
-            <th>To</th>
-            <td>{{ recruiter_email.SendTo }}</td>
+            <th>Date</th>
+            <td>{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('d-M-Y H:i') : '' }}</td>
         </tr>
         <tr>
-            <th>CC</th>
-            <td>{{ recruiter_email.SendCC }}</td>
+            <th>To</th>
+            <td>{{ recruiter_email.SendToFullName }} ({{ recruiter_email.SendTo }})</td>
         </tr>
+
+        {% if recruiter_email.SendCc is not null %}
+            <tr>
+                <th>cc</th>
+                <td>{{ recruiter_email.SendCcFullName }} ({{ recruiter_email.SendCc }})</td>
+            </tr>
+
+        {% endif %}
         <tr>
             <th>Bcc</th>
-            <td>{{ recruiter_email.SendBcc }}</td>
+            <td>{{ recruiter_email.SendBccFullName }} ({{ recruiter_email.SendBcc }})</td>
+        </tr>
+        <tr>
+            <th>From</th>
+            <td>{{ recruiter_email.AuthorFullName }} ({{ recruiter_email.author }})</td>
         </tr>
         <tr>
             <th>Subject</th>
@@ -33,28 +45,22 @@
         </tr>
         <tr>
             <th>Attachment</th>
-
             <td>
                 {% if recruiter_email.attachment is not empty %}
-                    <a target="_blank" href="{{ path('attachments_viewfile',{id : recruiter_email.id, filetype: 'Recruiter_Email'}) }}">
+                    <a target="_blank"
+                       href="{{ path('attachments_viewfile',{id : recruiter_email.id, filetype: 'Recruiter_Email'}) }}">
                         {{ recruiter_email.attachment }}
                     </a>
                 {% endif %}
         </tr>
-        <tr>
-            <th>Date</th>
-            <td>{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('d-M-Y H:i') : '' }}</td>
-        </tr>
-        <tr>
-            <th>Author</th>
-            <td>{{ recruiter_email.AuthorFullName }}</td>
-        </tr>
+
         </tbody>
     </table>
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('recruiter_emails_index') }}">Return to list</a>
 
-    <a class="btn btn-outline-danger btn-sm" href="{{ path('recruiter_emails_edit', {'id': recruiter_email.id}) }}">Edit</a>
+    <a class="btn btn-outline-danger btn-sm"
+       href="{{ path('recruiter_emails_edit', {'id': recruiter_email.id}) }}">Edit</a>
 
     <br>
     {{ include('recruiter_emails/_delete_form.html.twig') }}
