@@ -510,14 +510,13 @@ class UserController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $email = (new Email())
-                    ->to($recruiterEmail->getSendTo())
+                    ->to($recruiter->getEmail())
                     ->bcc($author->getEmail())
                     ->subject($recruiterEmail->getSubject())
                     ->from($author->getEmail())
-                    ->from('nurse_stephen@hotmail.coom')
                     ->html($recruiterEmail->getBody());
                 if ($introduction_attachment) {
-                    $attachment_path = $this->getParameter('files_upload_default_directory') . "/" . $introduction_attachment;
+                    $attachment_path = $this->getParameter('recruiter_introductions_attachments_directory') . "/" . $introduction_attachment;
                     $email->attachFromPath($attachment_path);
                 }
                 $mailer->send($email);
@@ -531,18 +530,17 @@ class UserController extends AbstractController
         } else {
 
             $email = (new Email())
-                ->to('amankr.99.a@gmail.com')
+                ->to($recruiter->getEmail())
                 ->bcc($author->getEmail())
                 ->subject($subject)
-                // ->from($author->getEmail())
-                ->from('info@stephen-nurse.com')
+                ->from($author->getEmail())
                 ->html($html);
-//            if ($introduction_attachment) {
-//                $attachment_path = $this->getParameter('files_upload_default_directory') . "/" . $introduction_attachment;
-//                $email->attachFromPath($attachment_path);
-//            }
+            if ($introduction_attachment) {
+                $attachment_path = $this->getParameter('recruiter_introductions_attachments_directory') . "/" . $introduction_attachment;
+                $email->attachFromPath($attachment_path);
+            }
             $recruiterEmail
-                ->setSendTo('nurse_stephen@hotmail.com')
+                ->setSendTo($recruiter->getEmail())
                 ->setSendToFullName($recruiter->getFullName())
                 ->setSendBcc($author->getEmail())
                 ->setsendBccFullName($author->getFullName())
@@ -564,8 +562,7 @@ class UserController extends AbstractController
     /**
      * @Route("/recruiter/email/CV/", name="recruiter_email_CV", methods={"GET","POST"})
      */
-    public function recruiterEmailCV(\Symfony\Component\Security\Core\Security $security, MailerInterface $mailer, Request $request,
-                                     UserRepository                            $userRepository, EntityManagerInterface $manager): Response
+    public function recruiterEmailCV(\Symfony\Component\Security\Core\Security $security, MailerInterface $mailer, Request $request, UserRepository $userRepository, EntityManagerInterface $manager): Response
     {
         if ($request->isMethod('POST')) {
             $recipientEmail = $_POST['email'];

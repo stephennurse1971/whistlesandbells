@@ -39,7 +39,6 @@ class RecruitersController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($recruiter);
             $entityManager->flush();
-
             return $this->redirectToRoute('recruiters_index');
         }
 
@@ -69,7 +68,6 @@ class RecruitersController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('recruiters_index');
         }
 
