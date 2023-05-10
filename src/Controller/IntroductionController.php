@@ -31,7 +31,7 @@ class IntroductionController extends AbstractController
     /**
      * @Route("/new", name="introduction_new", methods={"GET","POST"})
      */
-    public function new(Request $request, UserRepository $userRepository,SluggerInterface $slugger): Response
+    public function new(Request $request, UserRepository $userRepository, SluggerInterface $slugger): Response
     {
         $introduction = new Introduction();
         $form = $this->createForm(IntroductionType::class, $introduction);
@@ -45,7 +45,7 @@ class IntroductionController extends AbstractController
                 $newFilename = $safeFilename . '.' . $attachment->guessExtension();
                 try {
                     $attachment->move(
-                        $this->getParameter('files_upload_default_directory'),
+                        $this->getParameter('recruiter_introductions_attachments_directory'),
                         $newFilename
                     );
                     $introduction->setAttachment($newFilename);
@@ -79,7 +79,7 @@ class IntroductionController extends AbstractController
     /**
      * @Route("/{id}/edit", name="introduction_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Introduction $introduction,SluggerInterface $slugger): Response
+    public function edit(Request $request, Introduction $introduction, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(IntroductionType::class, $introduction);
         $form->handleRequest($request);
@@ -92,7 +92,7 @@ class IntroductionController extends AbstractController
                 $newFilename = $safeFilename . '.' . $attachment->guessExtension();
                 try {
                     $attachment->move(
-                        $this->getParameter('files_upload_default_directory'),
+                        $this->getParameter('recruiter_introductions_attachments_directory'),
                         $newFilename
                     );
                     $introduction->setAttachment($newFilename);
@@ -115,7 +115,7 @@ class IntroductionController extends AbstractController
      */
     public function delete(Request $request, Introduction $introduction): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$introduction->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $introduction->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($introduction);
             $entityManager->flush();
@@ -126,11 +126,11 @@ class IntroductionController extends AbstractController
     /**
      * @Route("/{id}/delete/attachment", name="introduction_delete_attachment")
      */
-    public function deleteAttachment(Request $request, Introduction $introduction,EntityManagerInterface $entityManager)
+    public function deleteAttachment(Request $request, Introduction $introduction, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
-       $introduction->setAttachment('');
-       $entityManager->flush();
-       return $this->redirect($referer);
+        $introduction->setAttachment('');
+        $entityManager->flush();
+        return $this->redirect($referer);
     }
 }

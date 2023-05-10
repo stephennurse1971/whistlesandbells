@@ -26,11 +26,10 @@
                 <td>{{ introduction.region }}</td>
                 <td>{{ introduction.areaOfInterest }}</td>
                 <td>{{ introduction.subjectLine }}</td>
-                <td>
+                <td style="text-align: center">
                     {% if introduction.attachment is not empty %}
                             <a title= {{ introduction.attachment }} target="_blank"
-                               href="{{ path('show_attachment',{id : introduction.id,'filename':introduction.attachment}) }}"><i
-                                        class="fa fa-paperclip"></i></a>
+                               href="{{ path('attachments_viewfile',{id : introduction.id, filetype: 'Recruiter_Attachment'}) }}"><i class="fa fa-paperclip"></i></a>
                     {% endif %}
                 </td>
                 <td>{{ introduction.introductoryEmail|raw }}</td>

@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     files_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Files'
+    recruiter_introductions_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Recruiter_Introductions_Attachments'
     file_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FileAttachments'
     files_cv_directory: '%kernel.project_dir%/public/administration/attachments/CV'
     import_user_directory: '%kernel.project_dir%/public/administration/import/'
@@ -17,10 +18,10 @@ parameters:
     winelist_directory: '%kernel.project_dir%/public/administration/img/winelist'
     tax_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments'
     tax_supporting_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments/TaxSupportingDocuments'
-    tourist_attraction_photos_directory: '%kernel.project_dir%/public/administration/attachments/touristattractionphotos'
+    tourist_attraction_photos_directory: '%kernel.project_dir%/public/administration/attachments/TouristAttractionPhotos'
     temporary_attachment_directory: '%kernel.project_dir%/public/temporary/'
     user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
-    website_photos_directory: '%kernel.project_dir%/public/administration/attachments/websitephotos'
+    website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
     scraper: '%kernel.project_dir%/public/scrape/'
 
 services:

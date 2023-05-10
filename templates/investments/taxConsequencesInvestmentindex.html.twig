@@ -32,7 +32,7 @@
                     {% for taxinput in taxinputs %}
                         {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
                             <a title="{{ taxinput.selfAssessment }}" target="_blank"
-                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                               href="{{ path('attachments_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
                                 <i style="color: red" class="fa fa-file-pdf"></i>
                             </a>
                         {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
@@ -133,7 +133,7 @@
                                     {% for taxinput in taxinputs %}
                                         {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
                                             <a title="{{ taxinput.selfAssessment }}" target="_blank"
-                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                               href="{{ path('attachments_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
                                                 <i class="fa fa-check" style="color: green"></i>
                                             </a>
                                         {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
@@ -145,7 +145,7 @@
                                     {% for taxinput in taxinputs %}
                                         {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
                                             <a title="{{ taxinput.selfAssessment }}" target="_blank"
-                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                               href="{{ path('attachments_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
                                                 <i class="fa fa-remove" style="color: red"></i>
                                             </a>
                                         {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
@@ -157,7 +157,7 @@
                                     {% for taxinput in taxinputs %}
                                         {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
                                             <a title="{{ taxinput.selfAssessment }}" target="_blank"
-                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                               href="{{ path('attachments_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
                                                 <i class="fa fa-question" style="color: gray"></i>
                                             </a>
                                         {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
@@ -172,7 +172,7 @@
                                     {% for taxinput in taxinputs %}
                                         {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
                                             <a title="{{ taxinput.selfAssessment }}" target="_blank"
-                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                               href="{{ path('attachments_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
                                                 <i class="fa fa-check" style="color: green"></i>
                                             </a>
                                         {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
@@ -184,7 +184,7 @@
                                     {% for taxinput in taxinputs %}
                                         {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
                                             <a title="{{ taxinput.selfAssessment }}" target="_blank"
-                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                               href="{{ path('attachments_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
                                                 <i class="fa fa-remove" style="color: red"></i>
                                             </a>
                                         {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}
@@ -199,7 +199,7 @@
                                     {% for taxinput in taxinputs %}
                                         {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
                                             <a title="{{ taxinput.selfAssessment }}" target="_blank"
-                                               href="{{ path('taxdocument_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
+                                               href="{{ path('attachments_viewfile',{id : taxinput.id, filetype: 'SelfAssessment'}) }}">
                                                 <i class="fa fa-question" style="color: gray"></i>
                                             </a>
                                         {% elseif  taxinput.year == taxYear and taxinput.selfAssessment is empty %}

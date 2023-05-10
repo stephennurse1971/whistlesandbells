@@ -7,7 +7,7 @@
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <a class="btn btn-outline-danger btn-sm" href="{{ path('recruiter_emails_delete_all') }}">Delete All E-Mails</a>
  {% endif %}
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th>SendTo</th>
@@ -48,9 +48,12 @@
                 <td>
                     {{ recruiter_email.subject }}</td>
                 <td>{{ recruiter_email.body|raw }}</td>
-                <td>
+                <td style="text-align: center">
                     {% if recruiter_email.attachment is not empty %}
-                        <i class="fa fa-paperclip" title="{{ recruiter_email.attachment }}"></i>
+                        <a title="{{ recruiter_email.attachment }}" target="_blank"
+                           href="{{ path('attachments_viewfile',{id : recruiter_email.id, filetype: 'Recruiter_Email'}) }}">
+                            <i class="fa fa-paperclip"></i>
+                        </a>
                     {% endif %}
                 </td>
                 <td data-sort="{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('Y-m-d H:i') : '' }}">{{ recruiter_email.SendDate ? recruiter_email.SendDate|date('d-M-Y H:i') : '' }}</td>
@@ -69,7 +72,6 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('recruiter_emails_new') }}">New</a>
 {% endblock %}
 
 
