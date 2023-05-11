@@ -475,7 +475,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
      */
-    public function recruiterInviteEmail(string                 $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository,
+    public function recruiterInviteEmail(string $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository,
                                          IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository, EntityManagerInterface $manager): Response
     {
         $author = $userRepository->find($authorId);
@@ -551,7 +551,6 @@ class UserController extends AbstractController
                 ->setBody($html)
                 ->setAttachment($introduction_attachment);
             $mailer->send($email);
-
             $manager->persist($recruiterEmail);
             $manager->flush();
             $referer = $request->headers->get('referer');

@@ -148,53 +148,95 @@
             }
         })
     </script>
+
+
+
+    <script>
+        $("#investments_saleSharePrice").change(function () {
+            var originalInvestmentGBP = $("#investments_initialInvestmentAmountGBP").val();
+            var purchasePrice = $("#investments_purchaseSharePrice").val();
+            var salePrice = $("#investments_saleSharePrice").val();
+            crystallised_gain_or_loss_percent = (salePrice - purchasePrice) / purchasePrice;
+            crystallised_gain_or_loss_amount = crystallised_gain_or_loss_percent * originalInvestmentGBP;
+            crystallised_gain_or_loss_amount = crystallised_gain_or_loss_amount.toFixed(2);
+            $("#investments_crystallisedGainLossInGBP").val(crystallised_gain_or_loss_amount).change();
+        })
+    </script>
+
+
+
+
+    <script>
+        $("#investments_saleSharePrice").change(function () {
+            var originalInvestmentGBP = $("#investments_initialInvestmentAmountGBP").val();
+            var purchasePrice = $("#investments_purchaseSharePrice").val();
+            var salePrice = $("#investments_saleSharePrice").val();
+            var firstLoss = {{ investment.taxScheme.purchaseTaxOffset }}
+            var incomeLossRelief = {{ investment.taxScheme.saleIncomeOffset }}
+
+            crystallised_gain_or_loss_percent_after_initial_tax_relief = ((salePrice - purchasePrice) / purchasePrice) + firstLoss;
+            crystallised_gain_or_loss_amount_after_initial_tax_relief = crystallised_gain_or_loss_percent_after_initial_tax_relief * originalInvestmentGBP * incomeLossRelief;
+            crystallised_gain_or_loss_amount_after_initial_tax_relief = crystallised_gain_or_loss_amount_after_initial_tax_relief.toFixed(2);
+
+            if (crystallised_gain_or_loss_amount_after_initial_tax_relief > 0 ){
+                crystallised_gain_or_loss_amount_after_initial_tax_relief =0
+            }
+
+                $("#investments_lossDeductibleAgainstIncome").val(crystallised_gain_or_loss_amount_after_initial_tax_relief).change();
+        })
+    </script>
+
+
+
+
+
+
+
     <script>
         {% if investment.eisSaleYear1 is not null and investment.eisSaleYear2 is not null %}
-        var investment_eisSaleYear1 =  "{{ investment.eISSaleYear1.taxYearRange }}";
-        var investment_eisSaleYear2 =  "{{ investment.eISSaleYear2.taxYearRange }}";
+        var investment_eisSaleYear1 = "{{ investment.eISSaleYear1.taxYearRange }}";
+        var investment_eisSaleYear2 = "{{ investment.eISSaleYear2.taxYearRange }}";
         $("#investments_eISSaleYear1").val(investment_eisSaleYear1).change();
         $("#investments_eISSaleYear2").val(investment_eisSaleYear2).change();
         {% endif %}
     </script>
+
+
     <script>
-        var company =  $("#investments_investmentCompany option:selected").val();
-        var url = '/admin/investments/ajax/company/assetclass/'+company;
-        $.get(url, function(data, status){
-            if(data.tax == 0){
+        var company = $("#investments_investmentCompany option:selected").val();
+        var url = '/admin/investments/ajax/company/assetclass/' + company;
+        $.get(url, function (data, status) {
+            if (data.tax == 0) {
                 $('.asset_class_dependent_tax').hide();
-            }
-            else{
+            } else {
                 $('.asset_class_dependent_tax').show();
             }
-            if(data.docs==0){
+            if (data.docs == 0) {
                 $('.asset_class_dependent_docs').hide();
-            }
-            else{
+            } else {
                 $('.asset_class_dependent_docs').show();
             }
         });
-        $("#investments_investmentCompany").change(function (){
-            var company =  $("#investments_investmentCompany option:selected").val();
-            var url = '/admin/investments/ajax/company/assetclass/'+company;
-            $.get(url, function(data, status){
+        $("#investments_investmentCompany").change(function () {
+            var company = $("#investments_investmentCompany option:selected").val();
+            var url = '/admin/investments/ajax/company/assetclass/' + company;
+            $.get(url, function (data, status) {
 
-                if(data.tax == 0){
+                if (data.tax == 0) {
                     $('.asset_class_dependent_tax').hide();
-                }
-                else{
+                } else {
                     $('.asset_class_dependent_tax').show();
                 }
-                if(data.docs==0){
+                if (data.docs == 0) {
                     $('.asset_class_dependent_docs').hide();
-                }
-                else{
+                } else {
                     $('.asset_class_dependent_docs').show();
                 }
             });
         });
 
-        {# var company = parseInt(company);#}
-        {#var test = "{{ Investment.assetClass(2) }}".replace(2,company);#}
-        {#alert(test);#}
+        {# var company = parseInt(company); #}
+        {# var test = "{{ Investment.assetClass(2) }}".replace(2,company); #}
+        {# alert(test); #}
     </script>
 {% endblock additionaljs %}
