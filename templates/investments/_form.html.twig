@@ -125,7 +125,7 @@
 
 
     <div class="col-md-3">
-        <h2>Sale</h2>
+        <h2>Sale</h2> Note: Income tax offset:{{ investment.taxScheme.saleIncomeOffset *100 }}%
         <div class="row">
             <div class="col-6">
                 {{ form_row(form.investmentSaleDate) }}

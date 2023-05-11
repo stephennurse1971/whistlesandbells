@@ -150,9 +150,10 @@
                 <td>{{ user.notes }}</td>
                 <td style="width: 200px">
                     {% set businessCountry = 'United Kingdom' %}
-                    {% if user.businessCountry is not null %}
+                    {% if user.businessCountry is not empty %}
                         {% set businessCountry = user.businessCountry %}
                     {% endif %}
+
                     <a class="btn btn-success btn-sm d-inline"
                        href="{{ path('recruiter_intro', {'authorId':app.user.id,
                            'recruiterId': user.id, 'recruiterCountry': businessCountry, 'editable':'editable'}) }}">Editable</a>

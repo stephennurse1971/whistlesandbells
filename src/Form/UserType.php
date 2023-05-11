@@ -145,6 +145,7 @@ class UserType extends AbstractType
                     'choices' => [
                         'Super-Admin' => 'ROLE_SUPER_ADMIN',
                         'Admin' => 'ROLE_ADMIN',
+                        'IT' => 'ROLE_IT',
                         'Family' => 'ROLE_FAMILY',
                         'HMRC' => 'ROLE_HMRC',
                         'Accountant' => 'ROLE_ACCOUNTANT',
