@@ -128,12 +128,12 @@ class InvestmentsController extends AbstractController
      */
     public function edit(Request $request, Investments $investment): Response
     {
+
         $investmentDate = new \DateTime('now');
         $investmentDate = $investmentDate->format('d-m-y');
         if ($investment->getInvestmentDate()) {
             $investmentDate = $investment->getInvestmentDate()->format('d-m-y');
         }
-
         $currency = $investment->getCurrency();
         $share_cert = $investment->getShareCert();
         $eis_cert = $investment->getEisCert();
@@ -147,7 +147,10 @@ class InvestmentsController extends AbstractController
         $form->handleRequest($request);
         $newFileNameSuffix = $investment->getInvestmentCompany()->getShareCompany() . "_" . $investment->getInvestmentAmount() . "_" . $investmentDate;
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+            $data_container = $_POST["investments"];
+            $investment->setInvestmentAmount($data_container['investmentAmount']);
+            $investment->setNumberOfShares($data_container['numberOfShares']);
             $share_cert = $form['shareCert']->getData();
             if ($share_cert) {
                 $share_cert_directory = $this->getParameter('investments_attachment_directory');
@@ -263,6 +266,16 @@ class InvestmentsController extends AbstractController
         $json_data = json_encode($asset_class);
         return new JsonResponse($asset_class);
     }
-
+    /**
+     * @Route("/investment/edit/{id}/test", name="investment_edit_test")
+     */
+    public function editTest( Investments $investments,EntityManagerInterface $manager): Response
+    {
+        $val = '80,000';
+       // $val = floatval(str_replace(',','',$val));
+        $investments->setInvestmentAmount($val);
+        $manager->flush();
+       return new Response($val);
+    }
 
 }
