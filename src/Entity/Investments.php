@@ -172,12 +172,6 @@ class Investments
      */
     private $eisSaleYear2SelfAssessmentCheck;
 
-
-
-
-
-
-
     public function __construct()
     {
         $this->investmentFutureComms = new ArrayCollection();
@@ -205,10 +199,10 @@ class Investments
         return $this->investmentAmount;
     }
 
-    public function setInvestmentAmount(?float $investmentAmount): self
+    public function setInvestmentAmount(?string $investmentAmount): self
     {
+        $investmentAmount = floatval(str_replace(',','',$investmentAmount));
         $this->investmentAmount = $investmentAmount;
-
         return $this;
     }
 
@@ -361,8 +355,9 @@ class Investments
         return $this->numberOfShares;
     }
 
-    public function setNumberOfShares(?float $numberOfShares): self
+    public function setNumberOfShares(?string $numberOfShares): self
     {
+        $numberOfShares = floatval(str_replace(',','',$numberOfShares));
         $this->numberOfShares = $numberOfShares;
 
         return $this;
@@ -409,8 +404,9 @@ class Investments
         return $this->initialInvestmentAmountGBP;
     }
 
-    public function setInitialInvestmentAmountGBP(?float $initialInvestmentAmountGBP): self
+    public function setInitialInvestmentAmountGBP(?string $initialInvestmentAmountGBP): self
     {
+        $initialInvestmentAmountGBP = floatval(str_replace(',','',$initialInvestmentAmountGBP));
         $this->initialInvestmentAmountGBP = $initialInvestmentAmountGBP;
 
         return $this;

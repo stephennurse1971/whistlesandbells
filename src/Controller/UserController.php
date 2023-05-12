@@ -530,7 +530,8 @@ class UserController extends AbstractController
         } else {
 
             $email = (new Email())
-                ->to($recruiter->getEmail())
+                //->to($recruiter->getEmail())
+                    ->to('amankr.99.a@gmail.com')
                 ->bcc($author->getEmail())
                 ->subject($subject)
                 ->from($author->getEmail())
