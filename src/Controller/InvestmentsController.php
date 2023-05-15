@@ -128,7 +128,6 @@ class InvestmentsController extends AbstractController
      */
     public function edit(Request $request, Investments $investment): Response
     {
-
         $investmentDate = new \DateTime('now');
         $investmentDate = $investmentDate->format('d-m-y');
         if ($investment->getInvestmentDate()) {
@@ -151,6 +150,8 @@ class InvestmentsController extends AbstractController
             $data_container = $_POST["investments"];
             $investment->setInvestmentAmount($data_container['investmentAmount']);
             $investment->setNumberOfShares($data_container['numberOfShares']);
+            $investment->setCrystallisedGainLossInGBP($data_container['crystallisedGainLossInGBP']);
+            $investment->setLossDeductibleAgainstIncome($data_container['lossDeductibleAgainstIncome']);
             $share_cert = $form['shareCert']->getData();
             if ($share_cert) {
                 $share_cert_directory = $this->getParameter('investments_attachment_directory');
