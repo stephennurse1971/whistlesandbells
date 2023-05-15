@@ -70,9 +70,11 @@
             {% set MTM_Total = 0 %}
             {% set PV_Total = 0 %}
             {% set CGT_Total = 0 %}
+            {% set totalLossDeductibleAgainstIncome = 0 %}
 
 
             {% for investment in investmentsAll %}
+                {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  investment.lossDeductibleAgainstIncome %}
 
                 {% if 1 == 1 %}
 {#                {% if investment.investmentCompany.assetClass.assetClass == asset_class.assetClass %}#}
@@ -88,7 +90,9 @@
                     {% set investmentChildID = 'investment'~investment.id %}
 
 
-                    <td>
+                    <td data-sort="{{ investment.id }}">
+                        {{ investment.id }} <br>
+                        {{ totalLossDeductibleAgainstIncome|number_format(0) }}<br>
                         <a target="_blank"
                            href="{{ path('asset_classes_edit',{'id':investment.investmentCompany.assetClass.id}) }}">{{ investment.investmentCompany.assetClass.assetClass }}</a>
                     </td>
@@ -444,9 +448,12 @@
                 </td>
 
                 <td style="border-bottom: black 1px"></td>
+                <td style="border-bottom: black 1px">Total..</td>
                 <td style="border-bottom: black 1px"></td>
-                <td style="border-bottom: black 1px"></td>
-                <td style="border-bottom: black 1px"></td>
+                <td style="border-bottom: black 1px">
+                    </b> {{ totalLossDeductibleAgainstIncome | number_format ('0') }}</b>
+
+                </td>
                 <td style="text-align: right; border-right:1px solid black">
                     </b> {{ CGT_Total | number_format ('0') }}</b>
                 </td>

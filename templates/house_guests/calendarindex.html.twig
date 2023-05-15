@@ -34,7 +34,7 @@
             <td style="text-align: center">
                 {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO/'~  date| date("Y-m-d") ~'?sort=bestflight_a&fs=stops=0' %}
                 {% for flight in flights %}
-                    {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO" %}
+                    {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO,LCA" %}
                         <a title="{{ flight.scrapeDate| date('d-M-Y') }}" target="_blank" href="{{ URL1 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
 
                     {% endif %}
@@ -43,7 +43,7 @@
             <td style="text-align: center">
                 {% set URL2 = 'https://www.kayak.co.uk/flights/PFO-LON/'~  date| date("Y-m-d") ~'?sort=bestflight_a&fs=stops=0' %}
                 {% for flight in flights %}
-                    {% if flight.date == date and flight.flightFrom=="PFO" and flight.flightTo =="LON" %}
+                    {% if flight.date == date and flight.flightFrom=="PFO,LCA" and flight.flightTo =="LON" %}
                         <a target="_blank" href="{{ URL1 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
                     {% endif %}
                 {% endfor %}

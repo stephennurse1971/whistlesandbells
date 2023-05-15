@@ -501,10 +501,10 @@ class Investments
         return $this->crystallisedGainLossInGBP;
     }
 
-    public function setCrystallisedGainLossInGBP(?float $crystallisedGainLossInGBP): self
+    public function setCrystallisedGainLossInGBP(?string $crystallisedGainLossInGBP): self
     {
+       $crystallisedGainLossInGBP =  floatval(str_replace(',','',$crystallisedGainLossInGBP));
         $this->crystallisedGainLossInGBP = $crystallisedGainLossInGBP;
-
         return $this;
     }
 
@@ -513,10 +513,10 @@ class Investments
         return $this->lossDeductibleAgainstIncome;
     }
 
-    public function setLossDeductibleAgainstIncome(float $lossDeductibleAgainstIncome): self
+    public function setLossDeductibleAgainstIncome(string $lossDeductibleAgainstIncome): self
     {
+        $lossDeductibleAgainstIncome = floatval(str_replace(',','',$lossDeductibleAgainstIncome));
         $this->lossDeductibleAgainstIncome = $lossDeductibleAgainstIncome;
-
         return $this;
     }
 

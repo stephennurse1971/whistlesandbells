@@ -28,7 +28,7 @@
             <th style="text-align: right; border-right:1px solid black">Sale Proceeds</th>
             {% for taxYear in taxYears %}
                 <th style="border-right:1px solid lightgray; text-align: right">
-                    <b>  {{ taxYear.taxYearRange }}</b>
+                    <b>{{ taxYear.taxYearRange }}</b>
                     {% for taxinput in taxinputs %}
                         {% if taxinput.year == taxYear and taxinput.selfAssessment is not empty %}
                             <a title="{{ taxinput.selfAssessment }}" target="_blank"
@@ -46,6 +46,7 @@
                         <div class="col-6">
                             Income
                         </div>
+                    </div>
                 </th>
             {% endfor %}
         </tr>
@@ -55,7 +56,7 @@
         {% for investment in investments %}
             {% set totalTaxOffset = 0 %}
             {% set totalIncomeOffset = 0 %}
-
+            {% set totalLossDeductibleAgainstIncome = 0 %}
             {% set currentFXRate = 0 %}
             {% for fxRate in fxRates %}
                 {% if investment.currency.fx == fxRate.fx %}
@@ -230,21 +231,17 @@
                                 {% endif %}
                             {% endif %}
 
-                            {#                            Loss on Sale #}
+
                             {% if investment.investmentSaleDate is not null %}
-                                {% set Loss =  (investment.purchaseSharePrice - investment.saleSharePrice )/investment.purchaseSharePrice %}
-                                {% set ClaimableLoss =  Loss -(investment.taxScheme.purchaseIncomeOffset + investment.taxScheme.purchaseTaxOffset) %}
-                                {% set ClaimableLossAmount = ClaimableLoss * investment.investmentAmount %}
 
                                 {% if investment.eisSaleYear1 == taxYear %}
-                                    {#                                    Loss: {{ Loss *100 }}% #}
-                                    {#                                    Claimable loss: {{ ClaimableLoss *100 }}% #}
-                                    {#                                    Claimable loss amount: £{{ ClaimableLossAmount }} #}
-                                    {% set incomeOffset = incomeOffset +  (investment.eISSaleYear1Percentage * ClaimableLossAmount/100) %}
+                                    {% set incomeOffset = incomeOffset +  (investment.eISSaleYear1Percentage * investment.lossDeductibleAgainstIncome/100) %}
+                                    {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  incomeOffset %}
                                 {% endif %}
 
                                 {% if investment.eisSaleYear2 == taxYear %}
-                                    {% set incomeOffset = incomeOffset +  (investment.eISSaleYear2Percentage * ClaimableLossAmount/100) %}
+                                    {% set incomeOffset = incomeOffset +  (investment.eISSaleYear2Percentage * investment.lossDeductibleAgainstIncome/100) %}
+                                    {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  incomeOffset %}
                                 {% endif %}
                             {% endif %}
 
@@ -270,9 +267,6 @@
                                     <i class="fa fa-question" style="color: gray"></i>
                                 {% endif %}
                             {% endif %}
-
-
-
 
                             {% set totalIncomeOffset = totalIncomeOffset + incomeOffset %}
                         </div>
@@ -344,9 +338,20 @@
                                     {% set totalIncomeOffset = totalIncomeOffset + incomeOffset %}
                                 {% endif %}
 
+                                {% if investment.eisSaleYear1 == taxYear %}
+                                    {% set incomeOffset = incomeOffset +  (investment.eISSaleYear1Percentage * investment.lossDeductibleAgainstIncome/100) %}
+                                    {% set totalIncomeOffset = totalIncomeOffset + incomeOffset %}
+                                {% endif %}
+
+                                {% if investment.eisSaleYear2 == taxYear %}
+                                    {% set incomeOffset = incomeOffset +  (investment.eISSaleYear2Percentage * investment.lossDeductibleAgainstIncome/100) %}
+                                    {% set totalIncomeOffset = totalIncomeOffset + incomeOffset %}
+                                {% endif %}
+
                             {% endfor %}
 
                             <b>{{ totalIncomeOffset|number_format('0') }}</b>
+
                         </div>
                     </div>
                 </td>
