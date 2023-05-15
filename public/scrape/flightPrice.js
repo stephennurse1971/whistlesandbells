@@ -3,7 +3,7 @@ const fs = require("fs");
 
 async function run() {
 
-    const browser = await puppeteer.launch({ headless: false, args:[
+    const browser = await puppeteer.launch({ headless: true, args:[
             '--start-maximized'
         ] });
     const page = await browser.newPage();
