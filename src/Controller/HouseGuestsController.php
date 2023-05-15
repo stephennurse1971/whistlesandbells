@@ -190,6 +190,7 @@ class HouseGuestsController extends AbstractController
      */
     public function getPrice(FlightPrice $flightPrice): Response
     {
+
        $flightPrice->getPrice_LON_PFO();
         $flightPrice->getPrice_PFO_LON();
       return $this->redirectToRoute('house_guests_index');
