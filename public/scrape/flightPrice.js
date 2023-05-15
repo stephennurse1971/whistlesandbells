@@ -12,8 +12,8 @@ async function run() {
         height: 1080,
         deviceScaleFactor: 1,
     });
-   // const url = process.argv[2];
-    const url = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0';
+    const url = process.argv[2];
+   // const url = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0';
     await page.goto(url);
     await page.waitForSelector('.Hv20-content .Hv20-value div span');
     let data = await page.evaluate(() => {
