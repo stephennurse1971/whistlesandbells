@@ -33,7 +33,7 @@ class InvestmentsController extends AbstractController
     public function index(string $grouping, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
     {
         if ($grouping == 'All') {
-           return $this->render('investments/indexAggregated.html.twig', [
+            return $this->render('investments/indexAggregated.html.twig', [
                 'investmentsCurrent' => $investmentsRepository->findBy([
                     'investmentSaleDate' => null
                 ]),
@@ -65,7 +65,7 @@ class InvestmentsController extends AbstractController
             ]);
 
 
-    }
+        }
     }
 
     /**
@@ -241,6 +241,25 @@ class InvestmentsController extends AbstractController
     }
 
     /**
+     * @Route("/investments_reset_self_assessment_checks", name="investments_reset_self_assessment_checks")
+     */
+    public function resetSelfAssessmentChecks(Request $request, InvestmentsRepository $investmentsRepository, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $all_investments = $investmentsRepository->findAll();
+        foreach ($all_investments as $investment) {
+            $investment->setEisPurchaseYear1SelfAssessmentCheck('');
+            $investment->setEisPurchaseYear2SelfAssessmentCheck('');
+            $investment->setEisSaleYear1SelfAssessmentCheck('');
+            $investment->setEisSaleYear2SelfAssessmentCheck('');
+            $entityManager->persist($investment);
+            $entityManager->flush($investment);
+        }
+
+        return $this->redirect($referer);
+    }
+
+    /**
      * @Route("/view/file/{filetype}/{id}", name="investment_viewfile", methods={"GET"})
      */
     public function investmentFileLaunch(string $filetype, Investments $investments): Response
@@ -252,8 +271,6 @@ class InvestmentsController extends AbstractController
         } elseif ($filetype == 'otherDocs') {
             $fileName = $investments->getOtherDocs();
         }
-
-
         $publicResourcesFolderPath = $this->getParameter('investments_attachment_directory');
         return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
     }
@@ -267,16 +284,17 @@ class InvestmentsController extends AbstractController
         $json_data = json_encode($asset_class);
         return new JsonResponse($asset_class);
     }
+
     /**
      * @Route("/investment/edit/{id}/test", name="investment_edit_test")
      */
-    public function editTest( Investments $investments,EntityManagerInterface $manager): Response
+    public function editTest(Investments $investments, EntityManagerInterface $manager): Response
     {
         $val = '80,000';
-       // $val = floatval(str_replace(',','',$val));
+        // $val = floatval(str_replace(',','',$val));
         $investments->setInvestmentAmount($val);
         $manager->flush();
-       return new Response($val);
+        return new Response($val);
     }
 
 }

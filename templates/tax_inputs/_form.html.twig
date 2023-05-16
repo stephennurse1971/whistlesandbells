@@ -15,7 +15,7 @@
         {% if tax_input.p11D is not empty %}
             <strong>
                 <a target="_blank"
-                   href="{{ path('taxdocument_viewfile',{ 'id': tax_input.id, 'filetype':'P11D' }) }}"> {{ tax_input.p11D }}  </a>
+                   href="{{ path('attachments_viewfile',{ 'id': tax_input.id, 'filetype':'P11D' }) }}"> {{ tax_input.p11D }}  </a>
             </strong><br>
 
             {% if tax_input.p11D is not empty %}
@@ -31,7 +31,7 @@
         {% if tax_input.p60 is not empty %}
             <strong>
                 <a target="_blank"
-                   href="{{ path('taxdocument_viewfile',{ 'id': tax_input.id, 'filetype':'P11D' }) }}"> {{ tax_input.p60 }}  </a>
+                   href="{{ path('attachments_viewfile',{ 'id': tax_input.id, 'filetype':'P11D' }) }}"> {{ tax_input.p60 }}  </a>
             </strong><br>
 
             {% if tax_input.p60 is not empty %}
@@ -47,7 +47,7 @@
         {% if tax_input.p45 is not empty %}
             <strong>
                 <a target="_blank"
-                   href="{{ path('taxdocument_viewfile',{ 'id': tax_input.id, 'filetype':'P11D' }) }}"> {{ tax_input.p45 }}  </a>
+                   href="{{ path('attachments_viewfile',{ 'id': tax_input.id, 'filetype':'P11D' }) }}"> {{ tax_input.p45 }}  </a>
             </strong><br>
 
             {% if tax_input.p45 is not empty %}
@@ -63,7 +63,7 @@
         {% if tax_input.selfAssessment is not empty %}
             <strong>
                 <a target="_blank"
-                   href="{{ path('taxdocument_viewfile',{ 'id': tax_input.id, 'filetype':'SelfAssessment' }) }}"> {{ tax_input.selfAssessment }}  </a>
+                   href="{{ path('attachments_viewfile',{ 'id': tax_input.id, 'filetype':'SelfAssessment' }) }}"> {{ tax_input.selfAssessment }}  </a>
             </strong><br>
 
             {% if tax_input.selfAssessment is not empty %}
