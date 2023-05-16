@@ -131,7 +131,6 @@
 
 
                     <!-- Nav Item #2 - Interests -->
-                    {% if is_granted('ROLE_GUEST') %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -146,14 +145,15 @@
                                 <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
                                 <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
                             </div>
-                        </li>
-                    {% endif %}
+                        </li> 
 
 
                     <!-- Nav Item #3 - Photos -->
+                    {% if is_granted('ROLE_GUEST') or is_granted('ROLE_FAMILY') %}
                     <li class="nav-item dropdown">
                         <a class="dropdown-item" href="{{ path('photos_index') }}">Photos</a>
                     </li>
+                    {% endif %}
 
                     <!-- Nav Item #4 - Come Visit -->
                     {% if is_granted('ROLE_GUEST') %}
