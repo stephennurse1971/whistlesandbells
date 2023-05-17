@@ -241,17 +241,17 @@ class InvestmentsController extends AbstractController
     }
 
     /**
-     * @Route("/investments_reset_self_assessment_checks", name="investments_reset_self_assessment_checks")
+     * @Route("/checkboxes/reset_self_assessment_checks", name="investments_reset_self_assessment_checks")
      */
     public function resetSelfAssessmentChecks(Request $request, InvestmentsRepository $investmentsRepository, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
         $all_investments = $investmentsRepository->findAll();
         foreach ($all_investments as $investment) {
-            $investment->setEisPurchaseYear1SelfAssessmentCheck('');
-            $investment->setEisPurchaseYear2SelfAssessmentCheck('');
-            $investment->setEisSaleYear1SelfAssessmentCheck('');
-            $investment->setEisSaleYear2SelfAssessmentCheck('');
+            $investment->setEisPurchaseYear1SelfAssessmentCheck('No');
+            $investment->setEisPurchaseYear2SelfAssessmentCheck('No');
+            $investment->setEisSaleYear1SelfAssessmentCheck('No');
+            $investment->setEisSaleYear2SelfAssessmentCheck('No');
             $entityManager->persist($investment);
             $entityManager->flush($investment);
         }
