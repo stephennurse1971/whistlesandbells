@@ -91,7 +91,7 @@ puppeteer.launch({ headless: 'new', args:[
     const fs = require('fs');
     //fs.writeFileSync('scrape/flightPrice.json',JSON.stringify(data));
 
-    //fs.writeFileSync('/var/www/html/stephennurse/public/scrape/flightPrice.json',JSON.stringify(data));
+    fs.writeFileSync('/var/www/html/stephennurse/public/scrape/flightPrice.json',JSON.stringify(data));
     console.log(data);
 
     browser.close();
