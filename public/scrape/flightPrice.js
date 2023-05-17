@@ -3,7 +3,7 @@ const fs = require("fs");
 
 async function run() {
 
-    const browser = await puppeteer.launch({ headless: true, args:[
+    const browser = await puppeteer.launch({ headless: 'new', args:[
             '--start-maximized'
         ] });
     const page = await browser.newPage();
@@ -12,9 +12,16 @@ async function run() {
         height: 1080,
         deviceScaleFactor: 1,
     });
-    const url = process.argv[2];
-   // const url = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0';
-    await page.goto(url);
+   // const url = process.argv[2];
+    const url = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0';
+    await page.goto(url, { waitUntil: 'networkidle0' });
+    await page.screenshot({
+        path: 'screenshot.jpg'
+    });
+    await page.click('.Iqt3-button-content');
+    await page.screenshot({
+        path: 'screenshot2.jpg'
+    });
     await page.waitForSelector('.Hv20-content .Hv20-value div span');
     let data = await page.evaluate(() => {
         let results = [];
@@ -25,7 +32,7 @@ async function run() {
         return results;
     });
     const fs = require('fs');
-    fs.writeFileSync('scrape/flightPrice.json',JSON.stringify(data));
+    fs.writeFileSync('public/scrape/flightPrice.json',JSON.stringify(data));
        browser.close();
        console.log(data);
 

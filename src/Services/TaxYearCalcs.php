@@ -51,45 +51,24 @@ class TaxYearCalcs
         foreach ($this->investmentRepository->findAll() as $investment ){
             if($investment->getEisPurchaseYear1()){
                 if($investment->getEisPurchaseYear1() == $taxYear){
-                    $income_offset = $income_offset + ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear1Percentage() * ($investment->getTaxScheme()->getPurchaseIncomeOffset()/100));
+                    $income_offset = $income_offset - ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear1Percentage() * ($investment->getTaxScheme()->getPurchaseIncomeOffset()/100));
                 }
             }
             if($investment->getEisPurchaseYear2()){
                 if($investment->getEisPurchaseYear2() == $taxYear){
-                    $income_offset = $income_offset + ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear2Percentage() * ($investment->getTaxScheme()->getPurchaseIncomeOffset()/100));
+                    $income_offset = $income_offset - ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear2Percentage() * ($investment->getTaxScheme()->getPurchaseIncomeOffset()/100));
                 }
             }
-
-//            {% if investment.investmentSaleDate is not null %}
-//            {% set Loss =  (investment.purchaseSharePrice - investment.saleSharePrice )/investment.purchaseSharePrice %}
-//            {% set ClaimableLoss =  Loss -(investment.taxScheme.purchaseIncomeOffset + investment.taxScheme.purchaseTaxOffset) %}
-//            {% set ClaimableLossAmount = ClaimableLoss * investment.investmentAmount %}
-//
-//            {% if investment.eisSaleYear1 == taxYear %}
-//            {#                                    Loss: {{ Loss *100 }}% #}
-//                {#                                    Claimable loss: {{ ClaimableLoss *100 }}% #}
-//                    {#                                    Claimable loss amount: £{{ ClaimableLossAmount }} #}
-//                        {% set incomeOffset = incomeOffset +  (investment.eISSaleYear1Percentage * ClaimableLossAmount/100) %}
-//                        {% endif %}
-//
-//                        {% if investment.eisSaleYear2 == taxYear %}
-//                        {% set incomeOffset = incomeOffset +  (investment.eISSaleYear2Percentage * ClaimableLossAmount/100) %}
-//                        {% endif %}
-//                        {% endif %}
-
-
 
             if($investment->getEisSaleYear1()){
                 if($investment->getEisSaleYear1() == $taxYear){
-                    $income_offset = $income_offset + ($investment->getInvestmentAmount() * $investment->getEISSaleYear1Percentage() * $investment->getTaxScheme()->getSaleIncomeOffset()/100);
+                    $income_offset = $income_offset + ($investment->getLossDeductibleAgainstIncome() * $investment->getEISSaleYear1Percentage()/100);
                 }
             }
 
-
-
             if($investment->getEisSaleYear2()){
-                if($investment->getEisPurchaseYear2() == $taxYear){
-                    $income_offset = $income_offset + ($investment->getInvestmentAmount() * $investment->getEISSaleYear2Percentage() * $investment->getTaxScheme()->getSaleIncomeOffset()/100);
+                if($investment->getEisSaleYear2() == $taxYear){
+                    $income_offset = $income_offset + ($investment->getLossDeductibleAgainstIncome() * $investment->getEISSaleYear2Percentage() /100);
                 }
             }
         }

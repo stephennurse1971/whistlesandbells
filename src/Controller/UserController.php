@@ -461,7 +461,8 @@ class UserController extends AbstractController
 
         $email = (new Email())
             ->from($sender)
-            ->to($user->getEmail())
+//            ->to($user->getEmail())
+            ->to('nurse_stephen@hotmail.com')
             ->bcc('nurse_stephen@hotmail.com')
             ->subject("Happy Christmas")
             ->html($html);

@@ -32,7 +32,7 @@ class HouseGuestsController extends AbstractController
     /**
      * @Route("/", name="house_guests_index", methods={"GET"})
      */
-    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository  $flightStatsRepository): Response
+    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository): Response
     {
         $date = new \DateTime('now');
         $month = $date->format('m');
@@ -56,7 +56,7 @@ class HouseGuestsController extends AbstractController
         return $this->render('house_guests/calendarindex.html.twig', [
             'house_guests' => $lists = $houseGuestPerDayList->guestList(),
             'dates' => $dates,
-            'flights'=>$flightStatsRepository->findAll()
+            'flights' => $flightStatsRepository->findAll()
         ]);
     }
 
@@ -96,10 +96,7 @@ class HouseGuestsController extends AbstractController
             $meetingEndTime = new \DateTime('now');
             $meetingEndTime->modify("+1 day");
             $fs = new Filesystem();
-
-//            temporary folder, it has to be writable
             $tmpFolder = $this->getParameter('temporary_attachment_directory');
-
             $recipient = 'nurse_stephen@hotmail.com';
             $subject = 'New guest booking' . ' - ' . $guest;
             $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
@@ -107,7 +104,8 @@ class HouseGuestsController extends AbstractController
                 ->to($recipient)
                 ->subject($subject)
                 ->from($senderEmail)
-                ->html($html)// ->attachFromPath($this->getParameter('temporary_attachment_directory')."meeting.ics")
+                ->html($html)
+                // ->attachFromPath($this->getParameter('temporary_attachment_directory')."meeting.ics")
             ;
             $mailer->send($email);
             return $this->redirectToRoute('house_guests_index');
@@ -152,7 +150,6 @@ class HouseGuestsController extends AbstractController
             $guest = $houseGuest->getGuestName()->getFullName();
             $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
             $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
-
             $recipient = 'nurse_stephen@hotmail.com';
             $subject = 'New guest booking' . ' - ' . $guest;
             $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
@@ -162,7 +159,6 @@ class HouseGuestsController extends AbstractController
                 ->from($senderEmail)
                 ->html($html);
             $mailer->send($email);
-
             return $this->redirectToRoute('house_guests_index');
         }
 
@@ -182,19 +178,16 @@ class HouseGuestsController extends AbstractController
             $entityManager->remove($houseGuest);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('house_guests_index');
     }
+
     /**
      * @Route("/flight/price/scrape/london-pfo", name="house_guests_flight_price_scrape_london_pfo")
      */
     public function getPrice(FlightPrice $flightPrice): Response
     {
-
-       $flightPrice->getPrice_LON_PFO();
+        $flightPrice->getPrice_LON_PFO();
         $flightPrice->getPrice_PFO_LON();
-      return $this->redirectToRoute('house_guests_index');
+        return $this->redirectToRoute('house_guests_index');
     }
-
-
 }
