@@ -53,7 +53,6 @@ class HouseGuestsController extends AbstractController
             $dates[] = new \DateTime($current_date->format('d-m-Y'));
             $current_date = new \DateTime($current_date->modify("+1 day")->format('d-m-Y'));
         }
-
         return $this->render('house_guests/calendarindex.html.twig', [
             'house_guests' => $lists = $houseGuestPerDayList->guestList(),
             'dates' => $dates,
