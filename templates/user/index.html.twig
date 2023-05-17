@@ -20,12 +20,10 @@
             <div class="col-4">
                 {% if FindUser.checkConflict %}
                     <a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Import
-                        from
-                        Outlook</a>
+                        from Outlook</a>
                 {% else %}
                     <a class="btn btn-outline-primary btn-sm" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import
-                        from
-                        Outlook</a>
+                        from Outlook</a>
                 {% endif %}
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
