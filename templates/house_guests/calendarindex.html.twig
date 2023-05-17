@@ -10,6 +10,8 @@
     {% if is_granted('ROLE_ADMIN') %}
         <a class="btn btn-outline-danger btn-sm" target="_blank"
            href="{{ path('settings_edit', {id: '1'}) }}">Settings</a>
+
+        <i title="Start date: {{ settings.flightStatsStartDate|date('d-M-Y') }}  Days: {{ settings.flightStatsDays }}" class="fa fa-info-circle"></i>
         <table class="table table-responsive">
         <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete All</a>
     {% endif %}
