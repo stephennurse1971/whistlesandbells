@@ -10,10 +10,13 @@
     {% if is_granted('ROLE_ADMIN') %}
         <a class="btn btn-outline-danger btn-sm" target="_blank"
            href="{{ path('settings_edit', {id: '1'}) }}">Settings</a>
+
+        <i title="Start date: {{ settings.flightStatsStartDate|date('d-M-Y') }}  Days: {{ settings.flightStatsDays }}" class="fa fa-info-circle"></i>
         <table class="table table-responsive">
         <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete All</a>
     {% endif %}
     <thead>
+    {% set departure = settings.flightStatsDepartureAirport %}
     <tr>
         <th>Date</th>
         <th><a target="_blank" href="{{ path('flight_stats_index') }}">From London</a></th>
@@ -37,7 +40,7 @@
 
         <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
         <td style="text-align: center">
-            {% set URL1 = 'https://www.kayak.co.uk/flights/LON,LCA-PFO/'~  date| date("Y-m-d") ~'?sort=bestflight_a&fs=stops=0' %}
+            {% set URL1 = 'https://www.kayak.co.uk/flights/LON-PFO,LCA/'~  date| date("Y-m-d") ~'?sort=bestflight_a&fs=stops=0' %}
             {% for flight in flights %}
                 {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO,LCA" %}
                     <a title="{{ flight.scrapeDate| date('d-M-Y') }}" target="_blank" href="{{ URL1 }}">From
@@ -47,7 +50,7 @@
             {% endfor %}
         </td>
         <td style="text-align: center">
-            {% set URL2 = 'https://www.kayak.co.uk/flights/PFO,LCA-LON/'~  date| date("Y-m-d") ~'?sort=bestflight_a&fs=stops=0' %}
+            {% set URL2 = 'https://www.kayak.co.uk/flights/LCA,PFO-LON/'~  date| date("Y-m-d") ~'?sort=bestflight_a&fs=stops=0' %}
             {% for flight in flights %}
                 {% if flight.date == date and flight.flightFrom=="PFO,LCA" and flight.flightTo =="LON" %}
                     <a target="_blank" href="{{ URL1 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>

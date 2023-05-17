@@ -8,6 +8,7 @@ use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\FlightStatsRepository;
 use App\Repository\HouseGuestsRepository;
+use App\Repository\SettingsRepository;
 use App\Repository\UserRepository;
 use App\Services\FlightPrice;
 use App\Services\HouseGuestPerDayList;
@@ -32,7 +33,7 @@ class HouseGuestsController extends AbstractController
     /**
      * @Route("/", name="house_guests_index", methods={"GET"})
      */
-    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository): Response
+    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository): Response
     {
         $date = new \DateTime('now');
         $month = $date->format('m');
@@ -52,11 +53,11 @@ class HouseGuestsController extends AbstractController
             $dates[] = new \DateTime($current_date->format('d-m-Y'));
             $current_date = new \DateTime($current_date->modify("+1 day")->format('d-m-Y'));
         }
-
         return $this->render('house_guests/calendarindex.html.twig', [
             'house_guests' => $lists = $houseGuestPerDayList->guestList(),
             'dates' => $dates,
-            'flights' => $flightStatsRepository->findAll()
+            'flights' => $flightStatsRepository->findAll(),
+            'settings' => $settingsRepository->find('1')
         ]);
     }
 
