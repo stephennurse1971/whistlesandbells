@@ -22,7 +22,7 @@
             Flight/travel details
         </li>
         <li>
-            Check I have your correct contact details in your <a target="_blank" href="{{ path('user_edit',{'id':app.user.id}) }}">profile.</a>
+            Check I have your correct contact details in your <a target="_blank" href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">profile.</a>
         </li>
         <br>
             {{ form_row(form.arrivalNotes) }}
