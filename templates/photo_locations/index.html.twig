@@ -11,7 +11,7 @@
             <th>Date</th>
             <th>Location</th>
             <th>Public/Private</th>
-            <th>Users <a target="_blank" href="{{path('user_index')}}">+</a>
+            <th>Users<a target="_blank" href="{{path('user_index')}}">+</a>
             </th>
             <th>Photos</th>
         </tr>
@@ -29,7 +29,7 @@
                    {% for user_id in photo_location.enabledUsers %}
                        {% set user = FindUser.getUser(user_id) %}
                        {% if user is not null %}
-                    <a href="{{ path('user_edit',{id:user.fullName}) }}" >  {{ user.fullName }}</a>
+                    <a href="{{ path('user_edit',{'fullName': user.fullName}) }}" >  {{ user.fullName }},</a>
                        {% endif %}
                     {% endfor %}
                 </td>
