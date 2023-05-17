@@ -72,8 +72,8 @@ puppeteer.launch({ headless: 'new', args:[
         height: 720,
         deviceScaleFactor: 1,
     });
-     const url = process.argv[2];
-   //const url = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0';
+    // const url = process.argv[2];
+   const url = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0';
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
     await page.waitForSelector('.vrY3');
