@@ -19,11 +19,12 @@ class FlightPrice
         while ($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()) {
             $date = $start_date->format('Y-m-d');
             $url = "https://www.kayak.co.uk/flights/LCA,PFO-LON/" . $date . "?sort=bestflight_a&fs=stops=0";
+            exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
 //            if($_ENV['APP_ENV']=='dev') {
 //                exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
 //            }
 //            else{
-                exec("node /var/www/html/stephennurse/public/scrape/flightPrice.js" . " " . $url . " 2>&1");
+               // exec("node /var/www/html/stephennurse/public/scrape/flightPrice.js" . " " . $url . " 2>&1");
 //            }sudo
             $file = $this->container->getParameter('scraper') . 'flightPrice.json';
             if (file_exists($file)) {
@@ -67,12 +68,13 @@ class FlightPrice
         while ($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()) {
             $dateR = $start_dateR->format('Y-m-d');
             $url = "https://www.kayak.co.uk/flights/LON-PFO,LCA/" . $dateR . "?sort=bestflight_a&fs=stops=0";
-            if($_ENV['APP_ENV']=='dev') {
-                exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
-            }
-            else{
-                exec("node /var/www/html/stephennurse/public/scrape/flightPrice.js" . " " . $url . " 2>&1");
-            }
+            exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
+//            if($_ENV['APP_ENV']=='dev') {
+//                exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
+//            }
+//            else{
+//                exec("node /var/www/html/stephennurse/public/scrape/flightPrice.js" . " " . $url . " 2>&1");
+//            }
             $file = $this->container->getParameter('scraper') . 'flightPrice.json';
             if (file_exists($file)) {
                 $file_content = file_get_contents($file);
