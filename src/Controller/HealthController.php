@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/health")
+ * @Route("/admin/health")
  */
 class HealthController extends AbstractController
 {

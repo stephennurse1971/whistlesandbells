@@ -12,7 +12,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class FileUploadController extends AbstractController
 {
     /**
-     * @Route("/file/upload", name="file_upload")
+     * @Route("/admin/fileupload", name="file_upload")
      */
     public function index(Request $request,SluggerInterface $slugger): Response
     {

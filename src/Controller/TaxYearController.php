@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/tax/year")
+ * @Route("/admin/taxyear")
  */
 class TaxYearController extends AbstractController
 {

@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * @Route("/garmin/files")
+ * @Route("/garminfiles")
  */
 class GarminFilesController extends AbstractController
 {

@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * @Route("/cms/photo")
+ * @Route("/admin/cmsphoto")
  */
 class CmsPhotoController extends AbstractController
 {
