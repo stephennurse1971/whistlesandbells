@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/todolist")
+ * @Route("/admin/todolist")
  * @IsGranted("ROLE_USER")
  *
  */

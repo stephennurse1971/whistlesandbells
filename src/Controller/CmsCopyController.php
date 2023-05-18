@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/cms/copy")
+ * @Route("/admin/cmscopy")
  */
 class CmsCopyController extends AbstractController
 {
