@@ -10,11 +10,11 @@
     {% if is_granted('ROLE_ADMIN') %}
         <a class="btn btn-outline-danger btn-sm" target="_blank"
            href="{{ path('settings_edit', {id: '1'}) }}">Settings</a>
-
-        <i title="Start date: {{ settings.flightStatsStartDate|date('d-M-Y') }}  Days: {{ settings.flightStatsDays }}" class="fa fa-info-circle"></i>
-        <table class="table table-responsive">
         <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete All</a>
     {% endif %}
+    <i title="Scrape range:- Start date: {{ settings.flightStatsStartDate|date('d-M-Y') }}, for {{ settings.flightStatsDays }} days" class="fa fa-info-circle"></i>
+    <table class="table table-responsive">
+
     <thead>
     {% set departure = settings.flightStatsDepartureAirport %}
     <tr>
@@ -43,7 +43,7 @@
         <td style="text-align: center">
             {% for flight in flights %}
                 {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO,LCA" %}
-                    {% set URL1 = "https://www.kayak.co.uk/flights/LCA,LON-PFO,LCA/"  ~ date|date('Y-m-d')  ~ "?sort=bestflight_a&fs=stops=0" %}
+                    {% set URL1 = "https://www.kayak.co.uk/flights/LON-PFO/"  ~ date|date('Y-m-d')  ~ "?sort=bestflight_a&fs=stops=0" %}
                     <a title="{{ flight.scrapeDate| date('d-M-Y') }}" target="_blank" href="{{ URL1 }}">From
                         £{{ flight.lowestPrice|number_format('0') }}</a>
                 {% endif %}
@@ -52,7 +52,7 @@
         <td style="text-align: center">
              {% for flight in flights %}
                 {% if flight.date == date and flight.flightFrom=="PFO,LCA" and flight.flightTo =="LON" %}
-                    {% set URL2 = "https://www.kayak.co.uk/flights/LON-PFO,LCA/" ~ date|date('Y-m-d')   ~"?sort=bestflight_a&fs=stops=0" %}
+                    {% set URL2 = "https://www.kayak.co.uk/flights/PFO-LON/" ~ date|date('Y-m-d')   ~"?sort=bestflight_a&fs=stops=0" %}
                     <a target="_blank" href="{{ URL2 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
                 {% endif %}
             {% endfor %}

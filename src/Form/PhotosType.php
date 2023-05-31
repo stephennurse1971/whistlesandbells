@@ -23,19 +23,28 @@ class PhotosType extends AbstractType
                 'choice_label' => 'location',
                 'required' => false,
                 'empty_data' => null,
-                'data'=>$options['location']
+                'data' => $options['location']
             ])
             ->add('photos', FileType::class, [
                 'multiple' => true,
                 'mapped' => false
-            ]);
-             }
+            ])
+            ->add('uploadedBy', EntityType::class, [
+                'class' => User::class,
+                'required' => false,
+                'choice_label'=>'fullName'
+            ])
+//            ->add('highPriority')
+            ->add('date')
+            ->add('email')
+        ;
+    }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Photos::class,
-            'location'=>null
+            'location' => null
         ]);
     }
 }

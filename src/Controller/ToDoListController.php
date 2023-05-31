@@ -18,8 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/admin/todolist")
- * @IsGranted("ROLE_USER")
+ * @Route("/todolist")
+ * @IsGranted("ROLE_IT")
  *
  */
 class ToDoListController extends AbstractController

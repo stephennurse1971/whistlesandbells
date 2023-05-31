@@ -42,9 +42,9 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: 'new', args:[
+puppeteer.launch({ headless: false, args:[
         '--start-maximized'
-    ] }).then(async browser => {
+    ],slowMO:500 }).then(async browser => {
 // async function run() {
 
     // const browser = await puppeteer.launch({ headless: 'new', args:[
@@ -73,7 +73,7 @@ puppeteer.launch({ headless: 'new', args:[
         deviceScaleFactor: 1,
     });
     // const url = process.argv[2];
-   const url = 'https://www.kayak.co.uk/flights/PFO-LON/2023-05-25?sort=bestflight_a&fs=stops=0';
+   const url = 'https://www.kayak.co.uk/flights/LON-PFO/2023-05-30?sort=bestflight_a&fs=stops=-0';
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
     await page.waitForSelector('.vrY3');

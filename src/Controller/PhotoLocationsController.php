@@ -10,9 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/photolocations")
+ * @IsGranted("ROLE_GUEST")
  */
 class PhotoLocationsController extends AbstractController
 {
@@ -21,9 +23,9 @@ class PhotoLocationsController extends AbstractController
      */
     public function index(PhotoLocationsRepository $photoLocationsRepository): Response
     {
+
         return $this->render('photo_locations/index.html.twig', [
             'photo_locations' => $photoLocationsRepository->findAll(),
-
         ]);
     }
 

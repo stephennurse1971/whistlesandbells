@@ -6,20 +6,25 @@ use App\Entity\Photos;
 use App\Form\PhotosType;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\PhotosRepository;
+use App\Repository\UserRepository;
 use App\Services\ImageResize;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 /**
- * @Route("/admin/photos")
+ * @Route("/photos")
+ * @IsGranted("ROLE_GUEST")
  */
 class PhotosController extends AbstractController
 {
     /**
      * @Route("/", name="photos_index", methods={"GET"})
+     * @IsGranted("ROLE_GUEST")
      */
     public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository): Response
     {
@@ -70,14 +75,14 @@ class PhotosController extends AbstractController
     /**
      * @Route("/new/{location}", name="photos_new", methods={"GET","POST"})
      */
-    public function new(string $location = null, Request $request, EntityManagerInterface $manager, PhotoLocationsRepository $locationsRepository): Response
+    public function new(string $location = null, Request $request, EntityManagerInterface $manager, PhotoLocationsRepository $locationsRepository, UserRepository $userRepository): Response
     {
-
+        $logged_user = $this->getUser();
+        $now = new \DateTime('now');
         $photo = new Photos();
         $form = $this->createForm(PhotosType::class, $photo, ['location' => $locationsRepository->findOneBy(['location' => $location])]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $photos = $form->get('photos')->getData();
             foreach ($photos as $single_photo) {
                 $photo_single = new Photos();
@@ -90,6 +95,10 @@ class PhotosController extends AbstractController
                    );
                    $photo_single->setLocation($photo->getLocation());
                    $photo_single->setPhotoFile($newFilename);
+                   $photo_single->setUploadedBy($logged_user);
+                   $photo_single->setDate($now);
+                   $photo_single->setEmail('0');
+                   $photo_single->setHighPriority(1);
                    $photo_single->setRotate(0);
                    $manager->persist($photo_single);
                    $manager->flush();

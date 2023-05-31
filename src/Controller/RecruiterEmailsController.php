@@ -5,14 +5,15 @@ namespace App\Controller;
 use App\Entity\RecruiterEmails;
 use App\Form\RecruiterEmailsType;
 use App\Repository\RecruiterEmailsRepository;
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/recruiteremails")
+ * @IsGranted("ROLE_JOB_APPLICANT")
  */
 class RecruiterEmailsController extends AbstractController
 {

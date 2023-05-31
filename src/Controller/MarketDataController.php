@@ -10,14 +10,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 /**
- * @Route("/admin/marketdata")
+ * @Route("/marketdata")
  */
 class MarketDataController extends AbstractController
 {
     /**
      * @Route("/", name="market_data_index", methods={"GET"})
+     * @IsGranted("ROLE_ACCOUNTANT")
      */
     public function index(MarketDataRepository $marketDataRepository, AssetClassesRepository $assetClassesRepository): Response
     {
