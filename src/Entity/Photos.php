@@ -36,6 +36,26 @@ class Photos
      */
     private $rotate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $uploadedBy;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $highPriority;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $email;
+
         public function __construct()
     {
       //  $this->person = new ArrayCollection();
@@ -78,6 +98,54 @@ class Photos
     public function setRotate(?bool $rotate): self
     {
         $this->rotate = $rotate;
+
+        return $this;
+    }
+
+    public function getUploadedBy(): ?User
+    {
+        return $this->uploadedBy;
+    }
+
+    public function setUploadedBy(?User $uploadedBy): self
+    {
+        $this->uploadedBy = $uploadedBy;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getHighPriority(): ?bool
+    {
+        return $this->highPriority;
+    }
+
+    public function setHighPriority(?bool $highPriority): self
+    {
+        $this->highPriority = $highPriority;
+
+        return $this;
+    }
+
+    public function getEmail(): ?bool
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?bool $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }

@@ -12,9 +12,11 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/admin/investment/futurecomms")
+ * @Route("investment/futurecomms")
+ * @IsGranted("ROLE_ACCOUNTANT")
  */
 class InvestmentFutureCommsController extends AbstractController
 {
@@ -31,22 +33,22 @@ class InvestmentFutureCommsController extends AbstractController
     /**
      * @Route("/new/{id}", name="investment_future_comms_new", methods={"GET","POST"})
      */
-    public function new(int $id,Request $request, InvestmentsRepository $investmentsRepository,MarketDataRepository $marketDataRepository): Response
+    public function new(int $id, Request $request, InvestmentsRepository $investmentsRepository, MarketDataRepository $marketDataRepository): Response
     {
 //        $investment = $investmentsRepository->find($id);
         $marketData = $marketDataRepository->find($id);
         $investmentFutureComm = new InvestmentFutureComms();
         $form = $this->createForm(InvestmentFutureCommsType::class, $investmentFutureComm, [
-           // 'investment'=>$investment,
-            'marketData'=>$marketData
+            // 'investment'=>$investment,
+            'marketData' => $marketData
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $attachments = $form->get('attachment')->getData();
             if ($attachments) {
-                $files_name=[];
-                foreach($attachments as $attachment) {
+                $files_name = [];
+                foreach ($attachments as $attachment) {
                     $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
 
                     $newFilename = $originalFilename . '.' . $attachment->guessExtension();
@@ -69,13 +71,10 @@ class InvestmentFutureCommsController extends AbstractController
         return $this->render('investment_future_comms/new.html.twig', [
             'investment_future_comm' => $investmentFutureComm,
             'form' => $form->createView(),
-           // 'investment' => $investment,
-            'marketData'=>$marketData
+            // 'investment' => $investment,
+            'marketData' => $marketData
         ]);
     }
-
-
-
 
 
     /**
@@ -99,8 +98,8 @@ class InvestmentFutureCommsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $attachments = $form->get('attachment')->getData();
             if ($attachments) {
-                $files_name=[];
-                foreach($attachments as $attachment) {
+                $files_name = [];
+                foreach ($attachments as $attachment) {
                     $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
 
                     $newFilename = $originalFilename . '.' . $attachment->guessExtension();
@@ -129,7 +128,7 @@ class InvestmentFutureCommsController extends AbstractController
      */
     public function delete(Request $request, InvestmentFutureComms $investmentFutureComm): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$investmentFutureComm->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $investmentFutureComm->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($investmentFutureComm);
             $entityManager->flush();

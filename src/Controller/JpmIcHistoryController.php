@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\JpmIcHistory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\StaticText;
 use App\Form\JpmIcHistoryType;
 use App\Repository\FileAttachmentsRepository;
@@ -18,6 +19,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/admin/jpmichistory")
+ * @IsGranted("ROLE_ACCOUNTANT")
  */
 class JpmIcHistoryController extends AbstractController
 {

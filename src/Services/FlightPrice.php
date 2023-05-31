@@ -14,11 +14,11 @@ class FlightPrice
     {
         $start_date = new \DateTime( $this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
         $day_increment = 1;
-        $flight_from = $this->settingsRepository->find('1')->getFlightStatsDepartureAirport();
-        $flight_to = 'PFO,LCA';
+        $flight_to = $this->settingsRepository->find('1')->getFlightStatsDepartureAirport();
+        $flight_from = 'PFO';
         while ($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()) {
             $date = $start_date->format('Y-m-d');
-            $url = "https://www.kayak.co.uk/flights/LCA,PFO-LON/" . $date . "?sort=bestflight_a&fs=stops=0";
+            $url = "https://www.kayak.co.uk/flights/STN,LTN,LGW-PFO,LCA/" . $date . "?sort=bestflight_a&fs=stops=0";
             exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
 //            if($_ENV['APP_ENV']=='dev') {
 //                exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
@@ -63,11 +63,11 @@ class FlightPrice
     {
         $start_dateR = new \DateTime( $this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
         $day_increment = 1;
-        $flight_from = 'PFO,LCA';
+        $flight_from = 'PFO';
         $flight_to = $this->settingsRepository->find('1')->getFlightStatsDepartureAirport();
         while ($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()) {
             $dateR = $start_dateR->format('Y-m-d');
-            $url = "https://www.kayak.co.uk/flights/LON-PFO,LCA/" . $dateR . "?sort=bestflight_a&fs=stops=0";
+            $url = "https://www.kayak.co.uk/flights/PFO,LCA-STN,LTN,LGW/" . $dateR . "?sort=bestflight_a&fs=stops=0";
             exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
 //            if($_ENV['APP_ENV']=='dev') {
 //                exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Investments;
 use App\Entity\TaxYear;
 use App\Entity\UkDays;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Form\InvestmentsType;
 use App\Repository\AssetClassesRepository;
 use App\Repository\FxRatesRepository;
@@ -23,7 +24,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/investments")
+ * @Route("/investments")
+ * @IsGranted("ROLE_ACCOUNTANT")
  */
 class InvestmentsController extends AbstractController
 {
