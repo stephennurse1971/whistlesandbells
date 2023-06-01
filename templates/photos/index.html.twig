@@ -46,8 +46,11 @@
             <thead>
             <tr>
                 <th style="width: 50px">Photo</th>
-                <th style="width: 50px">Date</th>
-                <th style="width: 250px">Location</th>
+                <th style="width: 150px">Date</th>
+                <th style="width: 150px">Location</th>
+                <th style="width: 150px">File Date</th>
+                <th style="width: 200px">Uploaded By</th>
+                <th style="width: 50px">Priority</th>
                 <th style="width: 250px">File</th>
                 <th style="width: 10px; text-align: center">Rotate</th>
                 <th style="width: 50px"></th>
@@ -68,6 +71,9 @@
                     </td>
                     <td>{{ photo.location.date|date('d-M-Y') }}</td>
                     <td>{{ photo.location.location }}</td>
+                    <td data-sort="{{ photo.date|date('Y-m-d') }}">{{ photo.date|date('d-M-Y') }}</td>
+                    <td>{{ photo.uploadedBy.fullName }}</td>
+                    <td>{{ photo.priority }}</td>
                     <td>{{ photo.photoFile }}</td>
                     <td style="text-align: center">
                         {% if is_granted('ROLE_ADMIN') %}

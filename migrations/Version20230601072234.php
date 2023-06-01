@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230531194649 extends AbstractMigration
+final class Version20230601072234 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20230531194649 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE photos DROP date');
+        $this->addSql('ALTER TABLE photos CHANGE `high_priority` priority TINYINT(1) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE photos ADD date DATE DEFAULT NULL');
+        $this->addSql('ALTER TABLE photos CHANGE priority `high_priority` TINYINT(1) DEFAULT NULL');
     }
 }
