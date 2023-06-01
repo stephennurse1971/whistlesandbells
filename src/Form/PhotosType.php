@@ -34,7 +34,7 @@ class PhotosType extends AbstractType
                 'required' => false,
                 'choice_label'=>'fullName'
             ])
-//            ->add('highPriority')
+            ->add('priority')
             ->add('date')
             ->add('email')
         ;

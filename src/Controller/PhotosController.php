@@ -97,8 +97,8 @@ class PhotosController extends AbstractController
                    $photo_single->setPhotoFile($newFilename);
                    $photo_single->setUploadedBy($logged_user);
                    $photo_single->setDate($now);
-                   $photo_single->setEmail('0');
-                   $photo_single->setHighPriority(1);
+                   $photo_single->setEmail(0);
+                   $photo_single->setPriority(1);
                    $photo_single->setRotate(0);
                    $manager->persist($photo_single);
                    $manager->flush();

@@ -19,8 +19,6 @@ class Photos
      */
     private $id;
 
-
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -42,19 +40,20 @@ class Photos
     private $uploadedBy;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $priority;
+
+    /**
      * @ORM\Column(type="date", nullable=true)
      */
     private $date;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $highPriority;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $email;
 
         public function __construct()
     {
@@ -114,29 +113,8 @@ class Photos
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
 
-    public function setDate(?\DateTimeInterface $date): self
-    {
-        $this->date = $date;
 
-        return $this;
-    }
-
-    public function getHighPriority(): ?bool
-    {
-        return $this->highPriority;
-    }
-
-    public function setHighPriority(?bool $highPriority): self
-    {
-        $this->highPriority = $highPriority;
-
-        return $this;
-    }
 
     public function getEmail(): ?bool
     {
@@ -149,5 +127,31 @@ class Photos
 
         return $this;
     }
+
+    public function getPriority(): ?bool
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(?bool $priority): self
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+
 
 }
