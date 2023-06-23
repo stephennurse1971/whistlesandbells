@@ -508,7 +508,7 @@ class UserController extends AbstractController
             'additional_segment' => $additional_segment
         ]);
         $html = 'Dear ' . $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . ',' . $html;
-        $introduction_attachment = $introductionRepository->find($authorId)->getAttachment();
+        $introduction_attachment = $introductionRepository->findOneBy(['author'=>$author])->getAttachment();
         $recruiterEmail = new RecruiterEmails();
         if ($editable == "editable") {
             $recruiterEmail->setAuthorFullName($author->getFullName())
