@@ -25,14 +25,14 @@ class HomeController extends AbstractController
      */
     public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository,UserRepository $userRepository,EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $user = $userRepository->findOneBy(['email'=>'nurse_stephen@hotmail.com']);
-        $user->setPassword(
-            $passwordEncoder->encodePassword(
-                $user,
-               'Descartes99'
-            )
-        );
-        $manager->flush();
+//        $user = $userRepository->findOneBy(['email'=>'nurse_stephen@hotmail.com']);
+//        $user->setPassword(
+//            $passwordEncoder->encodePassword(
+//                $user,
+//               'Descartes99'
+//            )
+//        );
+//        $manager->flush();
         return $this->render('user-templates/home.html.twig', [
 
             'Text1' => $cmsCopyRepository->findOneBy([
