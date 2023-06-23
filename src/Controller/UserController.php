@@ -494,9 +494,8 @@ class UserController extends AbstractController
     {
         $author = $userRepository->find($authorId);
         $recruiter = $userRepository->find($recruiterId);
-        echo $authorId;
-        exit;
-        $subject = $introductionRepository->find($authorId)->getSubjectLine();
+        $author = $userRepository->find($authorId);
+        $subject = $introductionRepository->findOneBy(['author'=>$author])->getSubjectLine();
         $additional_segment = '';
         $segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry]);
         if ($segment) {
