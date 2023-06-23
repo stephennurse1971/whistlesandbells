@@ -503,8 +503,8 @@ class UserController extends AbstractController
         }
         $html = $this->renderView('emails/recruiter_intro_email.html.twig', [
             'user' => $author,
-            'content1' => $introductionRepository->find($authorId)->getIntroductoryEmail(),
-            'content2' => $introductionRepository->find($authorId)->getIntroductoryEmail2(),
+            'content1' => $introductionRepository->findOneBy(['author'=>$author])->getIntroductoryEmail(),
+            'content2' => $introductionRepository->findOneBy(['author'=>$author])->getIntroductoryEmail2(),
             'additional_segment' => $additional_segment
         ]);
         $html = 'Dear ' . $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . ',' . $html;
