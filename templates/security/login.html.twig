@@ -30,9 +30,10 @@
         <br>
 
             {% if app.environment=='dev' %}
-                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i></button> <br>
-                <button onclick="fillForm2()"><i class="fa fa-info-circle text-danger"> </i></button> <br>
-                <button onclick="fillForm3()"><i class="fa fa-info-circle text-primary"> </i></button> <br>
+                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i></button> Stephen<br>
+                <button onclick="fillForm2()"><i class="fa fa-info-circle text-danger"> </i></button>Adam <br>
+                <button onclick="fillForm3()"><i class="fa fa-info-circle text-primary"> </i></button>Geoff <br>
+                <button onclick="fillForm4()"><i class="fa fa-info-circle text-primary"> </i></button>Sandra <br>
             {% endif %}
 
 
@@ -59,6 +60,12 @@
     <script>
         function fillForm3() {
             $("#inputEmail").val("geoff@thedecimalplace.co.uk").change();
+            $("#inputPassword").val("password").change();
+        }
+    </script>
+    <script>
+        function fillForm4() {
+            $("#inputEmail").val("sandram30@icloud.com").change();
             $("#inputPassword").val("password").change();
         }
     </script>

@@ -57,8 +57,6 @@ class UserImportGrapevineService
             $webPage = trim(strtolower($oneLineFromCsv[17]));
             $companyEmail = trim(strtolower($oneLineFromCsv[18])) . '3';
             $linkedIn = trim($oneLineFromCsv[21]);
-
-
             $businessAddress = $businessAddress1;
             if ($businessAddress2 != '') {
                 $businessAddress = $businessAddress . ', ' . $businessAddress2;
@@ -80,8 +78,6 @@ class UserImportGrapevineService
                    $recruitingAreaListPref[]=$area;
                }
             }
-
-
             if ($email == '') {
                 continue;
             }
