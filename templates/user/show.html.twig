@@ -5,7 +5,7 @@
 {% block body %}
     <h1 style="color: red"><span class="text-danger">{{ user.fullName }}</span></h1>
 
-{#    {{ include('user/_form.html.twig', {'button_label': 'Save (no welcome email)'}) }}#}
+    {{ include('user/_form.html.twig', {'button_label': 'Save (no welcome email)'}) }}
 
     <table class="table">
         <tbody>
@@ -27,7 +27,7 @@
 
     <a class="btn btn-outline-primary" href="{{ path('user_index') }}">Return to list</a>
 
-    <a class="btn btn-outline-danger" href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
+    <a class="btn btn-outline-danger" href="{{ path('user_edit', {'fullName': user.fullName}) }}">Edit</a>
 
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

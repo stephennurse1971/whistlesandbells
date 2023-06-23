@@ -16,8 +16,6 @@ use App\Repository\UserRepository;
 use App\Services\UserIsHouseGuest;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
-
-
 use JeroenDesloovere\VCard\VCard;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -26,19 +24,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/admin/user")
+ * @Route("/user")
  */
 class UserController extends AbstractController
 {
     /**
      * @Route("/", name="user_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(UserRepository $userRepository): Response
     {
@@ -51,6 +49,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/user_index_edited_since_download", name="user_index_edited_since_download", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexEditedSinceDowload(UserRepository $userRepository, StaticTextRepository $staticTextRepository): Response
     {
@@ -64,6 +63,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/addresses", name="user_index_addresses", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexAddresses(UserRepository $userRepository): Response
     {
@@ -86,6 +86,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/telnumbers", name="user_index_telnumbers", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexTelNumbers(UserRepository $userRepository): Response
     {
@@ -98,6 +99,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/role/{role}", name="user_role_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexRole(string $role, UserRepository $userRepository): Response
     {
@@ -111,6 +113,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/recruiters", name="user_index_recruiters", methods={"GET"})
+     * @Security("is_granted('ROLE_JOB_APPLICANT')")
      */
     public function indexRecruiters(UserRepository $userRepository, ProspectEmployerRepository $prospectEmployerRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
     {
@@ -125,6 +128,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/group/AX", name="user_ax", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
      */
     public function indexAX(UserRepository $userRepository): Response
     {
@@ -136,6 +141,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/group/Personal", name="user_personal", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexPersonal(UserRepository $userRepository): Response
     {
@@ -147,6 +153,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/group/FestiveMessage", name="user_festiveMessage", methods={"GET"})
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexFestiveMessage(UserRepository $userRepository): Response
     {
@@ -159,6 +166,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/group/Birthdays", name="user_birthdays", methods={"GET"})
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexBirthdays(UserRepository $userRepository): Response
     {
@@ -178,6 +186,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/delete_all_AX", name="user_delete_all_AX")
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteAllAXUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
@@ -195,6 +204,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/delete_all_Personal", name="user_delete_all_Personal")
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
@@ -211,6 +221,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/delete_all_non_admin", name="user_delete_all_non_admin")
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteAllNonAdminUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
@@ -228,6 +239,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/new", name="user_new", methods={"GET","POST"})
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -401,6 +413,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{userid}/invite-email", name="user_invite", methods={"GET"})
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function inviteEmail(int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
     {
@@ -445,6 +458,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{userid}/festive-email", name="user_festive_email", methods={"GET"})
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function festiveEmail(EntityManagerInterface $manager, int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
     {
@@ -476,7 +490,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
      */
-    public function recruiterInviteEmail(string $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository,
+    public function recruiterInviteEmail(string                 $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository,
                                          IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository, EntityManagerInterface $manager): Response
     {
         $author = $userRepository->find($authorId);
@@ -626,7 +640,7 @@ class UserController extends AbstractController
             ->addBirthday($user->getBirthday()->format('d-m-y'))
             ->addCompany($user->getCompany())
             ->addPhoneNumber($user->getBusinessPhone(), 'work')
-            ->addPhoneNumber($user->getMobile(), 'home')
+            // ->addPhoneNumber($user->getMobile(), 'home')
             ->addURL($user->getWebPage());
         $vcard->download();
         return new Response(null);
@@ -634,6 +648,7 @@ class UserController extends AbstractController
 
     /**
      * @Route ("/user/export/file/{Subset}", name="user_export" )
+     *  @Security("is_granted('ROLE_ADMIN')")
      */
     public function export(string $Subset, UserRepository $userRepository)
     {
