@@ -153,7 +153,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/group/FestiveMessage", name="user_festiveMessage", methods={"GET"})
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexFestiveMessage(UserRepository $userRepository): Response
     {
@@ -166,7 +166,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/group/Birthdays", name="user_birthdays", methods={"GET"})
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function indexBirthdays(UserRepository $userRepository): Response
     {
@@ -186,7 +186,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/delete_all_AX", name="user_delete_all_AX")
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteAllAXUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
@@ -204,7 +204,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/delete_all_Personal", name="user_delete_all_Personal")
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
@@ -221,7 +221,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/delete_all_non_admin", name="user_delete_all_non_admin")
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteAllNonAdminUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
@@ -239,7 +239,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin/new", name="user_new", methods={"GET","POST"})
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -413,7 +413,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{userid}/invite-email", name="user_invite", methods={"GET"})
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function inviteEmail(int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
     {
@@ -458,7 +458,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{userid}/festive-email", name="user_festive_email", methods={"GET"})
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function festiveEmail(EntityManagerInterface $manager, int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
     {
@@ -490,8 +490,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
      */
-    public function recruiterInviteEmail(string                 $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository,
-                                         IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository, EntityManagerInterface $manager): Response
+    public function recruiterInviteEmail(string $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository, IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository, EntityManagerInterface $manager): Response
     {
         $author = $userRepository->find($authorId);
         $recruiter = $userRepository->find($recruiterId);
@@ -648,7 +647,7 @@ class UserController extends AbstractController
 
     /**
      * @Route ("/user/export/file/{Subset}", name="user_export" )
-     *  @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function export(string $Subset, UserRepository $userRepository)
     {

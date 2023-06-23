@@ -53,6 +53,7 @@
         <h3><b>Access rights</b></h3>
         {{ form_row(form.password) }}
         {% if form.role is defined and form.inviteDate is defined %}
+            User ID: {{ user.id }}
             {{ form_row(form.role) }}
             {{ form_row(form.inviteDate) }}
         {% endif %}
