@@ -548,7 +548,8 @@ class UserController extends AbstractController
                 ->to($recruiter->getEmail())
                 ->bcc($author->getEmail())
                 ->subject($subject)
-                ->from($author->getEmail())
+                //->from($author->getEmail())
+                    ->from('stephen@stephen-nurse.com')
                 ->html($html);
             if ($introduction_attachment) {
                 $attachment_path = $this->getParameter('recruiter_introductions_attachments_directory') . "/" . $introduction_attachment;
