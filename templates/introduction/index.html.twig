@@ -22,7 +22,7 @@
         {% for introduction in introductions %}
             <tr>
                 <td><a href="{{ path('introduction_edit', {'id': introduction.id}) }}">{{ introduction.id }}</a></td>
-                <td>{{ introduction.author.fullName }}</td>
+                <td>{{ introduction.author.fullName }}-{{ introduction.author.id }}</td>
                 <td>{{ introduction.region }}</td>
                 <td>{{ introduction.areaOfInterest }}</td>
                 <td>{{ introduction.subjectLine }}</td>
