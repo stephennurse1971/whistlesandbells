@@ -48,15 +48,15 @@ class UserImportGrapevineService
             $businessAddressCounty = trim($oneLineFromCsv[11]);
             $businessAddressPostcode = trim($oneLineFromCsv[12]);
             $businessAddressCountry = trim($oneLineFromCsv[13]);
-            $email = trim(strtolower($oneLineFromCsv[14])) . '2';
+            $email = trim(strtolower($oneLineFromCsv[14]));
             $businessPhone = trim($oneLineFromCsv[15]);
             $businessPhone = str_replace([' ','.', "(0)", "-", "Switchboard", "+", "(", ")"], "", $businessPhone);
             if ($businessPhone != '') {
                 $businessPhone = "+" . $businessPhone;
             }
             $webPage = trim(strtolower($oneLineFromCsv[17]));
-            $companyEmail = trim(strtolower($oneLineFromCsv[18])) . '3';
-            $linkedIn = trim($oneLineFromCsv[21]);
+            $companyEmail = trim(strtolower($oneLineFromCsv[18])) ;
+            $linkedIn = trim($oneLineFromCsv[20]);
             $businessAddress = $businessAddress1;
             if ($businessAddress2 != '') {
                 $businessAddress = $businessAddress . ', ' . $businessAddress2;
@@ -72,7 +72,7 @@ class UserImportGrapevineService
             $recruitingArea = str_replace(", ",",",$recruitingArea);
             $recruitingArea = explode(',',$recruitingArea);
             $recruitingAreaList = ['Asset Management','Investment Banking', 'Fixed Income','Equities', 'Hedge Funds', 'Risk',
-                'Private Equity', 'CEOs','Compliance'];
+                'Private Equity', 'CEOs','Compliance', 'HR', 'Human Resources', 'Benefits'];
             foreach ($recruitingAreaList as $area){
                if(in_array($area,$recruitingArea)){
                    $recruitingAreaListPref[]=$area;

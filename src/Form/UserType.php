@@ -121,7 +121,10 @@ class UserType extends AbstractType
                         'Risk' => 'Risk',
                         'Private Equity' => 'PE',
                         'CEOs' => 'CEOs',
-                        'Compliance' => 'Compl'
+                        'Compliance' => 'Compl',
+                        'HR'=>'HR',
+                        'Human Resources'=>'Human Resources',
+                        'Benefits'=>'Benefits'
                     ],]);
         }
         if (in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
