@@ -264,6 +264,7 @@ class UserController extends AbstractController
 
             $firstName = $user->getFirstName();
             $lastName = $user->getLastName();
+            $email = $user->getEmail();
             $user->setFullName($firstName . ' ' . $lastName);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -273,7 +274,7 @@ class UserController extends AbstractController
             if ($form['sendEmail']->getData() == 1) {
                 $html = $this->renderView('emails/welcome_email.html.twig');
                 $email = (new Email())
-                    ->from('nurse_stephen@hotmail.com')
+                    ->from($email)
                     ->to($user->getEmail())
                     ->cc('nurse_stephen@hotmail.com')
                     ->subject("Welcome to SN's personal website")
@@ -495,7 +496,7 @@ class UserController extends AbstractController
         $author = $userRepository->find($authorId);
         $recruiter = $userRepository->find($recruiterId);
         $author = $userRepository->find($authorId);
-        $subject = $introductionRepository->findOneBy(['author'=>$author])->getSubjectLine();
+        $subject = $introductionRepository->findOneBy(['author' => $author])->getSubjectLine();
         $additional_segment = '';
         $segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry]);
         if ($segment) {
@@ -503,12 +504,12 @@ class UserController extends AbstractController
         }
         $html = $this->renderView('emails/recruiter_intro_email.html.twig', [
             'user' => $author,
-            'content1' => $introductionRepository->findOneBy(['author'=>$author])->getIntroductoryEmail(),
-            'content2' => $introductionRepository->findOneBy(['author'=>$author])->getIntroductoryEmail2(),
+            'content1' => $introductionRepository->findOneBy(['author' => $author])->getIntroductoryEmail(),
+            'content2' => $introductionRepository->findOneBy(['author' => $author])->getIntroductoryEmail2(),
             'additional_segment' => $additional_segment
         ]);
         $html = 'Dear ' . $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . ',' . $html;
-        $introduction_attachment = $introductionRepository->findOneBy(['author'=>$author])->getAttachment();
+        $introduction_attachment = $introductionRepository->findOneBy(['author' => $author])->getAttachment();
         $recruiterEmail = new RecruiterEmails();
         if ($editable == "editable") {
             $recruiterEmail->setAuthorFullName($author->getFullName())
@@ -548,8 +549,8 @@ class UserController extends AbstractController
                 ->to($recruiter->getEmail())
                 ->bcc($author->getEmail())
                 ->subject($subject)
-                //->from($author->getEmail())
-                    ->from('stephen@stephen-nurse.com')
+                ->from($author->getEmail())
+//                ->from('stephen@stephen-nurse.com')
                 ->html($html);
             if ($introduction_attachment) {
                 $attachment_path = $this->getParameter('recruiter_introductions_attachments_directory') . "/" . $introduction_attachment;
