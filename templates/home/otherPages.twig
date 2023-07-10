@@ -4,31 +4,15 @@
 
 {% block body %}
 
-    <!-- Start Css3 Preloader  -->
-    <section class="preloader">
-        {#        <div class="spinner"> #}
-        {#            <div class="bounce1"></div> #}
-        {#            <div class="bounce2"></div> #}
-        {#            <div class="bounce3"></div> #}
-        {#        </div> #}
-    </section>
-    <!-- End Css3 Preloader  -->
-
-    <!--Start breadcrumb Section  -->
-    <section id="default-breadcrumb">
-        <div class="breadcrumb-opacity"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-8 col-8">
-                    <div class="default-breadcrumb-title text-center">
+    <div class="container mt-5">
+        <div class="row">
+                <div class="col-12">
+                    <div class="d text-center  bg-primary">
                         <h4>{{ Text1.contentTitle|raw }}</h4>
                     </div>
                 </div>
-            </div>
         </div>
-    </section>
-    <!--End breadcrumb Section -->
-
+    </div>
 
     <!-- My Service section -->
     <section id="my-service-section" class="default-bg-white">
@@ -45,164 +29,204 @@
             </div>
 
 
- {#                                    <------------------ FIRST GROUP OF PHOTOS ---------------> #}
 
-            <div class="row service-margin">
-                <div class="col-lg-6 col-md-6">
-                    <div class="service-item text-center">
-                        <div class="col-lg-6 col-md-6">
-                            <h4><a target="_blank" href="{{ Text1.hyperlinks }}">{{ Text1.contentTitle|raw }}</a></h4>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text1.id}) }}">
-                                    <p>{{ Text1.contentText|raw }}  </p></a>
+            <div class="row">
+                <!------------------ FIRST GROUP OF PHOTOS --------------->
+                {% if Photo1.photo is empty %}
+                    <div class="col-md-12">
+                        <h4>
+                            {% if Text1.hyperlinks is empty %}
+                                {{ Text1.contentTitle|raw }}
                             {% else %}
-                                <p>{{ Text1.contentText|raw }}  </p>
+                                <a target="_blank" href="{{ Text1.hyperlinks }}">{{ Text1.contentTitle|raw }}</a>
                             {% endif %}
-                        </div>
+                        </h4>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text1.id}) }}"><p>{{ Text1.contentText|raw }}  </p></a>
+                        {% else %}
+                            <p>{{ Text1.contentText|raw }}</p>
+                        {% endif %}
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="service-item text-center">
-                        <div class="col-lg-6 col-md-6">
-                            {% if Photo1.photo is not null %}
-                                {% set loc = asset('administration/attachments/websitephotos')~"/"~Photo1.photo %}
-                                {% if Photo1.link is not null %}
-                                    <a target="_blank" href="{{ Photo1.link }}">
-                                        <img height="250" width="255" src="{{ loc }}"></a>
-                                {% else %}
-                                    <img height="250" width="255" src="{{ loc }}"></a>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {#                                    <------------------ SECOND GROUP OF PHOTOS ---------------> #}
-
-            <div class="row service-margin">
-                <div class="col-lg-6 col-md-6">
-                    <div class="service-item text-center">
-                        <div class="col-lg-6 col-md-6">
-                            <h4><a target="_blank" href="{{ Text2.hyperlinks }}">{{ Text2.contentTitle|raw }}</a></h4>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}">
-                                    <p>{{ Text2.contentText|raw }}  </p></a>
+                {% else %}
+                    <div class="col-md-6">
+                        <h4>
+                            {% if Text1.hyperlinks is empty %}
+                                {{ Text1.contentTitle|raw }}
                             {% else %}
-                                <p>{{ Text2.contentText|raw }}  </p>
+                                <a target="_blank" href="{{ Text1.hyperlinks }}">{{ Text1.contentTitle|raw }}</a>
+                            {% endif %}
+                        </h4>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text1.id}) }}">
+                                <p>{{ Text1.contentText|raw }}  </p></a>
+                        {% else %}
+                            <p>{{ Text1.contentText|raw }}  </p>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="justify-content-center d-flex">
+                        {% if Photo1.photo is not null %}
+                            {% set loc = asset('administration/attachments/websitephotos')~"/"~Photo1.photo %}
+                            {% if Photo1.link is not null %}
+                                <a target="_blank" href="{{ Photo1.link }}">
+                                    <img style="max-height: 100%;max-width: 100%;height: auto;width:auto" src="{{ loc }}"></a>
+                            {% else %}
+                                <img style="max-height: 100%;max-width: 100%;height: auto;width:auto"  src="{{ loc }}"></a>
                             {% endif %}
                         </div>
+                        {% endif %}
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="service-item text-center">
-                        <div class="col-lg-6 col-md-6">
+                {% endif %}
+                <!------------------ END FIRST GROUP OF PHOTOS --------------->
+                <!------------------ SECOND GROUP OF PHOTOS --------------->
+                {% if Photo2.photo is empty %}
+                    <div class="col-md-12">
+                        <h4>
+                            {% if Text2.hyperlinks is empty %}
+                                {{ Text2.contentTitle|raw }}
+                            {% else %}
+                                <a target="_blank" href="{{ Text2.hyperlinks }}">{{ Text2.contentTitle|raw }}</a>
+                            {% endif %}
+                        </h4>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}"><p>{{ Text2.contentText|raw }}  </p></a>
+                        {% else %}
+                            <p>{{ Text2.contentText|raw }}</p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="col-md-6">
+                        <h4>
+                            {% if Text2.hyperlinks is empty %}
+                                {{ Text2.contentTitle|raw }}
+                            {% else %}
+                                <a target="_blank" href="{{ Text2.hyperlinks }}">{{ Text2.contentTitle|raw }}</a>
+                            {% endif %}
+                        </h4>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}">
+                                <p>{{ Text2.contentText|raw }}  </p></a>
+                        {% else %}
+                            <p>{{ Text2.contentText|raw }}  </p>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="justify-content-center d-flex">
                             {% if Photo2.photo is not null %}
-                                {% set loc = asset('administration/attachments/websitephotos')~"/"~Photo2.photo %}
-                                {% if Photo2.link is not null %}
-                                    <a target="_blank" href="{{ Photo2.link }}">
-                                        <img height="250" width="255" src="{{ loc }}"></a>
-                                {% else %}
-                                    <img height="250" width="255" src="{{ loc }}"></a>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {#                                    <------------------ THIRD GROUP OF PHOTOS ---------------> #}
-
-
-            <div class="row service-margin">
-                <div class="col-lg-6 col-md-6">
-                    <div class="service-item text-center">
-                        <div class="col-lg-6 col-md-6">
-                            <h4><a target="_blank" href="{{ Text3.hyperlinks }}">{{ Text3.contentTitle|raw }}</a></h4>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}">
-                                    <p>{{ Text3.contentText|raw }}  </p></a>
+                            {% set loc = asset('administration/attachments/websitephotos')~"/"~Photo2.photo %}
+                            {% if Photo2.link is not null %}
+                                <a target="_blank" href="{{ Photo2.link }}">
+                                    <img style="max-height: 100%;max-width: 100%;height: auto;width:auto" src="{{ loc }}"></a>
                             {% else %}
-                                <p>{{ Text3.contentText|raw }}  </p>
+                                <img style="max-height: 100%;max-width: 100%;height: auto;width:auto"  src="{{ loc }}"></a>
                             {% endif %}
                         </div>
+                        {% endif %}
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="service-item text-center">
-                        <div class="col-lg-6 col-md-6">
+                {% endif %}
+                <!------------------ END SECOND GROUP OF PHOTOS --------------->
+                <!------------------ THIRD GROUP OF PHOTOS --------------->
+                {% if Photo3.photo is empty %}
+                    <div class="col-md-12">
+                        <h4>
+                            {% if Text3.hyperlinks is empty %}
+                                {{ Text3.contentTitle|raw }}
+                            {% else %}
+                                <a target="_blank" href="{{ Text3.hyperlinks }}">{{ Text3.contentTitle|raw }}</a>
+                            {% endif %}
+                        </h4>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}"><p>{{ Text3.contentText|raw }}  </p></a>
+                        {% else %}
+                            <p>{{ Text3.contentText|raw }}</p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="col-md-6">
+                        <h4>
+                            {% if Text3.hyperlinks is empty %}
+                                {{ Text3.contentTitle|raw }}
+                            {% else %}
+                                <a target="_blank" href="{{ Text3.hyperlinks }}">{{ Text3.contentTitle|raw }}</a>
+                            {% endif %}
+                        </h4>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}">
+                                <p>{{ Text3.contentText|raw }}  </p></a>
+                        {% else %}
+                            <p>{{ Text3.contentText|raw }}  </p>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="justify-content-center d-flex">
                             {% if Photo3.photo is not null %}
-                                {% set loc = asset('administration/attachments/websitephotos')~"/"~Photo3.photo %}
-                                {% if Photo3.link is not null %}
-                                    <a target="_blank" href="{{ Photo3.link }}">
-                                        <img height="250" width="255" src="{{ loc }}"></a>
-                                {% else %}
-                                    <img height="250" width="255" src="{{ loc }}"></a>
-                                {% endif %}
+                            {% set loc = asset('administration/attachments/websitephotos')~"/"~Photo3.photo %}
+                            {% if Photo3.link is not null %}
+                                <a target="_blank" href="{{ Photo3.link }}">
+                                    <img style="max-height: 100%;max-width: 100%;height: auto;width:auto" src="{{ loc }}"></a>
+                            {% else %}
+                                <img style="max-height: 100%;max-width: 100%;height: auto;width:auto"  src="{{ loc }}"></a>
                             {% endif %}
                         </div>
+                        {% endif %}
                     </div>
-                </div>
+                {% endif %}
+                <!------------------ END THIRD GROUP OF PHOTOS --------------->
+                <!------------------ END PHOTOS --------------->
+
+
             </div>
-            {#                                    <------------------ END PHOTOS ---------------> #}
+
+
 
         </div>
-        <!--  Default space  -->
-        <div class="default-space"></div>
-        <!--  Default space  -->
+
     </section>
 
 
-    <!-- My Service section -->
-        <!-- My Service All Items -->
-        <section id="my-service-customer" class="default-bg-grey">
-            <!--  Default space  -->
-            <div class="default-space"></div>
-            <!--  Default space  -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="defult-title">
-                            <h4>More details</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-12">
-                        <div class="service-customer">
-                            <p>{{ Text2.contentTitle|raw }}</p>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="user-service-list">
-                                        <ul>
-                                            <li><span><i class="icofont icofont-check"></i></span>{{ Text2.contentTitle|raw }}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12">
-                        <div class="marketing-section">
-                            {% set loc = asset('administration/attachments/websitephotos')~"/"~Photo1.photo %}
-                           xx <img height="270" width="555" src="{{ loc }}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-    <!--  Default space  -->
-    <div class="default-space"></div>
-    <!--  Default space  -->
-    </section>
     <!-- My Service All Items -->
+{#    <section id="my-service-customer" class="default-bg-grey">#}
+{#        <!--  Default space  -->#}
+{#        <div class="default-space"></div>#}
+{#        <!--  Default space  -->#}
+{#        <div class="container">#}
+{#            <div class="row">#}
+{#                <div class="col-lg-12 col-md-12 col-sm-12 col-12">#}
+{#                    <div class="defult-title">#}
+{#                        <h4>More details</h4>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="row">#}
+{#                <div class="col-lg-6 col-md-12">#}
+{#                    <div class="service-customer">#}
+{#                        <p>{{ Text2.contentTitle|raw }}</p>#}
+{#                        <div class="row">#}
+{#                            <div class="col-sm-6">#}
+{#                                <div class="user-service-list">#}
+{#                                    <ul>#}
+{#                                        <li>#}
+{#                                            <span><i class="icofont icofont-check"></i></span>{{ Text2.contentTitle|raw }}#}
+{#                                        </li>#}
+{#                                    </ul>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="col-lg-6 col-md-12">#}
+{#                    <div class="marketing-section">#}
+{#                        {% set loc = asset('administration/attachments/websitephotos')~"/"~Photo1.photo %}#}
+{#                        <img height="270" width="555" src="{{ loc }}">#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+
+    </section>
+
 
 
 
 {% endblock %}
-
-{#<span class="service-icon"><i class="icofont icofont-dashboard-web"></i></span>#}
-{#<span class="service-icon"><i class="icofont icofont-web"></i></span>#}
-{#<span class="service-icon"><i class="icofont icofont-stock-mobile"></i></span> #}

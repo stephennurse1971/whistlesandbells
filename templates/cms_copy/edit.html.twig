@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CMS: {{ cms_copy.contentTitle }}{% endblock %}
+{% block title %}CMS: {{ cms_copy.name }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: {{ cms_copy.contentTitle }}</h1>
+    <h1 style="color: red">Edit: {{ cms_copy.name }}</h1>
 
     {{ include('cms_copy/_form.html.twig', {'button_label': 'Update'}) }}
 

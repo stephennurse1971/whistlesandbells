@@ -26,10 +26,12 @@
                 {% if cms_photo.sitePage == site_page %}
                     <tr>
                         <td>
-                            {% set loc = asset('administration/attachments/websitephotos')~"/"~cms_photo.photo %}
-                            <a class="btn btn-outline-danger btn-sm" target="_blank"
-                               href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">
-                                <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                            {% if cms_photo.photo is not empty %}
+                                {% set loc = asset('administration/attachments/websitephotos')~"/"~cms_photo.photo %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                            {% endif %}
                         </td>
                         <td>
                             <a target="_blank"
@@ -53,9 +55,11 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a style="text-align: center" title="{{ cms_photo.photo }}" target="_blank"
-                               href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}"><i
-                                        class="fas fa-paperclip"></i></a>
+                            {% if cms_photo.photo is not empty %}
+                                <a style="text-align: center" title="{{ cms_photo.photo }}" target="_blank"
+                                   href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}"><i
+                                            class="fas fa-paperclip"></i></a>
+                            {% endif %}
                         </td>
                         <td><a class="btn btn-outline-danger btn-sm" target="_blank"
                                href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a></td>

@@ -489,91 +489,91 @@ class UserController extends AbstractController
     }
 
 
-    /**
-     * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
-     */
-    public function recruiterInviteEmail(string $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository, IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository, EntityManagerInterface $manager): Response
-    {
-        $author = $userRepository->find($authorId);
-        $recruiter = $userRepository->find($recruiterId);
-        $author = $userRepository->find($authorId);
-        $subject = $introductionRepository->findOneBy(['author' => $author])->getSubjectLine();
-        $additional_segment = '';
-        $segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry]);
-        if ($segment) {
-            $additional_segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry])->getEmailSegment();
-        }
-        $html = $this->renderView('emails/recruiter_intro_email.html.twig', [
-            'user' => $author,
-            'content1' => $introductionRepository->findOneBy(['author' => $author])->getIntroductoryEmail(),
-            'content2' => $introductionRepository->findOneBy(['author' => $author])->getIntroductoryEmail2(),
-            'additional_segment' => $additional_segment
-        ]);
-        $html = 'Dear ' . $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . ',' . $html;
-        $introduction_attachment = $introductionRepository->findOneBy(['author' => $author])->getAttachment();
-        $recruiterEmail = new RecruiterEmails();
-        if ($editable == "editable") {
-            $recruiterEmail->setAuthorFullName($author->getFullName())
-                ->setSendBccFullName($author->getFullName())
-                ->setSendToFullName($recruiter->getFullName())
-                ->setSendDate(new \DateTime('now'));
-            $recruiterEmail->setAuthor($author->getEmail())
-                ->setSendTo($recruiter->getEmail())
-                ->setSendBcc($author->getEmail())
-                ->setSubject($subject)
-                ->setBody($html)
-                ->setAttachment($introduction_attachment);
-            $form = $this->createForm(RecruiterEmailsType::class, $recruiterEmail);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
+        /**
+         * @Route("/{authorId}/{recruiterId}/{recruiterCountry}/{editable}/recruiter_intro_email", name="recruiter_intro", methods={"GET","POST"})
+         */
+        public function recruiterInviteEmail(string $recruiterCountry, int $authorId, int $recruiterId, string $editable, MailerInterface $mailer, Request $request, UserRepository $userRepository, IntroductionRepository $introductionRepository, IntroductionSegmentRepository $introductionSegmentRepository, EntityManagerInterface $manager): Response
+        {
+            $author = $userRepository->find($authorId);
+            $recruiter = $userRepository->find($recruiterId);
+            $author = $userRepository->find($authorId);
+            $subject = $introductionRepository->findOneBy(['author' => $author])->getSubjectLine();
+            $additional_segment = '';
+            $segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry]);
+            if ($segment) {
+                $additional_segment = $introductionSegmentRepository->findOneBy(['user' => $author, 'country' => $recruiterCountry])->getEmailSegment();
+            }
+            $html = $this->renderView('emails/recruiter_intro_email.html.twig', [
+                'user' => $author,
+                'content1' => $introductionRepository->findOneBy(['author' => $author])->getIntroductoryEmail(),
+                'content2' => $introductionRepository->findOneBy(['author' => $author])->getIntroductoryEmail2(),
+                'additional_segment' => $additional_segment
+            ]);
+            $html = 'Dear ' . $recruiter->getSalutation() . ' ' . $recruiter->getLastName() . ',' . $html;
+            $introduction_attachment = $introductionRepository->findOneBy(['author' => $author])->getAttachment();
+            $recruiterEmail = new RecruiterEmails();
+            if ($editable == "editable") {
+                $recruiterEmail->setAuthorFullName($author->getFullName())
+                    ->setSendBccFullName($author->getFullName())
+                    ->setSendToFullName($recruiter->getFullName())
+                    ->setSendDate(new \DateTime('now'));
+                $recruiterEmail->setAuthor($author->getEmail())
+                    ->setSendTo($recruiter->getEmail())
+                    ->setSendBcc($author->getEmail())
+                    ->setSubject($subject)
+                    ->setBody($html)
+                    ->setAttachment($introduction_attachment);
+                $form = $this->createForm(RecruiterEmailsType::class, $recruiterEmail);
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $email = (new Email())
+                        ->to($recruiter->getEmail())
+                        ->bcc($author->getEmail())
+                        ->subject($recruiterEmail->getSubject())
+                        ->from($author->getEmail())
+                        ->html($recruiterEmail->getBody());
+                    if ($introduction_attachment) {
+                        $attachment_path = $this->getParameter('recruiter_introductions_attachments_directory') . "/" . $introduction_attachment;
+                        $email->attachFromPath($attachment_path);
+                    }
+                    $mailer->send($email);
+                    $manager->persist($recruiterEmail);
+                    $manager->flush();
+                    return $this->redirectToRoute("recruiter_emails_index");
+                }
+                return $this->render("recruiter_emails/new.html.twig", [
+                    'form' => $form->createView(),
+                ]);
+            } else {
+    
                 $email = (new Email())
                     ->to($recruiter->getEmail())
                     ->bcc($author->getEmail())
-                    ->subject($recruiterEmail->getSubject())
+                    ->subject($subject)
                     ->from($author->getEmail())
-                    ->html($recruiterEmail->getBody());
+                    ->html($html);
                 if ($introduction_attachment) {
                     $attachment_path = $this->getParameter('recruiter_introductions_attachments_directory') . "/" . $introduction_attachment;
                     $email->attachFromPath($attachment_path);
                 }
+                $recruiterEmail
+                    ->setSendTo($recruiter->getEmail())
+                    ->setSendToFullName($recruiter->getFullName())
+                    ->setSendBcc($author->getEmail())
+                    ->setsendBccFullName($author->getFullName())
+                    ->setAuthor($author->getEmail())
+                    ->setauthorFullName($author->getFullName())
+                    ->setSubject($subject)
+                    ->setSendDate(new \DateTime('now'))
+                    ->setBody($html)
+                    ->setAttachment($introduction_attachment);
                 $mailer->send($email);
                 $manager->persist($recruiterEmail);
                 $manager->flush();
-                return $this->redirectToRoute("recruiter_emails_index");
+                $referer = $request->headers->get('referer');
+                return $this->redirect($referer);
             }
-            return $this->render("recruiter_emails/new.html.twig", [
-                'form' => $form->createView(),
-            ]);
-        } else {
-
-            $email = (new Email())
-                ->to($recruiter->getEmail())
-                ->bcc($author->getEmail())
-                ->subject($subject)
-                ->from($author->getEmail())
-                ->html($html);
-            if ($introduction_attachment) {
-                $attachment_path = $this->getParameter('recruiter_introductions_attachments_directory') . "/" . $introduction_attachment;
-                $email->attachFromPath($attachment_path);
-            }
-            $recruiterEmail
-                ->setSendTo($recruiter->getEmail())
-                ->setSendToFullName($recruiter->getFullName())
-                ->setSendBcc($author->getEmail())
-                ->setsendBccFullName($author->getFullName())
-                ->setAuthor($author->getEmail())
-                ->setauthorFullName($author->getFullName())
-                ->setSubject($subject)
-                ->setSendDate(new \DateTime('now'))
-                ->setBody($html)
-                ->setAttachment($introduction_attachment);
-            $mailer->send($email);
-            $manager->persist($recruiterEmail);
-            $manager->flush();
-            $referer = $request->headers->get('referer');
-            return $this->redirect($referer);
         }
-    }
 
     /**
      * @Route("/recruiter/email/CV/", name="recruiter_email_CV", methods={"GET","POST"})

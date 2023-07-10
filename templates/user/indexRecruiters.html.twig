@@ -4,13 +4,27 @@
     <h1><span class="text-danger">Recruiters</span></h1>
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <div class="col-5">
-            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users (excl
-                Admin)</a>
-            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl
-                Admin)</a>
-            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users
-                (excl Admin) </a>
+        <div class="row">
+            <div class="col-5">
+                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users (excl
+                    Admin)</a>
+                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl
+                    Admin)</a>
+                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users
+                    (excl Admin) </a>
+            </div>
+
+            <div class="col-2">
+            </div>
+            <div class="col-4">
+                <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
+                <a class="btn btn-primary mt-3" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import from
+                    Outlook</a>
+                <a class="btn btn-secondary mt-3" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import from
+                    Grapevine
+                    (Recruiters)</a>
+                <a href="https://www.datagrapevine.com/recruitment/welcome">Grapevine</a>
+            </div>
         </div>
     {% endif %}
 
@@ -165,7 +179,8 @@
                     {% for recruiterEmail in recruiterEmails %}
                         {% if recruiterEmail.Author == app.user.email and recruiterEmail.sendToFullName == user.fullName %}
                             <a target="_blank"
-                               href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-Y H:i') }}</a> <br>
+                               href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-Y H:i') }}</a>
+                            <br>
                         {% endif %}
                     {% endfor %}
                 </td>
@@ -182,8 +197,7 @@
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <td>{{ user.plainPassword }}</td>
                     <td>
-                        <form class="d-inline" method="post" action="{{ path('user_delete', {'id': user.id}) }}"
-                              onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <form class="d-inline" method="post" action="{{ path('user_delete', {'id': user.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
                             <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                         </form>
@@ -197,13 +211,7 @@
         </tbody>
     </table>
 
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
-        <a class="btn btn-primary mt-3" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import from Outlook</a>
-        <a class="btn btn-secondary mt-3" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import from Grapevine
-            (Recruiters)</a>
-        <a href="https://www.datagrapevine.com/recruitment/welcome">Grapevine</a>
-    {% endif %}
+
     <br>
     <br>
 {% endblock %}

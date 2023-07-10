@@ -36,14 +36,18 @@
                         <td>{{ (cms_copy.contentText |slice (0, 250))|raw }}</td>
                         <td>
                             {% if cms_copy.contentTextFR is not empty %}
-                                <img title="{{ (cms_copy.contentTextFR |slice (0, 250))|raw }}"
+                                {% set title = cms_copy.contentTextFR|raw %}
+                                <img title="{{ title}}"
                                      src="{{ asset('administration/img/flag/french.png') }}" height="30px" width="20px">
                             {% endif %}
+
                             {% if cms_copy.contentTextDE is not empty %}
-                                <img title="{{ (cms_copy.contentTextFR |slice (0, 250))|raw }}"
+                                <img title="{{ (cms_copy.contentTextDE|raw)   }}"
                                      src="{{ asset('administration/img/flag/german.png') }}" height="30px" width="20px">
                             {% endif %}
                         </td>
+
+
                         <td>
                             {% if  cms_copy.hyperlinks is not empty %}
                                 {% if  cms_copy.hyperlinks starts with 'http' %}
