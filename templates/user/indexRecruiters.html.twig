@@ -62,7 +62,7 @@
             <tr>
                 <td>{{ user.salutation }}</td>
                 <td>
-                    {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
+                    {% if is_granted('ROLE_SUPER_ADMIN')   %}
                         <b><a target="_blank"
                               href="{{ path('user_edit', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
                     {% else %}
