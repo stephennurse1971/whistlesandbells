@@ -10,12 +10,11 @@
 <div class="row">
     <div class="col-md-3">
         {{ form_row(form.name) }}
+        {{ form_row(form.pageTitle) }}
+        {{ form_row(form.hyperlinks) }}
     </div>
     <div class="col-md-3">
         {{ form_row(form.sitePage) }}
-    </div>
-    <div class="col-md-3">
-        {{ form_row(form.hyperlinks) }}
     </div>
 </div>
 
@@ -36,21 +35,24 @@
 
 <h2>Content</h2>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-10">
         {{ form_row(form.contentText) }}
     </div>
-    <div class="col-md-3">
+</div>
+<div class="row">
+    <div class="col-md-10">
         {{ form_row(form.contentTextFR) }}
     </div>
-    <div class="col-md-3">
+</div>
+<div class="row">
+    <div class="col-md-10">
         {{ form_row(form.contentTextDE) }}
     </div>
 </div>
+</div>
 
 
-
-
-<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 
 {% block additionaljs %}

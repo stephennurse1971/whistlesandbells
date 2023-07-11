@@ -33,7 +33,7 @@ class HomeController extends AbstractController
 //            )
 //        );
 //        $manager->flush();
-        return $this->render('user-templates/home.html.twig', [
+        return $this->render('home/home.html.twig', [
 
             'Text1' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePage1'
@@ -108,6 +108,17 @@ class HomeController extends AbstractController
             ]),
         ]);
     }
+
+
+    /**
+     * @Route("/test_page", name="test_page")
+     */
+    public function testPage(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository,UserRepository $userRepository,EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        return $this->render('home/test.html.twig');
+    }
+
+
 
     /**
      * @Route("/aboutSN", name="aboutSN", methods={"GET"})

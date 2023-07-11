@@ -17,6 +17,7 @@ class CmsCopyType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('pageTitle')
             ->add('sitePage', ChoiceType::class, [
                 'multiple' => false,
                 'expanded' => true,
