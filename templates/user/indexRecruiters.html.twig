@@ -62,12 +62,11 @@
             <tr>
                 <td>{{ user.salutation }}</td>
                 <td>
-                    {% if is_granted('ROLE_SUPER_ADMIN')   %}
+                    {% if is_granted('ROLE_ADMIN')   %}
                         <b><a target="_blank"
                               href="{{ path('user_edit', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
                     {% else %}
-                        <b><a target="_blank"
-                              href="{{ path('user_show', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
+                        <b>{{ user.fullName }}</b>
                     {% endif %}
                 </td>
 
