@@ -12,20 +12,19 @@ class FlightPrice
 {
     public function getPrice_LON_PFO()
     {
-        $start_date = new \DateTime( $this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
+        $today = new \DateTime('now');
+        $today = $today->format('Y-m-d');
+        $start_date_input = new \DateTime($this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
+        $max_start_date = max($today, $start_date_input->format('Y-m-d'));
+        $start_date = new \DateTime($max_start_date);
+
         $day_increment = 1;
-        $flight_to = $this->settingsRepository->find('1')->getFlightStatsDepartureAirport();
-        $flight_from = 'PFO';
+        $flight_from = $this->settingsRepository->find('1')->getFlightStatsDepartureAirport();
+        $flight_to = 'PFO, LCA';
         while ($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()) {
             $date = $start_date->format('Y-m-d');
             $url = "https://www.kayak.co.uk/flights/STN,LTN,LGW-PFO,LCA/" . $date . "?sort=bestflight_a&fs=stops=0";
             exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
-//            if($_ENV['APP_ENV']=='dev') {
-//                exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
-//            }
-//            else{
-               // exec("node /var/www/html/stephennurse/public/scrape/flightPrice.js" . " " . $url . " 2>&1");
-//            }sudo
             $file = $this->container->getParameter('scraper') . 'flightPrice.json';
             if (file_exists($file)) {
                 $file_content = file_get_contents($file);
@@ -61,20 +60,21 @@ class FlightPrice
 
     public function getPrice_PFO_LON()
     {
-        $start_dateR = new \DateTime( $this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
+        $today = new \DateTime('now');
+        $today = $today->format('Y-m-d');
+        $start_date_input = new \DateTime($this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
+        $max_start_date = max($today, $start_date_input->format('Y-m-d'));
+        $start_dateR = new \DateTime($max_start_date);
+
+
         $day_increment = 1;
-        $flight_from = 'PFO';
+        $flight_from = 'PFO, LCA';
         $flight_to = $this->settingsRepository->find('1')->getFlightStatsDepartureAirport();
         while ($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()) {
             $dateR = $start_dateR->format('Y-m-d');
             $url = "https://www.kayak.co.uk/flights/PFO,LCA-STN,LTN,LGW/" . $dateR . "?sort=bestflight_a&fs=stops=0";
             exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
-//            if($_ENV['APP_ENV']=='dev') {
-//                exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
-//            }
-//            else{
-//                exec("node /var/www/html/stephennurse/public/scrape/flightPrice.js" . " " . $url . " 2>&1");
-//            }
+
             $file = $this->container->getParameter('scraper') . 'flightPrice.json';
             if (file_exists($file)) {
                 $file_content = file_get_contents($file);

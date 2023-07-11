@@ -42,7 +42,7 @@
         <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
         <td style="text-align: center">
             {% for flight in flights %}
-                {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO,LCA" %}
+                {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO, LCA" %}
                     {% set URL1 = "https://www.kayak.co.uk/flights/LON-PFO/"  ~ date|date('Y-m-d')  ~ "?sort=bestflight_a&fs=stops=0" %}
                     <a title="{{ flight.scrapeDate| date('d-M-Y') }}" target="_blank" href="{{ URL1 }}">From
                         £{{ flight.lowestPrice|number_format('0') }}</a>
@@ -51,7 +51,7 @@
         </td>
         <td style="text-align: center">
              {% for flight in flights %}
-                {% if flight.date == date and flight.flightFrom=="PFO,LCA" and flight.flightTo =="LON" %}
+                {% if flight.date == date and flight.flightFrom=="PFO, LCA" and flight.flightTo =="LON" %}
                     {% set URL2 = "https://www.kayak.co.uk/flights/PFO-LON/" ~ date|date('Y-m-d')   ~"?sort=bestflight_a&fs=stops=0" %}
                     <a target="_blank" href="{{ URL2 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
                 {% endif %}
