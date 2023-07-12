@@ -115,10 +115,13 @@
                 </td>
 
                 <td style="text-align: center">
-                    {% if user.email is not empty %}
+                    {% set instring = '@no_email.com' in user.email %}
+                    {% if user.email is not empty and instring != 1 %}
                         <a title="{{ user.email }}" href="mailto:{{ user.email }}">
-                            <i class="fa fa-envelope-open-o"></i>
+                            <i class="fa fa-envelope"></i>
                         </a>
+                    {% else %}
+                        <a title="{{ user.email }}" href="">N/A</a>
                     {% endif %}
 
                     {% if user.email2 is not empty %}

@@ -73,13 +73,13 @@
             <th>Notes</th>
             <th>!</th>
             {% if is_granted('ROLE_ADMIN') %}
-            <th>Admin</th>
-            <th>IT</th>
-            <th>Family</th>
-            <th>Contact</th>
-            <th>Guest</th>
-            <th>Job Applicant</th>
-            <th>Recruiter</th>
+                <th>Admin</th>
+                <th>IT</th>
+                <th>Family</th>
+                <th>Contact</th>
+                <th>Guest</th>
+                <th>Job Applicant</th>
+                <th>Recruiter</th>
 
                 <th style="color: red;">Plain Password</th>
                 <th style="color: red;">#</th>
@@ -153,11 +153,12 @@
 
             <td style="text-align: center">
                 {% set instring = '@no_email.com' in user.email %}
-
                 {% if user.email is not empty and instring != 1 %}
                     <a title="{{ user.email }}" href="mailto:{{ user.email }}">
                         <i class="fa fa-envelope"></i>
                     </a>
+                {% else %}
+                    <a title="{{ user.email }}" href="">N/A</a>
                 {% endif %}
 
                 {% if user.email2 is not empty %} /
@@ -213,38 +214,38 @@
             </td>
 
             {#- ----- Radio buttons for roles --------------- -#}
-{#            {% if role != 'ROLE_RECRUITER' %}#}
+            {#            {% if role != 'ROLE_RECRUITER' %} #}
 
+            {% set role_flag1 = 0 %}
+            {% for role in user.roles %}
+                {% if role == 'ROLE_SUPER_ADMIN' or role == 'ROLE_ADMIN' %}
+                    {% set role_flag1 = 1 %}
+                {% endif %}
+            {% endfor %}
+
+            <td data-sort="{{ role_flag1 }}" style="text-align: center">
                 {% set role_flag1 = 0 %}
                 {% for role in user.roles %}
-                    {% if role == 'ROLE_SUPER_ADMIN' or role == 'ROLE_ADMIN' %}
+                    {% if role == 'ROLE_ADMIN' %}
                         {% set role_flag1 = 1 %}
                     {% endif %}
                 {% endfor %}
-
-                <td data-sort="{{ role_flag1 }}" style="text-align: center">
-                    {% set role_flag1 = 0 %}
-                    {% for role in user.roles %}
-                        {% if role == 'ROLE_ADMIN' %}
-                            {% set role_flag1 = 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if role_flag1 == 1 %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ADMIN", 'active': '1'}) }}"><i
-                                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                        {% endif %}
+                {% if role_flag1 == 1 %}
+                    {% if app.user.id == user.id %}
+                        <i class="fa fa-circle" style="color: green; text-align: right"></i>
                     {% else %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ADMIN", 'active': '1'}) }}"><i
-                                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                        {% endif %}
+                        <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ADMIN", 'active': '1'}) }}"><i
+                                    class="fa fa-circle" style="color: green; text-align: right"></i></a>
                     {% endif %}
-                </td>
+                {% else %}
+                    {% if app.user.id == user.id %}
+                        <i class="fa fa-circle" style="color: red; text-align: right"></i>
+                    {% else %}
+                        <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ADMIN", 'active': '1'}) }}"><i
+                                    class="fa fa-circle" style="color: red; text-align: right"></i></a>
+                    {% endif %}
+                {% endif %}
+            </td>
 
 
             {# ------ Next radio button ROLE_IT (2)--------------- -#}
@@ -300,7 +301,7 @@
             </td>
 
 
-                {# ------ Next radio button ROLE_CONTACT (4)--------------- -#}
+            {# ------ Next radio button ROLE_CONTACT (4)--------------- -#}
             {% set role_flag4 = 0 %}
             {% for role in user.roles %}
                 {% if role == 'ROLE_CONTACT' %}
@@ -407,7 +408,7 @@
 
             {# ------ No more radio buttons--------------- -#}
 
-{#            {% endif %}#}
+            {#            {% endif %} #}
 
 
             {% if is_granted('ROLE_SUPER_ADMIN') %}
