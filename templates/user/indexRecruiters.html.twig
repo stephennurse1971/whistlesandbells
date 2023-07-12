@@ -159,6 +159,9 @@
                     {% for area in user.recruitingAreaList %}
                         {{ area }},
                     {% endfor %}
+                    {% if user.recruitingAreaList is empty %}
+                    .N/A
+                    {% endif %}
                 </td>
                 <td>{{ user.notes }}</td>
                 <td style="width: 200px">
