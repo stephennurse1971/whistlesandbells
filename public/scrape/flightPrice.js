@@ -4,7 +4,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: false, args:[
+puppeteer.launch({ headless: true, args:[
         '--start-maximized'
     ],slowMO:500 }).then(async browser => {
 // async function run() {

@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Author</th>
             <th>Region</th>
             <th>Area of Interest</th>
@@ -21,8 +20,7 @@
         <tbody>
         {% for introduction in introductions %}
             <tr>
-                <td><a href="{{ path('introduction_edit', {'id': introduction.id}) }}">{{ introduction.id }}</a></td>
-                <td>{{ introduction.author.fullName }}-{{ introduction.author.id }}</td>
+                <td><a href="{{ path('introduction_edit', {'id': introduction.id}) }}">{{ introduction.author.fullName }}</a></td>
                 <td>{{ introduction.region }}</td>
                 <td>{{ introduction.areaOfInterest }}</td>
                 <td>{{ introduction.subjectLine }}</td>
