@@ -52,7 +52,6 @@ class TouristAttractionType extends AbstractType
                 'class' => Country::class,
                 'choice_label' => 'country',
                 'required' => true,
-//                'data-choice'=>'1',
                 'empty_data' => null,
             ])
             ->add('gpsLocation')
@@ -63,6 +62,7 @@ class TouristAttractionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => TouristAttraction::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

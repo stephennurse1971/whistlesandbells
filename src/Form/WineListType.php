@@ -48,6 +48,7 @@ class WineListType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => WineList::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

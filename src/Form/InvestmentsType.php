@@ -69,11 +69,6 @@ class InvestmentsType extends AbstractType
                 'label' => 'Date',
                 'required' => false,
                 'widget' => 'single_text',
-//                'attr' => [
-//                    'class' => 'datetime'
-//                ],
-//                'html5'=>false,
-//                'format'=>'d-m-Y'
             ])
             ->add('investmentAmount')
             ->add('taxScheme', EntityType::class, [
@@ -184,7 +179,6 @@ class InvestmentsType extends AbstractType
                 'multiple' => false,
                 'label'=> 'Self Assessment P1',
                 'expanded' => false,
-//                'data' => 'TBC',
                 'choices' => [
                     'Yes' => 'Yes',
                     'No' => 'No',
@@ -194,7 +188,6 @@ class InvestmentsType extends AbstractType
                 'multiple' => false,
                 'label'=> 'Self Assessment P2',
                 'expanded' => false,
-//                'data' => 'TBC',
                 'choices' => [
                     'Yes' => 'Yes',
                     'No' => 'No',
@@ -204,7 +197,6 @@ class InvestmentsType extends AbstractType
                 'multiple' => false,
                 'label'=> 'Self Assessment S1',
                 'expanded' => false,
-//                'data' => 'TBC',
                 'choices' => [
                     'Yes' => 'Yes',
                     'No' => 'No',
@@ -214,7 +206,6 @@ class InvestmentsType extends AbstractType
                 'multiple' => false,
                 'label'=> 'Self Assessment S2',
                 'expanded' => false,
-//                'data' => 'TBC',
                 'choices' => [
                     'Yes' => 'Yes',
                     'No' => 'No',

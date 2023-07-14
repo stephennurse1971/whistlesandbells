@@ -62,9 +62,6 @@ class JpmIcHistoryType extends AbstractType
                 'label' => 'JPM IC PDF',
                 'mapped' => false,
                 'required' => false,
-//                'attr' => [
-//                    'placeholder' => $options['ic_pdf']
-//                ]
             ])
         ;
     }
@@ -73,6 +70,7 @@ class JpmIcHistoryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => JpmIcHistory::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

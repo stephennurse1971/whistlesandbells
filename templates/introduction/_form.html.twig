@@ -8,7 +8,7 @@
 
 
         <strong style="color: blue">
-        {{ introduction.attachment }}
+{#        {{ introduction.attachment }}#}
         </strong>
         {{ form_row(form.attachment) }}
         {% if introduction.attachment is not empty %}
@@ -23,4 +23,11 @@
     </div>
 </div>
 <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+
 {{ form_end(form) }}
+{% if not form.vars.valid %}
+    <div class="alert alert-error">
+        {{ form_errors(form) }}
+    </div>
+
+{% endif %}

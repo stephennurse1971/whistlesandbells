@@ -22,11 +22,11 @@ class InvestmentFutureCommsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
             ])
-            ->add('attachment',FileType::class,[
-                'label'=>'Document',
-                'mapped'=>false,
-                'required'=>false,
-                'multiple'=>true,
+            ->add('attachment', FileType::class, [
+                'label' => 'Document',
+                'mapped' => false,
+                'required' => false,
+                'multiple' => true,
 //                'attr'=>[
 //                    'placeholder'=> $placeholder
 //                ]
@@ -37,10 +37,10 @@ class InvestmentFutureCommsType extends AbstractType
 //                'choice_label' => 'investmentCompany',
 //                'data' => $options['investment']
 //            ]);
-        ->add('marketData',EntityType::class,[
-            'class'=>MarketData::class,
-                'choice_label'=>'shareCompany',
-                'data'=>$options['marketData']
+            ->add('marketData', EntityType::class, [
+                'class' => MarketData::class,
+                'choice_label' => 'shareCompany',
+                'data' => $options['marketData']
             ]);
     }
 
@@ -48,8 +48,8 @@ class InvestmentFutureCommsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => InvestmentFutureComms::class,
-           // 'investment' => null,
-            'marketData'=>null
+            'marketData' => null,
+            'allow_extra_fields' => true,
         ]);
     }
 }

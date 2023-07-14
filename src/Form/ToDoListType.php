@@ -37,6 +37,7 @@ class ToDoListType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ToDoList::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

@@ -44,6 +44,7 @@ class GarminFilesType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => GarminFiles::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

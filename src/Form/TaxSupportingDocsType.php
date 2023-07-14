@@ -44,7 +44,8 @@ class TaxSupportingDocsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => TaxSupportingDocs::class,
-            'tax_supporting_doc'=>null
+            'tax_supporting_doc'=>null,
+            'allow_extra_fields' => true,
         ]);
     }
 }

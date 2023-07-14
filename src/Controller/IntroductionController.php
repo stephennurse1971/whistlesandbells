@@ -8,6 +8,7 @@ use App\Repository\IntroductionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,7 +41,9 @@ class IntroductionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $attachment = $form->get('attachment')->getData();
+            $file = $request->files->get('myfile');
+
+            $attachment =  $request->get('introduction["attachment"]')->getData();
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -60,6 +63,9 @@ class IntroductionController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('introduction_index');
+        }
+        else{
+            dump($form->getErrors());
         }
 
         return $this->render('introduction/new.html.twig', [
@@ -87,7 +93,7 @@ class IntroductionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $attachment = $form->get('attachment')->getData();
+            $attachment = $request->files->get('attachment');
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);

@@ -41,33 +41,21 @@ class TaxInputsType extends AbstractType
                 'label'=>'P11D',
                 'mapped'=>false,
                 'required'=>false,
-//                'attr'=>[
-//                    'placeholder'=>$options['p11d_file_name']
-//                ]
             ])
             ->add('p60',FileType::class,[
                 'label'=>'P60',
                 'mapped'=>false,
                 'required'=>false,
-//                'attr'=>[
-//                    'placeholder'=>$options['p60_file_name']
-//                ]
             ])
             ->add('p45',FileType::class,[
                 'label'=>'P45',
                 'mapped'=>false,
                 'required'=>false,
-//                'attr'=>[
-//                    'placeholder'=>$options['p60_file_name']
-//                ]
             ])
             ->add('selfAssessment',FileType::class,[
                 'label'=>'Self Assessment',
                 'mapped'=>false,
                 'required'=>false,
-//                'attr'=>[
-//                    'placeholder'=>$options['selfAssessment_file_name']
-//                ]
             ])
         ;
     }
@@ -79,7 +67,8 @@ class TaxInputsType extends AbstractType
             'p11d_file_name' => null,
             'p60_file_name' => null,
             'p45_file_name' => null,
-            'selfAssessment_file_name' => null
+            'selfAssessment_file_name' => null,
+            'allow_extra_fields' => true,
         ]);
     }
 }

@@ -43,7 +43,8 @@ class FileAttachmentsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => FileAttachments::class,
-            'id'=>null
+            'id'=>null,
+            'allow_extra_fields' => true,
         ]);
     }
 }
