@@ -45,7 +45,7 @@ class PhotosType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Photos::class,
             'location' => null,
-            'allow_extra_fields' => true,
+          //  'allow_extra_fields' => true,
         ]);
     }
 }

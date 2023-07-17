@@ -41,9 +41,8 @@ class IntroductionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-          //  $file = $request->files->get('myfile');
 
-            $attachment =  $request->files->get('attachment');
+            $attachment =  $form->get('attachment')->getData();
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -64,9 +63,7 @@ class IntroductionController extends AbstractController
 
             return $this->redirectToRoute('introduction_index');
         }
-        else{
-            dump($form->getErrors());
-        }
+
 
         return $this->render('introduction/new.html.twig', [
             'introduction' => $introduction,
