@@ -35,10 +35,10 @@ class IntroductionType extends AbstractType
             ->add('subjectLine', TextType::class, [
                 'required' => false
             ])
-            ->add('introductoryEmail', TextType::class, [
+            ->add('introductoryEmail', TextareaType::class, [
                 'required' => false
             ])
-            ->add('introductoryEmail2', TextType::class, [
+            ->add('introductoryEmail2', TextareaType::class, [
                 'required' => false
             ])
             ->add('attachment', FileType::class, [

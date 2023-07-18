@@ -20,7 +20,7 @@
         <tbody>
         {% for introduction in introductions %}
             <tr>
-                <td><a href="{{ path('introduction_edit', {'id': introduction.id}) }}">{{ introduction.author.fullName }}</a></td>
+                <td><a target="_blank" href="{{ path('introduction_edit', {'id': introduction.id}) }}">{{ introduction.author.fullName }}</a></td>
                 <td>{{ introduction.region }}</td>
                 <td>{{ introduction.areaOfInterest }}</td>
                 <td>{{ introduction.subjectLine }}</td>
