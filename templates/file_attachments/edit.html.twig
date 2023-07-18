@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}File Attachments{% endblock %}
+{% block title %}Documentation{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: File Attachments</h1>
+    <h1 style="color: red">Edit: {{ file_attachments.category }}</h1>
 
     {{ include('file_attachments/_form.html.twig', {'button_label': 'Update'}) }}
 

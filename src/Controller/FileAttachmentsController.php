@@ -6,7 +6,6 @@ use App\Entity\FileAttachments;
 use App\Entity\GarminFiles;
 use App\Form\FileAttachmentsType;
 use App\Repository\FileAttachmentsRepository;
-use App\Repository\GarminFilesRepository;
 use App\Repository\StaticTextRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -89,8 +88,9 @@ class FileAttachmentsController extends AbstractController
                     $attachment->move($attachment_directory, $newFileName);
                     $files_name[] = $newFileName;
                 }
+                $fileAttachment->setAttachments($files_name);
             }
-            $fileAttachment->setAttachments($files_name);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($fileAttachment);
             $entityManager->flush();

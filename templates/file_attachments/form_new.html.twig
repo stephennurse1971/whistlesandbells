@@ -5,8 +5,9 @@
         <h2>Attachment Upload</h2>
 
         {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
-            {{ form_row(form.date) }}
+            {{ form_row(form.category) }}
             {{ form_row(form.description) }}
+            {{ form_row(form.date) }}
         {% else %}
             {{ form_row(form.date,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.description,{'attr':{'readonly':'true'}}) }}

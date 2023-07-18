@@ -24,6 +24,8 @@ class FileAttachmentsType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('description')
+            ->add('category')
+            ->add('notes')
             ->add('attachments',FileType::class,[
                 'label'=>'Document',
                 'mapped'=>false,

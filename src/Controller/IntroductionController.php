@@ -90,7 +90,7 @@ class IntroductionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $attachment = $request->files->get('attachment');
+            $attachment = $form->get('attachment')->getData();
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);

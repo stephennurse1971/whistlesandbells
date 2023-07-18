@@ -30,7 +30,8 @@
         <br>
 
             {% if app.environment=='dev' %}
-                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i></button> Stephen<br>
+                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i></button>Stephen<br>
+                <button onclick="fillForm5()"><i class="fa fa-info-circle"> </i></button>Stephen2<br>
                 <button onclick="fillForm2()"><i class="fa fa-info-circle text-danger"> </i></button>Adam <br>
                 <button onclick="fillForm3()"><i class="fa fa-info-circle text-primary"> </i></button>Geoff <br>
                 <button onclick="fillForm4()"><i class="fa fa-info-circle text-primary"> </i></button>Sandra <br>
@@ -52,7 +53,7 @@
 
     <script>
         function fillForm2() {
-            $("#inputEmail").val("adamdixon@me.com").change();
+            $("#inputEmail").val("adamdixon2@me.com").change();
             $("#inputPassword").val("password").change();
         }
     </script>
@@ -66,6 +67,12 @@
     <script>
         function fillForm4() {
             $("#inputEmail").val("sandram30@icloud.com").change();
+            $("#inputPassword").val("password").change();
+        }
+    </script>
+    <script>
+        function fillForm5() {
+            $("#inputEmail").val("sjwn71@gmail.com").change();
             $("#inputPassword").val("password").change();
         }
     </script>

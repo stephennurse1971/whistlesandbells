@@ -8,9 +8,11 @@
     <table class="table">
         <thead>
         <tr>
-            <th style="width: 100px">Date</th>
+            <th style="width: 100px">Category</th>
             <th style="width: 500px">Description</th>
+            <th style="width: 500px">Notes</th>
             <th style="text-align: center; width: 50px">Attachment</th>
+            <th style="width: 100px">Date</th>
             <th style="width: 20px">Email</th>
             <th style="width: 20px">#</th>
         </tr>
@@ -18,8 +20,9 @@
         <tbody>
         {% for file_attachment in file_attachments %}
             <tr>
-                <td data-sort='{{ file_attachment.date|date('Y-m-d') }}'>{{ file_attachment.date ? file_attachment.date|date('d-M-Y') : '' }}</td>
+                <td>{{  file_attachment.category}}</td>
                 <td>{{ file_attachment.description }} </td>
+                <td>{{ file_attachment.notes }} </td>
                 <td style="text-align: center">
                     {% if file_attachment.attachments is not empty %}
                         {% for attachment in file_attachment.attachments %}
@@ -29,6 +32,7 @@
                         {% endfor %}
                     {% endif %}
                 </td>
+                <td data-sort='{{ file_attachment.date|date('Y-m-d') }}'>{{ file_attachment.date ? file_attachment.date|date('d-M-Y') : '' }}</td>
                 <td>
                     <a class="btn btn-secondary btn-sm"
                        href="{{ path('file_attachments_email', {'fileid': file_attachment.id, 'recipientid': app.user.id}) }}">Email
