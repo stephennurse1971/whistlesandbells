@@ -22,27 +22,26 @@
         <div class="col-3" style="padding-left: 0px">
 
             <strong style="color: blue">
-
-                    {% if file_attachments.attachments is not empty %}
-                        {% for attachment in file_attachments.attachments %}
-                            <a title= "{{ attachment|raw }}" target="_blank"
-                               href="{{ path('show_attachment_file_upload_directory',{id : file_attachments.id,'filename':attachment}) }}">
-                                {{ attachment }}
-                        {% endfor %}
-                    {% endif %}
-
-            </strong> <br>
-            {% if file_attachments.attachments is not empty %}
-                <a class="btn btn-sm btn-danger"
-                   href="{{ path('file_attachments_delete_attachment', {'id': file_attachments.id })}} ">Delete attachment</a>
-            {% endif %}
-            {% if file_attachments.attachments is null %}
-            {{ form_row(form.attachments) }}
-            {% endif %}
-            {% if file_attachments.attachments is not null %}
-            <div class="mt-1"></div>
-            {{ form_row(form.additional) }}
-            {% endif %}
+                {% if file_attachments.attachments is not empty %}
+                    {% for attachment in file_attachments.attachments %}
+                        <a title="{{ attachment|raw }}" target="_blank"
+                           href="{{ path('show_attachment_file_upload_directory',{id : file_attachments.id,'filename':attachment}) }}">
+                            <b> {{ attachment }}</b> </a>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                {% if file_attachments.attachments is not empty %}
+                    <a class="btn btn-sm btn-danger"
+                       href="{{ path('file_attachments_delete_attachment', {'id': file_attachments.id }) }} ">Delete
+                        attachment</a>
+                {% endif %}
+                {% if file_attachments.attachments is null %}
+                    {{ form_row(form.attachments) }}
+                {% endif %}
+                {% if file_attachments.attachments is not null %}
+                    <div class="mt-1"></div>
+                    {{ form_row(form.additional) }}
+                {% endif %}
         </div>
     </div>
 </div>

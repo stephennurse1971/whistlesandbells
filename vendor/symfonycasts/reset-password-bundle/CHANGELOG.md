@@ -3,7 +3,78 @@
 *We intend to follow [Semantic Versioning 2.0.0](https://semver.org/), if you 
 find a change that break's semver, please create an issue.*
 
-## [v1.8.0](https://github.com/symfony/maker-bundle/releases/tag/v1.8.0)
+## [v1.14.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.14.0)
+
+*July 12th, 2022*
+
+### Feature
+
+- [#229](https://github.com/symfonycasts/reset-password-bundle/pull/229) - Add catalan translations - *@victormhg*
+### Bug
+
+- [#230](https://github.com/symfonycasts/reset-password-bundle/pull/230) - Add missing target-language attr to all translations - *@bocharsky-bw*
+
+## [v1.13.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.13.0)
+
+*February 23rd, 2022*
+
+### Feature
+
+- [#216](https://github.com/symfonycasts/reset-password-bundle/pull/216) - Changed private to protected for the ResetPasswordRequestTrait - *@DavidBilodeau1*
+- [#215](https://github.com/symfonycasts/reset-password-bundle/pull/215) - Added spanish translation for exceptions - *@idmarinas*
+- [#214](https://github.com/symfonycasts/reset-password-bundle/pull/214) - Add French translations for the exceptions - *@DennisdeBest*
+
+## [v1.12.0](https://github.com/symfonycasts/reset-password-bundle/releases/tag/v1.12.0)
+
+*February 14th, 2022*
+
+### Feature
+
+- [#211](https://github.com/symfonycasts/reset-password-bundle/pull/211) - Add Dutch translations for exception reasons - *@codedmonkey*
+- [#210](https://github.com/symfonycasts/reset-password-bundle/pull/210) - Add Russian translations for exception reasons - *@bocharsky-bw*
+- [#209](https://github.com/symfonycasts/reset-password-bundle/pull/209) - Add Ukrainian translations for exception reasons - *@bocharsky-bw*
+- [#206](https://github.com/symfonycasts/reset-password-bundle/pull/206) - RFC: Add translations for exception reasons - *@bocharsky-bw*
+- [#200](https://github.com/symfonycasts/reset-password-bundle/pull/200) - Added Slovak translation. - *@zalesak*
+- [#196](https://github.com/symfonycasts/reset-password-bundle/pull/196) - [translations] Add Hungarian translations - *@1ed*
+
+
+## [v1.11.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.11.0)
+
+*Nov 30th, 2021*
+
+### Feature
+
+- [#193](https://github.com/SymfonyCasts/reset-password-bundle/pull/193) - allow deprecation contracts 3.0 - *@jrushlow*
+
+## [v1.10.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.10.0)
+
+*Nov 18th, 2021*
+
+### Feature
+
+- [#183](https://github.com/SymfonyCasts/reset-password-bundle/pull/183) - add method return types for symfony 6 support - *@jrushlow*
+- [#184](https://github.com/SymfonyCasts/reset-password-bundle/pull/184) - [translations] add Dutch translations - *@jrushlow*
+- [#185](https://github.com/SymfonyCasts/reset-password-bundle/pull/185) - [translations] add Czech translations - *@jrushlow*
+- [#187](https://github.com/SymfonyCasts/reset-password-bundle/pull/187) - [translations] Add Japanese translation - *@jrushlow*
+- [#189](https://github.com/SymfonyCasts/reset-password-bundle/pull/187) - add support for symfony 6 - *@jrushlow*
+
+## [v1.9.1](https://github.com/symfony/maker-bundle/releases/tag/v1.9.1)
+
+*July 12th, 2021*
+
+### Bug Fix
+
+- [#176](https://github.com/SymfonyCasts/reset-password-bundle/pull/176) - Allow using PHP 8 attributes for doctrine entities - *@Tobion*
+
+## [v1.9.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.9.0)
+
+*June 30th, 2021*
+
+### Feature
+
+- [#169](https://github.com/SymfonyCasts/reset-password-bundle/pull/169) - Add Finnish language translations - *@nicodemuz*
+
+## [v1.8.0](https://github.com/SymfonyCasts/reset-password-bundle/releases/tag/v1.8.0)
 
 *May 5th, 2021*
 

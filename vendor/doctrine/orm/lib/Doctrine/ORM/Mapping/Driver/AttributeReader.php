@@ -6,85 +6,133 @@ namespace Doctrine\ORM\Mapping\Driver;
 
 use Attribute;
 use Doctrine\ORM\Mapping\Annotation;
+use LogicException;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-use function count;
+use function assert;
+use function is_string;
 use function is_subclass_of;
+use function sprintf;
 
-/**
- * @internal
- */
+/** @internal */
 final class AttributeReader
 {
-    /** @var array<string,bool> */
+    /** @var array<class-string<Annotation>,bool> */
     private array $isRepeatableAttribute = [];
 
-    /** @return array<object> */
-    public function getClassAnnotations(ReflectionClass $class): array
+    /**
+     * @psalm-return class-string-map<T, T|RepeatableAttributeCollection<T>>
+     *
+     * @template T of Annotation
+     */
+    public function getClassAttributes(ReflectionClass $class): array
     {
         return $this->convertToAttributeInstances($class->getAttributes());
     }
 
-    /** @return array<object>|object|null */
-    public function getClassAnnotation(ReflectionClass $class, $annotationName)
-    {
-        return $this->getClassAnnotations($class)[$annotationName] ?? ($this->isRepeatable($annotationName) ? [] : null);
-    }
-
-    /** @return array<object> */
-    public function getMethodAnnotations(ReflectionMethod $method): array
+    /**
+     * @return class-string-map<T, T|RepeatableAttributeCollection<T>>
+     *
+     * @template T of Annotation
+     */
+    public function getMethodAttributes(ReflectionMethod $method): array
     {
         return $this->convertToAttributeInstances($method->getAttributes());
     }
 
-    /** @return array<object>|object|null */
-    public function getMethodAnnotation(ReflectionMethod $method, $annotationName)
-    {
-        return $this->getMethodAnnotations($method)[$annotationName] ?? ($this->isRepeatable($annotationName) ? [] : null);
-    }
-
-    /** @return array<object> */
-    public function getPropertyAnnotations(ReflectionProperty $property): array
+    /**
+     * @return class-string-map<T, T|RepeatableAttributeCollection<T>>
+     *
+     * @template T of Annotation
+     */
+    public function getPropertyAttributes(ReflectionProperty $property): array
     {
         return $this->convertToAttributeInstances($property->getAttributes());
     }
 
-    /** @return array<object>|object|null */
-    public function getPropertyAnnotation(ReflectionProperty $property, $annotationName)
+    /**
+     * @param class-string<T> $attributeName The name of the annotation.
+     *
+     * @return T|null
+     *
+     * @template T of Annotation
+     */
+    public function getPropertyAttribute(ReflectionProperty $property, $attributeName)
     {
-        return $this->getPropertyAnnotations($property)[$annotationName] ?? ($this->isRepeatable($annotationName) ? [] : null);
+        if ($this->isRepeatable($attributeName)) {
+            throw new LogicException(sprintf(
+                'The attribute "%s" is repeatable. Call getPropertyAttributeCollection() instead.',
+                $attributeName
+            ));
+        }
+
+        return $this->getPropertyAttributes($property)[$attributeName]
+            ?? ($this->isRepeatable($attributeName) ? new RepeatableAttributeCollection() : null);
     }
 
     /**
-     * @param array<object> $attributes
+     * @param class-string<T> $attributeName The name of the annotation.
      *
-     * @return array<Annotation>
+     * @return RepeatableAttributeCollection<T>
+     *
+     * @template T of Annotation
+     */
+    public function getPropertyAttributeCollection(
+        ReflectionProperty $property,
+        string $attributeName
+    ): RepeatableAttributeCollection {
+        if (! $this->isRepeatable($attributeName)) {
+            throw new LogicException(sprintf(
+                'The attribute "%s" is not repeatable. Call getPropertyAttribute() instead.',
+                $attributeName
+            ));
+        }
+
+        return $this->getPropertyAttributes($property)[$attributeName] ?? new RepeatableAttributeCollection();
+    }
+
+    /**
+     * @param array<ReflectionAttribute> $attributes
+     *
+     * @return class-string-map<T, T|RepeatableAttributeCollection<T>>
+     *
+     * @template T of Annotation
      */
     private function convertToAttributeInstances(array $attributes): array
     {
         $instances = [];
 
         foreach ($attributes as $attribute) {
-            // Make sure we only get Doctrine Annotations
-            if (! is_subclass_of($attribute->getName(), Annotation::class)) {
+            $attributeName = $attribute->getName();
+            assert(is_string($attributeName));
+            // Make sure we only get Doctrine Attributes
+            if (! is_subclass_of($attributeName, Annotation::class)) {
                 continue;
             }
 
             $instance = $attribute->newInstance();
+            assert($instance instanceof Annotation);
 
-            if ($this->isRepeatable($attribute->getName())) {
-                $instances[$attribute->getName()][] = $instance;
+            if ($this->isRepeatable($attributeName)) {
+                if (! isset($instances[$attributeName])) {
+                    $instances[$attributeName] = new RepeatableAttributeCollection();
+                }
+
+                $collection = $instances[$attributeName];
+                assert($collection instanceof RepeatableAttributeCollection);
+                $collection[] = $instance;
             } else {
-                $instances[$attribute->getName()] = $instance;
+                $instances[$attributeName] = $instance;
             }
         }
 
         return $instances;
     }
 
+    /** @param class-string<Annotation> $attributeClassName */
     private function isRepeatable(string $attributeClassName): bool
     {
         if (isset($this->isRepeatableAttribute[$attributeClassName])) {

@@ -1,27 +1,12 @@
 <?php
 
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license. For more information, see
- * <http://www.doctrine-project.org>.
- */
+declare(strict_types=1);
 
 namespace Doctrine\ORM\Tools;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Deprecations\Deprecation;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
@@ -57,10 +42,10 @@ use function ltrim;
 use function max;
 use function mkdir;
 use function sprintf;
+use function str_contains;
 use function str_repeat;
 use function str_replace;
 use function strlen;
-use function strpos;
 use function strrpos;
 use function strtolower;
 use function substr;
@@ -205,24 +190,25 @@ class EntityGenerator
     /**
      * Hash-map for handle types.
      *
-     * @psalm-var array<Type::*, string>
+     * @psalm-var array<Types::*|'json_array', string>
      */
     protected $typeAlias = [
-        Type::DATETIMETZ    => '\DateTime',
-        Type::DATETIME      => '\DateTime',
-        Type::DATE          => '\DateTime',
-        Type::TIME          => '\DateTime',
-        Type::OBJECT        => '\stdClass',
-        Type::INTEGER       => 'int',
-        Type::BIGINT        => 'int',
-        Type::SMALLINT      => 'int',
-        Type::TEXT          => 'string',
-        Type::BLOB          => 'string',
-        Type::DECIMAL       => 'string',
-        Type::GUID          => 'string',
-        Type::JSON_ARRAY    => 'array',
-        Type::SIMPLE_ARRAY  => 'array',
-        Type::BOOLEAN       => 'bool',
+        Types::DATETIMETZ_MUTABLE => '\DateTime',
+        Types::DATETIME_MUTABLE   => '\DateTime',
+        Types::DATE_MUTABLE       => '\DateTime',
+        Types::TIME_MUTABLE       => '\DateTime',
+        Types::OBJECT             => '\stdClass',
+        Types::INTEGER            => 'int',
+        Types::BIGINT             => 'int',
+        Types::SMALLINT           => 'int',
+        Types::TEXT               => 'string',
+        Types::BLOB               => 'string',
+        Types::DECIMAL            => 'string',
+        Types::GUID               => 'string',
+        'json_array'              => 'array',
+        Types::JSON               => 'array',
+        Types::SIMPLE_ARRAY       => 'array',
+        Types::BOOLEAN            => 'bool',
     ];
 
     /**
@@ -233,7 +219,6 @@ class EntityGenerator
     protected static $generatorStrategyMap = [
         ClassMetadataInfo::GENERATOR_TYPE_AUTO      => 'AUTO',
         ClassMetadataInfo::GENERATOR_TYPE_SEQUENCE  => 'SEQUENCE',
-        ClassMetadataInfo::GENERATOR_TYPE_TABLE     => 'TABLE',
         ClassMetadataInfo::GENERATOR_TYPE_IDENTITY  => 'IDENTITY',
         ClassMetadataInfo::GENERATOR_TYPE_NONE      => 'NONE',
         ClassMetadataInfo::GENERATOR_TYPE_UUID      => 'UUID',
@@ -542,11 +527,12 @@ public function __construct(<params>)
      * Sets the class fields visibility for the entity (can either be private or protected).
      *
      * @param string $visibility
-     * @psalm-param self::FIELD_VISIBLE_*
      *
      * @return void
      *
      * @throws InvalidArgumentException
+     *
+     * @psalm-assert self::FIELD_VISIBLE_* $visibility
      */
     public function setFieldVisibility($visibility)
     {
@@ -648,9 +634,7 @@ public function __construct(<params>)
         return $type;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityNamespace(ClassMetadataInfo $metadata)
     {
         if (! $this->hasNamespace($metadata)) {
@@ -660,9 +644,7 @@ public function __construct(<params>)
         return 'namespace ' . $this->getNamespace($metadata) . ';';
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityUse()
     {
         if (! $this->generateAnnotations) {
@@ -672,18 +654,14 @@ public function __construct(<params>)
         return "\n" . 'use Doctrine\ORM\Mapping as ORM;' . "\n";
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityClassName(ClassMetadataInfo $metadata)
     {
         return 'class ' . $this->getClassName($metadata) .
             ($this->extendsClass() ? ' extends ' . $this->getClassToExtendName() : null);
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityBody(ClassMetadataInfo $metadata)
     {
         $fieldMappingProperties       = $this->generateEntityFieldMappingProperties($metadata);
@@ -719,9 +697,7 @@ public function __construct(<params>)
         return implode("\n", $code);
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityConstructor(ClassMetadataInfo $metadata)
     {
         if ($this->hasMethod('__construct', $metadata)) {
@@ -970,33 +946,25 @@ public function __construct(<params>)
         return $traits;
     }
 
-    /**
-     * @return bool
-     */
+    /** @return bool */
     protected function hasNamespace(ClassMetadataInfo $metadata)
     {
-        return (bool) strpos($metadata->name, '\\');
+        return str_contains($metadata->name, '\\');
     }
 
-    /**
-     * @return bool
-     */
+    /** @return bool */
     protected function extendsClass()
     {
         return (bool) $this->classToExtend;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function getClassToExtend()
     {
         return $this->classToExtend;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function getClassToExtendName()
     {
         $refl = new ReflectionClass($this->getClassToExtend());
@@ -1004,26 +972,20 @@ public function __construct(<params>)
         return '\\' . $refl->getName();
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function getClassName(ClassMetadataInfo $metadata)
     {
         return ($pos = strrpos($metadata->name, '\\'))
             ? substr($metadata->name, $pos + 1, strlen($metadata->name)) : $metadata->name;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function getNamespace(ClassMetadataInfo $metadata)
     {
         return substr($metadata->name, 0, strrpos($metadata->name, '\\'));
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityDocBlock(ClassMetadataInfo $metadata)
     {
         $lines   = [];
@@ -1059,9 +1021,7 @@ public function __construct(<params>)
         return implode("\n", $lines);
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityAnnotation(ClassMetadataInfo $metadata)
     {
         $prefix = '@' . $this->annotationsPrefix;
@@ -1077,9 +1037,7 @@ public function __construct(<params>)
         return $prefix . ($metadata->isMappedSuperclass ? 'MappedSuperclass' : 'Entity') . $customRepository;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateTableAnnotation(ClassMetadataInfo $metadata)
     {
         if ($metadata->isEmbeddedClass) {
@@ -1097,7 +1055,7 @@ public function __construct(<params>)
         }
 
         if (isset($metadata->table['options']) && $metadata->table['options']) {
-            $table[] = 'options={' . $this->exportTableOptions((array) $metadata->table['options']) . '}';
+            $table[] = 'options={' . $this->exportTableOptions($metadata->table['options']) . '}';
         }
 
         if (isset($metadata->table['uniqueConstraints']) && $metadata->table['uniqueConstraints']) {
@@ -1134,9 +1092,7 @@ public function __construct(<params>)
         return implode(', ', $annotations);
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateInheritanceAnnotation(ClassMetadataInfo $metadata)
     {
         if ($metadata->inheritanceType === ClassMetadataInfo::INHERITANCE_TYPE_NONE) {
@@ -1146,26 +1102,27 @@ public function __construct(<params>)
         return '@' . $this->annotationsPrefix . 'InheritanceType("' . $this->getInheritanceTypeString($metadata->inheritanceType) . '")';
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateDiscriminatorColumnAnnotation(ClassMetadataInfo $metadata)
     {
         if ($metadata->inheritanceType === ClassMetadataInfo::INHERITANCE_TYPE_NONE) {
             return '';
         }
 
-        $discrColumn      = $metadata->discriminatorColumn;
-        $columnDefinition = 'name="' . $discrColumn['name']
-            . '", type="' . $discrColumn['type']
-            . '", length=' . $discrColumn['length'];
+        $discrColumn = $metadata->discriminatorColumn;
+        if ($discrColumn === null) {
+            return '';
+        }
+
+        $columnDefinition = sprintf('name="%s", type="%s"', $discrColumn['name'], $discrColumn['type']);
+        if (isset($discrColumn['length'])) {
+            $columnDefinition .= ', length=' . $discrColumn['length'];
+        }
 
         return '@' . $this->annotationsPrefix . 'DiscriminatorColumn(' . $columnDefinition . ')';
     }
 
-    /**
-     * @return string|null
-     */
+    /** @return string|null */
     protected function generateDiscriminatorMapAnnotation(ClassMetadataInfo $metadata)
     {
         if ($metadata->inheritanceType === ClassMetadataInfo::INHERITANCE_TYPE_NONE) {
@@ -1181,9 +1138,7 @@ public function __construct(<params>)
         return '@' . $this->annotationsPrefix . 'DiscriminatorMap({' . implode(', ', $inheritanceClassMap) . '})';
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityStubMethods(ClassMetadataInfo $metadata)
     {
         $methods = [];
@@ -1311,9 +1266,7 @@ public function __construct(<params>)
         return true;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityLifecycleCallbackMethods(ClassMetadataInfo $metadata)
     {
         if (empty($metadata->lifecycleCallbacks)) {
@@ -1331,9 +1284,7 @@ public function __construct(<params>)
         return implode("\n\n", array_filter($methods));
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityAssociationMappingProperties(ClassMetadataInfo $metadata)
     {
         $lines = [];
@@ -1345,15 +1296,13 @@ public function __construct(<params>)
 
             $lines[] = $this->generateAssociationMappingPropertyDocBlock($associationMapping, $metadata);
             $lines[] = $this->spaces . $this->fieldVisibility . ' $' . $associationMapping['fieldName']
-                     . ($associationMapping['type'] === 'manyToMany' ? ' = array()' : null) . ";\n";
+                     . ($associationMapping['type'] === ClassMetadataInfo::MANY_TO_MANY ? ' = array()' : null) . ";\n";
         }
 
         return implode("\n", $lines);
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityFieldMappingProperties(ClassMetadataInfo $metadata)
     {
         $lines = [];
@@ -1385,9 +1334,7 @@ public function __construct(<params>)
         return implode("\n", $lines);
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function generateEntityEmbeddedProperties(ClassMetadataInfo $metadata)
     {
         $lines = [];
@@ -1417,7 +1364,7 @@ public function __construct(<params>)
         $methodName   = $type . $this->inflector->classify($fieldName);
         $variableName = $this->inflector->camelize($fieldName);
 
-        if (in_array($type, ['add', 'remove'])) {
+        if (in_array($type, ['add', 'remove'], true)) {
             $methodName   = $this->inflector->singularize($methodName);
             $variableName = $this->inflector->singularize($variableName);
         }
@@ -1931,9 +1878,7 @@ public function __construct(<params>)
         return static::$generatorStrategyMap[$type];
     }
 
-    /**
-     * @psalm-param array<string, mixed> $fieldMapping
-     */
+    /** @psalm-param array<string, mixed> $fieldMapping */
     private function nullableFieldExpression(array $fieldMapping): ?string
     {
         if (isset($fieldMapping['nullable']) && $fieldMapping['nullable'] === true) {

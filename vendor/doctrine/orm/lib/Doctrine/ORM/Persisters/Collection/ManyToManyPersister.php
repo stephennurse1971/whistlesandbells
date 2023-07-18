@@ -1,28 +1,13 @@
 <?php
 
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license. For more information, see
- * <http://www.doctrine-project.org>.
- */
+declare(strict_types=1);
 
 namespace Doctrine\ORM\Persisters\Collection;
 
 use BadMethodCallException;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\DBAL\DBALException;
+use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Persisters\SqlValueVisitor;
@@ -61,7 +46,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
             $types[] = PersisterHelper::getTypeOfColumn($joinColumn['referencedColumnName'], $class, $this->em);
         }
 
-        $this->conn->executeUpdate($this->getDeleteSQL($collection), $this->getDeleteSQLParameters($collection), $types);
+        $this->conn->executeStatement($this->getDeleteSQL($collection), $this->getDeleteSQLParameters($collection), $types);
     }
 
     /**
@@ -79,7 +64,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
         [$insertSql, $insertTypes] = $this->getInsertRowSQL($collection);
 
         foreach ($collection->getDeleteDiff() as $element) {
-            $this->conn->executeUpdate(
+            $this->conn->executeStatement(
                 $deleteSql,
                 $this->getDeleteRowSQLParameters($collection, $element),
                 $deleteTypes
@@ -87,7 +72,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
         }
 
         foreach ($collection->getInsertDiff() as $element) {
-            $this->conn->executeUpdate(
+            $this->conn->executeStatement(
                 $insertSql,
                 $this->getInsertRowSQLParameters($collection, $element),
                 $insertTypes
@@ -170,7 +155,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
             . $joinTargetEntitySQL
             . ' WHERE ' . implode(' AND ', $conditions);
 
-        return $this->conn->fetchColumn($sql, $params, 0, $types);
+        return (int) $this->conn->fetchOne($sql, $params, $types);
     }
 
     /**
@@ -197,13 +182,13 @@ class ManyToManyPersister extends AbstractCollectionPersister
 
         [$quotedJoinTable, $whereClauses, $params, $types] = $this->getJoinTableRestrictionsWithKey(
             $collection,
-            $key,
+            (string) $key,
             true
         );
 
         $sql = 'SELECT 1 FROM ' . $quotedJoinTable . ' WHERE ' . implode(' AND ', $whereClauses);
 
-        return (bool) $this->conn->fetchColumn($sql, $params, 0, $types);
+        return (bool) $this->conn->fetchOne($sql, $params, $types);
     }
 
     /**
@@ -223,7 +208,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
 
         $sql = 'SELECT 1 FROM ' . $quotedJoinTable . ' WHERE ' . implode(' AND ', $whereClauses);
 
-        return (bool) $this->conn->fetchColumn($sql, $params, 0, $types);
+        return (bool) $this->conn->fetchOne($sql, $params, $types);
     }
 
     /**
@@ -238,6 +223,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
         $targetClass   = $this->em->getClassMetadata($mapping['targetEntity']);
         $onConditions  = $this->getOnConditionSQL($mapping);
         $whereClauses  = $params = [];
+        $paramTypes    = [];
 
         if (! $mapping['isOwningSide']) {
             $associationSourceClass = $targetClass;
@@ -253,6 +239,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
             $params[]       = $ownerMetadata->containsForeignIdentifier
                 ? $id[$ownerMetadata->getFieldForColumn($value)]
                 : $id[$ownerMetadata->fieldNames[$value]];
+            $paramTypes[]   = PersisterHelper::getTypeOfColumn($value, $ownerMetadata, $this->em);
         }
 
         $parameters = $this->expandCriteriaParameters($criteria);
@@ -260,9 +247,15 @@ class ManyToManyPersister extends AbstractCollectionPersister
         foreach ($parameters as $parameter) {
             [$name, $value, $operator] = $parameter;
 
-            $field          = $this->quoteStrategy->getColumnName($name, $targetClass, $this->platform);
-            $whereClauses[] = sprintf('te.%s %s ?', $field, $operator);
-            $params[]       = $value;
+            $field = $this->quoteStrategy->getColumnName($name, $targetClass, $this->platform);
+
+            if ($value === null && ($operator === Comparison::EQ || $operator === Comparison::NEQ)) {
+                $whereClauses[] = sprintf('te.%s %s NULL', $field, $operator === Comparison::EQ ? 'IS' : 'IS NOT');
+            } else {
+                $whereClauses[] = sprintf('te.%s %s ?', $field, $operator);
+                $params[]       = $value;
+                $paramTypes[]   = PersisterHelper::getTypeOfField($name, $targetClass, $this->em)[0];
+            }
         }
 
         $tableName = $this->quoteStrategy->getTableName($targetClass, $this->platform);
@@ -281,7 +274,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
 
         $sql .= $this->getLimitSql($criteria);
 
-        $stmt = $this->conn->executeQuery($sql, $params);
+        $stmt = $this->conn->executeQuery($sql, $params, $paramTypes);
 
         return $this
             ->em
@@ -298,7 +291,8 @@ class ManyToManyPersister extends AbstractCollectionPersister
      * have to join in the actual entities table leading to additional
      * JOIN.
      *
-     * @psalm-param array<string, mixed> $mapping Array containing mapping information.
+     * @param mixed[] $mapping Array containing mapping information.
+     * @psalm-param array<string, mixed> $mapping
      *
      * @return string[] ordered tuple:
      *                   - JOIN condition to add to the SQL
@@ -350,6 +344,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
     /**
      * Generate ON condition
      *
+     * @param mixed[] $mapping
      * @psalm-param array<string, mixed> $mapping
      *
      * @return string[]
@@ -378,9 +373,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
         return $conditions;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     protected function getDeleteSQL(PersistentCollection $collection)
     {
         $columns   = [];
@@ -464,6 +457,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
      *
      * @param mixed $element
      *
+     * @return mixed[]
      * @psalm-return list<mixed>
      */
     protected function getDeleteRowSQLParameters(PersistentCollection $collection, $element)
@@ -511,8 +505,9 @@ class ManyToManyPersister extends AbstractCollectionPersister
      *
      * Internal note: Order of the parameters must be the same as the order of the columns in getInsertRowSql.
      *
-     * @param mixed $element
+     * @param object $element
      *
+     * @return mixed[]
      * @psalm-return list<mixed>
      */
     protected function getInsertRowSQLParameters(PersistentCollection $collection, $element)
@@ -607,7 +602,7 @@ class ManyToManyPersister extends AbstractCollectionPersister
         $params          = [];
         $types           = [];
 
-        $joinNeeded = ! in_array($indexBy, $targetClass->identifier);
+        $joinNeeded = ! in_array($indexBy, $targetClass->identifier, true);
 
         if ($joinNeeded) { // extra join needed if indexBy is not a @id
             $joinConditions = [];
@@ -766,17 +761,12 @@ class ManyToManyPersister extends AbstractCollectionPersister
         return '';
     }
 
-    /**
-     * @throws DBALException
-     */
+    /** @throws DBALException */
     private function getLimitSql(Criteria $criteria): string
     {
         $limit  = $criteria->getMaxResults();
         $offset = $criteria->getFirstResult();
-        if ($limit !== null || $offset !== null) {
-            return $this->platform->modifyLimitQuery('', $limit, $offset);
-        }
 
-        return '';
+        return $this->platform->modifyLimitQuery('', $limit, $offset ?? 0);
     }
 }

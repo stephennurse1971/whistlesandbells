@@ -265,10 +265,10 @@ A number of ``options`` are available on the ``@ParamConverter`` or
       .. code-block:: php-annotations
 
           /**
-          * @Route("/blog/{date}/{slug}/comments/{comment_slug}")
-          * @ParamConverter("post", options={"mapping": {"date": "date", "slug": "slug"}})
-          * @ParamConverter("comment", options={"mapping": {"comment_slug": "slug"}})
-          */
+           * @Route("/blog/{date}/{slug}/comments/{comment_slug}")
+           * @ParamConverter("post", options={"mapping": {"date": "date", "slug": "slug"}})
+           * @ParamConverter("comment", options={"mapping": {"comment_slug": "slug"}})
+           */
           public function showComment(Post $post, Comment $comment)
           {
           }
@@ -277,7 +277,7 @@ A number of ``options`` are available on the ``@ParamConverter`` or
 
           #[Route('/blog/{date}/{slug}/comments/{comment_slug}')]
           #[ParamConverter('post', options: ['mapping' => ['date' => 'date', 'slug' => 'slug']])]
-          #[ParamConverter('comment', options: ['mapping': ['comment_slug' => 'slug']])]
+          #[ParamConverter('comment', options: ['mapping' => ['comment_slug' => 'slug']])]
           public function showComment(Post $post, Comment $comment)
           {
           }
@@ -359,8 +359,8 @@ instance:
         {
         }
 
-By default any date format that can be parsed by the ``DateTime`` constructor
-is accepted. You can be stricter with input given through the options:
+By default, any date format that can be parsed by the ``DateTime`` constructor
+or a unix timestamp is accepted. You can be stricter with input given through the options:
 
 .. configuration-block::
 
