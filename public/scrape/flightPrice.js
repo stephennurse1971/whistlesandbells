@@ -15,11 +15,12 @@ puppeteer.launch({ headless: true, args:[
         height: 720,
         deviceScaleFactor: 1,
     });
-     const url = process.argv[2];
+
+    const url = process.argv[2];
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-    await page.waitForSelector('.vrY3');
-    await page.click('.vrY3 .iInN .iInN-footer button');
+   // await page.waitForSelector('.vrY3');
+  //  await page.click('.vrY3 .iInN .iInN-footer button');
     await page.waitForSelector('.Hv20-content .Hv20-value div span');
     await new Promise(r => setTimeout(r, 5000));
 
