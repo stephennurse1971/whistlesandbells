@@ -69,7 +69,7 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/new", name="file_attachments_new", methods={"GET","POST"})
      */
-    public function new(Request $request, FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository): Response
+    public function new(Request $request, FileAttachmentsRepository $fileAttachmentsRepository): Response
     {
         $fileAttachment = new FileAttachments();
         $form = $this->createForm(FileAttachmentsType::class, $fileAttachment);
@@ -103,15 +103,6 @@ class FileAttachmentsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="file_attachments_show", methods={"GET"})
-     */
-    public function show(FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository): Response
-    {
-        return $this->render('file_attachments/show.html.twig', [
-            'file_attachments' => $chaveyDown,
-        ]);
-    }
 
     /**
      * @Route("/{id}/edit", name="file_attachments_edit", methods={"GET","POST"})

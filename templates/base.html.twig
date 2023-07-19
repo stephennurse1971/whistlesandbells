@@ -458,11 +458,20 @@
     });
 </script>
 <script>
+
+    ClassicEditor
+        .create(document.querySelector('#file_attachments_notes'))
+        .catch(error => {
+            console.error(error);
+        });
+
     ClassicEditor
         .create(document.querySelector('#recruiter_emails_body'))
         .catch(error => {
             console.error(error);
         });
+
+
 
     ClassicEditor
         .create(document.querySelector('#introduction_introductoryEmail'))
