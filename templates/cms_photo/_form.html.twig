@@ -39,7 +39,7 @@
             <a class="btn btn-outline-danger btn-sm" target="_blank"
                href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">
                 <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
-            <a class="btn btn-sm btn-danger" href="{{ path('cms_delete_photo', {'id': cms_photo.id}) }}">Delete
+            <a class="btn btn-sm btn-danger" href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete
                 photo</a>
         {% endif %}
     </div>

@@ -43,7 +43,7 @@ class CmsPhotoController extends AbstractController
             $photo = $form->get('photo')->getData();
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
+                $safeFilename = $cmsPhoto->getName();
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {
                     $photo->move(
@@ -89,9 +89,12 @@ class CmsPhotoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $photo = $form->get('photo')->getData();
             if ($photo) {
+
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
+                $safeFilename = $cmsPhoto->getName();
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
+
+
                 try {
                     $photo->move(
                         $this->getParameter('website_photos_directory'),
@@ -114,7 +117,7 @@ class CmsPhotoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="cms_photo_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="cms_photo_delete", methods={"POST"})
      */
     public function delete(Request $request, CmsPhoto $cmsPhoto): Response
     {
@@ -127,7 +130,7 @@ class CmsPhotoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/deletecmsphoto", name="cms_delete_photo", methods={"POST", "GET"})
+     * @Route("/delete_photo_file/{id}", name="cms_photo_file_delete", methods={"POST", "GET"})
      */
     public function deleteCMSPhotoFile(int $id,Request $request, CmsPhoto $cmsPhoto, EntityManagerInterface $entityManager)
     {

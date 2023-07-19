@@ -62,8 +62,11 @@
                                             class="fas fa-paperclip"></i></a>
                             {% endif %}
                         </td>
-                        <td><a class="btn btn-outline-danger btn-sm" target="_blank"
-                               href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a></td>
+                        <td>
+                            <a class="btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a>
+                            <a class="btn btn-primary btn-sm" href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete Photo</a>
+                        </td>
                     </tr>
                 {% endif %}
             {% endfor %}
