@@ -40,7 +40,7 @@ class CurriculumVitaeController extends AbstractController
 
 
     /**
-     * @Route("/cv", name="curriculum_vitae", methods={"GET"})
+     * @Route("/stephen_nurse", name="curriculum_vitae", methods={"GET"})
      */
     public function indexIndividual(CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository, StaticTextRepository $staticTextRepository){
 
