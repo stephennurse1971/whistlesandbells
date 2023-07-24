@@ -634,18 +634,20 @@ class UserController extends AbstractController
      */
     public function createVcardSN(UserRepository $userRepository)
     {
-        $user = $userRepository->find(1);
+        $user = $userRepository->findOneBy([
+            'fullName' => "Stephen Nurse"]);
         $vcard = new VCard();
         $userFirstName = $user->getFirstName();
         $userLastName = $user->getLastName();
-        $vcard->addName($userFirstName, $userLastName);
+        $vcard->addName($userLastName, $userFirstName);
         $vcard->addEmail($user->getEmail())
             ->addJobtitle($user->getJobTitle())
-            ->addBirthday($user->getBirthday()->format('d-m-y'))
             ->addCompany($user->getCompany())
             ->addPhoneNumber($user->getBusinessPhone(), 'work')
-            // ->addPhoneNumber($user->getMobile(), 'home')
-            ->addURL($user->getWebPage());
+            ->addPhoneNumber($user->getMobile(), 'home')
+            ->addURL("https://stephen-nurse.com/")
+            ->addNote($user->getNotes());
+
         $vcard->download();
         return new Response(null);
     }
@@ -758,13 +760,15 @@ class UserController extends AbstractController
         $response->headers->set('Cache-Control', 'max-age=0');
         return $response;
     }
+
     /**
      * @Route ("/delete/festive-message/date", name="user_delete_festive_message" )
      */
-    public function deleteFestiveMessageDate(UserRepository $userRepository,EntityManagerInterface $manager,Request $request){
+    public function deleteFestiveMessageDate(UserRepository $userRepository, EntityManagerInterface $manager, Request $request)
+    {
         $users = $userRepository->findAll();
-        foreach ($users as $user){
-            if($user->getFestiveMessageDate()){
+        foreach ($users as $user) {
+            if ($user->getFestiveMessageDate()) {
                 $user->setFestiveMessageDate(null);
             }
         }

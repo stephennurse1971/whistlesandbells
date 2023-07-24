@@ -40,17 +40,16 @@ class CurriculumVitaeController extends AbstractController
 
 
     /**
-     * @Route("/individual/{name}", name="curriculum_vitae_individual", methods={"GET"})
+     * @Route("/cv", name="curriculum_vitae", methods={"GET"})
      */
-    public function indexIndividual(string $name, CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository, StaticTextRepository $staticTextRepository){
+    public function indexIndividual(CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository, StaticTextRepository $staticTextRepository){
 
 
         $user = $userRepository->findOneBy([
-            'fullName'=>$name
-            ]);
-        return $this->render('curriculum_vitae/indexByPerson.html.twig', [
+            'fullName' => "Stephen Nurse"]);
+        return $this->render('curriculum_vitae/cv.html.twig', [
             'curriculum_vitaes' => $curriculumVitaeRepository->findByCandidate($user),
-            'candidate' => $name,
+            'candidate' => $user,
             'static_text'=> $staticTextRepository->findAll()
         ]);
     }

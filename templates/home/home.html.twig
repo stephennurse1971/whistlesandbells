@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="defult-title">
-                        <h4>Specializing In</h4>
+                        <h4>.</h4>
                     </div>
                 </div>
             </div>
@@ -59,8 +59,6 @@
                             {% if SpecialisingPhoto1 is not empty %}
                                 <img src="{{ asset('administration/attachments/websitephotos/') }}{{ SpecialisingPhoto1.photo }}"
                                      alt="">
-                            {% else %}
-                                <img src="assets/images/special/01.jpg" alt="">
                             {% endif %}
 
                             <div class="caption">
@@ -71,10 +69,9 @@
                                         <p>{{ SpecialisingPhoto1.title }}</p>
                                         <a target="_blank" class="info btn btn-primary"
                                            href={{ SpecialisingPhoto1.link }}>Learn more</a>
-
                                     {% else %}
-                                        <h4> Heading1 </h4>
-                                        <p> Title1 </p>
+                                        <h4> Heading 1 TBC </h4>
+                                        <p> Title 1 TBC </p>
                                     {% endif %}
 
                                 </div>
@@ -163,7 +160,11 @@
                     <div class="why-choose-content">
                         {% if Text1 is not null %}
                             <h3>{{ Text1.contentTitle }}</h3>
-                            <p> {{ Text1.contentText|raw }}</p>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a target="_blank" href="{{ path('cms_copy_edit', {id:Text1.id}) }}"><p> {{ Text1.contentText|raw }}</p></a>
+                            {% else %}
+                                <p> {{ Text1.contentText|raw }}</p>
+                            {% endif %}
                         {% else %}
                             <h3> Heading1 TBC </h3>
                             <p> Title1 TBC </p>
@@ -172,7 +173,11 @@
                     <div class="why-choose-content">
                         {% if Text2 is not null %}
                             <h3>{{ Text2.contentTitle }}</h3>
-                            <p> {{ Text2.contentText|raw }}</p>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a target="_blank" href="{{ path('cms_copy_edit', {id:Text2.id}) }}"><p> {{ Text2.contentText|raw }}</p></a>
+                            {% else %}
+                                <p> {{ Text1.contentText|raw }}</p>
+                            {% endif %}
                         {% else %}
                             <h3> Heading2 TBC </h3>
                             <p> Title2 TBC </p>
@@ -181,44 +186,48 @@
                     <div class="why-choose-content">
                         {% if Text3 is not null %}
                             <h3>{{ Text3.contentTitle }}</h3>
-                            <p> {{ Text3.contentText|raw }}</p>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a target="_blank" href="{{ path('cms_copy_edit', {id:Text3.id}) }}"><p> {{ Text3.contentText|raw }}</p></a>
+                            {% else %}
+                                <p> {{ Text3.contentText|raw }}</p>
+                            {% endif %}
                         {% else %}
                             <h3> Heading3 TBC </h3>
                             <p> Title3 TBC </p>
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12" id="video-right-static">
-                    <div class="author-video-section"></div>
-                    <div class="video_area">
+{#                <div class="col-lg-6 col-md-12" id="video-right-static">#}
+{#                    <div class="author-video-section"></div>#}
+{#                    <div class="video_area">#}
 
-                        <div class="video_button">
-                            <a href="#" data-toggle="modal" data-target="#myModal">
-                                <div class="profilepicture"></div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!--Video  Modal -->
+{#                        <div class="video_button">#}
+{#                            <a href="#" data-toggle="modal" data-target="#myModal">#}
+{#                                <div class="profilepicture"></div>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <!--Video  Modal -->#}
 
 
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header raisa-video-btn">
-                                <button type="button" class="btn  btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="video-container">
-                                    <iframe width="640" height="360" src="https://www.youtube.com/watch?v=fzLOC-8Jaco"
-                                            frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--Video  Modal -->
+{#                <!-- Modal -->#}
+{#                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">#}
+{#                    <div class="modal-dialog modal-lg" role="document">#}
+{#                        <div class="modal-content">#}
+{#                            <div class="modal-header raisa-video-btn">#}
+{#                                <button type="button" class="btn  btn-default" data-dismiss="modal">Close</button>#}
+{#                            </div>#}
+{#                            <div class="modal-body">#}
+{#                                <div class="video-container">#}
+{#                                    <iframe width="640" height="360" src="https://www.youtube.com/watch?v=fzLOC-8Jaco"#}
+{#                                            frameborder="0" allowfullscreen></iframe>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <!--Video  Modal -->#}
 
 
             </div>
