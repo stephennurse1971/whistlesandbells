@@ -7,25 +7,61 @@
     <div class="row">
         <div class="col-6"></div>
         <div class="col-5">
-            <a class="btn btn-success" href="{{ path('create_vcard_SN') }}">Contact Details (VCF)</a>
-            <a target="_blank" class="btn btn-primary"
+            <a class="btn btn-success btn-sm" href="{{ path('create_vcard_SN') }}">Contact Details (VCF)</a>
+            <a target="_blank" class="btn btn-primary btn-sm"
                href="/administration/attachments/CV/CV - Stephen Nurse.docx">Download</a>
             {% if app.user %}
-                <a class="btn btn-secondary" href="{{ path('recruiter_email_CV') }}">Email</a>
+                <a class="btn btn-secondary btn-sm" href="{{ path('recruiter_email_CV') }}">Email</a>
             {% else %}
                 <button class="btn btn-primary" id="show-email-popup">Email</button>
             {% endif %}
+
             <div id="popup-form-mail" class="mt-2 col-3">
                 <form method="POST" class="form" action="{{ path('recruiter_email_CV') }}">
                     <div class="form-group">
                         <div class="">
                             <label for="email"><strong>Enter your Email:</strong></label>
                             <input type="text" name="email">
-                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <button class="btn btn-primary btn-sm" type="submit">Submit</button>
                         </div>
                     </div>
                 </form>
             </div>
+
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+                   Update CV
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Upload CV</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                        <form method="POST" action="{{ path('update_cv') }}"  enctype="multipart/form-data" >
+                                            <div class="form-group">
+                                            <input type="file" name = "file" class="form-control">
+                                            </div>
+                                            <button class="btn btn-success">Upload</button>
+                                        </form>
+                            </div>
+{#                            <div class="modal-footer">#}
+{#                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+{#                                <button type="button" class="btn btn-primary">Save changes</button>#}
+{#                            </div>#}
+                        </div>
+                    </div>
+                </div>
+{#                <a class="btn btn-danger btn-sm" href="{{ path('update_cv') }}">Update CV</a>#}
+            {% endif %}
         </div>
         <div class="col-1"></div>
     </div>
