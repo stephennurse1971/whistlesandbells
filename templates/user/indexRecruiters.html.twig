@@ -79,7 +79,6 @@
                 {% endif %}
 
                 <td style="text-align: center" data-sort="{{ rank}}">
-                    {{ user.recruiterHighPriority }}
                     {% if user.recruiterHighPriority == "High" %}
                         <a target="_blank"
                            href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
