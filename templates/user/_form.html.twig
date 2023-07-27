@@ -9,11 +9,12 @@
         {{ form_row(form.company) }}
         {{ form_row(form.birthday) }}
         {{ form_row(form.linkedIn) }}
-        {% if form.recruitingArea is defined  and form.recruitingAreaList is defined %}
+        {% if form.recruitingArea is defined  and form.recruitingAreaList is defined and form.recruiterHighPriority is defined %}
             {{ form_row(form.recruitingArea) }}
             {{ form_row(form.recruitingAreaList ) }}
+            {{ form_row(form.recruiterHighPriority ) }}
         {% endif %}
-        {{ form_row(form.recruiterHighPriority ) }}
+
     </div>
     <div class="col-md-3">
         <h3><b>Address</b></h3>

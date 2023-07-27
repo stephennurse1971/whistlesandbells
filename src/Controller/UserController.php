@@ -127,6 +127,29 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/recruiters_uncategorised", name="user_index_recruiters_uncategorised", methods={"GET"})
+     * @Security("is_granted('ROLE_JOB_APPLICANT')")
+     */
+    public function indexRecruitersUncategorised(UserRepository $userRepository, ProspectEmployerRepository $prospectEmployerRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
+    {
+        $users = [];
+        $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
+        foreach($users_by_role as $user){
+            if($user->getRecruiterHighPriority() == null){
+                $users[] = $user;
+            }
+
+        }
+        return $this->render('user/indexRecruiters.html.twig', [
+            'users' => $users,
+            'prospect_employers' => $prospectEmployerRepository->findAll(),
+            'recruiterEmails' => $recruiterEmailsRepository->findAll(),
+            'role' => "Recruiters",
+            'role_title' => "Recruiters"
+        ]);
+    }
+
+    /**
      * @Route("/group/AX", name="user_ax", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
      *

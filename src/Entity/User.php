@@ -273,7 +273,6 @@ class User implements UserInterface
     {
         $this->logs = new ArrayCollection();
         $this->houseGuests = new ArrayCollection();
-      //  $this->photos = new ArrayCollection();
         $this->introductions = new ArrayCollection();
         $this->prospectEmployers = new ArrayCollection();
         $this->curriculumVitaes = new ArrayCollection();
