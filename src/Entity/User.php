@@ -261,6 +261,11 @@ class User implements UserInterface
      */
     private $importTime;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $recruiterHighPriority;
+
 
 
 
@@ -1018,6 +1023,18 @@ class User implements UserInterface
     public function setImportTime(?\DateTimeInterface $importTime): self
     {
         $this->importTime = $importTime;
+
+        return $this;
+    }
+
+    public function getRecruiterHighPriority(): ?string
+    {
+        return $this->recruiterHighPriority;
+    }
+
+    public function setRecruiterHighPriority(?string $recruiterHighPriority): self
+    {
+        $this->recruiterHighPriority = $recruiterHighPriority;
 
         return $this;
     }

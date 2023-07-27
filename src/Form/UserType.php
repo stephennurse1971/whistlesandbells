@@ -66,6 +66,7 @@ class UserType extends AbstractType
                 'required' => false
             ])
             ->add('email')
+
             ->add('email2', TextType::class, [
                 'required' => false
             ])
@@ -108,6 +109,7 @@ class UserType extends AbstractType
         $user_roles = $options['user']->getRoles();
         if (in_array('ROLE_RECRUITER', $user_roles)) {
             $builder
+                ->add('recruiterHighPriority')
                 ->add('recruitingArea')
                 ->add('recruitingAreaList', ChoiceType::class, [
                     'multiple' => true,

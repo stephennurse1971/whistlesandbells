@@ -382,6 +382,25 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/recruiter_priority/{id}/{priority}", name="user_high_priority_recruiter", methods={"GET","POST"})
+     */
+    public function editRecruiterPriority(string $priority, Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        if ($priority == 'High') {
+            $user->setRecruiterHighPriority('Low');
+        } elseif ($priority == 'Low') {
+            $user->setRecruiterHighPriority('High');
+        } elseif ($priority == 'Null') {
+            $user->setRecruiterHighPriority('High');
+        }
+
+        $entityManager->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
+
+    /**
      * @Route("/festive/message/{id}/{active}/edit", name="user_edit_festive_message", methods={"GET","POST"})
      */
     public function editFestiveMessageSetting(string $active, Request $request, User $user, EntityManagerInterface $entityManager): Response

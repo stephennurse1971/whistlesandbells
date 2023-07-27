@@ -33,6 +33,7 @@
         <tr>
             <th>Salutation</th>
             <th>Name</th>
+            <th>High Priority</th>
             <th>Recruiting Company</th>
             <th>Hiring Company</th>
             <th title="Home/Business">Address</th>
@@ -62,11 +63,30 @@
             <tr>
                 <td>{{ user.salutation }}</td>
                 <td>
-                    {% if is_granted('ROLE_ADMIN')   %}
+                    {% if is_granted('ROLE_ADMIN') %}
                         <b><a target="_blank"
                               href="{{ path('user_edit', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
                     {% else %}
                         <b>{{ user.fullName }}</b>
+                    {% endif %}
+                </td>
+
+                <td style="text-align: center" data-sort="{{ user.recruiterHighPriority }}">
+                    {% if user.recruiterHighPriority == "High" %}
+                        <a target="_blank" href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
+                            <span style="color: green"><i class="fas fa-dot-circle"></i></span>
+                        </a>
+                    {% elseif user.recruiterHighPriority == "Low" %}
+                        <a target="_blank" href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
+                            <span style="color: red"><i class="fas fa-dot-circle"></i></span>
+                        </a>
+                    {% else %}
+                        <a target="_blank" href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
+                            <span style="color: green"><i class="fas fa-arrow-up"></i></span>
+                        </a>
+                        <a target="_blank" href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
+                            <span style="color: red"><i class="fas fa-arrow-down"></i></span>
+                        </a>
                     {% endif %}
                 </td>
 
@@ -141,6 +161,7 @@
                         <a target="_blank" title="{{ user.linkedIn }}" href="{{ user.linkedIn }}">
                             <i class="fa fa-linkedin"></i>
                         </a>
+                        {{ user.linkedIn }}
                     {% endif %}
                 </td>
                 <td style="text-align: center">
@@ -163,7 +184,7 @@
                         {{ area }},
                     {% endfor %}
                     {% if user.recruitingAreaList is empty %}
-                    .N/A
+                        .N/A
                     {% endif %}
                 </td>
                 <td>{{ user.notes }}</td>
