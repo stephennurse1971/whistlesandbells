@@ -112,15 +112,37 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/recruiters", name="user_index_recruiters", methods={"GET"})
+     * @Route("/recruiters_highpriority", name="user_index_recruiters_high_priority", methods={"GET"})
      * @Security("is_granted('ROLE_JOB_APPLICANT')")
      */
-    public function indexRecruiters(UserRepository $userRepository, ProspectEmployerRepository $prospectEmployerRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
+    public function indexRecruitersHighPriority(UserRepository $userRepository, ProspectEmployerRepository $prospectEmployerRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
     {
         $users = [];
         $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
         foreach($users_by_role as $user){
-            if($user->getRecruiterHighPriority() != null){
+            if($user->getRecruiterHighPriority() == 'High'){
+                $users[] = $user;
+            }
+        }
+        return $this->render('user/indexRecruiters.html.twig', [
+            'users' => $users,
+            'prospect_employers' => $prospectEmployerRepository->findAll(),
+            'recruiterEmails' => $recruiterEmailsRepository->findAll(),
+            'role' => "Recruiters",
+            'role_title' => "Recruiters"
+        ]);
+    }
+
+    /**
+     * @Route("/recruiters_lowpriority", name="user_index_recruiters_low_priority", methods={"GET"})
+     * @Security("is_granted('ROLE_JOB_APPLICANT')")
+     */
+    public function indexRecruitersLowPriority(UserRepository $userRepository, ProspectEmployerRepository $prospectEmployerRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
+    {
+        $users = [];
+        $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
+        foreach($users_by_role as $user){
+            if($user->getRecruiterHighPriority() == 'Low'){
                 $users[] = $user;
             }
         }
