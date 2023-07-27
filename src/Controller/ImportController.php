@@ -66,6 +66,6 @@ class ImportController extends AbstractController
 
         }
 
-        return $this->redirectToRoute('recruiters_index');
+        return $this->redirectToRoute('user_index');
     }
 }
