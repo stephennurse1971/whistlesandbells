@@ -161,7 +161,6 @@
                         <a target="_blank" title="{{ user.linkedIn }}" href="{{ user.linkedIn }}">
                             <i class="fa fa-linkedin"></i>
                         </a>
-                        {{ user.linkedIn }}
                     {% endif %}
                 </td>
                 <td style="text-align: center">
@@ -246,7 +245,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[14, 'desc'], [1, 'asc']],
+                "order": [[16, 'desc'], [3, 'asc'], [1, 'asc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": true

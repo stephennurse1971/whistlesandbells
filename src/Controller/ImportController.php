@@ -55,7 +55,7 @@ class ImportController extends AbstractController
                     }
                     if ($source == 'Grapevine') {
                         $userImportGrapevineService->importUser($newFilename);
-                        return $this->redirectToRoute('user_role_index', ['role' => 'ROLE_RECRUITER']);
+                        return $this->redirectToRoute('recruiters_index');
                     }
                 }
             }
