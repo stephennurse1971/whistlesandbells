@@ -117,8 +117,15 @@ class UserController extends AbstractController
      */
     public function indexRecruiters(UserRepository $userRepository, ProspectEmployerRepository $prospectEmployerRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
     {
+        $users = [];
+        $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
+        foreach($users_by_role as $user){
+            if($user->getRecruiterHighPriority() != null){
+                $users[] = $user;
+            }
+        }
         return $this->render('user/indexRecruiters.html.twig', [
-            'users' => $userRepository->findByRole('ROLE_RECRUITER'),
+            'users' => $users,
             'prospect_employers' => $prospectEmployerRepository->findAll(),
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
@@ -138,7 +145,6 @@ class UserController extends AbstractController
             if($user->getRecruiterHighPriority() == null){
                 $users[] = $user;
             }
-
         }
         return $this->render('user/indexRecruiters.html.twig', [
             'users' => $users,
