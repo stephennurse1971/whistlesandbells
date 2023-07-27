@@ -71,20 +71,32 @@
                     {% endif %}
                 </td>
 
-                <td style="text-align: center" data-sort="{{ user.recruiterHighPriority }}">
+                {% set rank =2 %}
+                {% if user.recruiterHighPriority == "High" %}
+                    {% set rank =1 %}
+                {% elseif user.recruiterHighPriority == "Low" %}
+                    {% set rank =3 %}
+                {% endif %}
+
+                <td style="text-align: center" data-sort="{{ rank}}">
+                    {{ user.recruiterHighPriority }}
                     {% if user.recruiterHighPriority == "High" %}
-                        <a target="_blank" href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
+                        <a target="_blank"
+                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
                             <span style="color: green"><i class="fas fa-dot-circle"></i></span>
                         </a>
                     {% elseif user.recruiterHighPriority == "Low" %}
-                        <a target="_blank" href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
+                        <a target="_blank"
+                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
                             <span style="color: red"><i class="fas fa-dot-circle"></i></span>
                         </a>
                     {% else %}
-                        <a target="_blank" href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
+                        <a target="_blank"
+                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
                             <span style="color: green"><i class="fas fa-arrow-up"></i></span>
                         </a>
-                        <a target="_blank" href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
+                        <a target="_blank"
+                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
                             <span style="color: red"><i class="fas fa-arrow-down"></i></span>
                         </a>
                     {% endif %}
@@ -245,7 +257,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[16, 'desc'], [2, 'asc'],[3, 'asc'], [1, 'asc']],
+                "order": [[16, 'desc'], [2, 'asc'], [3, 'asc'], [1, 'asc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": true
