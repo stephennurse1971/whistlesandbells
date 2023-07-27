@@ -51,12 +51,10 @@ class UserImportGrapevineService
             $email = trim(strtolower($oneLineFromCsv[14]));
             $businessPhone = trim($oneLineFromCsv[15]);
             $businessPhone = str_replace([' ','.', "(0)", "-", "Switchboard", "+", "(", ")"], "", $businessPhone);
-            if ($businessPhone != '') {
-                $businessPhone = "+" . $businessPhone;
-            }
+            if ($businessPhone != '') {$businessPhone = "+" . $businessPhone;}
             $webPage = trim(strtolower($oneLineFromCsv[17]));
             $companyEmail = trim(strtolower($oneLineFromCsv[18])) ;
-            $linkedIn = trim($oneLineFromCsv[20]);
+            $linkedIn = trim($oneLineFromCsv[21]);
             $businessAddress = $businessAddress1;
             if ($businessAddress2 != '') {
                 $businessAddress = $businessAddress . ', ' . $businessAddress2;
@@ -83,7 +81,8 @@ class UserImportGrapevineService
             }
             $find_user = $this->userRepository->findOneBy(['email' => $email]);
             if ($find_user) {
-                continue;
+                $find_user->setLinkedIn($linkedIn);
+                $this->manager->flush();
             } else {
                 $user = new User();
                 $user->setSalutation($salutation)
