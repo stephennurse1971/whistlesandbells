@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %}Recruiters: {{ role }} {% endblock %}
+{% block title %}Recruiters: ({{ priority }}) {% endblock %}
 {% block body %}
-    <h1><span class="text-danger">Recruiters</span></h1>
+    <h1><span class="text-danger">Recruiters: ({{ priority }})</span></h1>
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <div class="row">
@@ -33,7 +33,6 @@
         <tr>
             <th>Salutation</th>
             <th>Name</th>
-            <th>High Priority</th>
             <th>Recruiting Company</th>
             <th>Hiring Company</th>
             <th title="Home/Business">Address</th>
@@ -45,6 +44,7 @@
             <th>Country</th>
             <th>Areas</th>
             <th>Areas (List)</th>
+            <th>High Priority</th>
             <th style="width: 150px">Notes</th>
             <th>Invite email</th>
             <th>Date</th>
@@ -71,35 +71,7 @@
                     {% endif %}
                 </td>
 
-                {% set rank =2 %}
-                {% if user.recruiterHighPriority == "High" %}
-                    {% set rank =1 %}
-                {% elseif user.recruiterHighPriority == "Low" %}
-                    {% set rank =3 %}
-                {% endif %}
 
-                <td style="text-align: center" data-sort="{{ rank}}">
-                    {% if user.recruiterHighPriority == "High" %}
-                        <a target="_blank"
-                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
-                            <span style="color: green"><i class="fas fa-dot-circle"></i></span>
-                        </a>
-                    {% elseif user.recruiterHighPriority == "Low" %}
-                        <a target="_blank"
-                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
-                            <span style="color: red"><i class="fas fa-dot-circle"></i></span>
-                        </a>
-                    {% else %}
-                        <a target="_blank"
-                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
-                            <span style="color: green"><i class="fas fa-arrow-up"></i></span>
-                        </a>
-                        <a target="_blank"
-                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
-                            <span style="color: red"><i class="fas fa-arrow-down"></i></span>
-                        </a>
-                    {% endif %}
-                </td>
 
                 <td>{{ user.company }}</td>
                 <td>
@@ -196,6 +168,43 @@
                     {% if user.recruitingAreaList is empty %}
                         .N/A
                     {% endif %}
+                </td>
+
+                {% set rank =3 %}
+                {% if user.recruiterHighPriority == "High" %}
+                    {% set rank =1 %}
+                {% elseif user.recruiterHighPriority == "Later" %}
+                    {% set rank =2 %}
+                {% elseif user.recruiterHighPriority == "Low" %}
+                    {% set rank =4 %}
+                {% endif %}
+
+                <td style="text-align: center" data-sort="{{ rank}}">
+                    {% if user.recruiterHighPriority == "High" %}
+                        <a target="_blank"
+                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
+                            <span style="color: green"><i class="fas fa-dot-circle"></i></span>
+                        </a>
+                    {% elseif user.recruiterHighPriority == "Low" %}
+                        <a target="_blank"
+                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
+                            <span style="color: red"><i class="fas fa-dot-circle"></i></span>
+                        </a>
+                    {% else %}
+                        <a target="_blank"
+                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
+                            <span style="color: green"><i class="fas fa-arrow-up"></i></span>
+                        </a>
+                        <a target="_blank"
+                           href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Low'}) }}">
+                            <span style="color: red"><i class="fas fa-arrow-down"></i></span>
+                        </a>
+                    {% endif %}
+                    <a target="_blank"
+                       href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'Later'}) }}">
+                        <span style="color: grey"><i class="fas fa-dot-circle"></i></span>
+                    </a>
+
                 </td>
                 <td>{{ user.notes }}</td>
                 <td style="width: 200px">

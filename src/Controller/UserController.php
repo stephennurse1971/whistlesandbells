@@ -129,7 +129,8 @@ class UserController extends AbstractController
             'prospect_employers' => $prospectEmployerRepository->findAll(),
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
-            'role_title' => "Recruiters"
+            'role_title' => "Recruiters",
+            'priority'=> "High"
         ]);
     }
 
@@ -151,7 +152,31 @@ class UserController extends AbstractController
             'prospect_employers' => $prospectEmployerRepository->findAll(),
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
-            'role_title' => "Recruiters"
+            'role_title' => "Recruiters",
+            'priority'=> "Low"
+        ]);
+    }
+
+    /**
+     * @Route("/recruiters_later", name="user_index_recruiters_later", methods={"GET"})
+     * @Security("is_granted('ROLE_JOB_APPLICANT')")
+     */
+    public function indexRecruitersLater(UserRepository $userRepository, ProspectEmployerRepository $prospectEmployerRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
+    {
+        $users = [];
+        $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
+        foreach($users_by_role as $user){
+            if($user->getRecruiterHighPriority() == 'Later'){
+                $users[] = $user;
+            }
+        }
+        return $this->render('user/indexRecruiters.html.twig', [
+            'users' => $users,
+            'prospect_employers' => $prospectEmployerRepository->findAll(),
+            'recruiterEmails' => $recruiterEmailsRepository->findAll(),
+            'role' => "Recruiters",
+            'role_title' => "Recruiters",
+            'priority'=> "Later"
         ]);
     }
 
@@ -173,7 +198,8 @@ class UserController extends AbstractController
             'prospect_employers' => $prospectEmployerRepository->findAll(),
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
-            'role_title' => "Recruiters"
+            'role_title' => "Recruiters",
+            'priority'=> "Uncategorised"
         ]);
     }
 
@@ -438,9 +464,11 @@ class UserController extends AbstractController
     public function editRecruiterPriority(string $priority, Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($priority == 'High') {
-            $user->setRecruiterHighPriority('Low');
-        } elseif ($priority == 'Low') {
             $user->setRecruiterHighPriority('High');
+        } elseif ($priority == 'Later') {
+            $user->setRecruiterHighPriority('Later');
+        } elseif ($priority == 'Low') {
+            $user->setRecruiterHighPriority('Low');
         } elseif ($priority == 'Null') {
             $user->setRecruiterHighPriority('High');
         }
