@@ -112,6 +112,7 @@ class FileAttachmentsController extends AbstractController
         $form = $this->createForm(FileAttachmentsType::class, $fileAttachments, ['id' => $id]);
         if(empty($fileAttachments->getAttachments())){
             $form->remove('additional');
+          //  $form->remove('attachments');
         }
         else{
             $form->remove('attachments');
