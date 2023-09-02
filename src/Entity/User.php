@@ -266,6 +266,11 @@ class User implements UserInterface
      */
     private $recruiterHighPriority;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $recruiterResponse;
+
 
 
 
@@ -668,10 +673,6 @@ class User implements UserInterface
         return $this;
     }
 
-
-
-
-
     public function getLinkedIn(): ?string
     {
         return $this->linkedIn;
@@ -1034,6 +1035,18 @@ class User implements UserInterface
     public function setRecruiterHighPriority(?string $recruiterHighPriority): self
     {
         $this->recruiterHighPriority = $recruiterHighPriority;
+
+        return $this;
+    }
+
+    public function getRecruiterResponse(): ?string
+    {
+        return $this->recruiterResponse;
+    }
+
+    public function setRecruiterResponse(?string $recruiterResponse): self
+    {
+        $this->recruiterResponse = $recruiterResponse;
 
         return $this;
     }

@@ -1,7 +1,7 @@
 {{ form_start(form) }}
 <div class="row">
     <div class="col-md-2">
-        <h3><b>Name</b></h3>
+        <h4 style="color: blue">Name</h4>
         {{ form_row(form.salutation) }}
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
@@ -9,15 +9,10 @@
         {{ form_row(form.company) }}
         {{ form_row(form.birthday) }}
         {{ form_row(form.linkedIn) }}
-        {% if form.recruitingArea is defined  and form.recruitingAreaList is defined and form.recruiterHighPriority is defined %}
-            {{ form_row(form.recruitingArea) }}
-            {{ form_row(form.recruitingAreaList ) }}
-            {{ form_row(form.recruiterHighPriority ) }}
-        {% endif %}
-
     </div>
-    <div class="col-md-3">
-        <h3><b>Address</b></h3>
+
+    <div class="col-md-2">
+        <h4 style="color: blue">Address</h4>
         {{ form_row(form.businessStreet) }}
         {{ form_row(form.businessCity) }}
         {{ form_row(form.businessPostalCode) }}
@@ -31,10 +26,10 @@
             {{ form_row(form.homePostalCode) }}
             {{ form_row(form.homeCountry) }}
         {% endif %}
-
     </div>
+
     <div class="col-md-2">
-        <h3><b>Phone</b></h3>
+        <h4 style="color: blue">Phone</h4>
         {{ form_row(form.mobile) }}
         {{ form_row(form.mobile2) }}
         {{ form_row(form.businessPhone) }}
@@ -43,16 +38,16 @@
     </div>
 
     <div class="col-md-2">
-        <h3><b>Contact details</b></h3>
+        <h3>Contact details</h3>
         {{ form_row(form.email) }}
         {{ form_row(form.email2) }}
         {{ form_row(form.email3) }}
         {{ form_row(form.webPage) }}
         {{ form_row(form.notes) }}
-
     </div>
+
     <div class="col-md-2">
-        <h3><b>Access rights</b></h3>
+        <h4 style="color: blue">Access rights</h4>
         {{ form_row(form.password) }}
         {% if form.role is defined and form.inviteDate is defined %}
             User ID: {{ user.id }}
@@ -63,6 +58,16 @@
             {{ form_row(form.festiveMessage) }}
             {{ form_row(form.festiveMessageDate) }}
             {{ form_row(form.lastEdited) }}
+        {% endif %}
+    </div>
+
+    <div class="col-md-2">
+        <h4 style="color: blue">Recruiters</h4>
+        {% if form.recruitingArea is defined  and form.recruitingAreaList is defined and form.recruiterHighPriority is defined %}
+            {{ form_row(form.recruitingArea) }}
+            {{ form_row(form.recruitingAreaList ) }}
+            {{ form_row(form.recruiterHighPriority ) }}
+            {{ form_row(form.recruiterResponse ) }}
         {% endif %}
     </div>
 </div>

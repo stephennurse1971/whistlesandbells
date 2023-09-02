@@ -31,15 +31,15 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Salutation</th>
+            <th></th>
             <th>Name</th>
-            <th>Recruiting Company</th>
-            <th>Hiring Company</th>
-            <th title="Home/Business">Address</th>
-            <th>Mobile(s)</th>
-            <th>Landlines</th>
-            <th>Email(s)</th>
-            <th>LinkedIN</th>
+            <th>Recruiting<br>Company</th>
+            <th>Hiring<br>Company</th>
+            <th title="Home/Business"><i class="fa fa-home"></i></th>
+            <th><i class="fa fa-mobile"></i></th>
+            <th><i class="fa fa-phone"></i></th>
+            <th><i class="fa fa-envelope"></i></th>
+            <th><i class="fa fa-linkedin"></i></th>
             <th>www</th>
             <th>Country</th>
             <th>Areas</th>
@@ -48,10 +48,10 @@
             <th style="width: 150px">Notes</th>
             <th>Invite email</th>
             <th>Date</th>
+            <th>Reply</th>
             <th>VCF</th>
-            <th>Opportunity</th>
-            {% if is_granted('ROLE_ADMIN') %}
-                <th style="color: red;">Plain Password</th>
+            <th>Role</th>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <th style="color: red;">#</th>
             {% endif %}
         </tr>
@@ -70,7 +70,6 @@
                         <b>{{ user.fullName }}</b>
                     {% endif %}
                 </td>
-
 
 
                 <td>{{ user.company }}</td>
@@ -99,11 +98,11 @@
 
                 <td style="text-align: center">
                     {% if user.mobile is not empty %}
-                        <i class="fa fa-phone" title="{{ user.mobile }}"></i>
+                        <i class="fa fa-mobile-phone" title="{{ user.mobile }}"></i>
                     {% endif %}
 
                     {% if user.mobile2 is not empty %} /
-                        <i class="fa fa-phone" title="{{ user.mobile2 }}"></i>
+                        <i class="fa fa-mobile" title="{{ user.mobile2 }}"></i>
                     {% endif %}
                 </td>
 
@@ -179,7 +178,7 @@
                     {% set rank =4 %}
                 {% endif %}
 
-                <td style="text-align: center" data-sort="{{ rank}}">
+                <td style="text-align: center" data-sort="{{ rank }}">
                     {% if user.recruiterHighPriority == "High" %}
                         <a target="_blank"
                            href="{{ path('user_high_priority_recruiter', {id: user.id, priority: 'High'}) }}">
@@ -224,10 +223,23 @@
                     {% for recruiterEmail in recruiterEmails %}
                         {% if recruiterEmail.Author == app.user.email and recruiterEmail.sendToFullName == user.fullName %}
                             <a target="_blank"
-                               href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-Y H:i') }}</a>
+                               href="{{ path('recruiter_emails_show',{'id':recruiterEmail.id}) }}">{{ recruiterEmail.sendDate|date('d-M-y H:i') }}</a>
                             <br>
                         {% endif %}
                     {% endfor %}
+                </td>
+                <td style="text-align: center" data-sort="{{ user.recruiterResponse }}">
+                    {% if user.recruiterResponse == 'No reply' or user.recruiterResponse is empty %}
+                        <i title="No reply" style="color: grey;" class="fa fa-question-circle"></i>
+                    {% endif %}
+
+                    {% if user.recruiterResponse == 'Replied and No' %}
+                        <i title="Replied and No" style="color: red;" class="fa fa-remove"></i>
+                    {% endif %}
+
+                    {% if user.recruiterResponse == 'Replied and Follow-up' %}
+                        <i title="Replied and Follow-Up" style="color: green;" class="fa fa-check"></i>
+                    {% endif %}
                 </td>
                 <td>
                     <a class="btn btn-outline-info btn-sm"
@@ -240,7 +252,6 @@
                 </td>
 
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <td>{{ user.plainPassword }}</td>
                     <td>
                         <form class="d-inline" method="post" action="{{ path('user_delete', {'id': user.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">

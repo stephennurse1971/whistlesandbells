@@ -127,7 +127,20 @@ class UserType extends AbstractType
                         'HR'=>'HR',
                         'Human Resources'=>'Human Resources',
                         'Benefits'=>'Benefits'
-                    ],]);
+                    ],])
+                ->add('recruiterResponse', ChoiceType::class, [
+                    'multiple' => false,
+                    'required' => false,
+                    'expanded' => false,
+                    'choices' => [
+                        'No reply' => 'No reply',
+                        'Replied and No' => 'Replied and No',
+                        'Replied and Follow-up' => 'Replied and Follow-up'
+                    ],
+                    'data'=>'No reply',
+                    ])
+
+            ;
         }
         if (in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
             $builder

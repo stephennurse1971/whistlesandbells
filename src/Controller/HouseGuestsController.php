@@ -66,7 +66,7 @@ class HouseGuestsController extends AbstractController
      */
     public function new(string $startdate, Request $request, Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
     {
-        $calendar = new Calendar;
+        $calendar = new HouseGuests();
         $defaultDepartureDate = new \DateTime($startdate);
         $defaultDepartureDate = $defaultDepartureDate->modify("+1 day");
 
