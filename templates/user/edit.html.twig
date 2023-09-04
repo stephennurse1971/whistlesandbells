@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Edit: {{ user.fullname }}{% endblock %}
 
 {% block body %}
@@ -25,6 +24,7 @@
 {% endblock %}
 
 
+
 {% block additionaljs %}
     <script>
         $('document').ready(function () {
@@ -37,8 +37,6 @@
                 $('input[value="' + role + '"]').prop('checked', true);
             }
         })
-
-
     </script>
 
     <script>

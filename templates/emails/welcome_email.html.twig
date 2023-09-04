@@ -1,41 +1,25 @@
 <div>
-
     <h2> Welcome to SN's personal website</h2>
 
-    {% if 'ROLE_CONTACT' in user.roles %}
-{#        Family template#}
-        {{ CMSCopyContact|raw}}
-    {% endif %}
-
-    <hr>
+{#    {% if 'ROLE_CONTACT' in user.roles %}#}
+{#        {{ cmsContact|raw }}#}
+{#    {% endif %}#}
 
     {% if 'ROLE_FAMILY' in user.roles %}
-{#        Family template#}
-        {{ CMSCopyFamily|raw}}
+{#        {{ cmsFamily.contentText|raw }}#}
     {% endif %}
-
-    <hr>
 
     {% if 'ROLE_GUEST' in user.roles %}
-{#        Guest template#}
-        {{ CMSCopyGuest|raw}}
+        {{ cmsGuest.contentText|raw }}
     {% endif %}
-
-    <hr>
 
     {% if 'ROLE_RECRUITER'in user.roles %}
-{#        Recruiter template#}
-        {{ CMSCopyRecruiter|raw}}
+        {{ cmsRecruiter.contentText|raw }}
     {% endif %}
-
-    <hr>
 
     {% if 'JOB_APPLICANT'in user.roles %}
-{#        Job Applicant template#}
-        {{ CMSCopyJobApplicant|raw}}
+        {{ cmsJobApplicant.contentText|raw }}
     {% endif %}
-
-    <hr>
 
     {{ include('emails/footerLoginAndEmail.html.twig') }}
 </div>

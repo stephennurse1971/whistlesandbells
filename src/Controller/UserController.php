@@ -119,8 +119,8 @@ class UserController extends AbstractController
     {
         $users = [];
         $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
-        foreach($users_by_role as $user){
-            if($user->getRecruiterHighPriority() == 'High'){
+        foreach ($users_by_role as $user) {
+            if ($user->getRecruiterHighPriority() == 'High') {
                 $users[] = $user;
             }
         }
@@ -130,7 +130,7 @@ class UserController extends AbstractController
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
             'role_title' => "Recruiters",
-            'priority'=> "High"
+            'priority' => "High"
         ]);
     }
 
@@ -142,8 +142,8 @@ class UserController extends AbstractController
     {
         $users = [];
         $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
-        foreach($users_by_role as $user){
-            if($user->getRecruiterHighPriority() == 'Low'){
+        foreach ($users_by_role as $user) {
+            if ($user->getRecruiterHighPriority() == 'Low') {
                 $users[] = $user;
             }
         }
@@ -153,7 +153,7 @@ class UserController extends AbstractController
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
             'role_title' => "Recruiters",
-            'priority'=> "Low"
+            'priority' => "Low"
         ]);
     }
 
@@ -165,8 +165,8 @@ class UserController extends AbstractController
     {
         $users = [];
         $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
-        foreach($users_by_role as $user){
-            if($user->getRecruiterHighPriority() == 'Later'){
+        foreach ($users_by_role as $user) {
+            if ($user->getRecruiterHighPriority() == 'Later') {
                 $users[] = $user;
             }
         }
@@ -176,7 +176,7 @@ class UserController extends AbstractController
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
             'role_title' => "Recruiters",
-            'priority'=> "Later"
+            'priority' => "Later"
         ]);
     }
 
@@ -188,8 +188,8 @@ class UserController extends AbstractController
     {
         $users = [];
         $users_by_role = $userRepository->findByRole('ROLE_RECRUITER');
-        foreach($users_by_role as $user){
-            if($user->getRecruiterHighPriority() == null){
+        foreach ($users_by_role as $user) {
+            if ($user->getRecruiterHighPriority() == null) {
                 $users[] = $user;
             }
         }
@@ -199,7 +199,7 @@ class UserController extends AbstractController
             'recruiterEmails' => $recruiterEmailsRepository->findAll(),
             'role' => "Recruiters",
             'role_title' => "Recruiters",
-            'priority'=> "Uncategorised"
+            'priority' => "Uncategorised"
         ]);
     }
 
@@ -379,8 +379,26 @@ class UserController extends AbstractController
     /**
      * @Route("/{fullName}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(string $fullName, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(string $fullName, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder, CmsCopyRepository $cmsCopyRepository): Response
     {
+        $cms = $cmsCopyRepository->findAll();
+        $cmsContact = $cmsCopyRepository->findBy([
+            'name' => 'Introduction Email - Contact'
+        ]);
+        $cmsFamily = $cmsCopyRepository->findBy([
+            'name' => 'Introduction Email - Family'
+        ]);
+        $cmsGuest = $cmsCopyRepository->findBy([
+            'name' => 'Introduction Email - Guest'
+        ]);
+        $cmsRecruiter = $cmsCopyRepository->findBy([
+            'name' => 'Introduction Email - Recruiter'
+        ]);
+        $cmsJobApplicant = $cmsCopyRepository->findBy([
+            'name' => 'Introduction Email - Job Applicant'
+        ]);
+
+
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
         if ($this->getUser()->getFullName() == $fullName || $hasAccess) {
             $logged_user_fullName = $this->getUser()->getFullName();
@@ -409,11 +427,20 @@ class UserController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
 
                 if ($form['sendEmail']->getData() == 1) {
-                    $html = $this->renderView('emails/welcome_email.html.twig');
+                    $html = $this->renderView('emails/welcome_email.html.twig', [
+                        'user' => $user,
+                        'roles' => $roles,
+                        'cms' => $cms,
+                        'cmsContact' => $cmsContact,
+                        'cmsFamily' => $cmsFamily,
+                        'cmsGuest' => $cmsGuest,
+                        'cmsRecruiter' => $cmsRecruiter,
+                        'cmsJobApplicant' => $cmsJobApplicant,
+                    ]);
                     $email = (new Email())
                         ->from('nurse_stephen@hotmail.com')
                         ->to($user->getEmail())
-                        ->cc('nurse_stephen@hotmail.com')
+                        ->bcc('nurse_stephen@hotmail.com')
                         ->subject("Welcome to SN's personal website")
                         ->html($html);
                     $mailer->send($email);
