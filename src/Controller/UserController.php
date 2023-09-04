@@ -381,23 +381,18 @@ class UserController extends AbstractController
      */
     public function edit(string $fullName, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder, CmsCopyRepository $cmsCopyRepository): Response
     {
-        $cms = $cmsCopyRepository->findAll();
-        $cmsContact = $cmsCopyRepository->findBy([
-            'name' => 'Introduction Email - Contact'
-        ]);
-        $cmsFamily = $cmsCopyRepository->findBy([
-            'name' => 'Introduction Email - Family'
-        ]);
-        $cmsGuest = $cmsCopyRepository->findBy([
-            'name' => 'Introduction Email - Guest'
-        ]);
-        $cmsRecruiter = $cmsCopyRepository->findBy([
-            'name' => 'Introduction Email - Recruiter'
-        ]);
-        $cmsJobApplicant = $cmsCopyRepository->findBy([
-            'name' => 'Introduction Email - Job Applicant'
-        ]);
+        $referer = $request->server->get('HTTP_REFERER');
 
+        $cmsContact = $cmsCopyRepository->findOneBy([
+            'name' => 'Introduction Email - Contact']);
+        $cmsFamily = $cmsCopyRepository->findOneBy([
+            'name' => 'Introduction Email - Family']) ;
+        $cmsGuest = $cmsCopyRepository->findOneBy([
+            'name' => 'Introduction Email - Guest']) ;
+        $cmsRecruiter = $cmsCopyRepository->findOneBy([
+            'name' => 'Introduction Email - Recruiter']);
+        $cmsJobApplicant = $cmsCopyRepository->findOneBy([
+            'name' => 'Introduction Email - Job Applicant']);
 
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
         if ($this->getUser()->getFullName() == $fullName || $hasAccess) {
@@ -409,6 +404,7 @@ class UserController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                $referer = $request->request->get('referer');
                 if ($form->has('role')) {
                     $get_roles = $form->get('role')->getData();
                     $roles = $get_roles;
@@ -430,7 +426,6 @@ class UserController extends AbstractController
                     $html = $this->renderView('emails/welcome_email.html.twig', [
                         'user' => $user,
                         'roles' => $roles,
-                        'cms' => $cms,
                         'cmsContact' => $cmsContact,
                         'cmsFamily' => $cmsFamily,
                         'cmsGuest' => $cmsGuest,
@@ -446,9 +441,9 @@ class UserController extends AbstractController
                     $mailer->send($email);
                 }
                 if ($logged_user_fullName != $fullName) {
-                    return $this->redirectToRoute('user_index');
+                    return $this->redirect ($referer);
                 } else {
-                    $this->redirectToRoute('app_home');
+                    $this->redirectToRoute('user_index');
                 }
             }
 
@@ -459,7 +454,6 @@ class UserController extends AbstractController
                 'roles' => $roles
             ]);
         }
-        $referer = $request->server->get('HTTP_REFERER');
         if ($referer) {
             return $this->redirect($referer);
 

@@ -1,12 +1,12 @@
 <div>
-    <h2> Welcome to SN's personal website</h2>
+    <h2> Welcome to Stephen Nurse's personal website</h2>
 
-{#    {% if 'ROLE_CONTACT' in user.roles %}#}
-{#        {{ cmsContact|raw }}#}
-{#    {% endif %}#}
+    {% if 'ROLE_CONTACT' in user.roles %}
+        {{ cmsContact.contentText|raw }}
+    {% endif %}
 
     {% if 'ROLE_FAMILY' in user.roles %}
-{#        {{ cmsFamily.contentText|raw }}#}
+        {{ cmsFamily.contentText|raw }}
     {% endif %}
 
     {% if 'ROLE_GUEST' in user.roles %}
