@@ -79,7 +79,7 @@
                 <th>Job Applicant</th>
                 <th>Recruiter</th>
 
-                <th style="color: red;">Plain Password</th>
+{#                <th style="color: red;">Plain Password</th>#}
                 <th style="color: red;">#</th>
                 <th style="color: red;">#</th>
                 <th style="color: red;">#</th>
@@ -410,7 +410,7 @@
 
 
             {% if is_granted('ROLE_SUPER_ADMIN') %}
-                <td>{{ user.plainPassword }}</td>
+{#                <td>{{ user.plainPassword }}</td>#}
 
                 <td>
                     {% if UserIsHouseGuest.userExist(user) == false %}
