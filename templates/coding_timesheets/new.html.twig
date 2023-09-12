@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Coding Timesheet{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Coding Timesheet</h1>
+
+    {{ include('coding_timesheets/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('coding_timesheets_index') }}">Return to list</a>
+{% endblock %}

@@ -40,7 +40,6 @@ class HouseGuestsType extends AbstractType
                 'label' => 'Arrival date',
                 'required' => false,
                 'widget' => 'single_text',
-
             ])
             ->add('flightFromLondon')
             ->add('flightToLondon')

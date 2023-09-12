@@ -1,0 +1,31 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>Date</h2>
+        {{ form_row(form.date) }}
+        {{ form_row(form.additionalHours) }}
+    </div>
+
+    <div class="col-md-3">
+        <h2>Start Time</h2>
+        {{ form_row(form.startTimeActual) }}
+        {{ form_row(form.startTimeProposed) }}
+    </div>
+
+    <div class="col-md-3">
+        <h2>End Time</h2>
+        {{ form_row(form.endTimeActual) }}
+        {{ form_row(form.endTimeProposed) }}
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-9">
+        {{ form_row(form.notesSN) }}
+        {{ form_row(form.notesAdmin) }}
+    </div>
+</div>
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
