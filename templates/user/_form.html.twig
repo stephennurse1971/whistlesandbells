@@ -53,17 +53,15 @@
             User ID: {{ user.id }}
             {{ form_row(form.role) }}
             {{ form_row(form.inviteDate) }}
+            {{ form_row(form.festiveMessage) }}
+            {{ form_row(form.festiveMessageDate) }}
+            {{ form_row(form.lastEdited) }}
         {% endif %}
-
-        {{ form_row(form.festiveMessage) }}
-        {{ form_row(form.festiveMessageDate) }}
-        {{ form_row(form.lastEdited) }}
-
     </div>
 
     <div class="col-md-2">
-        <h4 style="color: blue">Recruiters</h4>
         {% if form.recruitingArea is defined  and form.recruitingAreaList is defined and form.recruiterHighPriority is defined %}
+            <h4 style="color: blue">Recruiters</h4>
             {{ form_row(form.recruitingArea) }}
             {{ form_row(form.recruitingAreaList ) }}
             {{ form_row(form.recruiterHighPriority ) }}

@@ -142,7 +142,7 @@ class UserType extends AbstractType
 
             ;
         }
-        if (in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
+        if (in_array('ROLE_ADMIN', $logged_user_roles)) {
             $builder
                 ->add('lastEdited', DateType::class, [
                     'required' => false,
