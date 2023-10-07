@@ -96,15 +96,16 @@ class FlightStatsController extends AbstractController
     /**
      * @Route("/delete/all", name="flight_stats_delete_all", methods={"GET"})
      */
-    public function deleteAll(FlightStatsRepository $flightStatsRepository): Response
+    public function deleteAll(Request $request, FlightStatsRepository $flightStatsRepository): Response
     {
+        $referer = $request->headers->get('referer');
         $allEntries = $flightStatsRepository->findAll();
         foreach ($allEntries as $allEntry) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($allEntry);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('flight_stats_index');
+        return $this->redirect($referer);
     }
 
 

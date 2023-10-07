@@ -96,17 +96,16 @@ class HouseGuestsController extends AbstractController
             $meetingStartTime = new \DateTime('now');
             $meetingEndTime = new \DateTime('now');
             $meetingEndTime->modify("+1 day");
-            $fs = new Filesystem();
-            $tmpFolder = $this->getParameter('temporary_attachment_directory');
+//            $fs = new Filesystem();
+//            $tmpFolder = $this->getParameter('temporary_attachment_directory');
             $recipient = 'nurse_stephen@hotmail.com';
             $subject = 'New guest booking' . ' - ' . $guest;
             $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
             $email = (new Email())
                 ->to($recipient)
                 ->subject($subject)
-                ->from($senderEmail)
+                ->from('nurse_stephen@hotmail.com')
                 ->html($html)
-                // ->attachFromPath($this->getParameter('temporary_attachment_directory')."meeting.ics")
             ;
             $mailer->send($email);
             return $this->redirectToRoute('house_guests_index');

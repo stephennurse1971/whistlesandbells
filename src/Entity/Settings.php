@@ -32,6 +32,7 @@ class Settings
      */
     private $flightStatsDepartureAirport;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -72,4 +73,6 @@ class Settings
 
         return $this;
     }
+
+     
 }
