@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Garmin File{% endblock %}
+{% block title %}Edit: {{ garmin_file.startingPoint }} - {{ garmin_file.endPoint}}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Garmin File</h1>
+    <h1 style="color: red">Edit: Garmin File: {{ garmin_file.startingPoint }} - {{ garmin_file.endPoint}} </h1>
 
     {{ include('garmin_files/_form.html.twig', {'button_label': 'Update'}) }}
 
