@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -35,7 +36,12 @@ class PhotosType extends AbstractType
                 'choice_label'=>'fullName'
             ])
             ->add('priority')
-            ->add('date')
+            ->add('date',DateType::class, [
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datetimepicker datetime'
+                ],
+            ])
             ->add('email')
         ;
     }

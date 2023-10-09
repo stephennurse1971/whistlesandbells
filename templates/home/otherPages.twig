@@ -1,18 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ Text1.pageTitle}}{% endblock %}
+{% block title %} {{ Text1.pageTitle}} {% endblock %}
 
 {% block body %}
+    {{ Text1.pageTitle }} xx
 
-    <div class="container mt-5">
-        <div class="row">
-                <div class="col-12">
-                    <div class="d text-center  bg-primary">
-                        <h4>{{ Text1.pageTitle|raw }}</h4>
-                    </div>
-                </div>
-        </div>
-    </div>
+{#    <div class="container mt-5">#}
+{#        <div class="row">#}
+{#                <div class="col-12">#}
+{#                    <div class="d text-center bg-primary">#}
+{#                        <h4>{{ Text1.pageTitle|raw }}</h4>#}
+{#                    </div>#}
+{#                </div>#}
+{#        </div>#}
+{#    </div>#}
 
     <!-- My Service section -->
     <section id="my-service-section" class="default-bg-white">
