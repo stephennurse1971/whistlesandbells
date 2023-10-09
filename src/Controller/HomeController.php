@@ -33,7 +33,7 @@ class HomeController extends AbstractController
 //            )
 //        );
 //        $manager->flush();
-phpinfo();
+//phpinfo();
         return $this->render('home/home.html.twig', [
 
             'Text1' => $cmsCopyRepository->findOneBy([

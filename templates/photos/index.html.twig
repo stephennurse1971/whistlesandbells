@@ -31,11 +31,11 @@
                    href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
             {% endif %}
             {% if app.user is not null %}
-            {% if location.publicPrivate =="Private" %}
-                {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
-                    <a class="btn btn-outline-danger btn-sm" target="_blank"
-                       href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
-                {% endif %}
+                {% if location.publicPrivate =="Private" %}
+                    {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
+                        <a class="btn btn-outline-danger btn-sm" target="_blank"
+                           href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         {% endfor %}
@@ -72,7 +72,11 @@
                     <td>{{ photo.location.date|date('d-M-Y') }}</td>
                     <td>{{ photo.location.location }}</td>
                     <td data-sort="{{ photo.date|date('Y-m-d') }}">{{ photo.date|date('d-M-Y') }}</td>
-                    <td>{{ photo.uploadedBy.fullName }}</td>
+                    <td>
+                        {% if photo.uploadedBy is not null %}
+                            {{ photo.uploadedBy.fullName }}
+                        {% endif %}
+                    </td>
                     <td>{{ photo.priority }}</td>
                     <td>{{ photo.photoFile }}</td>
                     <td style="text-align: center">
