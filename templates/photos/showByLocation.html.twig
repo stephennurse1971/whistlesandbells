@@ -16,6 +16,8 @@
             max-height: 100%;
         }
     </style>
+
+
     {% if app.user %}
         {% if is_granted('ROLE_ADMIN') or app.user.id in location.enabledUsers %}
             <a class="btn btn-success btn-sm mt-2" href="{{ path('photos_new', {location:location.location }) }}">Add
@@ -86,3 +88,17 @@
     {% endif %}
 
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc'],[1, 'asc'],[2, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

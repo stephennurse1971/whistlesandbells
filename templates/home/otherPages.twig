@@ -1,19 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ Text1.pageTitle}} {% endblock %}
+{% block title %} {{ Text1.pageTitle }} {% endblock %}
 
 {% block body %}
-    {{ Text1.pageTitle }} xx
-
-{#    <div class="container mt-5">#}
-{#        <div class="row">#}
-{#                <div class="col-12">#}
-{#                    <div class="d text-center bg-primary">#}
-{#                        <h4>{{ Text1.pageTitle|raw }}</h4>#}
-{#                    </div>#}
-{#                </div>#}
-{#        </div>#}
-{#    </div>#}
 
     <!-- My Service section -->
     <section id="my-service-section" class="default-bg-white">
@@ -30,9 +19,9 @@
             </div>
 
 
-
             <div class="row">
                 <!------------------ FIRST GROUP OF PHOTOS --------------->
+
                 {% if Photo1.photo is empty %}
                     <div class="col-md-12">
                         <h4>
@@ -43,7 +32,8 @@
                             {% endif %}
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text1.id}) }}"><p>{{ Text1.contentText|raw }}  </p></a>
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text1.id}) }}">
+                                <p>{{ Text1.contentText|raw }}  </p></a>
                         {% else %}
                             <p>{{ Text1.contentText|raw }}</p>
                         {% endif %}
@@ -65,32 +55,41 @@
                         {% endif %}
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <div class="justify-content-center d-flex">
-                        {% if Photo1.photo is not null %}
-                            {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo1.photo %}
-                            {% if Photo1.link is not null %}
-                                <a target="_blank" href="{{ Photo1.link }}">
-                                    <img style="max-height: 100%;max-width: 100%;height: auto;width:auto" src="{{ loc }}"></a>
-                            {% else %}
-                                <img style="max-height: 100%;max-width: 100%;height: auto;width:auto"  src="{{ loc }}"></a>
-                            {% endif %}
+                        <div class="justify-content-center d-flex py-1">
+{#                            <div class="homepage-image-container-1">#}
+                                {% if Photo1.photo is not null %}
+                                    {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo1.photo %}
+                                    {% if Photo1.link is not null %}
+                                        <a target="_blank" href="{{ Photo1.link }}">
+                                            <img class="other-page-image"
+                                                 src="{{ loc }}"></a>
+                                    {% else %}
+                                        <img class="other-page-image"
+                                             src="{{ loc }}"></a>
+                                    {% endif %}
+                                {% endif %}
+{#                            </div>#}
                         </div>
-                        {% endif %}
                     </div>
                 {% endif %}
+
+
                 <!------------------ END FIRST GROUP OF PHOTOS --------------->
                 <!------------------ SECOND GROUP OF PHOTOS --------------->
+
                 {% if Photo2.photo is empty %}
                     <div class="col-md-12">
                         <h4>
                             {% if Text2.hyperlinks is empty %}
                                 {{ Text2.contentTitle|raw }}
                             {% else %}
-                                <a target="_blank" href="{{ Text2.hyperlinks }}">{{ Text2.contentTitle|raw }}</a>
+                                <a target="_blank"
+                                   href="{{ Text2.hyperlinks }}">{{ Text2.contentTitle|raw }}</a>
                             {% endif %}
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}"><p>{{ Text2.contentText|raw }}  </p></a>
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}">
+                                <p>{{ Text2.contentText|raw }}  </p></a>
                         {% else %}
                             <p>{{ Text2.contentText|raw }}</p>
                         {% endif %}
@@ -101,7 +100,8 @@
                             {% if Text2.hyperlinks is empty %}
                                 {{ Text2.contentTitle|raw }}
                             {% else %}
-                                <a target="_blank" href="{{ Text2.hyperlinks }}">{{ Text2.contentTitle|raw }}</a>
+                                <a target="_blank"
+                                   href="{{ Text2.hyperlinks }}">{{ Text2.contentTitle|raw }}</a>
                             {% endif %}
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
@@ -112,32 +112,41 @@
                         {% endif %}
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <div class="justify-content-center d-flex">
-                            {% if Photo2.photo is not null %}
-                            {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo2.photo %}
-                            {% if Photo2.link is not null %}
-                                <a target="_blank" href="{{ Photo2.link }}">
-                                    <img style="max-height: 100%;max-width: 100%;height: auto;width:auto" src="{{ loc }}"></a>
-                            {% else %}
-                                <img style="max-height: 100%;max-width: 100%;height: auto;width:auto"  src="{{ loc }}"></a>
-                            {% endif %}
+                        <div class="justify-content-center d-flex py-1">
+{#                            <div class="homepage-image-container-1">#}
+                                {% if Photo2.photo is not null %}
+                                    {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo2.photo %}
+                                    {% if Photo2.link is not null %}
+                                        <a target="_blank" href="{{ Photo2.link }}">
+                                            <img class="other-page-image"
+                                                 src="{{ loc }}"></a>
+                                    {% else %}
+                                        <img class="other-page-image"
+                                             src="{{ loc }}"></a>
+                                    {% endif %}
+
+                                {% endif %}
+{#                            </div>#}
                         </div>
-                        {% endif %}
                     </div>
                 {% endif %}
+
                 <!------------------ END SECOND GROUP OF PHOTOS --------------->
                 <!------------------ THIRD GROUP OF PHOTOS --------------->
+
                 {% if Photo3.photo is empty %}
                     <div class="col-md-12">
                         <h4>
                             {% if Text3.hyperlinks is empty %}
                                 {{ Text3.contentTitle|raw }}
                             {% else %}
-                                <a target="_blank" href="{{ Text3.hyperlinks }}">{{ Text3.contentTitle|raw }}</a>
+                                <a target="_blank"
+                                   href="{{ Text3.hyperlinks }}">{{ Text3.contentTitle|raw }}</a>
                             {% endif %}
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}"><p>{{ Text3.contentText|raw }}  </p></a>
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}">
+                                <p>{{ Text3.contentText|raw }}  </p></a>
                         {% else %}
                             <p>{{ Text3.contentText|raw }}</p>
                         {% endif %}
@@ -148,37 +157,41 @@
                             {% if Text3.hyperlinks is empty %}
                                 {{ Text3.contentTitle|raw }}
                             {% else %}
-                                <a target="_blank" href="{{ Text3.hyperlinks }}">{{ Text3.contentTitle|raw }}</a>
+                                <a target="_blank"
+                                   href="{{ Text3.hyperlinks }}">{{ Text3.contentTitle|raw }}</a>
                             {% endif %}
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}">
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}">
                                 <p>{{ Text3.contentText|raw }}  </p></a>
                         {% else %}
                             <p>{{ Text3.contentText|raw }}  </p>
                         {% endif %}
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <div class="justify-content-center d-flex">
-                            {% if Photo3.photo is not null %}
-                            {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo3.photo %}
-                            {% if Photo3.link is not null %}
-                                <a target="_blank" href="{{ Photo3.link }}">
-                                    <img style="max-height: 100%;max-width: 100%;height: auto;width:auto" src="{{ loc }}"></a>
-                            {% else %}
-                                <img style="max-height: 100%;max-width: 100%;height: auto;width:auto"  src="{{ loc }}"></a>
-                            {% endif %}
+                        <div class="justify-content-center d-flex py-1">
+{#                            <div class="homepage-image-container-1">#}
+                                {% if Photo3.photo is not null %}
+                                    {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo3.photo %}
+                                    {% if Photo3.link is not null %}
+                                        <a target="_blank" href="{{ Photo3.link }}">
+                                            <img class="other-page-image"
+
+                                                 src="{{ loc }}"></a>
+                                    {% else %}
+                                        <img class="other-page-image"
+
+                                             src="{{ loc }}"></a>
+                                    {% endif %}
+                                {% endif %}
+{#                            </div>#}
                         </div>
-                        {% endif %}
                     </div>
                 {% endif %}
                 <!------------------ END THIRD GROUP OF PHOTOS --------------->
-                <!------------------ END PHOTOS --------------->
-
             </div>
         </div>
     </section>
 
-    </section>
 
 {% endblock %}
