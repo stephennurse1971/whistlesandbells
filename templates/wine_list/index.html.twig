@@ -24,22 +24,37 @@
             <tr>
                 {% set loc = asset('/administration/img/winelist')~"/"~wine_list.labelPicture %}
                 <td title="{{ wine_list.name }}  ({{ wine_list.year }})">
-                    <a target="_blank" href="{{ path('winelist_viewlabel', {id: wine_list.id}) }}"><img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
-
+                    <a target="_blank" href="{{ path('winelist_viewlabel', {id: wine_list.id}) }}">
+                        <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
                 </td>
                 <td>
                     {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('wine_list_edit', {'id': wine_list.id}) }}">{{ wine_list.name }}</a>
-                {% else %}
-                    {{ wine_list.name }}
+                        <a href="{{ path('wine_list_edit', {'id': wine_list.id}) }}">{{ wine_list.name }}</a>
+                    {% else %}
+                        {{ wine_list.name }}
                     {% endif %}
                 </td>
-                <td style="text-align: right">>{{ wine_list.year }}</td>
-                <td>{{ wine_list.colour }}</td>
-                <td>{{ wine_list.grape }}</td>
-                <td>{{ wine_list.description }}</td>
-                <td style="text-align: right">{{ wine_list.price |number_format(2, '.', ',') }}</td>
-                <td style="text-align: center">{{ wine_list.marks }}</td>
+                <td style="text-align: right">
+                    {{ wine_list.year }}
+                </td>
+                <td>
+                    {{ wine_list.colour }}
+                </td>
+                <td>
+                    {{ wine_list.grape }}
+                </td>
+                <td>
+                    {% if wine_list.description is not null %}
+                        <i style="color: blue" title="{{ wine_list.description }}" class="fa fa-info-circle"></i>
+                        {{ wine_list.description|slice(0,15) }}...
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {{ wine_list.price |number_format(2, '.', ',') }}
+                </td>
+                <td style="text-align: center">
+                    {{ wine_list.marks }}
+                </td>
                 <td>{{ wine_list.supermarket }}</td>
             </tr>
         {% endfor %}
@@ -53,7 +68,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'desc'],  [2, 'desc']],
+                "order": [[0, 'desc'], [2, 'desc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": false

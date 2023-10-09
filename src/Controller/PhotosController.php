@@ -29,10 +29,16 @@ class PhotosController extends AbstractController
     public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository): Response
     {
         $photos = $photosRepository->findAll();
-        $photolocations = $photoLocationsRepository->findAll();
+        $photolocations_public = $photoLocationsRepository->findBy([
+            'publicPrivate'=>'Public'
+        ]);
+        $photolocations_private = $photoLocationsRepository->findBy([
+            'publicPrivate'=>'Private'
+        ]);
         return $this->render('photos/index.html.twig', [
             'photos' => $photos,
-            'locations' => $photolocations
+            'locations_public' => $photolocations_public,
+            'locations_private' => $photolocations_private
         ]);
     }
 

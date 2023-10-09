@@ -33,7 +33,8 @@
     {% endif %}
 
     <div>
-        <h1 style="color: red">{{ location.location }} - ({{ photo_date|date('M-Y') }}) </h1> <br><br>
+        <h1 style="color: red">{{ location.location }}</h1>
+        <h3> ({{ photo_date|date('M-Y') }}) </h3> <br><br>
     </div>
 
     {% if photos is empty %}

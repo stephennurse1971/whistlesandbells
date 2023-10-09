@@ -4,33 +4,40 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="">
+
                         <div id="zoom-social-icons-widget-2" class=" widget clearfix zoom-social-icons-widget">
-                            <a href="https://www.linkedin.com/in/{{ StaticText.content.linkedIn }}/" target="_blank">
-                                <span class="zoom-social_icons-list-span social-icon socicon socicon-linkedin"
-                                      data-hover-rule="color" data-hover-color="red"
-                                      style="color : #0077B5; font-size: 16px; padding:6px"><i class="fa fa-linkedin"
-                                                                           style="font-size:24px"></i></span></a>
+                            <a target="_blank"
+                               class="btn btn-primary btn-floating m-1 footer-social-icon-ln"
+                               data-hover-rule="color" data-hover-color="#dd3333"
+                               style="color : #1da1f2; font-size: 16px; padding:6px; background-color: #0082ca"
+                               href="{{ StaticText.content.linkedIn }}"
+                               role="button">
+                                <i class="fab fa-linkedin-in text-light"></i></a>
 
                             <a target="_blank"
-                               href="https://find-and-update.company-information.service.gov.uk/officers/{{ StaticText.content.companiesHouseLink }}/appointments">
-                                <span class="zoom-social_icons-list-span social-icon socicon socicon-ch rounded border"
-                                      data-hover-rule="color" data-hover-color="red"
-                                      style="color : black; background-color: black; font-size: 16px; padding:6px"><img
-                                            src="{{ asset('administration/img/companieshouse4.png') }}"
-                                            style="height: 28px; width: 24px;color: white"></span></a>
+                               class="btn btn-primary btn-floating m-1 footer-social-icon-fb"
+                               data-hover-rule="color" data-hover-color="#dd3333"
+                               style="color : white; font-size: 16px; padding:6px;background-color: #3b5998; height: 28px; width: 24px;"
+                               href="https://find-and-update.company-information.service.gov.uk/officers/{{ StaticText.content.companiesHouseLink }}/appointments"
+                               role="button">
+                                <img src="{{ asset('administration/img/companieshouse.png') }}">
+                            </a>
 
-                            <a href="https://github.com/{{ StaticText.content.github }}" target="_blank">
-                                <span class="zoom-social_icons-list-span social-icon socicon socicon-github"
-                                      data-hover-rule="color" data-hover-color="#dd3333"
-                                      style="color : black; font-size: 16px; padding:6px"><i class="fa fa-github"
-                                                                                             style="font-size:24px"></i></span></a>
+                            <a target="_blank"
+                               class="btn btn-primary btn-floating m-1 footer-social-icon-fb"
+                               data-hover-rule="color" data-hover-color="#dd3333"
+                               style="color : #1877F2; font-size: 16px; padding:6px;background-color: #3b5998"
+                               href="{{ StaticText.content.github }}"
+                               role="button">
+                                <i class="fab fa-github text-light"></i></a>
 
-                            <a href="https://facebook.com/{{ StaticText.content.facebookLink }}" target="_blank">
-                                <span class="zoom-social_icons-list-span social-icon socicon socicon-facebook"
-                                      data-hover-rule="color" data-hover-color="#dd3333"
-                                      style="color : #1877F2; font-size: 16px; padding:6px"><i
-                                            class="fa fa-facebook-square" style="font-size:24px"></i> </span></a>
-
+                            <a target="_blank"
+                               class="btn btn-primary btn-floating m-1 footer-social-icon-fb"
+                               data-hover-rule="color" data-hover-color="#dd3333"
+                               style="color : #1877F2; font-size: 16px; padding:6px;background-color: #3b5998"
+                               href="{{ StaticText.content.linkedIn }}"
+                               role="button">
+                                <i class="fab fa-facebook-f text-light"></i></a>
                         </div>
                     </div>
                 </div>

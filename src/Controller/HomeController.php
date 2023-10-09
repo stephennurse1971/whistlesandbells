@@ -70,14 +70,50 @@ class HomeController extends AbstractController
                 'name' => 'HomePageHyperlink'
             ]),
 
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage1'
+            'Photo01' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage01'
             ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage2'
+            'Photo02' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage02'
             ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage3'
+            'Photo03' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage03'
+            ]),
+            'Photo04' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage04'
+            ]),
+            'Photo05' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage05'
+            ]),
+            'Photo06' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage06'
+            ]),
+            'Photo07' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage07'
+            ]),
+            'Photo08' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage08'
+            ]),
+            'Photo09' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage09'
+            ]),
+            'Photo10' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage10'
+            ]),
+            'Photo11' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage11'
+            ]),
+            'Photo12' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage12'
+            ]),
+            'Photo13' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage13'
+            ]),
+            'Photo14' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage14'
+            ]),
+            'Photo15' => $cmsPhotoRepository->findOneBy([
+                'name' => 'HomePage15'
             ]),
 
             'SpecialisingPhoto1' => $cmsPhotoRepository->findOneBy([

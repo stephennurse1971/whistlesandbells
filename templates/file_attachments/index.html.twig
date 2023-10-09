@@ -5,12 +5,12 @@
 {% block body %}
     <h1 style="color: red">File Attachments</h1>
 
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th style="width: 100px">Category</th>
-            <th style="width: 500px">Description</th>
-            <th style="width: 500px">Notes</th>
+            <th style="width: 200px">Description</th>
+            <th style="width: 200px">Notes</th>
             <th style="text-align: center; width: 50px">Attachment</th>
             <th style="width: 100px">Date</th>
             <th style="width: 20px">Email</th>
@@ -21,7 +21,12 @@
         {% for file_attachment in file_attachments %}
             <tr>
                 <td>{{  file_attachment.category}}</td>
-                <td>{{ file_attachment.description }} </td>
+                <td>
+                    {% if file_attachment.description is not null %}
+                        <i style="color: blue" title="{{ file_attachment.description }}" class="fa fa-info-circle"></i>
+                        {{ file_attachment.description|slice(0,15) }}...
+                    {% endif %}
+                </td>
                 <td>{{ file_attachment.notes }} </td>
                 <td style="text-align: center">
                     {% if file_attachment.attachments is not empty %}

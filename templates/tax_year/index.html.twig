@@ -5,20 +5,19 @@
 {% block body %}
     <h1 style="color: red">Tax Years</h1>
 
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th style="width: 120px; text-align: left">Tax Year</th>
-            <th style="width: 120px; text-align: right">Start_date</th>
-            <th style="width: 120px; text-align: right">End_date</th>
-            <th style="width: 120px; text-align: right">Tax Band 1 (Personal Allowance)</th>
-            <th style="width: 120px; text-align: right">Tax Band 2 (Basic)</th>
-            <th style="width: 120px; text-align: right">Tax Band 3 (Higher)</th>
-            <th style="width: 120px; text-align: right">Tax Band 1 (Rate)</th>
-            <th style="width: 120px; text-align: right">Tax Band 2 (Rate)</th>
-            <th style="width: 120px; text-align: right">Tax Band 3 (Rate)</th>
-            <th style="width: 120px; text-align: right">Tax Band 4 (Rate)</th>
-            <th></th>
+            <th style="width: 100px; text-align: right">Start<br>Date</th>
+            <th style="width: 100px; text-align: right">End<br>Date</th>
+            <th style="width: 95px; text-align: right">Tax Band 1<br>(Personal Allowance)</th>
+            <th style="width: 95px; text-align: right">Tax Band 2<br>(Basic)</th>
+            <th style="width: 95px; text-align: right">Tax Band 3<br>(Higher)</th>
+            <th style="width: 95px; text-align: right">Tax Band 1<br>(Rate)</th>
+            <th style="width: 95px; text-align: right">Tax Band 2<br>(Rate)</th>
+            <th style="width: 95px; text-align: right">Tax Band 3<br>(Rate)</th>
+            <th style="width: 95px; text-align: right">Tax Band 4<br>(Rate)</th>
         </tr>
         </thead>
         <tbody>
@@ -39,7 +38,6 @@
                 <td style="text-align: right">{{ tax_year.taxBand2Rate * 100 }} %</td>
                 <td style="text-align: right">{{ tax_year.taxBand3Rate * 100 }} %</td>
                 <td style="text-align: right">{{ tax_year.taxBand4Rate * 100 }} %</td>
-                <td></td>
             </tr>
         {% endfor %}
         </tbody>

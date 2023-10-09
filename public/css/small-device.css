@@ -1,0 +1,45 @@
+@media only screen and (max-width: 600px) {
+    body{
+        padding-top:57px;
+    }
+    .article-image{
+        height: 100px;
+        width: 100px;
+    }
+    .display-2{
+        font-size: 2rem!important;
+    }
+    table{
+        font-size: 12px;
+    }
+    .dataTables_wrapper{
+        margin-top: 0px!important;
+        margin-bottom: 0px!important;
+    }
+    .desktop{
+       display: none;
+    }
+    .mobile{
+        display: table-cell;
+    }
+    .zabuto-calendar tbody td{
+        padding:0px!important;
+    }
+    .table-data-container{
+        overflow-x: scroll;
+    }
+    .nav-item{
+        margin-left:30px;
+    }
+    .nav-item{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .navbar{
+        position: absolute !important;
+        top: 0;
+        width: 100%;
+        left: 0;
+        z-index: 1;
+    }
+}

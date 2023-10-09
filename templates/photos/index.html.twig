@@ -4,141 +4,69 @@
 
 {% block body %}
 
-    {% if is_granted ('ROLE_ADMIN') %}
-        <div class="row">
-            <div class="col-8"></div>
-            <div class="col-4">
-                <a class="btn btn-outline-primary btn-sm" href="{{ path('photo_locations_index') }}">List locations</a>
-                <a class="btn btn-outline-success btn-sm" href="{{ path('photo_locations_new') }}">+</a>
-            </div>
+    <div class="row">
+        {% if is_granted ('ROLE_ADMIN') %}
+            <h2 style="color: red">
+                <a href="{{ path('photo_locations_index') }}">Locations</a>
+            </h2>
+            <a href="{{ path('photo_locations_new') }}">+</a>
+        {% else %}
+            <h2 style="color: red">
+                Locations
+            </h2>
+        {% endif %}
+    </div>
 
-
+    <div class="row">
+        <div class="col-1">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th style="text-align: left">Private</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for location in locations_private %}
+                    <tr>
+                        <td style="text-align: left">
+                            {% if app.user is not null %}
+                                {% if location.publicPrivate =="Private" %}
+                                    {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
+                                        <a title="Private" class="btn btn-outline-danger btn-sm" target="_blank"
+                                           href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-    {% else %}
-        <h1 style="color: red">
-            {% if is_granted('ROLE_ADMIN') %}
-                <a target="_blank" href="{{ path('photo_locations_index') }}">Photo locations</a>
-            {% else %}
-                Photo locations
-            {% endif %}
-        </h1>
-    {% endif %}
 
-    <table class="table table-responsive-sm">
-        <thead>
-        <tr>
-            <th style="text-align: left">Public</th>
-            <th style="text-align: left">Private</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for location in locations %}
-            <tr>
-                <td style="text-align: left">
-                    {% if location.publicPrivate =="Public" %}
-                        <a title="Public" class="btn btn-outline-success btn-sm" target="_blank"
-                           href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
-                    {% endif %}
-                </td>
-                <td style="text-align: left">
-                    {% if app.user is not null %}
-                        {% if location.publicPrivate =="Private" %}
-                            {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
-                                <a title="Private" class="btn btn-outline-danger btn-sm" target="_blank"
+        <div class="col-1">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th style="text-align: left">Public</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for location in locations_public %}
+                    <tr>
+                        <td style="text-align: left">
+                            {% if location.publicPrivate =="Public" %}
+                                <a title="Public" class="btn btn-outline-success btn-sm" target="_blank"
                                    href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
                             {% endif %}
-                        {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                        </td>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    {% if is_granted('ROLE_ADMIN') %}
-        <table class="table">
-            <thead>
-            <tr>
-                <th style="width: 50px">Photo</th>
-                <th style="width: 150px">Date</th>
-                <th style="width: 150px">Location</th>
-                <th style="width: 150px">File Date</th>
-                <th style="width: 200px">Uploaded By</th>
-                <th style="width: 50px">Priority</th>
-                <th style="width: 250px">File</th>
-                <th style="width: 10px; text-align: center">Rotate</th>
-                <th style="width: 50px"></th>
-                <th style="width: 500px"></th>
-            </tr>
-            </thead>
-
-            <tbody>
-            {% for photo in photos %}
-                <tr>
-                    {% set loc = asset('photos')~"/"~photo.photoFile %}
-                    <td>
-                        {% if photo.rotate==1 %}
-                            <img height="50" width="50" src="{{ loc }}" class="rounded-circle rotate-90">
-                        {% else %}
-                            <img height="50" width="50" src="{{ loc }}" class="rounded-circle">
-                        {% endif %}
-                    </td>
-                    <td>{{ photo.location.date|date('d-M-Y') }}</td>
-                    <td>{{ photo.location.location }}</td>
-                    <td data-sort="{{ photo.date|date('Y-m-d') }}">{{ photo.date|date('d-M-Y') }}</td>
-                    <td>
-                        {% if photo.uploadedBy is not null %}
-                            {{ photo.uploadedBy.fullName }}
-                        {% endif %}
-                    </td>
-                    <td>{{ photo.priority }}</td>
-                    <td>{{ photo.photoFile }}</td>
-                    <td style="text-align: center">
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">
-                            {% endif %}
-                            {% if photo.rotate==1 %}
-                                <i class="fas fa-circle text-success"></i>
-                            {% else %}
-                                <i class="fas fa-circle text-danger"></i>
-                            {% endif %}
-                        </a>
-                    </td>
-                    <td style="width: 100px">
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a class="btn btn-outline-danger btn-sm" href="{{ path('photos_edit', {'id': photo.id}) }}">Edit</a>
-                            <form class="d-inline" method="post" action="{{ path('photos_delete', {'id': photo.id}) }}">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
-                                <button class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        {% endif %}
-                    </td>
-                    <td></td>
-
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-    {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -147,7 +75,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[1, 'asc', 2, 'desc']],
+                "order": [[0, 'asc'], [1, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

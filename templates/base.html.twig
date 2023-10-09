@@ -42,11 +42,16 @@
     <!-- Custom fonts for this template-->
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+
+
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-    {#    <link rel="stylesheet" href="{{ asset('admin/css/font.css') }}"> #}
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/css/font.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/small-device.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="https://cdn.ckeditor.com/ckeditor5/32.0.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
@@ -124,36 +129,35 @@
 
                     <!-- Nav Item #1 - Home -->
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('app_home') }}">Home
-                            <span class="sr-only">(current)</span>
+                        <a class="nav-link" href="{{ path('app_home') }}">
+                            <i class="fa fa-home"></i>
                         </a>
                     </li>
 
 
                     <!-- Nav Item #2 - Interests -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Interests
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital
-                                    consulting</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private
-                                    Equity</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
-{#                                <a class="dropdown-item" target="_blank" href="{{ path('aboutSN') }}">About SN</a>#}
-                            </div>
-                        </li> 
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Interests
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital
+                                consulting</a>
+                            <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private
+                                Equity</a>
+                            <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>
+                            <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
+                            <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
+                        </div>
+                    </li>
 
 
                     <!-- Nav Item #3 - Photos -->
                     {% if is_granted('ROLE_GUEST') or is_granted('ROLE_FAMILY') %}
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-item" href="{{ path('photos_index') }}">Photos</a>
-                    </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-item" href="{{ path('photos_index') }}">Photos</a>
+                        </li>
                     {% endif %}
 
                     <!-- Nav Item #4 - Come Visit -->
@@ -194,15 +198,15 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a title={{ StaticText.content.emailAddress }} class="dropdown-item"
                                href="mailto:{{ StaticText.content.emailAddress }}">
-                                @ {{ StaticText.content.emailAddress }}
+                                <span style="color: blue;">@</span> {{ StaticText.content.emailAddress }}
                             </a>
                             <a class="dropdown-item" title="{{ StaticText.content.mobileNumber }}"
                                href="https://wa.me/{{ StaticText.content.mobileNumber | replace({' ': ''}) }}">
                                 <i style="color: #0f6848"
-                                   class="fa fa-whatsapp"></i> {{ StaticText.content.mobileNumber }}</a>
+                                   class="fab fa-whatsapp"></i> {{ StaticText.content.mobileNumber }}</a>
                             <a class="dropdown-item" title={{ StaticText.content.skype }}
                             href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue"
-                                                                                class="fa fa-skype"></i> {{ StaticText.content.skype }}
+                                                                                class="fab fa-skype"></i> {{ StaticText.content.skype }}
                             </a>
                             {% if is_granted('ROLE_USER') %}
                                 <a target="_blank" title="{{ StaticText.content.address }} "
@@ -224,10 +228,14 @@
                                 Recruiters
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('user_index_recruiters_high_priority') }}">Recruiters (High)</a>
-                                <a class="dropdown-item" href="{{ path('user_index_recruiters_later') }}">Recruiters (Later)</a>
-                                <a class="dropdown-item" href="{{ path('user_index_recruiters_uncategorised') }}">Recruiters (TBC)</a>
-                                <a class="dropdown-item" href="{{ path('user_index_recruiters_low_priority') }}">Recruiters (Low)</a>
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters_high_priority') }}">Recruiters
+                                    (High)</a>
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters_later') }}">Recruiters
+                                    (Later)</a>
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters_uncategorised') }}">Recruiters
+                                    (TBC)</a>
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters_low_priority') }}">Recruiters
+                                    (Low)</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('introduction_index') }}">Email Templates</a>
                                 <a class="dropdown-item" href="{{ path('introduction_segment_index') }}">Email Templates
@@ -252,12 +260,14 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('to_do_list_index') }}">To Do List</a>
-                                <a class="dropdown-item" href="{{ path('coding_timesheets_index') }}">Coding Timehseet</a>
+                                <a class="dropdown-item" href="{{ path('coding_timesheets_index') }}">Coding
+                                    Timehseet</a>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                <a class="dropdown-item" href="{{ path('uk_days_index') }}">UK Days</a>
-                                <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">Helpful files</a>
-                                <a class="dropdown-item" href="{{ path('health_index') }}">Health</a>
-                                <a class="dropdown-item" href="{{ path('flying_index') }}">Flying</a>
+                                    <a class="dropdown-item" href="{{ path('uk_days_index') }}">UK Days</a>
+                                    <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">Helpful
+                                        files</a>
+                                    <a class="dropdown-item" href="{{ path('health_index') }}">Health</a>
+                                    <a class="dropdown-item" href="{{ path('flying_index') }}">Flying</a>
                                 {% endif %}
                             </div>
                         </li>
@@ -376,11 +386,54 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user text-dark"></i><span
-                                        class="ml-1 text-primary"> {{ app.user.fullName }}
+                                {{ app.user.fullName }}
 
-                                </span>
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
+                                {% endif %}
+
+
+                                {% if is_granted('ROLE_ADMIN') %}{% else %}
+                                    {% if is_granted('ROLE_TENNIS_PLAYER') %}
+                                        <i title="Tennis PLayer" style="color: green" class="fa fa-table-tennis"></i>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_JOB_APPLICANT') %}
+                                        <i title="Job Applicant" style="color: red" class="fa fa-user-graduate"></i>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_RECRUITER') %}
+                                        <i title="Recruiter" style="color: red" class="fa fa-city"></i>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_ACCOUNTANT') %}
+                                        <i title="Acountant" style="color: blue" class="fa fa-dollar-sign"></i>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_FAMILY') %}
+                                        <i title="Family" style="color: blue" class="fa fa-baby"></i>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_GUEST') %}
+                                        <i title="Guest" style="color: green" class="fa fa-user-beer"></i>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_IT') %}
+                                        <i title="IT" style="color: red" class="fa fa-laptop"></i>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_USER') %}
+                                        <i title="USer" style="color: grey" class="fa fa-user"></i>
+                                    {% endif %}
+                                {% endif %}
+
+
                             </a>
+
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">Profile</a>
                                 <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
@@ -466,7 +519,6 @@
         .catch(error => {
             console.error(error);
         });
-
 
 
     ClassicEditor
