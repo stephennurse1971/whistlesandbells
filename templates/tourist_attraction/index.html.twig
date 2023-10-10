@@ -8,7 +8,7 @@
         <div class="col-4">
             {% if is_granted('ROLE_GUEST') %}
                 <a class="btn btn-success btn-sm" href="{{ path('tourist_attraction_new') }}">+</a>
-                <a class="btn btn btn-secondary btn-sm" href="{{ path('tourist_attraction_index_by_place') }}">By
+                <a class="btn btn btn-secondary btn-sm desktop" href="{{ path('tourist_attraction_index_by_place') }}">By
                     Place</a>
             {% endif %}
         </div>
@@ -17,9 +17,9 @@
         </div>
         <div class="col-4">
             {% if is_granted('ROLE_ADMIN') %}
-                <a class="btn btn-outline-primary btn-sm" href="{{ path('cyprusTouristAttractionImport') }}">Import from
+                <a class="btn btn-outline-primary btn-sm desktop" href="{{ path('cyprusTouristAttractionImport') }}">Import from
                     Outlook (Tourist Attractions Only)</a>
-                <a class="btn btn-danger btn-sm" href="{{ path('tourist_attraction_delete_all') }}">Delete All</a>
+                <a class="btn btn-danger btn-sm desktop" href="{{ path('tourist_attraction_delete_all') }}">Delete All</a>
             {% endif %}
             {#            <a target="_blank" class="btn btn-outline-danger btn-sm" href="{{ path('') }}">Export To CSV</a> #}
         </div>
@@ -39,7 +39,8 @@
                 <th><i class="fa fa-mobile"></i></th>
                 <th><i class="fa fa-link"></i></th>
                 <th class="desktop"><i class="fa fa-city"></i>*</th>
-                <th><i class="fa fa-map-marker"></i></th>
+                <th><i style="color: red" class="fa fa-map-marker"></i></th>
+                <th><i style="color: blue" class="fa fa-info-circle"></i></th>
                 <th class="desktop">Notes*</th>
                 <th class="desktop">VCF*</th>
                 {% if is_granted('ROLE_ADMIN') %}
@@ -107,7 +108,7 @@
                         </td>
                         <td class="desktop" style="text-align: center">
                             {% if tourist_attraction.businessStreet is not empty %}
-                                <i class="fa fa-homw"
+                                <i class="fa fa-home"
                                    title="{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }}, {{ tourist_attraction.BusinessPostCode }}"></i>
                             {% endif %}
                         </td>
@@ -118,13 +119,19 @@
                                     <i class='fas fa-map-marker-alt text-danger'></i></a>
                             {% endif %}
                         </td>
-                        <td style="text-align: center;">
+                        <td style="text-align: center">
+                                <a target="_blank"
+                                   href="{{ path('tourist_attraction_show',{id:tourist_attraction.id}) }}">
+                                    <i style="color: blue" class='fas fa-info-circle'></i></a>
+
+                        </td>
+                        <td class="desktop" style="text-align: center">
                             {% if tourist_attraction.notes is not null %}
                                 <i style="color: blue" title="{{ tourist_attraction.notes }}"
                                    class="fa fa-info-circle"></i>
                             {% endif %}
                         </td>
-                        <td style="text-align: center">
+                        <td class="desktop" style="text-align: center">
                             <a class="btn btn-outline-info btn-sm"
                                href="{{ path('create_vcard_user_ta',{'touristattractionid': tourist_attraction.id}) }}"><i
                                         style="font-size: 15px; color: blue" class="fas fa-credit-card"></i></a>
