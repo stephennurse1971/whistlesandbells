@@ -16,10 +16,12 @@
                 </td>
             </tr>
         {% endif %}
+
         <tr>
             <th>Name</th>
             <td>{{ tourist_attraction.fullName }}</td>
         </tr>
+
         <tr>
             <th>Email</th>
             <td>
@@ -38,7 +40,6 @@
                     </a>
                 {% endif %}
             </td>
-            <th>Email</th>
         </tr>
 
         <tr>
@@ -84,15 +85,14 @@
 
         <tr>
             <th>Address</th>
-            <td>{{ tourist_attraction.businessStreet }}
-                , {{ tourist_attraction.BusinessCity }} {{ tourist_attraction.BusinessPostCode }}  <br>
+            <td>{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }}
+                {{ tourist_attraction.BusinessPostCode }}  <br>
                 {% if tourist_attraction.gpsLocation is not empty %}
                     <a target="_blank"
                        href="{{ path('show_location_google_maps',{pin:tourist_attraction.gpsLocation}) }}">
                         <i class='fas fa-map-marker-alt text-danger'></i></a>
                 {% else %}
-
-                    <button class="btn btn-primary btn-sm" onclick="getLocation()">Get Current Co-ordinates</button>
+{#                    <button class="btn btn-primary btn-sm" onclick="getLocation()">Get Current Co-ordinates</button>#}
                 {% endif %}
             </td>
         </tr>
