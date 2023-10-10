@@ -2,89 +2,93 @@
 {% block title %}Users: {{ role }} {% endblock %}
 {% block body %}
     <h1><span class="text-danger">Users: {{ role }}</span></h1>
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <div class="row">
-            <div class="col-5">
-                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users (excl
-                    Admin)</a>
-                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl
-                    Admin)</a>
-                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users
-                    (excl Admin) </a>
-            </div>
-            <div class="col-3">
-                <a class="btn btn-success btn-sm" href="{{ path('user_export', {Subset: 'All'}) }}">Export users to
-                    CSV</a>
-                <a class="btn btn-success btn-sm" href="{{ path('user_new') }}">New user</a>
-            </div>
-            <div class="col-4">
-                {% if FindUser.checkConflict %}
-                    <a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Import
-                        from Outlook</a>
-                {% else %}
-                    <a class="btn btn-outline-primary btn-sm" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import
-                        from Outlook</a>
-                {% endif %}
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Notice</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body mt-1">
-                                <h5> Please resolve all conflict before import.</h5>
-                            </div>
-                            <div class="modal-footer text-center">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <a type="button" class="btn btn-primary"
-                                   href="{{ path('userImport',{ source: 'Outlook'}) }}">Import</a>
+    <div class="desktop">
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <div class="row">
+                <div class="col-5">
+                    <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users
+                        (excl
+                        Admin)</a>
+                    <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl
+                        Admin)</a>
+                    <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users
+                        (excl Admin) </a>
+                </div>
+                <div class="col-3">
+                    <a class="btn btn-success btn-sm" href="{{ path('user_export', {Subset: 'All'}) }}">Export users to
+                        CSV</a>
+                    <a class="btn btn-success btn-sm" href="{{ path('user_new') }}">New user</a>
+                </div>
+                <div class="col-4">
+                    {% if FindUser.checkConflict %}
+                        <a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Import
+                            from Outlook</a>
+                    {% else %}
+                        <a class="btn btn-outline-primary btn-sm" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import
+                            from Outlook</a>
+                    {% endif %}
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Notice</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mt-1">
+                                    <h5> Please resolve all conflict before import.</h5>
+                                </div>
+                                <div class="modal-footer text-center">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a type="button" class="btn btn-primary"
+                                       href="{{ path('userImport',{ source: 'Outlook'}) }}">Import</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <a class="btn btn-outline-secondary btn-sm" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import
-                    from Grapevine (Recruiters)</a>
-                <a class="btn btn-outline-secondary btn-sm" href="https://www.datagrapevine.com/recruitment/welcome">Grapevine</a>
+                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import
+                        from Grapevine (Recruiters)</a>
+                    <a class="btn btn-outline-secondary btn-sm"
+                       href="https://www.datagrapevine.com/recruitment/welcome">Grapevine</a>
+                </div>
             </div>
-        </div>
-        <br>
-    {% endif %}
+            <br>
+        {% endif %}
+    </div>
 
     <table class="table table-responsive">
         <thead>
         <tr>
             <th>Name</th>
-            <th>Company</th>
-            <th title="Home/Business">Address</th>
-            <th>Mobile(s)</th>
-            <th>Landlines</th>
-            <th>Email(s)</th>
-            <th>LinkedIN</th>
+            <th class="desktop">Company</th>
+            <th class="desktop" title="Home/Business">Address</th>
+            <th><i class="fa fa-mobile"></i></th>
+            <th><i class="fa fa-phone"></th>
+            <th><i class="fa fa-envelope"></th>
+            <th class="desktop">LinkedIN</th>
             <th>www</th>
-            <th>Birthday</th>
-            <th>Notes</th>
-            <th>!</th>
+            <th class="desktop">Birthday</th>
+            <th class="desktop">Notes</th>
+            <th class="desktop">!</th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th>Admin</th>
-                <th>IT</th>
-                <th>Family</th>
-                <th>Contact</th>
-                <th>Guest</th>
-                <th>Job Applicant</th>
-                <th>Recruiter</th>
+                <th class="desktop">Admin</th>
+                <th class="desktop">IT</th>
+                <th class="desktop">Family</th>
+                <th class="desktop">Contact</th>
+                <th class="desktop">Guest</th>
+                <th class="desktop">Job Applicant</th>
+                <th class="desktop">Recruiter</th>
 
-{#                <th style="color: red;">Plain Password</th>#}
-                <th style="color: red;">#</th>
-                <th style="color: red;">#</th>
-                <th style="color: red;">#</th>
-                <th style="color: red;">Last edited</th>
-                <th style="color: red;">Imported</th>
+                {#                <th style="color: red;">Plain Password</th> #}
+                <th class="desktop" style="color: red;">#</th>
+                <th class="desktop" style="color: red;">#</th>
+                <th class="desktop" style="color: red;">#</th>
+                <th class="desktop" style="color: red;">Last edited</th>
+                <th class="desktop" style="color: red;">Imported</th>
             {% endif %}
         </tr>
         </thead>
@@ -106,8 +110,8 @@
                 {% endif %}
             </td>
 
-            <td>{{ user.company }}</td>
-            <td style="text-align: center">
+            <td class="desktop">{{ user.company }}</td>
+            <td class="desktop" style="text-align: center">
                 {% if user.homeStreet is not empty %}
                     <i class="fa fa-home"
                        title="{{ user.homeStreet }} {{ user.homeCity }} {{ user.homePostalCode }}"></i>
@@ -123,17 +127,15 @@
 
             <td style="text-align: center">
                 {% if user.mobile is not empty %}
-                    <i class="fa fa-phone" title="{{ user.mobile }}"></i>
                     <a target="_blank" href="https://wa.me/{{ user.mobile  | replace({' ': ''}) }}">
-                        <i class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
+                        <i title="{{ user.mobile }}" class="fab fa-whatsapp"  style="color:green; text-align: center"></i></a>
                 {% endif %}
 
                 {% if user.mobile is not empty and user.mobile2 is not empty %} /
                 {% endif %}
                 {% if user.mobile2 is not empty %}
-                    <i class="fa fa-phone" title="{{ user.mobile2 }}"></i>
                     <a target="_blank" href="https://wa.me/{{ user.mobile2  | replace({' ': ''}) }}">
-                        <i class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
+                        <i title="{{ user.mobile2 }}" class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
                 {% endif %}
             </td>
 
@@ -172,7 +174,7 @@
                 {% endif %}
             </td>
 
-            <td style="text-align: center">
+            <td class="desktop" style="text-align: center">
                 {% if user.linkedIn is not empty %}
                     <a target="_blank" title="{{ user.linkedIn }}" href="{{ user.linkedIn }}">
                         <i class="fab fa-linkedin"></i>
@@ -194,19 +196,20 @@
             </td>
 
 
-        <td style="text-align: center" ; data-sort="{{ user.birthday|date('Y-m-d') }}">
+            <td class="desktop" style="text-align: center" ; data-sort="{{ user.birthday|date('Y-m-d') }}">
                 {% if user.birthday is not empty %}
-                {{ user.birthday |date('d-M-Y') }}
+                    {{ user.birthday |date('d-M-Y') }}
+                {% endif %}
             </td>
-            {% endif %}
 
-            <td style="text-align: center">
+
+            <td class="desktop" style="text-align: left">
                 {% if user.notes is not empty %}
                     <i title="{{ user.notes|raw }}" class="fa fa-info-circle" title="{{ user.notes }}"></i>
                     {{ user.notes|slice(0,10) }}...
                 {% endif %}
             </td>
-            <td>
+            <td class="desktop">
                 {% if user.entryConflict is not empty %}
                     !
                 {% endif %}
@@ -222,7 +225,7 @@
                 {% endif %}
             {% endfor %}
 
-            <td data-sort="{{ role_flag1 }}" style="text-align: center">
+            <td class="desktop" data-sort="{{ role_flag1 }}" style="text-align: center">
                 {% set role_flag1 = 0 %}
                 {% for role in user.roles %}
                     {% if role == 'ROLE_ADMIN' %}
@@ -255,7 +258,7 @@
                     {% set role_flag2 = 1 %}
                 {% endif %}
             {% endfor %}
-            <td data-sort="{{ role_flag2 }}" style="text-align: center">
+            <td class="desktop" data-sort="{{ role_flag2 }}" style="text-align: center">
                 {% if role_flag2 == 1 %}
                     {% if app.user.id == user.id %}
                         <i class="fa fa-circle" style="color: green; text-align: right"></i>
@@ -281,7 +284,7 @@
                     {% set role_flag3 = 1 %}
                 {% endif %}
             {% endfor %}
-            <td data-sort="{{ role_flag3 }}" style="text-align: center">
+            <td class="desktop" data-sort="{{ role_flag3 }}" style="text-align: center">
                 {% if role_flag3 == 1 %}
                     {% if app.user.id == user.id %}
                         <i class="fa fa-circle" style="color: green; text-align: right"></i>
@@ -307,7 +310,7 @@
                     {% set role_flag4 = 1 %}
                 {% endif %}
             {% endfor %}
-            <td data-sort="{{ role_flag4 }}" style="text-align: center">
+            <td class="desktop" data-sort="{{ role_flag4 }}" style="text-align: center">
                 {% if role_flag4 == 1 %}
                     {% if app.user.id == user.id %}
                         <i class="fa fa-circle" style="color: green; text-align: right"></i>
@@ -333,7 +336,7 @@
                     {% set role_flag5 = 1 %}
                 {% endif %}
             {% endfor %}
-            <td data-sort="{{ role_flag5 }}" style="text-align: center">
+            <td class="desktop" data-sort="{{ role_flag5 }}" style="text-align: center">
                 {% if role_flag5 == 1 %}
                     {% if app.user.id == user.id %}
                         <i class="fa fa-circle" style="color: green; text-align: right"></i>
@@ -360,7 +363,7 @@
                     {% set role_flag6 = 1 %}
                 {% endif %}
             {% endfor %}
-            <td data-sort="{{ role_flag6 }}" style="text-align: center">
+            <td class="desktop" data-sort="{{ role_flag6 }}" style="text-align: center">
                 {% if role_flag6 == 1 %}
                     {% if app.user.id == user.id %}
                         <i class="fa fa-circle" style="color: green; text-align: right"></i>
@@ -387,7 +390,7 @@
                     {% set role_flag7 = 1 %}
                 {% endif %}
             {% endfor %}
-            <td data-sort="{{ role_flag7 }}" style="text-align: center">
+            <td class="desktop" data-sort="{{ role_flag7 }}" style="text-align: center">
                 {% if role_flag7 == 1 %}
                     {% if app.user.id == user.id %}
                         <i class="fa fa-circle" style="color: green; text-align: right"></i>
@@ -411,9 +414,9 @@
 
 
             {% if is_granted('ROLE_SUPER_ADMIN') %}
-{#                <td>{{ user.plainPassword }}</td>#}
+                {#                <td>{{ user.plainPassword }}</td> #}
 
-                <td>
+                <td class="desktop">
                     {% if UserIsHouseGuest.userExist(user) == false %}
                         <form class="d-inline" method="post" action="{{ path('user_delete', {'id': user.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
@@ -422,21 +425,21 @@
                     {% endif %}
                 </td>
 
-                <td>
+                <td class="desktop">
                     <a class="btn btn-success btn-sm" href="{{ path('user_invite', {'userid':user.id}) }}">Invite
                         email</a>
                 </td>
-                <td>
+                <td class="desktop">
                     {% if user.inviteDate is not empty %}
                         {{ user.inviteDate|date('d-M-Y') }}
                     {% endif %}
                 </td>
-                <td data-sort="{{ user.lastEdited|date('Y-m-d') }}">
+                <td class="desktop" data-sort="{{ user.lastEdited|date('Y-m-d') }}">
                     {% if user.lastEdited is not empty %}
                         {{ user.lastEdited|date('d-M-Y') }}
                     {% endif %}
                 </td>
-                <td data-sort="{{ user.importTime|date('Y-m-d H:i') }}">
+                <td class="desktop" data-sort="{{ user.importTime|date('Y-m-d H:i') }}">
                     {% if user.importTime is not empty %}
                         {{ user.importTime|date('d-M-Y H:i') }}
                     {% endif %}
