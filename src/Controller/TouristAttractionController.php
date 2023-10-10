@@ -32,7 +32,7 @@ class TouristAttractionController extends AbstractController
      */
     public function index(TouristAttractionRepository $touristAttractionRepository): Response
     {
-        $types = ['Beach', 'Historical interest', 'Hotel', 'Restaurant', 'Cafe','Admin Services', 'Sport', 'Cycling Stop', 'Shop', 'Taxi', 'TBD'];
+        $types = ['Beach', 'Historical interest', 'Hotel', 'Restaurant', 'Cafe',  'Admin Services', 'Sport', 'Cycling Stop', 'Shop', 'Taxi', 'TBD'];
         return $this->render('tourist_attraction/index.html.twig', [
             'tourist_attractions' => $touristAttractionRepository->findAll(),
             'types' => $types
@@ -149,9 +149,9 @@ class TouristAttractionController extends AbstractController
     {
         $touristAttractions = $touristAttractionRepository->findAll();
         foreach ($touristAttractions as $touristAttraction) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($touristAttraction);
-                $entityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($touristAttraction);
+            $entityManager->flush();
         }
         return $this->redirectToRoute('tourist_attraction_index');
     }
@@ -165,21 +165,24 @@ class TouristAttractionController extends AbstractController
         $vcard = new VCard();
         $userFirstName = $touristattraction->getFirstName();
         $userLastName = $touristattraction->getLastName();
+//        $temp_country_field = '1';
+//        if ($touristattraction->getCountry()) {
+//            $temp_country_field = $touristattraction->getCountry();
+//        }
         $vcard->addName($userLastName, $userFirstName);
         $vcard->addEmail($touristattraction->getEmail())
             ->addEmail($touristattraction->getEmail2())
             ->addCompany($touristattraction->getCompany())
-            ->addAddress('TBC', null,
+            ->addAddress(null, null,
                 $touristattraction->getBusinessStreet(),
                 $touristattraction->getBusinessCity(),
                 null,
                 $touristattraction->getBusinessPostCode(),
-                $touristattraction->getCountry()->getCountry())
-            ->addAddress($touristattraction->getBusinessPostCode(), 'zip')
-            ->addAddress($touristattraction->getCountry()->getCountry())
+                $touristattraction->getCountry()->getCountry(),
+            'work')
             ->addPhoneNumber($touristattraction->getBusinessPhone(), 'work')
             ->addPhoneNumber($touristattraction->getMobile(), 'home')
-            ->addURL("https://www.example.com")
+            ->addURL($touristattraction->getWebPage())
             ->addNote($touristattraction->getNotes());
         $vcard->download();
         return new Response(null);

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Country;
 use App\Entity\TouristAttraction;
+use App\Repository\CountryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -51,7 +52,10 @@ class TouristAttractionType extends AbstractType
             ->add('country', EntityType::class, [
                 'class' => Country::class,
                 'choice_label' => 'country',
-                'required' => true,
+                'data'=>$this->countryRepository->findOneBy([
+                    'country'=>'Cyprus'
+                ]),
+                'required' => false,
                 'empty_data' => null,
             ])
             ->add('gpsLocation')
@@ -64,5 +68,10 @@ class TouristAttractionType extends AbstractType
             'data_class' => TouristAttraction::class,
             'allow_extra_fields' => true,
         ]);
+    }
+
+    public function __construct(CountryRepository $countryRepository)
+    {
+        $this->countryRepository=$countryRepository;
     }
 }

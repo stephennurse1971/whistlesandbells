@@ -1,24 +1,27 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 
-    Cycle between photo01 --> photo16. Like this site.... <a href="http://www.garicruze.com">Gari Cruze</a>
 
-    <!------------------ PHOTO 1 --------------->
-    <div class="col-lg-6 col-md-6">
-        <div class="justify-content-center d-flex py-1">
-            {% if Photo01.photo is not null %}
-                {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo01.photo %}
-                {% if Photo01.link is not null %}
-                    <a target="_blank" href="{{ Photo01.link }}">
-                        <img class="other-page-image" src="{{ loc }}"></a>
-                {% else %}
-                    <img class="other-page-image" src="{{ loc }}">
-                {% endif %}
-            {% endif %}
-        </div>
+    <div class="row">
+        {% for photo in photos %}
+            <div class="col-lg-2 col-md-6 m-0 p-0">
+                <div class="justify-content-center d-flex">
+                    <div class="homepage-gallery-image-container">
+                    {% if photo.photo is not null %}
+                        {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
+                        {% if photo.link is not null %}
+                            <a target="_blank" href="{{ photo.link }}">
+                                <img class="homepage-image" src="{{ loc }}">
+                            </a>
+                        {% else %}
+                            <img class="homepage-image" src="{{ loc }}">
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+        {% endfor %}
     </div>
-    <------------------------------------------->
-
 
 
 

@@ -23,7 +23,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository,UserRepository $userRepository,EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
+    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
     {
 //        $user = $userRepository->findOneBy(['email'=>'nurse_stephen@hotmail.com']);
 //        $user->setPassword(
@@ -33,7 +33,6 @@ class HomeController extends AbstractController
 //            )
 //        );
 //        $manager->flush();
-//phpinfo();
         return $this->render('home/home.html.twig', [
 
             'Text1' => $cmsCopyRepository->findOneBy([
@@ -65,96 +64,24 @@ class HomeController extends AbstractController
             'Text3DE' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageDE3'
             ]),
-
             'Hyperlink' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageHyperlink'
             ]),
-
-            'Photo01' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage01'
-            ]),
-            'Photo02' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage02'
-            ]),
-            'Photo03' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage03'
-            ]),
-            'Photo04' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage04'
-            ]),
-            'Photo05' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage05'
-            ]),
-            'Photo06' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage06'
-            ]),
-            'Photo07' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage07'
-            ]),
-            'Photo08' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage08'
-            ]),
-            'Photo09' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage09'
-            ]),
-            'Photo10' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage10'
-            ]),
-            'Photo11' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage11'
-            ]),
-            'Photo12' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage12'
-            ]),
-            'Photo13' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage13'
-            ]),
-            'Photo14' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage14'
-            ]),
-            'Photo15' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage15'
-            ]),
-
-            'SpecialisingPhoto1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising1'
-            ]),
-            'SpecialisingPhoto2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising2'
-            ]),
-            'SpecialisingPhoto3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising3'
-            ]),
-
-
-            'HomePage1Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage1'
-            ]),
-
-            'LatestWorkPhoto1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'LatestWork1'
-            ]),
-            'LatestWorkPhoto2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'LatestWork2'
-            ]),
-            'LatestWorkPhoto3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'LatestWork3'
-            ]),
-            'LatestWorkPhoto4' => $cmsPhotoRepository->findOneBy([
-                'name' => 'LatestWork4'
-            ]),
+            'photos' => $cmsPhotoRepository->findBy([
+                'sitePage' => 'HomePage'
+            ])
         ]);
+
     }
 
 
     /**
      * @Route("/test_page", name="test_page")
      */
-    public function testPage(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository,UserRepository $userRepository,EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder): Response
+    public function testPage(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         return $this->render('home/test.html.twig');
     }
-
 
 
     /**
@@ -416,43 +343,43 @@ class HomeController extends AbstractController
     /**
      * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})
      */
-    public function investmentFileLaunch(int $id,string $filetype, TaxInputsRepository $taxInputsRepository, IntroductionRepository $introductionRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
+    public function investmentFileLaunch(int $id, string $filetype, TaxInputsRepository $taxInputsRepository, IntroductionRepository $introductionRepository, RecruiterEmailsRepository $recruiterEmailsRepository): Response
     {
         $fileName = '';
         $filepath = '';
         if ($filetype == 'SelfAssessment') {
             $fileName = $taxInputsRepository->find($id)->getSelfAssessment();
             $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
-            $filepath = $publicResourcesFolderPath."/".$fileName;
+            $filepath = $publicResourcesFolderPath . "/" . $fileName;
         } elseif ($filetype == 'P11D') {
             $fileName = $taxInputsRepository->find($id)->getP11D();
             $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
-            $filepath = $publicResourcesFolderPath."/".$fileName;
+            $filepath = $publicResourcesFolderPath . "/" . $fileName;
         } elseif ($filetype == 'P45') {
             $fileName = $taxInputsRepository->find($id)->getP45();
             $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
-            $filepath = $publicResourcesFolderPath."/".$fileName;
+            $filepath = $publicResourcesFolderPath . "/" . $fileName;
         } elseif ($filetype == 'P60') {
             $fileName = $taxInputsRepository->find($id)->getP60();
             $publicResourcesFolderPath = $this->getParameter('tax_documents_attachments_directory');
-            $filepath = $publicResourcesFolderPath."/".$fileName;
+            $filepath = $publicResourcesFolderPath . "/" . $fileName;
         } elseif ($filetype == 'Recruiter_Attachment') {
             $fileName = $introductionRepository->find($id)->getAttachment();
             $publicResourcesFolderPath = $this->getParameter('recruiter_introductions_attachments_directory');
-            $filepath = $publicResourcesFolderPath."/".$fileName;
+            $filepath = $publicResourcesFolderPath . "/" . $fileName;
         } elseif ($filetype == 'Recruiter_Email') {
             $fileName = $recruiterEmailsRepository->find($id)->getAttachment();
             $publicResourcesFolderPath = $this->getParameter('recruiter_introductions_attachments_directory');
-            $filepath = $publicResourcesFolderPath."/".$fileName;
+            $filepath = $publicResourcesFolderPath . "/" . $fileName;
         }
         if ($fileName != '') {
             $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-            $filepath = explode("public",$filepath);
+            $filepath = explode("public", $filepath);
             $filepath = $filepath[1];
-            return $this->render('home/file_view.html.twig',[
-                'ext'=>$ext,
-                'tab_title'=>$fileName,
-                'filepath'=>$filepath,
+            return $this->render('home/file_view.html.twig', [
+                'ext' => $ext,
+                'tab_title' => $fileName,
+                'filepath' => $filepath,
             ]);
         }
 

@@ -59,6 +59,10 @@ class TouristAttractionImportOutlookService
             $businessPostalCode = trim($oneLineFromCsv[13]);
             $businessCountry = trim($oneLineFromCsv[14]);
 
+            if(empty( $businessCountry)){
+                $businessCountry = "Cyprus";
+            }
+
             if (count($oneLineFromCsv) >= 31) {
                 $businessPhone = trim($oneLineFromCsv[31]);
                 $businessPhone = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $businessPhone);

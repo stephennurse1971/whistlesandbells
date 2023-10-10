@@ -74,6 +74,7 @@ class TouristAttraction
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $country;
 

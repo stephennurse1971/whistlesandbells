@@ -125,7 +125,7 @@
                 {% if user.mobile is not empty %}
                     <i class="fa fa-phone" title="{{ user.mobile }}"></i>
                     <a target="_blank" href="https://wa.me/{{ user.mobile  | replace({' ': ''}) }}">
-                        <i class="fa fa-whatsapp" style="color:green; text-align: center"></i></a>
+                        <i class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
                 {% endif %}
 
                 {% if user.mobile is not empty and user.mobile2 is not empty %} /
@@ -133,7 +133,7 @@
                 {% if user.mobile2 is not empty %}
                     <i class="fa fa-phone" title="{{ user.mobile2 }}"></i>
                     <a target="_blank" href="https://wa.me/{{ user.mobile2  | replace({' ': ''}) }}">
-                        <i class="fa fa-whatsapp" style="color:green; text-align: center"></i></a>
+                        <i class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
                 {% endif %}
             </td>
 
@@ -175,7 +175,7 @@
             <td style="text-align: center">
                 {% if user.linkedIn is not empty %}
                     <a target="_blank" title="{{ user.linkedIn }}" href="{{ user.linkedIn }}">
-                        <i class="fa fa-linkedin"></i>
+                        <i class="fab fa-linkedin"></i>
                     </a>
                 {% endif %}
             </td>
@@ -200,9 +200,10 @@
             </td>
             {% endif %}
 
-            <td>
+            <td style="text-align: center">
                 {% if user.notes is not empty %}
-                    <i class="fa fa-info-circle" title="{{ user.notes }}"></i>
+                    <i title="{{ user.notes|raw }}" class="fa fa-info-circle" title="{{ user.notes }}"></i>
+                    {{ user.notes|slice(0,10) }}...
                 {% endif %}
             </td>
             <td>
