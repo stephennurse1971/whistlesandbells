@@ -162,7 +162,6 @@
                     {% endif %}
 
 
-                    <div class="desktop">
                         <!-- Nav Item #9 - Investments -->
                         {% if is_granted('ROLE_ACCOUNTANT') %}
                             <li class="nav-item dropdown">
@@ -204,7 +203,6 @@
                                 </div>
                             </li>
                         {% endif %}
-                    </div>
 
 
                     <!-- Nav Item #11 - Users -->
@@ -218,8 +216,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item desktop" href="{{ path('user_index') }}">Users - All</a>
                                 <a class="dropdown-item desktop" href="{{ path('user_index_edited_since_download') }}">Users
-                                    -
-                                    Edited</a>
+                                    - Edited</a>
                                 <hr>
                                 <a class="dropdown-item desktop" href="{{ path('user_index_addresses') }}">Users -
                                     Addresses</a>

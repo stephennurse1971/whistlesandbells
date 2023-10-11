@@ -53,11 +53,10 @@
                         </div>
                         <div class="text-center py-2">
                             {% if is_granted ('ROLE_ADMIN') %}
-                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"> <i
-                                            class="fa fa-shield"></i></a>
+                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">
+                                    <i class="fa fa-rotate-left"></i></a>
                                 <form class="d-inline" method="post"
-                                      action="{{ path('photos_delete', {'id': photo.id}) }}"
-                                      onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                      action="{{ path('photos_delete', {'id': photo.id}) }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
                                     <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                 </form>
@@ -70,11 +69,10 @@
                         <div class="text-center py-1">
 
                             {% if is_granted ('ROLE_ADMIN') %}
-                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"> <i
-                                            class="fa fa-shield"></i></a>
+                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">
+                                    <i class="fa fa-rotate-right"></i></a>
                                 <form class="d-inline" method="post"
-                                      action="{{ path('photos_delete', {'id': photo.id}) }}"
-                                      onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                      action="{{ path('photos_delete', {'id': photo.id}) }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
                                     <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                                 </form>

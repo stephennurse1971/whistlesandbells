@@ -8,13 +8,12 @@
     <table class="table">
         <thead>
         <tr>
-            <th>ID</th>
             <th>Address</th>
             <th>Email</th>
             <th>Mobile</th>
             <th>Skype</th>
             <th>LinkedIN</th>
-            <th>Companies House</th>
+            <th>Companies<br>House</th>
             <th>GitHub</th>
             <th>Facebook</th>
             <th>Twitter</th>
@@ -27,23 +26,51 @@
         <tbody>
         {% for static_text in static_texts %}
             <tr>
-                <td>{{ static_text.id }}</td>
-                <td>{{ static_text.address }}</td>
+                <td>
+                    {{ static_text.address }}
+                </td>
                 <td>{{ static_text.emailAddress }}</td>
                 <td>{{ static_text.mobileNumber }}</td>
-                <td>{{ static_text.skype }}</td>
-                <td>{{ static_text.linkedIn }}</td>
-                <td>{{ static_text.companiesHouseLink }}</td>
-                <td>{{ static_text.github }}</td>
-                <td>{{ static_text.facebookLink }}</td>
-                <td>{{ static_text.twitter }}</td>
-                <td>
-                    {% if static_text.cv is not empty %}
-                        <a target="_blank" href="{{ path('show_cv_attachment',{id : static_text.id}) }}">{{ static_text.cv }}</a>
+                <td style="text-align: center">
+                    {% if static_text.skype is not null %}
+                        <i style="color: blue" title="{{ static_text.skype }}" class="fab fa-skype"></i>
                     {% endif %}
                 </td>
-                <td>{{ static_text.baseCurrency }}</td>
-                <td>{{ static_text.lastOutlookDownload|date('d-M-Y') }}</td>
+                <td style="text-align: center">
+                    {% if static_text.linkedIn is not null %}
+                        <i style="color: blue" title="{{ static_text.linkedIn }}" class="fab fa-linkedin"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {{ static_text.companiesHouseLink }}
+                </td>
+                <td style="text-align: center">
+                    {% if static_text.github is not null %}
+                        <i style="color: black" title="{{ static_text.github }}" class="fab fa-github"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if static_text.facebookLink is not null %}
+                        <i style="color: blue" title="{{ static_text.facebookLink }}" class="fab fa-facebook"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if static_text.twitter is not null %}
+                        <i style="color: blue" title="{{ static_text.twitter }}" class="fab fa-twitter"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if static_text.cv is not empty %}
+                        <a title="{{ static_text.cv }}" target="_blank" href="{{ path('show_cv_attachment',{id : static_text.id}) }}">
+                        <i style="color: red" class="fa fa-file-pdf"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ static_text.baseCurrency }}
+                </td>
+                <td>
+                    {{ static_text.lastOutlookDownload|date('d-M-Y') }}
+                </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm" href="{{ path('static_text_edit',{id:static_text.id}) }}">Edit</a>
                 </td>

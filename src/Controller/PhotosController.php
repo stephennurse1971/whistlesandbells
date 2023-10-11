@@ -180,6 +180,8 @@ class PhotosController extends AbstractController
     {
         $referer = $request->server->get('HTTP_REFERER');
         if ($this->isCsrfTokenValid('delete' . $photo->getId(), $request->request->get('_token'))) {
+            $get_photo_file = $this->getParameter('photos_upload_default_directory').$photo->getPhotoFile();
+            unlink($get_photo_file);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($photo);
             $entityManager->flush();
@@ -196,6 +198,8 @@ class PhotosController extends AbstractController
     {
         $referer = $request->server->get('HTTP_REFERER');
         foreach ($photosRepository->findAll() as $photo) {
+            $get_photo_file = $this->getParameter('photos_upload_default_directory').$photo->getPhotoFile();
+            unlink($get_photo_file);
             $entityManager->remove($photo);
         }
         $entityManager->flush();
@@ -216,9 +220,27 @@ class PhotosController extends AbstractController
                 ])
             ]
         ) as $photo) {
+            $get_photo_file = $this->getParameter('photos_upload_default_directory').$photo->getPhotoFile();
+            unlink($get_photo_file);
             $entityManager->remove($photo);
         }
         $entityManager->flush();
         return $this->redirect($referer);
     }
+
+
+    /**
+     * @Route("/delete/All/files/public/photos", name="photos_delete_all_files_in_public_photos",)
+     */
+    public
+    function deleteAllFilesInPublicPhotos(Request $request): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $files = glob($this->getParameter('photos_upload_default_directory')."/*");
+        foreach ($files as $file) {
+            unlink($file);
+        }
+        return $this->redirect($referer);
+    }
+
 }

@@ -16,9 +16,14 @@
             </h2>
         {% endif %}
     </div>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a class="btn btn-danger btn-sm" href="{{ path('photos_delete_all_files_in_public_photos') }}">Delete All Photo
+            Files (Danger)
+        </a>
+    {% endif %}
 
     <div class="row">
-        <div class="col-1">
+        <div class="col-3">
             <table class="table">
                 <thead>
                 <tr>
@@ -44,7 +49,7 @@
             </table>
         </div>
 
-        <div class="col-1">
+        <div class="col-3">
             <table class="table">
                 <thead>
                 <tr>
