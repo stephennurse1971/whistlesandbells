@@ -39,7 +39,7 @@
             <th><i class="fa fa-mobile"></i></th>
             <th><i class="fa fa-phone"></i></th>
             <th><i class="fa fa-envelope"></i></th>
-            <th><i class="fa fa-linkedin"></i></th>
+            <th><i class="fab fa-linkedin"></i></th>
             <th>www</th>
             <th>Country</th>
             <th>Areas</th>
@@ -126,7 +126,7 @@
                         <a title="{{ user.email }}" href="">N/A</a>
                     {% endif %}
 
-                    {% if user.email2 is not empty %}
+                    {% if user.email2 is not empty %} /
                         <a title="{{ user.email2 }}" href="mailto:{{ user.email2 }}">
                             <i class="fa fa-envelope"></i>
                         </a>
@@ -141,7 +141,7 @@
                 <td style="text-align: center">
                     {% if user.linkedIn is not empty %}
                         <a target="_blank" title="{{ user.linkedIn }}" href="{{ user.linkedIn }}">
-                            <i class="fa fa-linkedin"></i>
+                            <i style="color: royalblue" class="fab fa-linkedin"></i>
                         </a>
                     {% endif %}
                 </td>
@@ -165,7 +165,7 @@
                         {{ area }},
                     {% endfor %}
                     {% if user.recruitingAreaList is empty %}
-                        .N/A
+                        ..
                     {% endif %}
                 </td>
 
