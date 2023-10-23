@@ -41,8 +41,14 @@ class HouseGuestsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
             ])
-            ->add('flightFromLondon')
-            ->add('flightToLondon')
+            ->add('flightFromLondon',TextareaType::class,[
+                'label'=>'Arriving flight',
+                'required'=>false
+            ])
+            ->add('flightToLondon',TextareaType::class,[
+                'label'=>'Departing flight',
+                'required'=>false
+            ])
 
         ;
 

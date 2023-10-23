@@ -71,7 +71,7 @@ class HouseGuestsController extends AbstractController
         $defaultDepartureDate = $defaultDepartureDate->modify("+1 day");
 
         $logged_user = $security->getUser();
-        if (in_array("ROLE_ADMIN", $logged_user->getRoles())) {
+        if (in_array("ROLE_ADMIN", $logged_user->getRoles() )) {
             $user_list = $userRepository->findByRole('ROLE_GUEST');
         } else {
             $user_list = $userRepository->findBy(['id' => $logged_user->getId()]);

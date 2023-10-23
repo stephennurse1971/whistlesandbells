@@ -5,21 +5,21 @@
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <div class="row">
-            <div class="col-5">
-                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users (excl
-                    Admin)</a>
-                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl
-                    Admin)</a>
-                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users
-                    (excl Admin) </a>
+{#            <div class="col-5">#}
+{#                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users (excl#}
+{#                    Admin)</a>#}
+{#                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl#}
+{#                    Admin)</a>#}
+{#                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users#}
+{#                    (excl Admin) </a>#}
             </div>
 
             <div class="col-2">
             </div>
             <div class="col-4">
                 <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
-                <a class="btn btn-primary mt-3" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import from
-                    Outlook</a>
+{#                <a class="btn btn-primary mt-3" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import from#}
+{#                    Outlook</a>#}
                 <a class="btn btn-secondary mt-3" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import from
                     Grapevine
                     (Recruiters)</a>
@@ -128,13 +128,13 @@
 
                     {% if user.email2 is not empty %}
                         <a title="{{ user.email2 }}" href="mailto:{{ user.email2 }}">
-                            <i class="fa fa-envelope-open-o"></i>
+                            <i class="fa fa-envelope"></i>
                         </a>
                     {% endif %}
 
                     {% if user.email3 is not empty %} /
                         <a title="{{ user.email3 }}" href="mailto:{{ user.email3 }}">
-                            <i class="fa fa-envelope-open-o"></i>
+                            <i class="fa fa-envelope"></i>
                         </a>
                     {% endif %}
                 </td>
