@@ -51,12 +51,12 @@ class HouseGuests
     private $arrivalNotes;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $flightFromLondon;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $flightToLondon;
 
@@ -137,24 +137,24 @@ class HouseGuests
         return $this;
     }
 
-    public function getFlightFromLondon(): ?float
+    public function getFlightFromLondon(): ?string
     {
         return $this->flightFromLondon;
     }
 
-    public function setFlightFromLondon(?float $flightFromLondon): self
+    public function setFlightFromLondon(?string $flightFromLondon): self
     {
         $this->flightFromLondon = $flightFromLondon;
 
         return $this;
     }
 
-    public function getFlightToLondon(): ?float
+    public function getFlightToLondon(): ?string
     {
         return $this->flightToLondon;
     }
 
-    public function setFlightToLondon(float $flightToLondon): self
+    public function setFlightToLondon(string $flightToLondon): self
     {
         $this->flightToLondon = $flightToLondon;
 
