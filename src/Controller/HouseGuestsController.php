@@ -156,7 +156,7 @@ class HouseGuestsController extends AbstractController
             $email = (new Email())
                 ->to($recipient)
                 ->subject($subject)
-                ->from($senderEmail)
+                ->from('nurse_stephen@hotmail.com')
                 ->html($html);
             $mailer->send($email);
             return $this->redirectToRoute('house_guests_index');
