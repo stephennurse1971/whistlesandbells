@@ -35,6 +35,7 @@ class HouseGuestsController extends AbstractController
      */
     public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository): Response
     {
+        $test = 1;
         $date = new \DateTime('now');
         $month = $date->format('m');
         $year = $date->format('Y');
