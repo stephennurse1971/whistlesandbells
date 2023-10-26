@@ -30,6 +30,15 @@ class CmsPhotoType extends AbstractType
                     'Cyprus' => 'Cyprus',
                 ],])
             ->add('heading')
+            ->add('photoOrVideo', ChoiceType::class, [
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    'Photo' => 'Photo',
+                    'Video' => 'Video',
+                ],])
+
+
             ->add('photo', FileType::class, [
                 'label' => false,
                 'mapped' => false,

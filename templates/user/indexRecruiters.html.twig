@@ -5,25 +5,26 @@
 
     {% if is_granted('ROLE_SUPER_ADMIN') %}
         <div class="row">
-{#            <div class="col-5">#}
-{#                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users (excl#}
-{#                    Admin)</a>#}
-{#                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl#}
-{#                    Admin)</a>#}
-{#                <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users#}
-{#                    (excl Admin) </a>#}
+            <div class="col-3">
+                <a class="btn btn-success btn-sm mt-3" href="{{ path('user_new') }}">New user</a>
+                <a class="btn btn-outline-success btn-sm mt-3" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Grapevine
+                    import</a>
+                <a class="btn btn-outline-primary btn-sm mt-3" href="https://www.datagrapevine.com/recruitment/welcome">Grapevine</a>
             </div>
 
-            <div class="col-2">
-            </div>
+            <div class="col-4"></div>
+
             <div class="col-4">
-                <a class="btn btn-success mt-3" href="{{ path('user_new') }}">New user</a>
-{#                <a class="btn btn-primary mt-3" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import from#}
-{#                    Outlook</a>#}
-                <a class="btn btn-secondary mt-3" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import from
-                    Grapevine
-                    (Recruiters)</a>
-                <a href="https://www.datagrapevine.com/recruitment/welcome">Grapevine</a>
+                <a target="_blank" class="btn btn-outline-secondary btn-sm mt-3"
+                   href="{{ path('introduction_index') }}">Email
+                    Templates</a>
+                <a target="_blank" class="btn btn-outline-secondary btn-sm mt-3"
+                   href="{{ path('introduction_segment_index') }}">+</a>
+                <a target="_blank" class="btn btn-outline-dark btn-sm mt-3" href="{{ path('recruiter_emails_index') }}">Emails
+                    Sent</a>
+                <a target="_blank" class="btn btn-outline-dark btn-sm mt-3"
+                   href="{{ path('prospect_employer_index') }}">Prospective
+                    Employers</a>
             </div>
         </div>
     {% endif %}

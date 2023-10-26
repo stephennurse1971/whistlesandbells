@@ -57,6 +57,11 @@ class CmsPhoto
      */
     private $heading;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photoOrVideo;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +159,18 @@ class CmsPhoto
     public function setHeading(?string $heading): self
     {
         $this->heading = $heading;
+
+        return $this;
+    }
+
+    public function getPhotoOrVideo(): ?string
+    {
+        return $this->photoOrVideo;
+    }
+
+    public function setPhotoOrVideo(?string $photoOrVideo): self
+    {
+        $this->photoOrVideo = $photoOrVideo;
 
         return $this;
     }

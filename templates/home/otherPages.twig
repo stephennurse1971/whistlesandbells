@@ -17,8 +17,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="row">
                 <!------------------ FIRST GROUP OF PHOTOS --------------->
 
@@ -56,24 +54,25 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="justify-content-center d-flex py-1">
-{#                            <div class="homepage-image-container-1">#}
-                                {% if Photo1.photo is not null %}
+                            {% if Photo1.photo is not null %}
+                                {% if Photo1.photoOrVideo == "Video" %}
+                                    <video class="other-page-image" controls>
+                                        <source src="{{ asset('administration/attachments/WebsitePhotos/') }}{{ Photo1.photo }}"
+                                                type="video/mp4">
+                                    </video>
+                                {% else %}
                                     {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo1.photo %}
                                     {% if Photo1.link is not null %}
                                         <a target="_blank" href="{{ Photo1.link }}">
-                                            <img class="other-page-image"
-                                                 src="{{ loc }}"></a>
+                                            <img class="other-page-image" src="{{ loc }}"></a>
                                     {% else %}
-                                        <img class="other-page-image"
-                                             src="{{ loc }}"></a>
+                                        <img class="other-page-image" src="{{ loc }}"></a>
                                     {% endif %}
                                 {% endif %}
-{#                            </div>#}
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}
-
-
                 <!------------------ END FIRST GROUP OF PHOTOS --------------->
                 <!------------------ SECOND GROUP OF PHOTOS --------------->
 
@@ -113,26 +112,29 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="justify-content-center d-flex py-1">
-{#                            <div class="homepage-image-container-1">#}
-                                {% if Photo2.photo is not null %}
+                            {% if Photo2.photo is not null %}
+                                {% if Photo2.photoOrVideo == "Video" %}
+                                    <video class="other-page-image" controls>
+                                        <source src="{{ asset('administration/attachments/WebsitePhotos/') }}{{ Photo2.photo }}"
+                                                type="video/mp4">
+                                    </video>
+                                {% else %}
                                     {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo2.photo %}
                                     {% if Photo2.link is not null %}
                                         <a target="_blank" href="{{ Photo2.link }}">
-                                            <img class="other-page-image"
-                                                 src="{{ loc }}"></a>
+                                            <img class="other-page-image" src="{{ loc }}"></a>
                                     {% else %}
-                                        <img class="other-page-image"
-                                             src="{{ loc }}"></a>
+                                        <img class="other-page-image" src="{{ loc }}"></a>
                                     {% endif %}
-
                                 {% endif %}
-{#                            </div>#}
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}
 
                 <!------------------ END SECOND GROUP OF PHOTOS --------------->
                 <!------------------ THIRD GROUP OF PHOTOS --------------->
+
 
                 {% if Photo3.photo is empty %}
                     <div class="col-md-12">
@@ -162,7 +164,7 @@
                             {% endif %}
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}">
+                            <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}">
                                 <p>{{ Text3.contentText|raw }}  </p></a>
                         {% else %}
                             <p>{{ Text3.contentText|raw }}  </p>
@@ -170,21 +172,22 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="justify-content-center d-flex py-1">
-{#                            <div class="homepage-image-container-1">#}
-                                {% if Photo3.photo is not null %}
+                            {% if Photo3.photo is not null %}
+                                {% if Photo3.photoOrVideo == "Video" %}
+                                    <video class="other-page-image" controls>
+                                        <source src="{{ asset('administration/attachments/WebsitePhotos/') }}{{ Photo3.photo }}"
+                                                type="video/mp4">
+                                    </video>
+                                {% else %}
                                     {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo3.photo %}
-                                    {% if Photo3.link is not null %}
+                                    {% if Photo2.link is not null %}
                                         <a target="_blank" href="{{ Photo3.link }}">
-                                            <img class="other-page-image"
-
-                                                 src="{{ loc }}"></a>
+                                            <img class="other-page-image" src="{{ loc }}"></a>
                                     {% else %}
-                                        <img class="other-page-image"
-
-                                             src="{{ loc }}"></a>
+                                        <img class="other-page-image" src="{{ loc }}"></a>
                                     {% endif %}
                                 {% endif %}
-{#                            </div>#}
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}

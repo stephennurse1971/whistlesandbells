@@ -118,23 +118,19 @@
                                 Recruiters
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('user_index_recruiters_high_priority') }}">Recruiters
-                                    (High)</a>
-                                <a class="dropdown-item" href="{{ path('user_index_recruiters_later') }}">Recruiters
-                                    (Later)</a>
-                                <a class="dropdown-item" href="{{ path('user_index_recruiters_uncategorised') }}">Recruiters
-                                    (TBC)</a>
-                                <a class="dropdown-item" href="{{ path('user_index_recruiters_low_priority') }}">Recruiters
-                                    (Low)</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('introduction_index') }}">Email Templates</a>
-                                <a class="dropdown-item" href="{{ path('introduction_segment_index') }}">Email Templates
-                                    (Country Add-on)</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('recruiter_emails_index') }}">Emails Sent</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('prospect_employer_index') }}">Prospective
-                                    Employers</a>
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters_high_priority') }}">High Priority</a>
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters_later') }}">Medium Priority</a>
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters_low_priority') }}">Low Priority</a>
+                                <a class="dropdown-item" href="{{ path('user_index_recruiters_uncategorised') }}">Uncatgorised</a>
+{#                                <hr>#}
+{#                                <a class="dropdown-item" href="{{ path('introduction_index') }}">Email Templates</a>#}
+{#                                <a class="dropdown-item" href="{{ path('introduction_segment_index') }}">Email Templates#}
+{#                                    (Country Add-on)</a>#}
+{#                                <hr>#}
+{#                                <a class="dropdown-item" href="{{ path('recruiter_emails_index') }}">Emails Sent</a>#}
+{#                                <hr>#}
+{#                                <a class="dropdown-item" href="{{ path('prospect_employer_index') }}">Prospective#}
+{#                                    Employers</a>#}
                             </div>
                         </li>
                     {% endif %}

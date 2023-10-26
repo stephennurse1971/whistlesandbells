@@ -1,24 +1,23 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-
-
     <div class="row">
         {% for photo in photos %}
-            <div class="col-lg-2 col-md-6 m-0 p-0">
+            {#            <div class="col-lg-2 col-md-6 m-0 p-0"> #}
+            <div class="col-lg-3 col-md-4 m-4 p-4">
                 <div class="justify-content-center d-flex">
                     <div class="homepage-gallery-image-container">
-                    {% if photo.photo is not null %}
-                        {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
-                        {% if photo.link is not null %}
-                            <a target="_blank" href="{{ photo.link }}">
+                        {% if photo.photo is not null %}
+                            {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
+                            {% if photo.link is not null or photo.heading is not null %}
+                                <a title="{{ photo.heading }}" target="_blank" href="{{ photo.link }}">
+                                    <img class="homepage-image" src="{{ loc }}">
+                                </a>
+                            {% else %}
                                 <img class="homepage-image" src="{{ loc }}">
-                            </a>
-                        {% else %}
-                            <img class="homepage-image" src="{{ loc }}">
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
+                    </div>
                 </div>
-            </div>
             </div>
         {% endfor %}
     </div>

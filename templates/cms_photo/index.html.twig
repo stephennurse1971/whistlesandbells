@@ -12,6 +12,7 @@
             <tr>
                 <th style="width: 50px">Photo</th>
                 <th style="width: 50px">Tag</th>
+                <th style="width: 150px">Photo/<br> Video</th>
                 <th style="width: 150px">Heading</th>
                 <th style="width: 500px">Title (English)</th>
                 <th style="width: 500px">Title (French)</th>
@@ -37,6 +38,9 @@
                         <td>
                             <a target="_blank"
                                href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">{{ cms_photo.name }}</a>
+                        </td>
+                        <td>
+                            <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo|slice(0,1) }}</span>
                         </td>
                         <td>{{ cms_photo.heading }}</td>
 
@@ -65,7 +69,8 @@
                         <td>
                             <a class="btn btn-outline-danger btn-sm" target="_blank"
                                href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a>
-                            <a class="btn btn-primary btn-sm" href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete Photo</a>
+                            <a class="btn btn-primary btn-sm"
+                               href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete Photo</a>
                         </td>
                     </tr>
                 {% endif %}
