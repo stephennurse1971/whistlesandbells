@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <h1 class="text-danger">Dashboard</h1>
+    <hr>
+
+    <div class="row">
+
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">Users</h2>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index') }}">Users - All</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index_edited_since_download') }}">Users - Edited</a></ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index_telnumbers') }}">Users - Tel numbers</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_personal') }}">Personal</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_festiveMessage') }}">Festive</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_ax') }}">AX</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_birthdays') }}">Birthdays</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('log_index') }}">User log</a>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">Recruiters</h2>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index_recruiters_high_priority') }}">High
+                        Priority</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index_recruiters_later') }}">Medium
+                        Priority</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index_recruiters_low_priority') }}">Low
+                        Priority</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index_recruiters_uncategorised') }}">Uncategorised</a>
+                </ul>
+                <hr>
+                <ul>
+                    <a target="_blank" href="{{ path('introduction_index') }}">Email Templates</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('introduction_segment_index') }}">Email Templates
+                        (Country Add-on)</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('recruiter_emails_index') }}">Emails Sent</a>
+                </ul>
+                <hr>
+                <ul>
+                    <a target="_blank" href="{{ path('prospect_employer_index') }}">Prospective
+                        Employers</a>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">CV</h2>
+                <ul><a target="_blank" href="{{ path('curriculum_vitae_index') }}">CV - Segments</a></ul>
+            </div>
+            <div class="border py-4">
+                <h2 style="color: red">Flights</h2>
+                <ul><a target="_blank" href="{{ path('flight_stats_index') }}">Flights (Kayak)</a></ul>
+                <ul><a target="_blank" href="{{ path('settings_index') }}">Settings</a></ul>
+            </div>
+        </div>
+
+
+        <div class="col-2">
+            <div class="border py-4">
+                <h3 style="color: red">CMS</h3>
+                <ul><a target="_blank" href="{{ path('static_text_index') }}">CMS Static Text</a></ul>
+                <ul><a target="_blank" href="{{ path('cms_copy_index') }}">CMS Copy</a></ul>
+                <ul><a target="_blank" href="{{ path('cms_photo_index') }}">CMS Photos</a></ul>
+            </div>
+
+            <div class="border py-4">
+                <h3 style="color: red">Photos</h3>
+                <ul><a target="_blank" href="{{ path('country_index') }}">Countries</a></ul>
+                <ul><a target="_blank" href="{{ path('photo_locations_index') }}">Photo
+                        locations</a></ul>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">Tax</h2>
+                <ul><a href="{{ path('tax_year_index') }}">Tax Bands</a></ul>
+                <ul><a href="{{ path('tax_schemes_index') }}">Tax Schemes</a></ul>
+                <ul><a href="{{ path('asset_classes_index') }}">Asset Classes</a></ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}
+    {% block javascripts %}
+        {{ parent() }}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+        <script src="{{ asset('admin/js/AGS.js') }}"></script>
+    {% endblock javascripts %}
+
+    {% block datatable %}
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable({
+                    'pageLength': 100,
+                    "order": [[2, 'asc'], [3, 'asc'], [4, 'asc']],
+                    "paging": true,
+                    "searching": true,
+                    "bInfo": true
+                });
+            });
+        </script>
+    {% endblock datatable %}

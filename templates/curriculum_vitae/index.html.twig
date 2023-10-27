@@ -7,12 +7,11 @@
 
     {% for candidate in candidates %}
 
-            <h2>{{ candidate.fullName }}</h2>
+        <h2>{{ candidate.fullName }}</h2>
 
         <table class="table">
             <thead>
             <tr>
-{#                <th>Candidate</th>#}
                 <th>Section</th>
                 <th>Title</th>
                 <th>Date From</th>
@@ -22,16 +21,16 @@
             </thead>
             <tbody>
             {% for curriculum_vitae in curriculum_vitaes %}
-
                 {% if curriculum_vitae.candidate == candidate %}
                     <tr>
-{#                        <td>{{ curriculum_vitae.candidate.fullName }}</td>#}
                         <td>{{ curriculum_vitae.section }}</td>
                         <td>
                             {% if curriculum_vitae.title is not empty %}
-                                <a target="_blank" href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
+                                <a target="_blank"
+                                   href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.title }}</a>
                             {% else %}
-                                <a target="_blank" href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.section }}</a>
+                                <a target="_blank"
+                                   href="{{ path('curriculum_vitae_edit', {'id': curriculum_vitae.id}) }}">{{ curriculum_vitae.section }}</a>
                             {% endif %}
                         </td>
                         <td data-sort="{{ curriculum_vitae.date|date('d-m-Y') }}">{{ curriculum_vitae.date ? curriculum_vitae.date|date('M-Y') : '' }}</td>
@@ -53,7 +52,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'desc'],  [2, 'desc']],
+                "order": [[0, 'desc'], [2, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

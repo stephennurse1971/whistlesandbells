@@ -76,6 +76,15 @@ class HomeController extends AbstractController
 
 
     /**
+     * @Route("/dashboard", name="dashboard")
+     */
+    public function dashboard()
+    {
+        return $this->render('home/dashboard.html.twig', []);
+    }
+
+
+    /**
      * @Route("/test_page", name="test_page")
      */
     public function testPage(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
