@@ -12,10 +12,8 @@
             <th>Name</th>
             <th>Company</th>
 
-            <th>Admin</th>
-            <th>Family</th>
-            <th>Contact</th>
-            <th>Guest</th>
+            {% include 'user/parts/roles_headers.html.twig' %}
+
 
             <th title="Home/Business">Address</th>
             <th>Mobile(s)</th>
@@ -47,140 +45,17 @@
                 </td>
                 <td>
                     {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
-                        <b><a target="_blank" href="{{ path('user_edit', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
+                        <b><a target="_blank"
+                              href="{{ path('user_edit', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
                     {% else %}
-                        <b><a target="_blank" href="{{ path('user_show', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
+                        <b><a target="_blank"
+                              href="{{ path('user_show', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
                     {% endif %}
                 </td>
 
                 <td>{{ user.company }}</td>
 
-
-                {% set role_flag1 = 0 %}
-                {% for role in user.roles %}
-                    {% if role == 'ROLE_SUPER_ADMIN' or role == 'ROLE_ADMIN' %}
-                        {% set role_flag1 = 1 %}
-                    {% endif %}
-                {% endfor %}
-
-
-                {# ------ Next radio button ROLE_ADMIN (1)--------------- -#}
-                <td data-sort="{{ role_flag1 }}" style="text-align: center">
-                    {% set role_flag1 = 0 %}
-                    {% for role in user.roles %}
-                        {% if role == 'ROLE_ADMIN' %}
-                            {% set role_flag1 = 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if role_flag1 == 1 %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ADMIN", 'active': '1'}) }}"><i
-                                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                        {% endif %}
-                    {% else %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ADMIN", 'active': '1'}) }}"><i
-                                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                        {% endif %}
-                    {% endif %}
-                </td>
-
-
-
-                {# ------ Next radio button ROLE_FAMILY (2)--------------- -#}
-                {% set role_flag3 = 0 %}
-                {% for role in user.roles %}
-                    {% if role == 'ROLE_FAMILY' %}
-                        {% set role_flag3 = 1 %}
-                    {% endif %}
-                {% endfor %}
-                <td data-sort="{{ role_flag3 }}" style="text-align: center">
-                    {% if role_flag3 == 1 %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '0'}) }}"><i
-                                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                        {% endif %}
-                    {% else %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '1'}) }}"><i
-                                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                        {% endif %}
-                    {% endif %}
-                </td>
-
-
-                {# ------ Next radio button ROLE_CONTACT (3)--------------- -#}
-                {% set role_flag4 = 0 %}
-                {% for role in user.roles %}
-                    {% if role == 'ROLE_CONTACT' %}
-                        {% set role_flag4 = 1 %}
-                    {% endif %}
-                {% endfor %}
-                <td data-sort="{{ role_flag4 }}" style="text-align: center">
-                    {% if role_flag4 == 1 %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '0'}) }}"><i
-                                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                        {% endif %}
-                    {% else %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '1'}) }}"><i
-                                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                        {% endif %}
-                    {% endif %}
-                </td>
-
-
-                {# ------ Next radio button ROLE_GUEST (4)--------------- -#}
-                {% set role_flag5 = 0 %}
-                {% for role in user.roles %}
-                    {% if role == 'ROLE_GUEST' %}
-                        {% set role_flag5 = 1 %}
-                    {% endif %}
-                {% endfor %}
-                <td data-sort="{{ role_flag5 }}" style="text-align: center">
-                    {% if role_flag5 == 1 %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: green; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '0'}) }}"><i
-                                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
-                        {% endif %}
-                    {% else %}
-                        {% if app.user.id == user.id %}
-                            <i class="fa fa-circle" style="color: red; text-align: right"></i>
-                        {% else %}
-                            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '1'}) }}"><i
-                                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
-                        {% endif %}
-                    {% endif %}
-                </td>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                {% include 'user/parts/roles_body.html.twig' %}
 
                 <td style="text-align: center">
                     {% if user.homeStreet is not empty %}
@@ -273,7 +148,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'desc'],[3, 'asc'], [2, 'asc']],
+                "order": [[0, 'desc'], [3, 'asc'], [2, 'asc']],
                 "paging": false,
                 "searching": true,
                 "bInfo": true
