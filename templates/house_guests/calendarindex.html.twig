@@ -7,7 +7,8 @@
     {% if is_granted('ROLE_ADMIN') %}
         <div class="row">
             <div class="col-3">
-                <a class="btn btn-outline-secondary btn-sm" href="{{ path('house_guests_flight_price_scrape_all') }}">Scrape</a>
+                <a class="btn btn-outline-secondary btn-sm"
+                   href="{{ path('house_guests_flight_price_scrape_all') }}">Scrape</a>
                 <a target="_blank" class="btn btn-outline-primary btn-sm"
                    href="https://www.hermesairports.com/flight-info/arrivals-and-departures-pfo">PFO Arrivals</a>
                 <a target="_blank" class="btn btn-outline-primary btn-sm"
@@ -35,8 +36,7 @@
             <th>Date</th>
             <th>Book</th>
             <th>Travel Notes</th>
-
-            <th style="border-right: 1px dotted grey">
+            <th style="border-right: 1px dotted grey; border-right: 1px solid grey">
                 Notes
             </th>
             {% if is_granted('ROLE_ADMIN') %}
@@ -44,20 +44,29 @@
                     Delete
                 </th>
             {% endif %}
+
+
             {% for flight_destination in flight_destinations %}
-                {% if flight_destination.id is even %}
-                    <th style="border-right: 1px dotted grey">
-                {% else %}
-                    <th>
+
+                {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
+                    {% if flight_destination.id is even %}
+                        <th style="border-right: 1px dotted grey; background-color: lightgrey">
+                    {% else %}
+                        <th style="background-color: lightgrey">
+                    {% endif %}
+                    {{ flight_destination.departureCode }} - <br>{{ flight_destination.arrivalCode }}
+                    {% if flight_destination.adminOnly==1 %}
+                        <i style="color: green" class="fa fa-hat-wizard"></i>
+                        {% endif %}
                 {% endif %}
-                {{ flight_destination.departureCode }} - <br>{{ flight_destination.arrivalCode }}
                 </th>
             {% endfor %}
+
+
         </tr>
         </thead>
         <tbody>
         {% for date in dates %}
-
             {% set id = '' %}
             {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
                 <tr style="background-color: #bac8f3">
@@ -66,9 +75,6 @@
             {% endif %}
 
             <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
-
-
-
             <td>
                 {% set flag = 0 %}
                 {% for house_guest in house_guests %}
@@ -125,11 +131,12 @@
                 </td>
             {% endif %}
             {% for flight_destination in flight_destinations %}
-                {% if flight_destination.id is even %}
-                    <td style="border-right: 1px dotted grey">
-                {% else %}
-                    <td>
-                {% endif %}
+                {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
+                    {% if flight_destination.id is even %}
+                        <td style="border-right: 1px dotted grey">
+                    {% else %}
+                        <td>
+                    {% endif %}
 
                     {% for flight in flights %}
                         {% if flight.date == date and flight.flightFrom==flight_destination.departureCode and flight.flightTo ==flight_destination.arrivalCode %}
@@ -137,6 +144,7 @@
                             <a target="_blank" href="{{ URL }}">£{{ flight.lowestPrice|number_format('0') }}</a>
                         {% endif %}
                     {% endfor %}
+                {% endif %}
                 </td>
             {% endfor %}
             </tr>

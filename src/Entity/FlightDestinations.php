@@ -37,6 +37,11 @@ class FlightDestinations
      */
     private $arrivalCode;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $adminOnly;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class FlightDestinations
     public function setArrivalCode(string $arrivalCode): self
     {
         $this->arrivalCode = $arrivalCode;
+
+        return $this;
+    }
+
+    public function getAdminOnly(): ?bool
+    {
+        return $this->adminOnly;
+    }
+
+    public function setAdminOnly(?bool $adminOnly): self
+    {
+        $this->adminOnly = $adminOnly;
 
         return $this;
     }
