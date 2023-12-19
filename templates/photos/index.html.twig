@@ -17,13 +17,12 @@
         {% endif %}
     </div>
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <a class="btn btn-danger btn-sm" href="{{ path('photos_delete_all_files_in_public_photos') }}">Delete All Photo
-            Files (Danger)
+        <a class="btn btn-danger btn-sm" href="{{ path('photos_delete_all_files_in_public_photos') }}">Delete All Photos
         </a>
     {% endif %}
 
     <div class="row">
-        <div class="col-3">
+        <div class="col-6 col-md-2">
             <table class="table">
                 <thead>
                 <tr>
@@ -49,7 +48,7 @@
             </table>
         </div>
 
-        <div class="col-3">
+        <div class="col-6 col-md-2">
             <table class="table">
                 <thead>
                 <tr>
@@ -77,14 +76,14 @@
 
 {% block datatable %}
     <script>
-        $(document).ready(function () {
-            $('.table').DataTable({
-                'pageLength': 100,
-                "order": [[0, 'asc'], [1, 'desc']],
-                "paging": false,
-                "searching": false,
-                "bInfo": false
-            });
-        });
+        // $(document).ready(function () {
+        //     $('.table').DataTable({
+        //         'pageLength': 100,
+        //         "order": [[0, 'asc'], [1, 'desc']],
+        //         "paging": false,
+        //         "searching": false,
+        //         "bInfo": false
+        //     });
+        // });
     </script>
 {% endblock datatable %}
