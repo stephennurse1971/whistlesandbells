@@ -54,10 +54,14 @@
                     {% else %}
                         <th style="background-color: lightgrey">
                     {% endif %}
-                    {{ flight_destination.departureCode }} - <br>{{ flight_destination.arrivalCode }}
+                    <a target="_blank" href="{{ path('flight_destinations_edit', {id:flight_destination.id}) }}">
+                        <span title={{ flight_destination.departureCity }}>{{ flight_destination.departureCode }}</span>
+                        - <br>
+                        <span title={{ flight_destination.arrivalCity }}>{{ flight_destination.arrivalCode }}</span>
+                    </a>
                     {% if flight_destination.adminOnly==1 %}
                         <i style="color: green" class="fa fa-hat-wizard"></i>
-                        {% endif %}
+                    {% endif %}
                 {% endif %}
                 </th>
             {% endfor %}
