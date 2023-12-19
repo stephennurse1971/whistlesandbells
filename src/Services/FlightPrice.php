@@ -56,6 +56,7 @@ class FlightPrice
                             $this->manager->flush();
                         }
                     }
+                    unlink($file);
                 }
                 $start_date->modify("+1 day");
                 $day_increment++;
