@@ -16,8 +16,8 @@ puppeteer.launch({ headless:'new', args:[
         deviceScaleFactor: 1,
     });
 
-   // const url = process.argv[2];
-    const url = 'https://www.kayak.co.uk/flights/PFO,LCA-LON/2023-12-21?sort=price_a&fs=stops=0'
+    const url = process.argv[2];
+   // const url = 'https://www.kayak.co.uk/flights/PFO,LCA-LON/2023-12-21?sort=price_a&fs=stops=0'
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
    // await page.waitForSelector('.vrY3');
@@ -34,8 +34,8 @@ puppeteer.launch({ headless:'new', args:[
         return results;
     });
     const fs = require('fs');
-    console.log(data);
-   // fs.writeFileSync('scrape/flightPrice.json',JSON.stringify(data));
+   // console.log(data);
+    fs.writeFileSync('scrape/flightPrice.json',JSON.stringify(data));
     browser.close();
 })
 
