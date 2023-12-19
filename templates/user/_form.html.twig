@@ -60,7 +60,7 @@
     </div>
 
     <div class="col-md-2">
-        {% if form.recruitingArea is defined  and form.recruitingAreaList is defined and form.recruiterHighPriority is defined %}
+        {% if form.recruitingArea is defined and form.recruitingAreaList is defined and form.recruiterHighPriority is defined %}
             <h4 style="color: blue">Recruiters</h4>
             {{ form_row(form.recruitingArea) }}
             {{ form_row(form.recruitingAreaList ) }}
