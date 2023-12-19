@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: {{ to_do_list.task }}{% endblock %}
+{% block title %}Edit: {{ to_do_list.project }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red;">Edit: To Do List</h1>
+    <h1 style="color: red;">Project: {{ to_do_list.project }}</h1>
 
     {{ include('to_do_list/_form.html.twig', {'button_label': 'Save'}) }}
 
-    <a class="btn btn-outline-info btn-sm mt-2" href="{{ path('to_do_list_index') }}">Return to list</a>
+    <a class="btn btn-outline-info btn-sm mt-2" href="{{ path('to_do_list_index', {status: 'All'}) }}">Return to list</a>
 
     {{ include('to_do_list/_delete_form.html.twig') }}
 {% endblock %}

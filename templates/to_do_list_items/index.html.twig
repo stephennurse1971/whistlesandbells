@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}To Do List Items{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">To Do List Items</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Project</th>
+                <th>Task</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for to_do_list_item in to_do_list_items %}
+            <tr>
+                <td>{{ to_do_list_item.id }}</td>
+                <td>{{ to_do_list_item.project.project }}</td>
+                <td>{{ to_do_list_item.task }}</td>
+                <td>{{ to_do_list_item.priority }}</td>
+                <td>{{ to_do_list_item.status }}</td>
+                <td>
+                    <a class="btn btn-outline-primary btn-sm" href="{{ path('to_do_list_items_show', {'id': to_do_list_item.id}) }}">Show</a>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('to_do_list_items_edit', {'id': to_do_list_item.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

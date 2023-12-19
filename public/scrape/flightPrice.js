@@ -4,7 +4,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: true, args:[
+puppeteer.launch({ headless:false, args:[
         '--start-maximized'
     ],slowMO:500 }).then(async browser => {
 // async function run() {
@@ -17,6 +17,7 @@ puppeteer.launch({ headless: true, args:[
     });
 
     const url = process.argv[2];
+    //const url = 'https://www.kayak.co.uk/flights/PFO,LCA-LON/2023-11-21?sort=price_a&fs=stops=0'
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
    // await page.waitForSelector('.vrY3');

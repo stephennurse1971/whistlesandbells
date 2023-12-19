@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ToDoListRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,91 +20,30 @@ class ToDoList
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $task;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $assignedTo;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $completionDate;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $priority;
 
+
     /**
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $file = [];
+    private $project;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     */
+    private $accessTo;
+
+    public function __construct()
+    {
+        $this->accessTo = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getTask(): ?string
-    {
-        return $this->task;
-    }
-
-    public function setTask(?string $task): self
-    {
-        $this->task = $task;
-
-        return $this;
-    }
-
-    public function getAssignedTo(): ?string
-    {
-        return $this->assignedTo;
-    }
-
-    public function setAssignedTo(?string $assignedTo): self
-    {
-        $this->assignedTo = $assignedTo;
-
-        return $this;
-    }
-
-    public function getCompletionDate(): ?\DateTimeInterface
-    {
-        return $this->completionDate;
-    }
-
-    public function setCompletionDate(?\DateTimeInterface $completionDate): self
-    {
-        $this->completionDate = $completionDate;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-
 
     public function getPriority(): ?int
     {
@@ -116,14 +57,40 @@ class ToDoList
         return $this;
     }
 
-    public function getFile(): ?array
+
+
+    public function getProject(): ?string
     {
-        return $this->file;
+        return $this->project;
     }
 
-    public function setFile(?array $file): self
+    public function setProject(?string $project): self
     {
-        $this->file = $file;
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getAccessTo(): Collection
+    {
+        return $this->accessTo;
+    }
+
+    public function addAccessTo(User $accessTo): self
+    {
+        if (!$this->accessTo->contains($accessTo)) {
+            $this->accessTo[] = $accessTo;
+        }
+
+        return $this;
+    }
+
+    public function removeAccessTo(User $accessTo): self
+    {
+        $this->accessTo->removeElement($accessTo);
 
         return $this;
     }

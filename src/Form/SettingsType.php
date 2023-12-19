@@ -19,7 +19,7 @@ class SettingsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
             ])
-            ->add('flightStatsDepartureAirport');
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

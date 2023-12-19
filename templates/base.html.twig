@@ -177,6 +177,12 @@
         });
 
     ClassicEditor
+        .create(document.querySelector('#to_do_list_items_task'))
+        .catch(error => {
+            console.error(error);
+        });
+
+    ClassicEditor
         .create(document.querySelector('#recruiter_emails_body'))
         .catch(error => {
             console.error(error);

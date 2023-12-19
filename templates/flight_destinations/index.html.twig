@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Flight Destinations{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Flight Destinations</h1>
+
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Departure City</th>
+                <th>Departure Code</th>
+                <th>Arrival City</th>
+                <th>Arrival Code</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for flight_destination in flight_destinations %}
+            <tr>
+                <td>
+                    <a href="{{ path('flight_destinations_edit', {'id': flight_destination.id}) }}">{{ flight_destination.id }}</a>
+                </td>
+                <td>{{ flight_destination.departureCity }}</td>
+                <td>{{ flight_destination.departureCode }}</td>
+                <td>{{ flight_destination.arrivalCity }}</td>
+                <td>{{ flight_destination.arrivalCode }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('flight_destinations_new') }}">New</a>
+{% endblock %}

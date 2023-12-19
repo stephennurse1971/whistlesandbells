@@ -3,60 +3,124 @@
 {% block title %}To Do List{% endblock %}
 
 {% block body %}
-    <h1 style="color: red;">To Do List <a href="{{ path('to_do_list_new') }}">+</a></h1>
+    <h1 style="color: red;">To Do List: {{ status }}<a href="{{ path('to_do_list_new') }}">+</a></h1>
 
+    <a class="btn btn-outline-success btn-sm" href="{{ path('to_do_list_index', {status: "Complete"}) }}">Complete</a>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('to_do_list_index', {status: "Pending"}) }}">Pending</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ path('to_do_list_index', {status: "Blocked"}) }}">Blocked</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ path('to_do_list_index', {status: "All"}) }}">All</a>
 
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th>Priority</th>
-            <th>Task</th>
-            <th>Assigned To</th>
-            <th>Completion Date</th>
-            <th>File</th>
-            <th>Description</th>
+            <th>Project</th>
+            <th>Access</th>
+            <th>#</th>
         </tr>
         </thead>
         <tbody>
         {% for to_do_list in to_do_lists %}
-            <tr>
-                <td>{{ to_do_list.priority }}</td>
-                <td><a href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.task }}</a></td>
-                <td>{{ to_do_list.assignedTo }}</td>
-                <td data-sort="{{ to_do_list.completionDate ? to_do_list.completionDate|date('Y-m-d') : '' }}">{{ to_do_list.completionDate ? to_do_list.completionDate|date('d-M-Y') : '' }}</td>
-                <td>
-                    {% if to_do_list.file is empty %}
-                        -
-                    {% else %}
-                        {% for file in to_do_list.file %}
-                            <a title="{{ file }}" target="_blank"
-                               href="{{ path('to_do_list_viewfile',{fileName:file}) }}"><i class="fa fa-paperclip"></i> </a>
-                        {% endfor %}
-                    {% endif %}
-
+            <tr style="background-color: aliceblue">
+                <td style="width: 10px;">{{ to_do_list.priority }}</td>
+                <td style="width: 170px;">
+                    <a href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.project }}</a>
                 </td>
-                <td>{{ to_do_list.description|raw }}</td>
+                <td style="width: 600px;font-size: small">
+                    {% for user in to_do_list.getAccessTo %}
+                        <i class="fa fa-user"></i> {{ user.fullName }};
+                    {% endfor %}
+                </td>
+                <td style="width: 1700px;">
+                    <a target="_blank" class="btn btn-outline-primary btn-sm"
+                       href="{{ path('to_do_list_items_new', {'project': to_do_list.project} ) }}">+</a>
+                </td>
             </tr>
+            <tr>
+                <td colspan="4">
+                    <table id="test{{ to_do_list.id }}" class="table table-responsive">
+                        <thead>
+                        <tr>
+                            <th>a{{ to_do_list.id }}</th>
+                            <th>b{{ to_do_list.id }}</th>
+                            <th>c{{ to_do_list.id }}</th>
+                            <th>d{{ to_do_list.id }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for to_do_lists_item in to_do_lists_items %}
+                            <tr>
+                                {% if to_do_list.project == to_do_lists_item.project.project and (to_do_lists_item.status == status  or status =="All") %}
+                                    <td style="width: 20px">
+{#                                     {{ to_do_lists_item.status|slice(0,1)}}.#}
+{#                                        {{ to_do_list.priority }}.#}
+                                        {{ to_do_lists_item.priority }}
+                                    </td>
+                                    <td style="width: 1800px">
+                                        <a target="_blank"
+                                           href="{{ path('to_do_list_items_edit', {'id':to_do_lists_item.id}) }}">
+                                            {{ to_do_lists_item.task|raw }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ to_do_lists_item.status }}
+                                    </td>
+                                    <td>
+                                        {% include 'to_do_list/buttons.html.twig' %}
+                                    </td>
+
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
         {% endfor %}
         </tbody>
     </table>
 
-    <br>
-    <a class="btn btn-outline-success btn-sm" href="{{ path('to_do_list_new') }}">New</a>
-    <br>
+
     <br>
 {% endblock %}
 {% block datatable %}
     <script>
+
+
         $(document).ready(function () {
-            $('.table').DataTable({
-                'pageLength': 50,
-                "order": [[0, 'asc', 1, 'dsc']],
+            $('#test1').DataTable({
+                'pageLength': 2,
+                "order": [[0, 'asc'],[ 1, 'asc']],
                 "paging": false,
-                "searching": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+        $(document).ready(function () {
+            $('#test5').DataTable({
+                'pageLength': 2,
+                "order": [[0, 'asc'],[ 1, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });$(document).ready(function () {
+            $('#test6').DataTable({
+                'pageLength': 2,
+                "order": [[0, 'asc'],[ 1, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });$(document).ready(function () {
+            $('#test7').DataTable({
+                'pageLength': 2,
+                "order": [[0, 'asc'],[ 1, 'asc']],
+                "paging": false,
+                "searching": true,
                 "bInfo": false
             });
         });
     </script>
 {% endblock datatable %}
-

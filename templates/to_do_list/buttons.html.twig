@@ -1,0 +1,29 @@
+{% if to_do_lists_item.status=="Pending" %}
+    <a class="btn btn-outline-success btn-sm" href="{{ path('to_do_list_items_change_status', {'id':to_do_lists_item.id, 'status':'Complete'}) }}">
+        <i style="color: green" class="fas fa-check"></i>
+    </a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ path('to_do_list_items_change_status', {'id':to_do_lists_item.id, 'status':'Blocked'}) }}">
+        <i style="color: red" class="fa fa-remove"></i>
+    </a>
+{% endif %}
+
+
+{% if to_do_lists_item.status=="Complete" %}
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('to_do_list_items_change_status', {'id':to_do_lists_item.id, 'status':'Pending'}) }}">
+        <i style="color: grey" class="fas fa-question"></i>
+    </a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ path('to_do_list_items_change_status', {'id':to_do_lists_item.id, 'status':'Blocked'}) }}">
+        <i style="color: red" class="fa fa-remove"></i>
+    </a>
+{% endif %}
+
+
+{% if to_do_lists_item.status=="Blocked" %}
+    <a class="btn btn-outline-success btn-sm" href="{{ path('to_do_list_items_change_status', {'id':to_do_lists_item.id, 'status':'Complete'}) }}">
+        <i style="color: green" class="fas fa-check"></i>
+    </a>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('to_do_list_items_change_status', {'id':to_do_lists_item.id, 'status':'Pending'}) }}">
+        <i style="color: grey" class="fas fa-question"></i>
+    </a>
+{% endif %}
+

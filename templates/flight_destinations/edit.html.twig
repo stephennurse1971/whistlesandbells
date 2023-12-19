@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: Flight Destinations{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: Flight Destinations</h1>
+
+    {{ include('flight_destinations/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('flight_destinations_index') }}">Return to list</a>
+
+    {{ include('flight_destinations/_delete_form.html.twig') }}
+{% endblock %}

@@ -27,10 +27,7 @@ class Settings
      */
     private $flightStatsStartDate;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $flightStatsDepartureAirport;
+
 
 
     public function getId(): ?int
@@ -62,17 +59,7 @@ class Settings
         return $this;
     }
 
-    public function getFlightStatsDepartureAirport(): ?string
-    {
-        return $this->flightStatsDepartureAirport;
-    }
 
-    public function setFlightStatsDepartureAirport(?string $flightStatsDepartureAirport): self
-    {
-        $this->flightStatsDepartureAirport = $flightStatsDepartureAirport;
-
-        return $this;
-    }
 
      
 }

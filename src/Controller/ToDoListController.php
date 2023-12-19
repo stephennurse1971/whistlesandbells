@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Introduction;
-use App\Entity\Photos;
 use App\Entity\ToDoList;
 use App\Form\ToDoListType;
+use App\Repository\ToDoListItemsRepository;
 use App\Repository\ToDoListRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -25,12 +24,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ToDoListController extends AbstractController
 {
     /**
-     * @Route("/", name="to_do_list_index", methods={"GET"})
+     * @Route("/index/{status}", name="to_do_list_index", methods={"GET"},defaults={"status"="All"})
      */
-    public function index(ToDoListRepository $toDoListRepository): Response
+    public function index(ToDoListRepository $toDoListRepository, $status, ToDoListItemsRepository $toDoListItemsRepository): Response
     {
         return $this->render('to_do_list/index.html.twig', [
+            'status'=>$status,
             'to_do_lists' => $toDoListRepository->findAll(),
+            'to_do_lists_items' => $toDoListItemsRepository->findAll(),
         ]);
     }
 
@@ -44,27 +45,11 @@ class ToDoListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if($form->get('file')->getData()) {
-                $files = $form->get('file')->getData();
-                $file_names = [];
-                foreach($files as $file){
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . "." . $file->guessExtension();
-                    $file->move(
-                        $this->getParameter('files_upload_default_directory'),
-                        $newFilename
-                    );
-                    $file_names[]=$newFilename;
-                }
-                $toDoList->setFile($file_names);
-            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($toDoList);
             $entityManager->flush();
-
             return $this->redirectToRoute('to_do_list_index');
         }
-
 
         return $this->render('to_do_list/new.html.twig', [
             'to_do_list' => $toDoList,
@@ -91,20 +76,7 @@ class ToDoListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if($form->get('file')->getData()) {
-                $files = $form->get('file')->getData();
-                $file_names = [];
-                foreach($files as $file){
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . "." . $file->guessExtension();
-                    $file->move(
-                        $this->getParameter('files_upload_default_directory'),
-                        $newFilename
-                    );
-                    $file_names[]=$newFilename;
-                }
-                $toDoList->setFile($file_names);
-            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($toDoList);
             $entityManager->flush();

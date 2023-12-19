@@ -4,118 +4,144 @@
 
 {% block body %}
     <h1 style="color: red">House Guests Calendar</h1>
-
-    <a class="btn btn-outline-secondary btn-sm" href="{{ path('house_guests_flight_price_scrape_london_pfo') }}">Scrape
-        flights</a>
     {% if is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-outline-danger btn-sm" target="_blank"
-           href="{{ path('settings_edit', {id: '1'}) }}">Settings</a>
-        <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete All</a>
+        <div class="row">
+            <div class="col-3">
+                <a class="btn btn-outline-secondary btn-sm" href="{{ path('house_guests_flight_price_scrape_all') }}">Scrape</a>
+                <a target="_blank" class="btn btn-outline-primary btn-sm"
+                   href="https://www.hermesairports.com/flight-info/arrivals-and-departures-pfo">PFO Arrivals</a>
+                <a target="_blank" class="btn btn-outline-primary btn-sm"
+                   href="https://www.hermesairports.com/flight-info/arrivals-and-departures-lca">LCA Arrivals</a>
+            </div>
+            <div class="col-3"></div>
+            <div class="col-3">
+                <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete</a>
+
+                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                   href="{{ path('settings_edit', {id: '1'}) }}">Date Range</a>
+
+                <a class="btn btn-outline-secondary btn-sm" target="_blank"
+                   href="{{ path('flight_destinations_index') }}">Destinations</a>
+            </div>
+        </div>
     {% endif %}
-    <i title="Scrape range:- Start date: {{ settings.flightStatsStartDate|date('d-M-Y') }}, for {{ settings.flightStatsDays }} days" class="fa fa-info-circle"></i>
+
+    <i title="Scrape range:- Start date: {{ settings.flightStatsStartDate|date('d-M-Y') }}, for {{ settings.flightStatsDays }} days"
+       class="fa fa-info-circle"></i>
+
     <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Book</th>
+            <th>Travel Notes</th>
 
-    <thead>
-    {% set departure = settings.flightStatsDepartureAirport %}
-    <tr>
-        <th>Date</th>
-        <th><a target="_blank" href="{{ path('flight_stats_index') }}">From London</a></th>
-        <th>To London</th>
-        <th>Book</th>
-        <th>Travel Notes</th>
-        <th>Notes</th>
-        {% if is_granted('ROLE_ADMIN') %}
-            <th>Delete</th>
-        {% endif %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for date in dates %}
-
-        {% set id = '' %}
-        {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
-            <tr style="background-color: #bac8f3">
-        {% else %}
-            <tr>
-        {% endif %}
-
-        <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
-        <td style="text-align: center">
-            {% for flight in flights %}
-                {% if flight.date == date and flight.flightFrom=="LON" and flight.flightTo =="PFO,LCA" %}
-                    {% set URL1 = "https://www.kayak.co.uk/flights/LON-PFO,LCA/"  ~ date|date('Y-m-d')  ~ "?sort=price_a&fs=stops=0" %}
-                    <a title="{{ flight.scrapeDate| date('d-M-Y') }}" target="_blank" href="{{ URL1 }}">From
-                        £{{ flight.lowestPrice|number_format('0') }}</a>
-                {% endif %}
-            {% endfor %}
-        </td>
-        <td style="text-align: center">
-             {% for flight in flights %}
-                {% if flight.date == date and flight.flightFrom=="PFO,LCA" and flight.flightTo =="LON" %}
-                    {% set URL2 = "https://www.kayak.co.uk/flights/PFO,LCA-LON/" ~ date|date('Y-m-d')   ~"?sort=price_a&fs=stops=0" %}
-                    <a target="_blank" href="{{ URL2 }}">From £{{ flight.lowestPrice|number_format('0') }}</a>
-                {% endif %}
-            {% endfor %}
-        </td>
-        <td>
-            {% set flag = 0 %}
-            {% for house_guest in house_guests %}
-                {% if house_guest['date'] == date|date('d-m-y') %}
-                    {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                        <a target="_blank"
-                           href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">{{ house_guest['guest'].fullName }}</a>
-                    {% else %}
-                        Booked
-                    {% endif %}
-                    {% set flag = 1 %}
-                    {% set id = house_guest['id'] %}
-                {% endif %}
-            {% endfor %}
-            {% if flag==0 %}
-                <a target="_blank" class="btn btn-success btn-sm"
-                   href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
+            <th style="border-right: 1px dotted grey">
+                Notes
+            </th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th>
+                    Delete
+                </th>
             {% endif %}
-        </td>
-
-
-        <td>
-            {% for house_guest in house_guests %}
-                {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                    {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
-                        {{ house_guest['arrivalNotes'] |raw }}
-                    {% endif %}
-                    {% if house_guest['departureDate'] == date|date('d-m-y') %}
-                        {{ house_guest['departureNotes'] |raw }}
-                    {% endif %}
+            {% for flight_destination in flight_destinations %}
+                {% if flight_destination.id is even %}
+                    <th style="border-right: 1px dotted grey">
+                {% else %}
+                    <th>
                 {% endif %}
+                {{ flight_destination.departureCode }} - <br>{{ flight_destination.arrivalCode }}
+                </th>
             {% endfor %}
-        </td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for date in dates %}
 
-        <td>
-            {% for house_guest in house_guests %}
-                {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                    {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
-                        {{ house_guest['notes'] |raw }}
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-        </td>
+            {% set id = '' %}
+            {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
+                <tr style="background-color: #bac8f3">
+            {% else %}
+                <tr>
+            {% endif %}
 
-        {% if is_granted('ROLE_ADMIN') %}
+            <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
+
+
+
             <td>
-                {% if id != '' %}
-                    <form method="post" action="{{ path('house_guests_delete', {'id':id }) }}"
-                          onsubmit="return confirm('Are you sure you want to delete this item?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </form>
+                {% set flag = 0 %}
+                {% for house_guest in house_guests %}
+                    {% if house_guest['date'] == date|date('d-m-y') %}
+                        {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                            <a target="_blank"
+                               href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">{{ house_guest['guest'].fullName }}</a>
+                        {% else %}
+                            Booked
+                        {% endif %}
+                        {% set flag = 1 %}
+                        {% set id = house_guest['id'] %}
+                    {% endif %}
+                {% endfor %}
+                {% if flag==0 %}
+                    <a target="_blank" class="btn btn-success btn-sm"
+                       href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
                 {% endif %}
             </td>
-        {% endif %}
 
-        </tr>
-    {% endfor %}
-    </tbody>
+
+            <td>
+                {% for house_guest in house_guests %}
+                    {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                        {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
+                            {{ house_guest['arrivalNotes'] |raw }}
+                        {% endif %}
+                        {% if house_guest['departureDate'] == date|date('d-m-y') %}
+                            {{ house_guest['departureNotes'] |raw }}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </td>
+
+            <td style="border-right: 1px solid grey">
+                {% for house_guest in house_guests %}
+                    {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                        {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
+                            {{ house_guest['notes'] |raw }}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </td>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <td style="border-right: 1px solid grey">
+                    {% if id != '' %}
+                        <form method="post" action="{{ path('house_guests_delete', {'id':id }) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    {% endif %}
+                </td>
+            {% endif %}
+            {% for flight_destination in flight_destinations %}
+                {% if flight_destination.id is even %}
+                    <td style="border-right: 1px dotted grey">
+                {% else %}
+                    <td>
+                {% endif %}
+
+                    {% for flight in flights %}
+                        {% if flight.date == date and flight.flightFrom==flight_destination.departureCode and flight.flightTo ==flight_destination.arrivalCode %}
+                            {% set URL = "https://www.kayak.co.uk/flights/"~flight.flightFrom~"-"~ flight.flightTo ~"/"~ date|date('Y-m-d')  ~ "?sort=price_a&fs=stops=0" %}
+                            <a target="_blank" href="{{ URL }}">£{{ flight.lowestPrice|number_format('0') }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
     <br>
 

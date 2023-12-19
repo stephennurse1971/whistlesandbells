@@ -6,6 +6,7 @@ use App\Entity\HouseGuests;
 use App\Form\HouseGuestsType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
+use App\Repository\FlightDestinationsRepository;
 use App\Repository\FlightStatsRepository;
 use App\Repository\HouseGuestsRepository;
 use App\Repository\SettingsRepository;
@@ -33,8 +34,9 @@ class HouseGuestsController extends AbstractController
     /**
      * @Route("/", name="house_guests_index", methods={"GET"})
      */
-    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository): Response
+    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
+        $flightDestinations = $flightDestinationsRepository->findAll();
         $date = new \DateTime('now');
         $month = $date->format('m');
         $year = $date->format('Y');
@@ -54,6 +56,7 @@ class HouseGuestsController extends AbstractController
             $current_date = new \DateTime($current_date->modify("+1 day")->format('d-m-Y'));
         }
         return $this->render('house_guests/calendarindex.html.twig', [
+            'flight_destinations'=>$flightDestinations,
             'house_guests' => $lists = $houseGuestPerDayList->guestList(),
             'dates' => $dates,
             'flights' => $flightStatsRepository->findAll(),
@@ -71,7 +74,7 @@ class HouseGuestsController extends AbstractController
         $defaultDepartureDate = $defaultDepartureDate->modify("+1 day");
 
         $logged_user = $security->getUser();
-        if (in_array("ROLE_ADMIN", $logged_user->getRoles() )) {
+        if (in_array("ROLE_ADMIN", $logged_user->getRoles())) {
             $user_list = $userRepository->findByRole('ROLE_GUEST');
         } else {
             $user_list = $userRepository->findBy(['id' => $logged_user->getId()]);
@@ -105,8 +108,7 @@ class HouseGuestsController extends AbstractController
                 ->to($recipient)
                 ->subject($subject)
                 ->from('nurse_stephen@hotmail.com')
-                ->html($html)
-            ;
+                ->html($html);
             $mailer->send($email);
             return $this->redirectToRoute('house_guests_index');
 
@@ -182,12 +184,12 @@ class HouseGuestsController extends AbstractController
     }
 
     /**
-     * @Route("/flight/price/scrape/london-pfo", name="house_guests_flight_price_scrape_london_pfo")
+     * @Route("/flight/price/scrape/all", name="house_guests_flight_price_scrape_all")
      */
-    public function getPrice(FlightPrice $flightPrice): Response
+    public function getPrice(FlightPrice $flightPrice, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
-        $flightPrice->getPrice_LON_PFO();
-        $flightPrice->getPrice_PFO_LON();
+
+        $flightPrice->getPrice();
         return $this->redirectToRoute('house_guests_index');
     }
 }
