@@ -14,6 +14,7 @@
             <th>Arrival City</th>
             <th>Arrival Code</th>
             <th>Admin Only</th>
+            <th>Active </th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +29,13 @@
                 <td>{{ flight_destination.arrivalCode }}</td>
                 <td style="text-align: center">
                     {% if flight_destination.adminOnly ==1 %}
+                        <i style="color: green" class="fa fa-hat-wizard"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if flight_destination.isActive ==1 %}
                         <i style="color: green" class="fa fa-check"></i>
                     {% else %}
                         <i style="color: red" class="fa fa-remove"></i>

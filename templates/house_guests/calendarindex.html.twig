@@ -62,6 +62,17 @@
                     {% if flight_destination.adminOnly==1 %}
                         <i style="color: green" class="fa fa-hat-wizard"></i>
                     {% endif %}
+                    {% if flight_destination.isActive==1 %}
+                        <a href="{{ path('app_home') }}">
+                            <i style="color: green" class="fa fa-check"></i>
+                        </a>
+                    {% endif %}
+                    {% if flight_destination.isActive==0 %}
+                        <a href="{{ path('app_home') }}">
+                            <i style="color: red" class="fa fa-remove"></i>
+                        </a>
+                    {% endif %}
+
                 {% endif %}
                 </th>
             {% endfor %}

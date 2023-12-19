@@ -17,6 +17,7 @@ class FlightDestinationsType extends AbstractType
             ->add('arrivalCity')
             ->add('arrivalCode')
             ->add('adminOnly')
+            ->add('isActive')
         ;
     }
 

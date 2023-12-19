@@ -89,8 +89,10 @@
                                         <td style="width: 1800px">
                                             <a target="_blank"
                                                href="{{ path('to_do_list_items_edit', {'id':to_do_lists_item.id}) }}">
-                                                {{ to_do_lists_item.task|raw }}
+                                              <i class="fa fa-pen"></i>
                                             </a>
+
+                                            {{ to_do_lists_item.task|raw }}
                                         </td>
                                         <td>
                                             {% if to_do_lists_item.status=="Complete" %}
