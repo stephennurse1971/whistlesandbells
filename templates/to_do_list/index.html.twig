@@ -35,7 +35,7 @@
             <tr style="background-color: aliceblue">
                 <td style="width: 10px;">{{ to_do_list.priority }}</td>
                 <td style="width: 170px;">
-                    <a href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.project }}</a>
+                    <a href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.project }}.</a>
                 </td>
                 <td style="width: 600px;font-size: small">
                     {% for user in to_do_list.getAccessTo %}
