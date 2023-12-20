@@ -22,10 +22,7 @@ class ToDoListItems
      */
     private $project;
 
-    /**
-     * @ORM\Column(type="text",  nullable=true)
-     */
-    private $task;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -36,6 +33,11 @@ class ToDoListItems
      * @ORM\Column(type="float", nullable=true)
      */
     private $priority;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $task;
 
     public function getId(): ?int
     {
@@ -54,17 +56,6 @@ class ToDoListItems
         return $this;
     }
 
-    public function getTask(): ?string
-    {
-        return $this->task;
-    }
-
-    public function setTask(?string $task): self
-    {
-        $this->task = $task;
-
-        return $this;
-    }
 
     public function getStatus(): ?string
     {
@@ -86,6 +77,18 @@ class ToDoListItems
     public function setPriority(?float $priority): self
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    public function getTask(): ?string
+    {
+        return $this->task;
+    }
+
+    public function setTask(?string $task): self
+    {
+        $this->task = $task;
 
         return $this;
     }
