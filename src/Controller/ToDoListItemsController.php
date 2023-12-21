@@ -124,10 +124,10 @@ class ToDoListItemsController extends AbstractController
         $referer = $request->headers->get('Referer');
         $currentPriority = $toDoListItem->getPriority();
         if ($change == "Up") {
-            $newPriority = $currentPriority - 1;
+            $newPriority = $currentPriority - 0.99999;
         }
         if ($change == "Down") {
-            $newPriority = $currentPriority + 1;
+            $newPriority = $currentPriority + 1.00001;
         }
         $toDoListItem->setPriority($newPriority);
         $manager->flush();

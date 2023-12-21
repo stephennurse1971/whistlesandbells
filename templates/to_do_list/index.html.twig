@@ -86,7 +86,7 @@
                                 {% if to_do_list.project == to_do_lists_item.project.project and (to_do_lists_item.status == status  or status =="All") %}
                                     <tr>
                                         <td style="width: 35px">
-                                            {{ to_do_list.priority  + (to_do_lists_item.priority/100) |number_format(2, '.', ',') }}
+                                            {{ (to_do_list.priority  + 0.0000000001 +(to_do_lists_item.priority/100) )|number_format(2, '.', ',') }}
                                         </td>
 
                                         {% include 'to_do_list/changePriorityButtons.html.twig' %}
