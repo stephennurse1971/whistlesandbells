@@ -69,19 +69,20 @@
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <table id="test{{ to_do_list.id }}" class="table table-responsive">
+                        <table class="table table-responsive innertable">
                             <thead>
                             <tr>
-                                {#                            <th>a{{ to_do_list.id }}</th> #}
-                                {#                            <th>b{{ to_do_list.id }}</th> #}
-                                {#                            <th>c{{ to_do_list.id }}</th> #}
-                                {#                            <th>d{{ to_do_list.id }}</th> #}
+                                <th>#</th>
+                                <th>#</th>
+                                <th>#</th>
+                                <th>#</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for to_do_lists_item in to_do_lists_items %}
-                                <tr>
-                                    {% if to_do_list.project == to_do_lists_item.project.project and (to_do_lists_item.status == status  or status =="All") %}
+
+                                {% if to_do_list.project == to_do_lists_item.project.project and (to_do_lists_item.status == status  or status =="All") %}
+                                    <tr>
                                         <td style="width: 35px">
                                             {#                                            {{ to_do_lists_item.status|slice(0,1) }}. #}
                                             {{ to_do_list.priority }}.{{ to_do_lists_item.priority }}
@@ -111,10 +112,8 @@
                                         <td style="width: 100px">
                                             {% include 'to_do_list/buttons.html.twig' %}
                                         </td>
-
-                                    {% endif %}
-                                </tr>
-
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>
@@ -133,126 +132,22 @@
 
 
         $(document).ready(function () {
-            $('#test1').DataTable({
+            $('.innertable').DataTable({
                 'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
+                "order": [[0, 'asc']],
                 "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test2').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test3').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test4').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test5').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test6').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test7').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
+                "searching": false,
                 "bInfo": false
             });
         });
 
 
-        $(document).ready(function () {
-            $('#test8').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test9').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test10').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
 
 
-        $(document).ready(function () {
-            $('#test11').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test12').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
-        $(document).ready(function () {
-            $('#test13').DataTable({
-                'pageLength': 2,
-                "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
-                "searching": true,
-                "bInfo": false
-            });
-        });
+
+
+
+
 
     </script>
 {% endblock datatable %}
