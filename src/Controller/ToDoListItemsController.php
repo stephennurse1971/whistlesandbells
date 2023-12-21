@@ -32,9 +32,9 @@ class ToDoListItemsController extends AbstractController
      */
     public function new(Request $request, $project, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $doListRepository): Response
     {
-        $todolist = $doListRepository->findBy(['project'=>$project]);
+        $todolist = $doListRepository->findBy(['project' => $project]);
         $toDoListItem = new ToDoListItems();
-        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem,['project'=>$todolist]);
+        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $todolist]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -80,10 +80,28 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/change_status/{id}/{status}", name="to_do_list_items_change_status", methods={"GET", "POST"})
      */
-    public function changeStatus(Request $request, $status, ToDoListItems $toDoListItem,EntityManagerInterface $manager): Response
+    public function changeStatus(Request $request, $status, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
         $toDoListItem->setStatus($status);
+        $manager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/change_priority/{id}/{change}", name="to_do_list_items_change_priority", methods={"GET", "POST"})
+     */
+    public function changePriority(Request $request, $change, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $currentPriority = $toDoListItem->getPriority();
+        if ($change == "Up") {
+            $newPriority = $currentPriority - 1;
+        }
+        if ($change == "Down") {
+            $newPriority = $currentPriority + 1;
+        }
+        $toDoListItem->setPriority($newPriority);
         $manager->flush();
         return $this->redirect($referer);
     }
