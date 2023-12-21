@@ -1,19 +1,19 @@
+<td>
+    {% if to_do_lists_item.status=="Pending" %}
+        <a class="btn btn-outline-success btn-sm"
+           href="{{ path('to_do_list_items_change_priority', {'id':to_do_lists_item.id, 'change':'Up'}) }}">
+            <i style="color: green" class="fas fa-arrow-up"></i>
+        </a>
+    {% endif %}
+</td>
+<td>
+    {% if to_do_lists_item.status=="Pending" %}
+        <a class="btn btn-outline-secondary btn-sm"
+           href="{{ path('to_do_list_items_change_priority', {'id':to_do_lists_item.id, 'change':'Down'}) }}">
+            <i style="color: red" class="fa fa-arrow-down"></i>
+        </a>
+    {% endif %}
+</td>
 
-{% if to_do_lists_item.status=="Pending" %}
-    <td>
 
-
-    <a class="btn btn-outline-success btn-sm"
-       href="{{ path('to_do_list_items_change_priority', {'id':to_do_lists_item.id, 'change':'Up'}) }}">
-        <i style="color: green" class="fas fa-arrow-up"></i>
-    </a>
-    </td>
-    <td>
-    <a class="btn btn-outline-secondary btn-sm"
-       href="{{ path('to_do_list_items_change_priority', {'id':to_do_lists_item.id, 'change':'Down'}) }}">
-        <i style="color: red" class="fa fa-arrow-down"></i>
-    </a>
-    </td>
-
-{% endif %}
 

@@ -78,6 +78,34 @@ class ToDoListItemsController extends AbstractController
     }
 
     /**
+     * @Route("/update/priority/with/rank", name="update_priority_with_rank", methods={"GET", "POST"})
+     */
+    public function updatePriorityWithRank(ToDoListRepository $toDoListRepository,ToDoListItemsRepository $toDoListItemsRepository,Request $request, EntityManagerInterface $manager): Response
+    {
+        foreach($toDoListRepository->findAll() as $toDoList){
+           $toDoListByProject = $toDoListItemsRepository->findBy(['project'=>$toDoList]);
+           if($toDoListByProject) {
+               $rankingContainer = [];
+               foreach ($toDoListByProject as $item) {
+                   $rankingContainer[] = ['id' => $item->getId(), 'priority' => $item->getPriority()];
+               }
+               array_multisort(array_column($rankingContainer, 'priority'), SORT_ASC, $rankingContainer);
+               $minRank = 1;
+
+               foreach ($rankingContainer as $sortedItem) {
+                       $getToDoList = $toDoListItemsRepository->find($sortedItem['id']);
+                       $getToDoList->setPriority($minRank);
+                       $manager->flush();
+                       $minRank = $minRank + 1;
+                   }
+               }
+           }
+        $referer = $request->headers->get('Referer');
+        return $this->redirect($referer);
+    }
+
+
+    /**
      * @Route("/change_status/{id}/{status}", name="to_do_list_items_change_status", methods={"GET", "POST"})
      */
     public function changeStatus(Request $request, $status, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
