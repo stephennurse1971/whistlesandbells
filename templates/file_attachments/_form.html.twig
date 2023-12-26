@@ -41,9 +41,9 @@
             {% endif %}
             <br>
             {% if file_attachments.attachments is not empty %}
-                <a class="btn btn-sm btn-danger"
+                <a class="btn btn-danger btn-sm"
                    href="{{ path('file_attachments_delete_attachment', {'id': file_attachments.id }) }} ">Delete
-                    attachment</a>
+                    attachments</a>
             {% endif %}
             {% if file_attachments.attachments is null %}
                 {{ form_row(form.attachments) }}
@@ -53,5 +53,5 @@
 </div>
 
 
-<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

@@ -123,10 +123,9 @@
                                 Admin
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'All'}) }}">To Do List</a>
-{#                                <a class="dropdown-item" href="{{ path('to_do_list_items_index') }}">To Do List Items</a>#}
-                                <a class="dropdown-item" href="{{ path('coding_timesheets_index') }}">Coding
-                                    Timehseet</a>
+                                <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending'}) }}">To Do List</a>
+{#                                <a class="dropdown-item" href="{{ path('coding_timesheets_index') }}">Coding#}
+{#                                    Timehseet</a>#}
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <hr>
                                     <a class="dropdown-item" href="{{ path('uk_days_index') }}">UK Days</a>

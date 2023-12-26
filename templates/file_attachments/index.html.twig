@@ -44,12 +44,11 @@
                 </td>
                 <td data-sort='{{ file_attachment.date|date('Y-m-d') }}'>{{ file_attachment.date ? file_attachment.date|date('d-M-Y') : '' }}</td>
                 <td style="text-align: center">
-                    <a class="btn btn-secondary btn-sm"
-                       href="{{ path('file_attachments_email', {'fileid': file_attachment.id, 'recipientid': app.user.id}) }}">
-                        <i style="background-color: whitesmoke;" class="fab fa-envelope"></i></a>
+                    <a href="{{ path('file_attachments_email', {'fileid': file_attachment.id, 'recipientid': app.user.id}) }}">
+                        <i class="fa fa-envelope"></i></a>
                 </td>
-                <td class="d-inline desktop">
-                    <form class="d-inline" method="post"
+                <td>
+                    <form method="post"
                           action="{{ path('file_attachments_delete', {'id': file_attachment.id}) }}"
                           onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file_attachment.id) }}">
@@ -57,7 +56,7 @@
                         </button>
                     </form>
                 </td>
-                <td class="d-inline desktop">
+                <td>
                     <a target="_blank" class="btn btn-outline-primary btn-sm d-inline"
                        href="{{ path('file_attachments_edit', {'id': file_attachment.id}) }}"><i class="fa fa-pen"></i></a>
                 </td>

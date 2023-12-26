@@ -112,6 +112,9 @@ class ToDoListItemsController extends AbstractController
     {
         $referer = $request->headers->get('Referer');
         $toDoListItem->setStatus($status);
+        if($status == "Complete"){
+            $toDoListItem->setPriority('99');
+        }
         $manager->flush();
         return $this->redirect($referer);
     }

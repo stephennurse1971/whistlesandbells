@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ToDoListController extends AbstractController
 {
     /**
-     * @Route("/index/{status}", name="to_do_list_index", methods={"GET"},defaults={"status"="All"})
+     * @Route("/index/{status}", name="to_do_list_index", methods={"GET"},defaults={"status"="Pending"})
      */
     public function index(ToDoListRepository $toDoListRepository, $status, ToDoListItemsRepository $toDoListItemsRepository): Response
     {
@@ -76,11 +76,9 @@ class ToDoListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($toDoList);
             $entityManager->flush();
-
             return $this->redirectToRoute('to_do_list_index');
         }
 
@@ -112,10 +110,8 @@ class ToDoListController extends AbstractController
             $entityManager->remove($toDoList);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('to_do_list_index');
     }
-
 
 
     /**
