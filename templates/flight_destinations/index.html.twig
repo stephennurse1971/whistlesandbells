@@ -29,16 +29,17 @@
                 <td>{{ flight_destination.arrivalCode }}</td>
                 <td style="text-align: center">
                     {% if flight_destination.adminOnly ==1 %}
-                        <i style="color: green" class="fa fa-hat-wizard"></i>
+                        <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'0'}) }}"><i style="color: green" class="fa fa-hat-wizard"></i></a>
                     {% else %}
-                        <i style="color: red" class="fa fa-remove"></i>
+                        <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'1'}) }}"><i style="color: red" class="fa fa-remove"></i></a>
+
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     {% if flight_destination.isActive ==1 %}
-                        <i style="color: green" class="fa fa-check"></i>
+                        <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id, 'active':'0'}) }}"><i style="color: green" class="fa fa-check"></i></a>
                     {% else %}
-                        <i style="color: red" class="fa fa-remove"></i>
+                        <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id, 'active':'1'}) }}"><i style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
                 </td>
             </tr>

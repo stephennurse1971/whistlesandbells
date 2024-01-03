@@ -123,22 +123,21 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/copy/{id}/", name="to_do_list_items_copy", methods={"GET", "POST"})
      */
-    public function copy(Request $request, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
+    public function copy(Request $request, $id, ToDoListItemsRepository $toDoListItemsRepository, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
-        $itemToCopy = $toDoListItem;
-        $project=$itemToCopy->getProject();
-        $priority=$itemToCopy->getPriority();
-        $task=$itemToCopy->getTask();
-        $status=$itemToCopy->getStatus();
+        $itemToCopy = $toDoListItemsRepository->find($id);
+        $project = $itemToCopy->getProject();
+        $priority = $itemToCopy->getPriority();
+        $task = $itemToCopy->getTask();
+        $status = $itemToCopy->getStatus();
 
         $newCopy = new ToDoListItems();
-
         $newCopy->setProject($project);
         $newCopy->setPriority($priority);
         $newCopy->setTask($task);
         $newCopy->setStatus($status);
-
+        $manager->persist($newCopy);
         $manager->flush();
         return $this->redirect($referer);
     }

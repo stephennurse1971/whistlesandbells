@@ -19,7 +19,7 @@ class FlightPrice
         $max_start_date = max($today, $start_date_input->format('Y-m-d'));
 
 
-        foreach ($this->flightDestinationsRepository->findAll() as $destination) {
+        foreach ($this->flightDestinationsRepository->findBy(['isActive'=>'1']) as $destination) {
             $start_date = new \DateTime($max_start_date);
             $day_increment = 1;
             $departure_code = $destination->getDepartureCode();

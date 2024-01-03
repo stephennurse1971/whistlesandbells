@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\FlightDestinations;
 use App\Form\FlightDestinationsType;
 use App\Repository\FlightDestinationsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,12 +75,38 @@ class FlightDestinationsController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/flight_destination_change_isactive_status/{id}/{active}", name="flight_destinations_change_isactive_status", methods={"GET", "POST"})
+     */
+    public function changeIsActiveStatus(Request $request, $id, $active, FlightDestinationsRepository $flightDestinationsRepository, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $flightDestination = $flightDestinationsRepository->find($id);
+        $flightDestination->setIsActive($active);
+        $manager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/flight_destination_change_admin_status/{id}/{admin}", name="flight_destinations_change_admin_status", methods={"GET", "POST"})
+     */
+    public function changeAdminStatus(Request $request, $id, $admin, FlightDestinationsRepository $flightDestinationsRepository, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $flightDestination = $flightDestinationsRepository->find($id);
+        $flightDestination->setAdminOnly($admin);
+        $manager->flush();
+        return $this->redirect($referer);
+    }
+
+
     /**
      * @Route("/{id}", name="flight_destinations_delete", methods={"POST"})
      */
     public function delete(Request $request, FlightDestinations $flightDestination, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$flightDestination->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $flightDestination->getId(), $request->request->get('_token'))) {
             $flightDestinationsRepository->remove($flightDestination);
         }
 

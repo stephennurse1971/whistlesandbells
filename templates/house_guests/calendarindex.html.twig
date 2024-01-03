@@ -9,12 +9,15 @@
             <div class="col-3">
                 <a class="btn btn-outline-secondary btn-sm"
                    href="{{ path('house_guests_flight_price_scrape_all') }}">Scrape</a>
+                From: {{ settings.flightStatsStartDate|date('d-M-Y') }} ({{ settings.flightStatsDays }} days)
+            </div>
+            <div class="col-2">
                 <a target="_blank" class="btn btn-outline-primary btn-sm"
                    href="https://www.hermesairports.com/flight-info/arrivals-and-departures-pfo">PFO Arrivals</a>
                 <a target="_blank" class="btn btn-outline-primary btn-sm"
                    href="https://www.hermesairports.com/flight-info/arrivals-and-departures-lca">LCA Arrivals</a>
             </div>
-            <div class="col-3"></div>
+            <div class="col-2"></div>
             <div class="col-3">
                 <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete</a>
 
@@ -23,12 +26,12 @@
 
                 <a class="btn btn-outline-secondary btn-sm" target="_blank"
                    href="{{ path('flight_destinations_index') }}">Destinations</a>
+
             </div>
         </div>
     {% endif %}
 
-    <i title="Scrape range:- Start date: {{ settings.flightStatsStartDate|date('d-M-Y') }}, for {{ settings.flightStatsDays }} days"
-       class="fa fa-info-circle"></i>
+
 
     <table class="table table-responsive">
         <thead>
@@ -44,8 +47,6 @@
                     Delete
                 </th>
             {% endif %}
-
-
             {% for flight_destination in flight_destinations %}
 
                 {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
@@ -60,24 +61,21 @@
                         <span title={{ flight_destination.arrivalCity }}>{{ flight_destination.arrivalCode }}</span>
                     </a>
                     {% if flight_destination.adminOnly==1 %}
-                        <i style="color: green" class="fa fa-hat-wizard"></i>
+                        <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'0'}) }}"><i
+                                    style="color: green" class="fa fa-hat-wizard"></i></a>
                     {% endif %}
                     {% if flight_destination.isActive==1 %}
-                        <a href="{{ path('app_home') }}">
-                            <i style="color: green" class="fa fa-check"></i>
-                        </a>
+                        <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'0'}) }}"><i
+                                    style="color: green" class="fa fa-check"></i></a>
                     {% endif %}
                     {% if flight_destination.isActive==0 %}
-                        <a href="{{ path('app_home') }}">
-                            <i style="color: red" class="fa fa-remove"></i>
-                        </a>
-                    {% endif %}
+                        <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'1'}) }}"><i
+                                    style="color: red" class="fa fa-remove"></i></a>
 
+                    {% endif %}
                 {% endif %}
                 </th>
             {% endfor %}
-
-
         </tr>
         </thead>
         <tbody>
@@ -175,7 +173,8 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc']],
+               // "ordering": [[0, 'asc']],
+                'ordering':false,
                 "paging": false,
                 "searching": false,
                 "bInfo": false
