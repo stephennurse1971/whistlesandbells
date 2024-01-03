@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Useful Links{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Useful Links index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Link</th>
+            <th>Login</th>
+            <th>Password</th>
+            <th>Notes</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for useful_link in useful_links %}
+            <tr>
+                <td>{{ useful_link.category }}</td>
+                <td>{{ useful_link.name }}</td>
+                <td>
+                    <a target="_blank" href="{{ useful_link.link }}">{{ useful_link.link }}</a>
+                </td>
+                <td>{{ useful_link.login }}</td>
+                <td>{{ useful_link.password }}</td>
+                <td>{{ useful_link.notes }}</td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('useful_links_edit', {'id': useful_link.id}) }}">Edit</a>
+                </td>
+
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('useful_links_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[0, 'desc'], [1, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

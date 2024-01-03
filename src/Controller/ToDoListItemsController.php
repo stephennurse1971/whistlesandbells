@@ -80,26 +80,26 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/update/priority/with/rank", name="update_priority_with_rank", methods={"GET", "POST"})
      */
-    public function updatePriorityWithRank(ToDoListRepository $toDoListRepository,ToDoListItemsRepository $toDoListItemsRepository,Request $request, EntityManagerInterface $manager): Response
+    public function updatePriorityWithRank(ToDoListRepository $toDoListRepository, ToDoListItemsRepository $toDoListItemsRepository, Request $request, EntityManagerInterface $manager): Response
     {
-        foreach($toDoListRepository->findAll() as $toDoList){
-           $toDoListByProject = $toDoListItemsRepository->findBy(['project'=>$toDoList]);
-           if($toDoListByProject) {
-               $rankingContainer = [];
-               foreach ($toDoListByProject as $item) {
-                   $rankingContainer[] = ['id' => $item->getId(), 'priority' => $item->getPriority()];
-               }
-               array_multisort(array_column($rankingContainer, 'priority'), SORT_ASC, $rankingContainer);
-               $minRank = 1;
+        foreach ($toDoListRepository->findAll() as $toDoList) {
+            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList]);
+            if ($toDoListByProject) {
+                $rankingContainer = [];
+                foreach ($toDoListByProject as $item) {
+                    $rankingContainer[] = ['id' => $item->getId(), 'priority' => $item->getPriority()];
+                }
+                array_multisort(array_column($rankingContainer, 'priority'), SORT_ASC, $rankingContainer);
+                $minRank = 1;
 
-               foreach ($rankingContainer as $sortedItem) {
-                       $getToDoList = $toDoListItemsRepository->find($sortedItem['id']);
-                       $getToDoList->setPriority($minRank);
-                       $manager->flush();
-                       $minRank = $minRank + 1;
-                   }
-               }
-           }
+                foreach ($rankingContainer as $sortedItem) {
+                    $getToDoList = $toDoListItemsRepository->find($sortedItem['id']);
+                    $getToDoList->setPriority($minRank);
+                    $manager->flush();
+                    $minRank = $minRank + 1;
+                }
+            }
+        }
         $referer = $request->headers->get('Referer');
         return $this->redirect($referer);
     }
@@ -112,12 +112,37 @@ class ToDoListItemsController extends AbstractController
     {
         $referer = $request->headers->get('Referer');
         $toDoListItem->setStatus($status);
-        if($status == "Complete"){
+        if ($status == "Complete") {
             $toDoListItem->setPriority('99');
         }
         $manager->flush();
         return $this->redirect($referer);
     }
+
+
+    /**
+     * @Route("/copy/{id}/", name="to_do_list_items_copy", methods={"GET", "POST"})
+     */
+    public function copy(Request $request, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $itemToCopy = $toDoListItem;
+        $project=$itemToCopy->getProject();
+        $priority=$itemToCopy->getPriority();
+        $task=$itemToCopy->getTask();
+        $status=$itemToCopy->getStatus();
+
+        $newCopy = new ToDoListItems();
+
+        $newCopy->setProject($project);
+        $newCopy->setPriority($priority);
+        $newCopy->setTask($task);
+        $newCopy->setStatus($status);
+
+        $manager->flush();
+        return $this->redirect($referer);
+    }
+
 
     /**
      * @Route("/change_priority/{id}/{change}", name="to_do_list_items_change_priority", methods={"GET", "POST"})
