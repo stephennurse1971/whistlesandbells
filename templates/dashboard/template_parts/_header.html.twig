@@ -123,16 +123,23 @@
                                 Admin
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending'}) }}">To Do
-                                    List</a>
-                                {#                                <a class="dropdown-item" href="{{ path('coding_timesheets_index') }}">Coding #}
-                                {#                                    Timehseet</a> #}
+                                {% if is_granted('ROLE_IT') %}
+                                    <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending'}) }}">To
+                                        Do
+                                        List</a>
+                                    {#                                <a class="dropdown-item" href="{{ path('coding_timesheets_index') }}">Coding #}
+                                    {#                                    Timehseet</a> #}
+                                {% endif %}
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <hr>
                                     <a class="dropdown-item" href="{{ path('uk_days_index') }}">UK Days</a>
                                     <hr>
                                     <a class="dropdown-item" href="{{ path('flying_index') }}">Flying</a>
+                                {% endif %}
+                                {% if is_granted('ROLE_HEALTH') %}
                                     <a class="dropdown-item" href="{{ path('health_index') }}">Health</a>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
                                     <hr>
                                     <a class="dropdown-item" href="{{ path('useful_links_index') }}">Helpful links</a>
                                     <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">Helpful

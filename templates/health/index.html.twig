@@ -8,15 +8,21 @@
     <table class="table table-responsive">
         <thead>
         <tr>
+            <th style="text-align: left">User</th>
             <th style="text-align: right">Date</th>
             <th style="text-align: right">Weight</th>
-            <th style="text-align: right">Diastolic/<br></br>Systolic</th>
+            <th style="text-align: right">Diastolic/<br>Systolic</th>
             <th style="text-align: right">Heart<br>Rate</th>
         </tr>
         </thead>
         <tbody>
         {% for health in healths %}
             <tr>
+                <td>
+                    {% if health.user is not null %}
+                        {{ health.user.fullName }}
+                    {% endif %}
+                </td>
                 <td data-sort="{{ health.date ? health.date|date('Y-m-d') : '' }}">
                     <a href="{{ path('health_edit', {'id': health.id}) }}">{{ health.date ? health.date|date('d-M-Y') : '' }}</a>
                 </td>
@@ -33,8 +39,8 @@
         {% endfor %}
         </tbody>
     </table>
-<br>
-<br>
+    <br>
+    <br>
     <a class="btn btn-success btn-sm" href="{{ path('health_new') }}">New</a>
 {% endblock %}
 
@@ -43,7 +49,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'desc'],  [2, 'desc']],
+                "order": [[1, 'desc'], [2, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

@@ -13,6 +13,8 @@
             <th>Departure Code</th>
             <th>Arrival City</th>
             <th>Arrival Code</th>
+            <th>Start</th>
+            <th>End</th>
             <th>Admin Only</th>
             <th>Active </th>
         </tr>
@@ -27,6 +29,8 @@
                 <td>{{ flight_destination.departureCode }}</td>
                 <td>{{ flight_destination.arrivalCity }}</td>
                 <td>{{ flight_destination.arrivalCode }}</td>
+                <td data-sort="{{ flight_destination.dateStart|date('Y-m-d') }}">    {{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }}</td>
+                <td data-sort="{{ flight_destination.dateEnd|date('Y-m-d') }}">    {{ flight_destination.dateStart ? flight_destination.dateEnd|date('d-M-y') : '' }}</td>
                 <td style="text-align: center">
                     {% if flight_destination.adminOnly ==1 %}
                         <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'0'}) }}"><i style="color: green" class="fa fa-hat-wizard"></i></a>

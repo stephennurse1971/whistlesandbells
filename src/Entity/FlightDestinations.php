@@ -47,6 +47,16 @@ class FlightDestinations
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateStart;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateEnd;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +130,30 @@ class FlightDestinations
     public function setIsActive(?bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getDateStart(): ?\DateTimeInterface
+    {
+        return $this->dateStart;
+    }
+
+    public function setDateStart(?\DateTimeInterface $dateStart): self
+    {
+        $this->dateStart = $dateStart;
+
+        return $this;
+    }
+
+    public function getDateEnd(): ?\DateTimeInterface
+    {
+        return $this->dateEnd;
+    }
+
+    public function setDateEnd(?\DateTimeInterface $dateEnd): self
+    {
+        $this->dateEnd = $dateEnd;
 
         return $this;
     }

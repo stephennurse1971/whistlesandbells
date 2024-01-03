@@ -165,6 +165,7 @@ class UserType extends AbstractType
                         'Admin' => 'ROLE_ADMIN',
                         'IT' => 'ROLE_IT',
                         'Family' => 'ROLE_FAMILY',
+                        'Health' => 'ROLE_HEALTH',
                         'HMRC' => 'ROLE_HMRC',
                         'Accountant' => 'ROLE_ACCOUNTANT',
                         'Contact' => 'ROLE_CONTACT',
