@@ -39,11 +39,11 @@
             <th>Date</th>
             <th>Book</th>
             <th>Travel Notes</th>
-            <th style="border-right: 1px dotted grey; border-right: 1px solid grey">
+            <th style="border-right: 1px solid grey">
                 Notes
             </th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th>
+                <th style="border-right: 1px solid grey">
                     Delete
                 </th>
             {% endif %}
@@ -51,9 +51,9 @@
 
                 {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
                     {% if flight_destination.id is even %}
-                        <th style="border-right: 1px dotted grey; background-color: lightgrey">
+                        <th style="text-align: center; background-color: lightgrey; border-right: 1px dotted grey">
                     {% else %}
-                        <th style="background-color: lightgrey">
+                        <th style="text-align: center; background-color: lightgrey">
                     {% endif %}
                     <a target="_blank" href="{{ path('flight_destinations_edit', {id:flight_destination.id}) }}">
                         <span title={{ flight_destination.departureCity }}>{{ flight_destination.departureCode }}</span>
@@ -72,10 +72,10 @@
                         <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'1'}) }}"><i
                                     style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
-                    {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null %}
-                        <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }} -
-                        <br>{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}
-                    {% endif %}
+{#                    {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null %}#}
+{#                        <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }} -#}
+{#                        <br>{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}#}
+{#                    {% endif %}#}
                 {% endif %}
                 </th>
             {% endfor %}
@@ -146,12 +146,23 @@
                     {% endif %}
                 </td>
             {% endif %}
+
             {% for flight_destination in flight_destinations %}
                 {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
+
                     {% if flight_destination.id is even %}
-                        <td style="border-right: 1px dotted grey">
+{#                        {{ flight_destination.date|date('d-M-Y')  }}..{{ date|date('d-M-Y')  }}#}
+                        {% if flight_destination.dateStart > date and flight_destination.dateEnd < date or 1==1 %}
+                            <td style="text-align: center; border-right: 1px dotted grey; background-color: yellow">
+                        {% else %}
+                            <td style="text-align: center; border-right: 1px dotted grey">
+                        {% endif %}
                     {% else %}
-                        <td>
+                        {% if flight_destination.dateStart > date and flight_destination.dateEnd < date or 1==1%}
+                            <td style="text-align: center; background-color: yellow">
+                        {% else %}
+                            <td>
+                        {% endif %}
                     {% endif %}
 
                     {% for flight in flights %}
@@ -160,6 +171,7 @@
                             <a target="_blank" href="{{ URL }}">£{{ flight.lowestPrice|number_format('0') }}</a>
                         {% endif %}
                     {% endfor %}
+                    
                 {% endif %}
                 </td>
             {% endfor %}
