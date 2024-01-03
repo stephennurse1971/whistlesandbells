@@ -72,10 +72,10 @@
                         <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'1'}) }}"><i
                                     style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
-{#                    {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null %}#}
-{#                        <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }} -#}
-{#                        <br>{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}#}
-{#                    {% endif %}#}
+                    {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null %}
+                        <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }} -
+                        <br>{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}
+                    {% endif %}
                 {% endif %}
                 </th>
             {% endfor %}
