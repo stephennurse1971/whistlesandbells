@@ -9,7 +9,8 @@
             <div class="col-3">
                 <a class="btn btn-outline-secondary btn-sm"
                    href="{{ path('house_guests_flight_price_scrape_all') }}">Scrape</a>
-                From: {{ settings.flightStatsStartDate|date('d-M-Y') }} ({{ settings.flightStatsDays }} days)
+                Default dates: From: {{ settings.flightStatsStartDate|date('d-M-Y') }} + {{ settings.flightStatsDays }}
+                days
             </div>
             <div class="col-2">
                 <a target="_blank" class="btn btn-outline-primary btn-sm"
@@ -72,7 +73,8 @@
                         <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'1'}) }}"><i
                                     style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
-                    {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null %}
+                    {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null and
+                        flight_destination.isActive ==1 %}
                         <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }} -
                         <br>{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}
                     {% endif %}
@@ -85,13 +87,13 @@
         {% for date in dates %}
             {% set id = '' %}
             {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
-                <tr style="background-color: #bac8f3">
+                <tr style="background-color: lightblue">
             {% else %}
                 <tr>
             {% endif %}
 
             <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
-            <td>
+            <td style="background-color: white">
                 {% set flag = 0 %}
                 {% for house_guest in house_guests %}
                     {% if house_guest['date'] == date|date('d-m-y') %}
@@ -112,7 +114,7 @@
             </td>
 
 
-            <td>
+            <td style="background-color: white">
                 {% for house_guest in house_guests %}
                     {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
                         {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
@@ -125,7 +127,7 @@
                 {% endfor %}
             </td>
 
-            <td style="border-right: 1px solid grey">
+            <td style="border-right: 1px solid grey; background-color: white">
                 {% for house_guest in house_guests %}
                     {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
                         {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
@@ -136,14 +138,14 @@
             </td>
 
             {% if is_granted('ROLE_ADMIN') %}
-                <td style="border-right: 1px solid grey">
-                    {% if id != '' %}
-                        <form method="post" action="{{ path('house_guests_delete', {'id':id }) }}"
-                              onsubmit="return confirm('Are you sure you want to delete this item?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    {% endif %}
+                <td style="border-right: 1px solid grey; background-color: white"">
+                {% if id != '' %}
+                    <form method="post" action="{{ path('house_guests_delete', {'id':id }) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                {% endif %}
                 </td>
             {% endif %}
 
@@ -151,19 +153,27 @@
                 {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
 
                     {% if flight_destination.id is even %}
-{#                        {{ flight_destination.date|date('d-M-Y')  }}..{{ date|date('d-M-Y')  }}#}
-                        {% if flight_destination.dateStart > date and flight_destination.dateEnd < date or 1==1 %}
-                            <td style="text-align: center; border-right: 1px dotted grey; background-color: yellow">
+
+                        {% if flight_destination.dateStart|date('Y-m-d') <= date|date('Y-m-d') and
+                            flight_destination.dateEnd|date('Y-m-d') >= date|date('Y-m-d') and
+                            flight_destination.isActive ==1 %}
+                            <td style="text-align: center; border-right: 1px dotted grey; background-color: whitesmoke">
+                            {{ flight_destination.dateStart|date('Y-m-d')  }} - {{ flight_destination.dateEnd|date('Y-m-d') }}
                         {% else %}
-                            <td style="text-align: center; border-right: 1px dotted grey">
+                            <td style="text-align: center; border-right: 1px dotted grey; background-color: white">
                         {% endif %}
+
                     {% else %}
-                        {% if flight_destination.dateStart > date and flight_destination.dateEnd < date or 1==1%}
-                            <td style="text-align: center; background-color: yellow">
+                        {% if flight_destination.dateStart|date('Y-m-d') <= date|date('Y-m-d') and
+                            flight_destination.dateEnd|date('Y-m-d') >= date|date('Y-m-d') and
+                            flight_destination.isActive ==1 %}
+                            <td style="text-align: center; background-color: whitesmoke">
                         {% else %}
-                            <td>
+                            <td style="text-align: center; background-color: white">
                         {% endif %}
+
                     {% endif %}
+
 
                     {% for flight in flights %}
                         {% if flight.date == date and flight.flightFrom==flight_destination.departureCode and flight.flightTo ==flight_destination.arrivalCode %}
@@ -171,7 +181,7 @@
                             <a target="_blank" href="{{ URL }}">£{{ flight.lowestPrice|number_format('0') }}</a>
                         {% endif %}
                     {% endfor %}
-                    
+
                 {% endif %}
                 </td>
             {% endfor %}

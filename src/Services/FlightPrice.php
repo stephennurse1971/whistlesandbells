@@ -16,18 +16,29 @@ class FlightPrice
         $today = new \DateTime('now');
         $today = $today->format('Y-m-d');
         $start_date_input = new \DateTime($this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
-        $max_start_date = max($today, $start_date_input->format('Y-m-d'));
+        $default_max_start_date = max($today, $start_date_input->format('Y-m-d'));
 
+        foreach ($this->flightDestinationsRepository->findBy(['isActive' => '1']) as $destination) {
+            $start_date_by_destination = $destination->getDateStart();
+            $end_date_by_destination = $destination->getDateEnd();
+            $day_count_by_destination = date_diff($start_date_by_destination,$end_date_by_destination);
 
-        foreach ($this->flightDestinationsRepository->findBy(['isActive'=>'1']) as $destination) {
-            $start_date = new \DateTime($max_start_date);
+            $start_date = new \DateTime($default_max_start_date);
+            if ($start_date_by_destination) {
+                $start_date = max($today,$start_date_by_destination->format('Y-m-d'));
+            }
             $day_increment = 1;
+            $default_day_count=$this->settingsRepository->find('1')->getFlightStatsDays();
+            $day_count=$default_day_count;
+            if($day_count_by_destination>0){
+                $day_count = $end_date_by_destination;
+            }
             $departure_code = $destination->getDepartureCode();
             $arrival_code = $destination->getArrivalCode();
 
-            while ($day_increment <= $this->settingsRepository->find('1')->getFlightStatsDays()) {
+            while ($day_increment <= $day_count) {
                 $date = $start_date->format('Y-m-d');
-                $url = "https://www.kayak.co.uk/flights/".$departure_code."-".$arrival_code."/" . $date . "?sort=price_a&fs=stops=0";
+                $url = "https://www.kayak.co.uk/flights/" . $departure_code . "-" . $arrival_code . "/" . $date . "?sort=price_a&fs=stops=0";
                 exec("node scrape/flightPrice.js" . " " . $url . " 2>&1");
                 $file = $this->container->getParameter('scraper') . 'flightPrice.json';
                 if (file_exists($file)) {
