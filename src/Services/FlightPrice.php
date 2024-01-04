@@ -21,17 +21,22 @@ class FlightPrice
         foreach ($this->flightDestinationsRepository->findBy(['isActive' => '1']) as $destination) {
             $start_date_by_destination = $destination->getDateStart();
             $end_date_by_destination = $destination->getDateEnd();
-            $day_count_by_destination = date_diff($start_date_by_destination,$end_date_by_destination);
 
-            $start_date = new \DateTime($default_max_start_date);
-            if ($start_date_by_destination) {
-                $start_date = max($today,$start_date_by_destination->format('Y-m-d'));
+
+            if ($start_date_by_destination && $end_date_by_destination) {
+                $start_date = new \DateTime($start_date_by_destination->format('Y-m-d'));
+                $day_count_by_destination = date_diff($start_date_by_destination, $end_date_by_destination);
+            } else {
+                $start_date = new \DateTime($default_max_start_date);
             }
+
             $day_increment = 1;
-            $default_day_count=$this->settingsRepository->find('1')->getFlightStatsDays();
-            $day_count=$default_day_count;
-            if($day_count_by_destination>0){
-                $day_count = $end_date_by_destination;
+            $default_day_count = $this->settingsRepository->find('1')->getFlightStatsDays();
+            $day_count = $default_day_count;
+            if ($start_date_by_destination && $end_date_by_destination) {
+                if ($day_count_by_destination->days > 0) {
+                    $day_count = 1 + $day_count_by_destination->days;
+                }
             }
             $departure_code = $destination->getDepartureCode();
             $arrival_code = $destination->getArrivalCode();
