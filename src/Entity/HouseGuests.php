@@ -24,7 +24,7 @@ class HouseGuests
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="houseGuests")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $guestName;
 
@@ -59,6 +59,11 @@ class HouseGuests
      * @ORM\Column(type="string", nullable=true)
      */
     private $flightToLondon;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $referenceInformation;
 
     public function getId(): ?int
     {
@@ -157,6 +162,18 @@ class HouseGuests
     public function setFlightToLondon(string $flightToLondon): self
     {
         $this->flightToLondon = $flightToLondon;
+
+        return $this;
+    }
+
+    public function getReferenceInformation(): ?string
+    {
+        return $this->referenceInformation;
+    }
+
+    public function setReferenceInformation(?string $referenceInformation): self
+    {
+        $this->referenceInformation = $referenceInformation;
 
         return $this;
     }

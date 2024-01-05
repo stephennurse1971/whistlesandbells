@@ -56,7 +56,7 @@ class HouseGuestsController extends AbstractController
             $current_date = new \DateTime($current_date->modify("+1 day")->format('d-m-Y'));
         }
         return $this->render('house_guests/calendarindex.html.twig', [
-            'flight_destinations'=>$flightDestinations,
+            'flight_destinations' => $flightDestinations,
             'house_guests' => $lists = $houseGuestPerDayList->guestList(),
             'dates' => $dates,
             'flights' => $flightStatsRepository->findAll(),
@@ -74,13 +74,16 @@ class HouseGuestsController extends AbstractController
         $defaultDepartureDate = $defaultDepartureDate->modify("+1 day");
 
         $logged_user = $security->getUser();
+        $referenceInformation = '';
         if (in_array("ROLE_ADMIN", $logged_user->getRoles())) {
             $user_list = $userRepository->findByRole('ROLE_GUEST');
+
         } else {
             $user_list = $userRepository->findBy(['id' => $logged_user->getId()]);
+            $referenceInformation = "Guest Booking";
         }
         $houseGuest = new HouseGuests();
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list]);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list,'referenceInformation'=>$referenceInformation]);
         $houseGuest->setDateArrival(new \DateTime($startdate));
         $houseGuest->setDateDeparture($defaultDepartureDate);
 
@@ -90,26 +93,24 @@ class HouseGuestsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($houseGuest);
             $entityManager->flush();
-
-            $senderEmail = $security->getUser()->getEmail();
-            $guest = $houseGuest->getGuestName()->getFullName();
-            $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
-            $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
-
-            $meetingStartTime = new \DateTime('now');
-            $meetingEndTime = new \DateTime('now');
-            $meetingEndTime->modify("+1 day");
-//            $fs = new Filesystem();
-//            $tmpFolder = $this->getParameter('temporary_attachment_directory');
-            $recipient = 'nurse_stephen@hotmail.com';
-            $subject = 'New guest booking' . ' - ' . $guest;
-            $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
-            $email = (new Email())
-                ->to($recipient)
-                ->subject($subject)
-                ->from('nurse_stephen@hotmail.com')
-                ->html($html);
-            $mailer->send($email);
+            if ($houseGuest->getGuestName()) {
+                $senderEmail = $security->getUser()->getEmail();
+                $guest = $houseGuest->getGuestName()->getFullName();
+                $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
+                $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
+                $meetingStartTime = new \DateTime('now');
+                $meetingEndTime = new \DateTime('now');
+                $meetingEndTime->modify("+1 day");
+                $recipient = 'nurse_stephen@hotmail.com';
+                $subject = 'New guest booking' . ' - ' . $guest;
+                $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
+                $email = (new Email())
+                    ->to($recipient)
+                    ->subject($subject)
+                    ->from('nurse_stephen@hotmail.com')
+                    ->html($html);
+                $mailer->send($email);
+            }
             return $this->redirectToRoute('house_guests_index');
 
         }
@@ -136,31 +137,37 @@ class HouseGuestsController extends AbstractController
     public function edit(Request $request, HouseGuests $houseGuest, Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
     {
         $logged_user = $security->getUser();
+        $referenceInformation = '';
         if (in_array("ROLE_ADMIN", $logged_user->getRoles())) {
             $user_list = $userRepository->findByRole('ROLE_GUEST');
+
         } else {
             $user_list = $userRepository->findBy(['id' => $logged_user->getId()]);
+            $referenceInformation = "Guest Booking";
         }
         $startdate = $houseGuest->getDateArrival()->format('d-m-y');
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list]);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list,'referenceInformation'=>$referenceInformation]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $senderEmail = $security->getUser()->getEmail();
-            $guest = $houseGuest->getGuestName()->getFullName();
-            $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
-            $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
-            $recipient = 'nurse_stephen@hotmail.com';
-            $subject = 'New guest booking' . ' - ' . $guest;
-            $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
-            $email = (new Email())
-                ->to($recipient)
-                ->subject($subject)
-                ->from('nurse_stephen@hotmail.com')
-                ->html($html);
-            $mailer->send($email);
+
+            if ($houseGuest->getGuestName()) {
+                $senderEmail = $security->getUser()->getEmail();
+                $guest = $houseGuest->getGuestName()->getFullName();
+                $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
+                $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
+                $recipient = 'nurse_stephen@hotmail.com';
+                $subject = 'New guest booking' . ' - ' . $guest;
+                $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
+                $email = (new Email())
+                    ->to($recipient)
+                    ->subject($subject)
+                    ->from('nurse_stephen@hotmail.com')
+                    ->html($html);
+                $mailer->send($email);
+            }
             return $this->redirectToRoute('house_guests_index');
         }
 

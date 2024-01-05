@@ -42,7 +42,8 @@ class HouseGuestPerDayList
                     'notes'=>$list->getNotes(),
                     'arrivalNotes'=>$list->getArrivalNotes(),
                     'departureNotes'=>$list->getDepartureNotes(),
-                    'id'=>$list->getId()
+                    'id'=>$list->getId(),
+                    'referenceInformation'=>$list->getReferenceInformation()
                 ];
                $date =  $date->modify("+1 day");
             }

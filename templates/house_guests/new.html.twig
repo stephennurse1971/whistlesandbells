@@ -18,10 +18,27 @@
             });
     </script>
     <script>
-        var arrival_date =  "{{ house_guest.dateArrival|date('Y-m-d') }}";
+        var arrival_date = "{{ house_guest.dateArrival|date('Y-m-d') }}";
         $("#house_guests_dateArrival").val(arrival_date);
 
         var depature_date = "{{ house_guest.dateDeparture|date('Y-m-d') }}";
         $("#house_guests_dateDeparture").val(depature_date);
+        {% if is_granted('ROLE_ADMIN') %}
+        $(".reference").show();
+
+        {% else %}
+        $(".reference").hide();
+        $("#house_guests_guestName option[value='']").remove();
+        {% endif %}
+        var reference = $("#house_guests_referenceInformation :selected").val();
+        if (reference !== 'Guest Booking') {
+            $("#house_guests_guestName option[value='']").prop('selected',true);
+        }
+        $("#house_guests_referenceInformation").change(function(){
+            var reference = $("#house_guests_referenceInformation :selected").val();
+            if (reference !== 'Guest Booking') {
+                $("#house_guests_guestName option[value='']").prop('selected',true);
+            }
+        })
     </script>
 {% endblock %}
