@@ -27,9 +27,6 @@ class Settings
      */
     private $flightStatsStartDate;
 
-
-
-
     public function getId(): ?int
     {
         return $this->id;
@@ -58,8 +55,4 @@ class Settings
 
         return $this;
     }
-
-
-
-     
 }
