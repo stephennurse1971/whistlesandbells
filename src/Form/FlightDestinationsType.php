@@ -29,6 +29,11 @@ class FlightDestinationsType extends AbstractType
             ])
             ->add('adminOnly')
             ->add('isActive')
+            ->add('lastScraped', DateType::class, [
+                'label' => 'Last Scraped',
+                'widget' => 'single_text',
+                'required' => false
+            ])
         ;
     }
 

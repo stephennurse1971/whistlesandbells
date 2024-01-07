@@ -57,6 +57,11 @@ class FlightDestinations
      */
     private $dateEnd;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastScraped;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +159,18 @@ class FlightDestinations
     public function setDateEnd(?\DateTimeInterface $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    public function getLastScraped(): ?\DateTimeInterface
+    {
+        return $this->lastScraped;
+    }
+
+    public function setLastScraped(?\DateTimeInterface $lastScraped): self
+    {
+        $this->lastScraped = $lastScraped;
 
         return $this;
     }
