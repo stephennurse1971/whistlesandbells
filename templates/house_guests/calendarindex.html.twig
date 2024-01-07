@@ -12,7 +12,6 @@
                 Default date range:
                 {{ settings.flightStatsStartDate|date('d-M-Y') }} -
                 {{ settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' )|date('d-M-y') }}
-
                 <a target="_blank" href="{{ path('settings_edit', {id: '1'}) }}"><i style="color:red"
                                                                                     class="fa fa-pen"></i></a>
             </div>
@@ -69,6 +68,10 @@
                         {% if flight_destination.isActive==1 %}
                             <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'0'}) }}"><i
                                         style="color: green" class="fa fa-check"></i></a>
+                            <a class="btn btn-outline-secondary btn-sm"
+                               href="{{ path('house_guests_flight_price_scrape_one_destination', {id:flight_destination.id}) }}">
+                                <i style="color: red" class="fa fa-download"></i>
+                            </a>
                         {% endif %}
                         {% if flight_destination.isActive==0 %}
                             <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'1'}) }}"><i

@@ -11,17 +11,24 @@ use Psr\Container\ContainerInterface;
 
 class FlightPrice
 {
-    public function getPrice()
+    public function getPrice($id)
     {
         $today = new \DateTime('now');
         $today = $today->format('Y-m-d');
         $start_date_input = new \DateTime($this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
         $default_max_start_date = max($today, $start_date_input->format('Y-m-d'));
 
-        foreach ($this->flightDestinationsRepository->findBy(['isActive' => '1']) as $destination) {
+        if($id = 'All'){
+            $destinations = $this->flightDestinationsRepository->findBy(['isActive' => '1']);
+        }
+
+        if($id != 'All'){
+            $destinations = $this->flightDestinationsRepository->findBy(['id' => $id]);
+        }
+
+        foreach ($destinations as $destination) {
             $start_date_by_destination = $destination->getDateStart();
             $end_date_by_destination = $destination->getDateEnd();
-
 
             if ($start_date_by_destination && $end_date_by_destination) {
                 $start_date = new \DateTime($start_date_by_destination->format('Y-m-d'));

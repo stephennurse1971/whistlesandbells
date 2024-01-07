@@ -31,10 +31,10 @@
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
                             <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text1.id}) }}">
-                                <p>{{ Text1.contentText|raw }}  </p></a>
-                        {% else %}
-                            <p>{{ Text1.contentText|raw }}</p>
+                                <i style="color: red" class="fa fa-pen"></i>
+                            </a>
                         {% endif %}
+                        <p>{{ Text1.contentText|raw }}  </p>
                     </div>
                 {% else %}
                     <div class="col-md-6">
@@ -47,11 +47,12 @@
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
                             <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text1.id}) }}">
-                                <p>{{ Text1.contentText|raw }}  </p></a>
-                        {% else %}
-                            <p>{{ Text1.contentText|raw }}  </p>
+                                <i style="color: red" class="fa fa-pen"></i>
+                            </a>
                         {% endif %}
+                        <p>{{ Text1.contentText|raw }}  </p>
                     </div>
+
                     <div class="col-lg-6 col-md-6">
                         <div class="justify-content-center d-flex py-1">
                             {% if Photo1.photo is not null %}
@@ -88,10 +89,10 @@
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
                             <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}">
-                                <p>{{ Text2.contentText|raw }}  </p></a>
-                        {% else %}
-                            <p>{{ Text2.contentText|raw }}</p>
+                                <i style="color: red" class="fa fa-pen"></i>
+                            </a>
                         {% endif %}
+                        <p>{{ Text2.contentText|raw }}  </p>
                     </div>
                 {% else %}
                     <div class="col-md-6">
@@ -105,10 +106,10 @@
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
                             <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text2.id}) }}">
-                                <p>{{ Text2.contentText|raw }}  </p></a>
-                        {% else %}
-                            <p>{{ Text2.contentText|raw }}  </p>
+                                <i style="color: red" class="fa fa-pen"></i>
+                            </a>
                         {% endif %}
+                        <p>{{ Text2.contentText|raw }}  </p>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="justify-content-center d-flex py-1">
@@ -148,10 +149,10 @@
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
                             <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}">
-                                <p>{{ Text3.contentText|raw }}  </p></a>
-                        {% else %}
-                            <p>{{ Text3.contentText|raw }}</p>
+                                <i style="color: red" class="fa fa-pen"></i>
+                            </a>
                         {% endif %}
+                        <p>{{ Text3.contentText|raw }}  </p>
                     </div>
                 {% else %}
                     <div class="col-md-6">
@@ -165,10 +166,10 @@
                         </h4>
                         {% if is_granted('ROLE_ADMIN') %}
                             <a target="_blank" href="{{ path('cms_copy_edit', {'id': Text3.id}) }}">
-                                <p>{{ Text3.contentText|raw }}  </p></a>
-                        {% else %}
-                            <p>{{ Text3.contentText|raw }}  </p>
+                                <i style="color: red" class="fa fa-pen"></i>
+                            </a>
                         {% endif %}
+                        <p>{{ Text3.contentText|raw }}  </p>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="justify-content-center d-flex py-1">
