@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FlightStats;
 use App\Form\FlightStatsType;
+use App\Repository\FlightDestinationsRepository;
 use App\Repository\FlightStatsRepository;
 use App\Repository\TennisCourtAvailabilityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -96,13 +97,20 @@ class FlightStatsController extends AbstractController
     /**
      * @Route("/delete/all", name="flight_stats_delete_all", methods={"GET"})
      */
-    public function deleteAll(Request $request, FlightStatsRepository $flightStatsRepository): Response
+    public function deleteAll(Request $request, FlightStatsRepository $flightStatsRepository, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
         $referer = $request->headers->get('referer');
-        $allEntries = $flightStatsRepository->findAll();
-        foreach ($allEntries as $allEntry) {
+        $allPrices = $flightStatsRepository->findAll();
+        $allDestinations = $flightDestinationsRepository->findAll();
+
+        foreach ($allPrices as $price) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($allEntry);
+            $entityManager->remove($price);
+            $entityManager->flush();
+        }
+        foreach ($allDestinations as $destination) {
+            $destination->setLastScraped(null);
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         }
         return $this->redirect($referer);

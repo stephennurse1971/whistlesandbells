@@ -84,7 +84,7 @@
                         <br>-{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}
                     {% endif %}
                     {% if flight_destination.lastScraped is not null %}
-                        <hr>Last scraped:<br>{{ flight_destination.lastScraped ? flight_destination.lastScraped|date('d-M-y') : '' }}
+                        <hr>Last scraped:<br>{{ flight_destination.lastScraped ? flight_destination.lastScraped|date('d-M-y h:i') : '' }}
                     {% endif %}
                 {% endif %}
                 </th>

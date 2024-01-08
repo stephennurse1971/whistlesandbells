@@ -18,18 +18,18 @@ class FlightPrice
         $start_date_input = new \DateTime($this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
         $default_max_start_date = max($today, $start_date_input->format('Y-m-d'));
 
-        if($id = 'All'){
+        if($id == 'all'){
             $destinations = $this->flightDestinationsRepository->findBy(['isActive' => '1']);
         }
 
-        if($id != 'All'){
+        if($id != 'all'){
             $destinations = $this->flightDestinationsRepository->findBy(['id' => $id]);
         }
 
         foreach ($destinations as $destination) {
             $start_date_by_destination = $destination->getDateStart();
             $end_date_by_destination = $destination->getDateEnd();
-            $destination->setLastScraped($today|date('Y-m-d'));
+            $destination->setLastScraped(new \datetime('now'));
 
             if ($start_date_by_destination && $end_date_by_destination) {
                 $start_date = new \DateTime($start_date_by_destination->format('Y-m-d'));
@@ -40,7 +40,7 @@ class FlightPrice
 
             $day_increment = 1;
             $default_day_count = $this->settingsRepository->find('1')->getFlightStatsDays();
-            $day_count = $default_day_count;
+            $day_count = $default_day_count+1;
             if ($start_date_by_destination && $end_date_by_destination) {
                 if ($day_count_by_destination->days > 0) {
                     $day_count = 1 + $day_count_by_destination->days;

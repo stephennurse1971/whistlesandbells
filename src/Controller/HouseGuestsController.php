@@ -195,8 +195,8 @@ class HouseGuestsController extends AbstractController
      */
     public function getPrice(FlightPrice $flightPrice, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
-        $flightPrice->getPrice('All');
-        return $this->redirectToRoute('app_home');
+        $flightPrice->getPrice('all');
+        return $this->redirectToRoute('house_guests_index');
     }
 
     /**
