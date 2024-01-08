@@ -20,7 +20,9 @@ class ToDoListItemsType extends AbstractType
             ->add('project',EntityType::class,[
                 'class' => ToDoList::class,
                 'choice_label'=> 'project',
-                'choices'=>$options['project']
+                'data'=>$options['project']
+//                'choices'=>$options['project'],
+
             ])
             ->add('task',TextareaType::class,[
                 'required'=>false

@@ -32,7 +32,7 @@ class ToDoListItemsController extends AbstractController
      */
     public function new(Request $request, $project, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $doListRepository): Response
     {
-        $todolist = $doListRepository->findBy(['project' => $project]);
+        $todolist = $doListRepository->findOneBy(['project' => $project]);
         $toDoListItem = new ToDoListItems();
         $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $todolist]);
         $form->handleRequest($request);
@@ -63,7 +63,7 @@ class ToDoListItemsController extends AbstractController
      */
     public function edit(Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository): Response
     {
-        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem);
+        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $toDoListItem->getProject()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

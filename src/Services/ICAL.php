@@ -16,19 +16,12 @@ class ICAL
         $eventOne->setStart(new \DateTime())
             ->setSummary('Family reunion')
             ->setUid('event-uid');
-
-        //add an Attendee
         $attendee = new Attendee($formatter); // or $formatter
         $attendee->setValue('moe@example.com')
             ->setName('Moe Smith');
         $eventOne->addAttendee($attendee);
-
-
         $response = new Response($calendarExport->getStream());
         $response->headers->set('Content-Type', 'text/calendar');
-
         return $response;
     }
-
-
 }
