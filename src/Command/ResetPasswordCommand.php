@@ -51,11 +51,11 @@ class ResetPasswordCommand extends Command
 
         return Command::SUCCESS;
     }
-    public function __construct(string $name = null,EntityManagerInterface $manager,UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $manager,UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->userRepository = $userRepository;
         $this->manager = $manager;
         $this->passwordEncoder = $passwordEncoder;
-        parent::__construct($name);
+        parent::__construct();
     }
 }
