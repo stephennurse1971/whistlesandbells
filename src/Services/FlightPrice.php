@@ -29,7 +29,7 @@ class FlightPrice
         foreach ($destinations as $destination) {
             $start_date_by_destination = $destination->getDateStart();
             $end_date_by_destination = $destination->getDateEnd();
-//            $destination->setLastScraped($today);
+            $destination->setLastScraped($today|date('Y-m-d'));
 
             if ($start_date_by_destination && $end_date_by_destination) {
                 $start_date = new \DateTime($start_date_by_destination->format('Y-m-d'));
