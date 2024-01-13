@@ -1,20 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Useful Links{% endblock %}
+{% block title %}Useful URLs{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Useful Links index</h1>
+    <h1 style="color: red">Useful URLs</h1>
 
-    <table class="table">
+    <table class="table table-responsive" style="width:100%">
         <thead>
         <tr>
             <th>Category</th>
             <th>Name</th>
-            <th>Link</th>
-            <th>Login</th>
-            <th>Password</th>
-            <th>Notes</th>
-            <th>#</th>
+            <th class="desktop">Link</th>
+            <th class="mobile">Link</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th class="desktop" style="color: red">Login</th>
+                <th class="desktop" style="color: red">Password</th>
+            {% endif %}
+            <th class="desktop">Notes</th>
+            <th class="desktop">#</th>
         </tr>
         </thead>
         <tbody>
@@ -22,17 +25,25 @@
             <tr>
                 <td>{{ useful_link.category }}</td>
                 <td>{{ useful_link.name }}</td>
-                <td>
+
+                <td class="desktop">
                     <a target="_blank" href="{{ useful_link.link }}">{{ useful_link.link }}</a>
                 </td>
-                <td>{{ useful_link.login }}</td>
-                <td>{{ useful_link.password }}</td>
-                <td>{{ useful_link.notes }}</td>
-                <td>
-                    <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('useful_links_edit', {'id': useful_link.id}) }}">Edit</a>
+
+                <td class="mobile">
+                    <a target="_blank" href="{{ useful_link.link }}">
+                        <i class="fa fa-link"></i></a>
                 </td>
 
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td class="desktop">{{ useful_link.login }}</td>
+                    <td class="desktop">{{ useful_link.password }}</td>
+                {% endif %}
+                <td class="desktop">{{ useful_link.notes }}</td>
+                <td class="desktop">
+                    <a class="btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('useful_links_edit', {'id': useful_link.id}) }}">Edit</a>
+                </td>
             </tr>
 
         {% endfor %}
