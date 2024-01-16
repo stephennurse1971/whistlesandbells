@@ -127,10 +127,7 @@ class Investments
      */
     private $eisSaleYear2;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=TaxSchemes::class)
-     */
-    private $taxScheme;
+
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -171,6 +168,11 @@ class Investments
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $eisSaleYear2SelfAssessmentCheck;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=AssetClasses::class)
+     */
+    private $assetClass;
 
     public function __construct()
     {
@@ -460,17 +462,6 @@ class Investments
         return $this;
     }
 
-    public function getTaxScheme(): ?TaxSchemes
-    {
-        return $this->taxScheme;
-    }
-
-    public function setTaxScheme(?TaxSchemes $taxScheme): self
-    {
-        $this->taxScheme = $taxScheme;
-
-        return $this;
-    }
 
     public function getComment(): ?string
     {
@@ -564,6 +555,18 @@ class Investments
     public function setEisSaleYear2SelfAssessmentCheck(?string $eisSaleYear2SelfAssessmentCheck): self
     {
         $this->eisSaleYear2SelfAssessmentCheck = $eisSaleYear2SelfAssessmentCheck;
+
+        return $this;
+    }
+
+    public function getAssetClass(): ?AssetClasses
+    {
+        return $this->assetClass;
+    }
+
+    public function setAssetClass(?AssetClasses $assetClass): self
+    {
+        $this->assetClass = $assetClass;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\AssetClasses;
 use App\Entity\FxRates;
 use App\Entity\Investments;
 use App\Entity\MarketData;
@@ -71,11 +72,11 @@ class InvestmentsType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('investmentAmount')
-            ->add('taxScheme', EntityType::class, [
-                'class' => TaxSchemes::class,
-                'choice_label' => 'name',
-                'choice_value' => 'name',
-                'label' => 'Tax Scheme',
+            ->add('assetClass', EntityType::class, [
+                'class' => AssetClasses::class,
+                'choice_label' => 'Asset Class',
+                'choice_value' => 'assetClass',
+                'label' => 'Asset Class',
                 'required' => true
             ])
             ->add('saleSharePrice')

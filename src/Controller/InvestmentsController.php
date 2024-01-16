@@ -65,8 +65,6 @@ class InvestmentsController extends AbstractController
                 ]),
                 'grouping' => $grouping
             ]);
-
-
         }
     }
 

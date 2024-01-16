@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\AssetClasses;
+use App\Entity\TaxSchemes;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,8 +16,12 @@ class AssetClassesType extends AbstractType
     {
         $builder
             ->add('assetClass')
-            ->add('showTaxYearDetails')
-            ->add('showSharePrices')
+            ->add('taxScheme', EntityType::class, [
+                'class' => TaxSchemes::class,
+                'choice_label' => 'name',
+                'required' => true,
+                'empty_data' => null,
+            ])
             ->add('showDocs')
         ;
     }

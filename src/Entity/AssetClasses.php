@@ -22,20 +22,22 @@ class AssetClasses
      */
     private $assetClass;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $showTaxYearDetails;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $showSharePrices;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $showDocs;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TaxSchemes::class)
+     */
+    private $taxScheme;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $showInvestmentPurchaseAndSaleDates;
 
     public function getId(): ?int
     {
@@ -54,29 +56,7 @@ class AssetClasses
         return $this;
     }
 
-    public function getShowTaxYearDetails(): ?bool
-    {
-        return $this->showTaxYearDetails;
-    }
 
-    public function setShowTaxYearDetails(?bool $showTaxYearDetails): self
-    {
-        $this->showTaxYearDetails = $showTaxYearDetails;
-
-        return $this;
-    }
-
-    public function getShowSharePrices(): ?bool
-    {
-        return $this->showSharePrices;
-    }
-
-    public function setShowSharePrices(?bool $showSharePrices): self
-    {
-        $this->showSharePrices = $showSharePrices;
-
-        return $this;
-    }
 
     public function getShowDocs(): ?bool
     {
@@ -86,6 +66,30 @@ class AssetClasses
     public function setShowDocs(?bool $showDocs): self
     {
         $this->showDocs = $showDocs;
+
+        return $this;
+    }
+
+    public function getTaxScheme(): ?TaxSchemes
+    {
+        return $this->taxScheme;
+    }
+
+    public function setTaxScheme(?TaxSchemes $taxScheme): self
+    {
+        $this->taxScheme = $taxScheme;
+
+        return $this;
+    }
+
+    public function getShowInvestmentPurchaseAndSaleDates(): ?bool
+    {
+        return $this->showInvestmentPurchaseAndSaleDates;
+    }
+
+    public function setShowInvestmentPurchaseAndSaleDates(?bool $showInvestmentPurchaseAndSaleDates): self
+    {
+        $this->showInvestmentPurchaseAndSaleDates = $showInvestmentPurchaseAndSaleDates;
 
         return $this;
     }

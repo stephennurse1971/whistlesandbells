@@ -4,11 +4,11 @@
     <div class="col-md-3">
         <h2>Investment Details</h2>
         {{ form_row(form.investmentCompany) }}
+        {{ form_row(form.assetClass) }}
         {{ form_row(form.currency) }}
         {{ form_row(form.investmentAmount) }}
         {{ form_row(form.purchaseSharePrice) }}
         {{ form_row(form.numberOfShares) }}
-        {{ form_row(form.taxScheme) }}
         <div class="initial-amount-GBP">
             {{ form_row(form.initialInvestmentAmountGBP) }}
         </div>
@@ -32,8 +32,6 @@
 
         {% endif %}
         {{ form_row(form.shareCert) }}
-
-
 
         {% if investment.eisCert is not empty %}
             <strong>
@@ -63,7 +61,6 @@
             {% endif %}
         {% endif %}
         {{ form_row(form.otherDocs) }}
-{#        <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>#}
     </div>
 </div>
 <br>
@@ -87,14 +84,6 @@
             </div>
 
         </div>
-        {#        <div class="row"> #}
-        {#            <div class="col-6"> #}
-        {#                -#}
-        {#                <br> -#}
-        {#                <br> -#}
-        {#            </div> #}
-
-        {#        </div> #}
 
         <div class="row asset_class_dependent_tax">
             <div class="col-4">
@@ -125,7 +114,10 @@
 
 
     <div class="col-md-3">
-        <h2>Sale</h2> Note: Income tax offset:{{ investment.taxScheme.saleIncomeOffset *100 }}%
+        <h2>Sale</h2>
+        {% if investment.assetClass is not null %}
+            Note: Income tax offset:{{ investment.assetClass.taxScheme.saleIncomeOffset *100 }}%
+        {% endif %}
         <div class="row">
             <div class="col-6">
                 {{ form_row(form.investmentSaleDate) }}

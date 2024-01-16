@@ -8,31 +8,30 @@
     <table class="table table-responsive">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Asset Class</th>
-            <th>Show Tax Years</th>
-            <th>Show Share Prices</th>
-            <th>Show Docs</th>
-
+            <th style="text-align: right">Show:<br>Purchase/<br>Sale Dates &<br>Purchase Price(s)</th>
+            <th style="text-align: right">Show:<br>Docs</th>
+            <th>Tax<br>Scheme</th>
+            <th>--</th>
+            <th style="text-align: right">Show:<br>Tax Years</th>
+            <th style="text-align: right">Show:<br>Share Prices</th>
+            <th style="text-align: right">Traded Asset</th>
+            <th style="text-align: right">Include in<br>Tax Summary</th>
+            <th style="text-align: right">Purchase:<br>Income offset</th>
+            <th style="text-align: right">Purchase:<br>Tax offset</th>
+            <th style="text-align: right">Sale:<br>Income offset</th>
+            <th style="text-align: right">Sale:<br>Tax offset</th>
+            <th style="text-align: right">CGT Rate</th>
         </tr>
         </thead>
         <tbody>
         {% for asset_class in asset_classes %}
             <tr>
-                <td>{{ asset_class.id }}</td>
                 <td>
                     <a href="{{ path('asset_classes_edit', {'id': asset_class.id}) }}">{{ asset_class.assetClass }}</a>
                 </td>
                 <td style="text-align: center">
-                    {% if asset_class.showTaxYearDetails == 1 %}
-                        <i style="color: green" class="fa fa-check"></i>
-                    {% else %}
-                        <i style="color: red" class="fa fa-remove"></i>
-                    {% endif %}
-                </td>
-
-                <td style="text-align: center">
-                    {% if asset_class.showSharePrices == 1 %}
+                    {% if asset_class.showInvestmentPurchaseAndSaleDates == 1 %}
                         <i style="color: green" class="fa fa-check"></i>
                     {% else %}
                         <i style="color: red" class="fa fa-remove"></i>
@@ -43,6 +42,78 @@
                         <i style="color: green" class="fa fa-check"></i>
                     {% else %}
                         <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if asset_class.taxScheme is not null %}
+                        <a target="_blank"
+                           href="{{ path('tax_schemes_edit', {'id': asset_class.taxScheme.id}) }}">{{ asset_class.taxScheme.name }}</a>
+                    {% endif %}
+                </td>
+
+                <td>--</td>
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {% if asset_class.taxScheme.showInTaxReturn == 1 %}
+                            <i style="color: green" class="fa fa-check"></i>
+                        {% else %}
+                            <i style="color: red" class="fa fa-remove"></i>
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {% if asset_class.taxScheme.showSharePrices == 1 %}
+                            <i style="color: green" class="fa fa-check"></i>
+                        {% else %}
+                            <i style="color: red" class="fa fa-remove"></i>
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {% if asset_class.taxScheme.tradedAsset == 1 %}
+                            <i style="color: green" class="fa fa-check"></i>
+                        {% else %}
+                            <i style="color: red" class="fa fa-remove"></i>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {% if asset_class.taxScheme.includeTaxSummary == 1 %}
+                            <i style="color: green" class="fa fa-check"></i>
+                        {% else %}
+                            <i style="color: red" class="fa fa-remove"></i>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {{ asset_class.taxScheme.purchaseIncomeOffset }}
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {{ asset_class.taxScheme.purchaseTaxOffset *100 }}%
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {{ asset_class.taxScheme.saleIncomeOffset *100 }}%
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {{ asset_class.taxScheme.saleTaxOffset*100 }}%
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if asset_class.taxScheme is not null %}
+                        {{ asset_class.taxScheme.cgtRate *100 }}%
                     {% endif %}
                 </td>
             </tr>
@@ -60,7 +131,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'], [1, 'asc']],
+                "order": [[0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

@@ -57,6 +57,16 @@ class TaxSchemes
      */
     private $tradedAsset;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $showInTaxReturn;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $showSharePrices;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +164,30 @@ class TaxSchemes
     public function setTradedAsset(?bool $tradedAsset): self
     {
         $this->tradedAsset = $tradedAsset;
+
+        return $this;
+    }
+
+    public function getShowInTaxReturn(): ?bool
+    {
+        return $this->showInTaxReturn;
+    }
+
+    public function setShowInTaxReturn(?bool $showInTaxReturn): self
+    {
+        $this->showInTaxReturn = $showInTaxReturn;
+
+        return $this;
+    }
+
+    public function getShowSharePrices(): ?bool
+    {
+        return $this->showSharePrices;
+    }
+
+    public function setShowSharePrices(?bool $showSharePrices): self
+    {
+        $this->showSharePrices = $showSharePrices;
 
         return $this;
     }
