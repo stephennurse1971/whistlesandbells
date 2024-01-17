@@ -1,8 +1,8 @@
 {{ form_start(form) }}
 
 <div class="row">
-    <div class="col-md-3">
-        <h2>Investment Details</h2>
+    <div class="col-md-2">
+        <h2 style="color: blue">Investment Details</h2>
         {{ form_row(form.investmentCompany) }}
         {{ form_row(form.assetClass) }}
         {{ form_row(form.currency) }}
@@ -17,50 +17,100 @@
     <div class="col-md-1">
     </div>
 
-    <div class="col-md-3 asset_class_dependent_docs">
-        <h2>Documents</h2>
-        {% if investment.shareCert is not empty %}
-            <strong>
-                <a target="_blank"
-                   href="{{ path('investment_viewfile',{ id:investment.id, filetype:'shareCert' }) }}"> {{ investment.shareCert }}  </a>
-            </strong><br>
+    <div class="col-md-2 asset_class_dependent_docs">
+        {% if investment.assetClass is not null %}
+            {% if investment.assetClass.showDocs == 1 %}
+                <h2 style="color: blue">Documents</h2>
+                {% if investment.shareCert is not empty %}
+                    <strong>
+                        <a target="_blank"
+                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'shareCert' }) }}"> {{ investment.shareCert }}  </a>
+                    </strong><br>
 
-            {% if investment.shareCert is not empty %}
-                <a class="btn btn-sm btn-danger" href="{{ path('investments_delete_attachment1',{id:investment.id}) }}">Delete
-                    attachment</a>
+                    {% if investment.shareCert is not empty %}
+                        <a class="btn btn-sm btn-danger"
+                           href="{{ path('investments_delete_attachment1',{id:investment.id}) }}">Delete
+                            attachment</a>
+                    {% endif %}
+                {% endif %}
+                {{ form_row(form.shareCert) }}
+
+                {% if investment.eisCert is not empty %}
+                    <strong>
+                        <a target="_blank"
+                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'eisCert' }) }}"> {{ investment.eisCert }}  </a>
+                    </strong><br>
+
+                    {% if investment.eisCert is not empty %}
+                        <a class="btn btn-sm btn-danger"
+                           href="{{ path('investments_delete_attachment2',{id:investment.id}) }}">Delete
+                            attachment</a>
+                    {% endif %}
+                {% endif %}
+                {{ form_row(form.eisCert) }}
+
+                {% if investment.otherDocs is not empty %}
+                    <strong>
+                        <a target="_blank"
+                           href="{{ path('investment_viewfile',{ id:investment.id, filetype:'otherDocs' }) }}"> {{ investment.otherDocs }}  </a>
+                    </strong><br>
+                    {% if investment.otherDocs is not empty %}
+                        <a class="btn btn-sm btn-danger"
+                           href="{{ path('investments_delete_attachment3',{id:investment.id}) }}">Delete
+                            attachment</a>
+                    {% endif %}
+                {% endif %}
+                {{ form_row(form.otherDocs) }}
             {% endif %}
-
         {% endif %}
-        {{ form_row(form.shareCert) }}
+        <button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+    </div>
 
-        {% if investment.eisCert is not empty %}
-            <strong>
-                <a target="_blank"
-                   href="{{ path('investment_viewfile',{ id:investment.id, filetype:'eisCert' }) }}"> {{ investment.eisCert }}  </a>
-            </strong><br>
+    <div class="col-1"></div>
 
-            {% if investment.eisCert is not empty %}
-                <a class="btn btn-sm btn-danger" href="{{ path('investments_delete_attachment2',{id:investment.id}) }}">Delete
-                    attachment</a>
-            {% endif %}
+    <div class="col-md-3">
+        {% if investment.assetClass is not null %}
+            <h2 style="color: blue" class="d-inline">Asset Class parameters</h2>
+            <a target="_blank" href="{{ path('asset_classes_index') }}"><i class="fas fa-link"></i></a>
 
+            <li><b>Docs required: </b>
+                {% if investment.assetClass.showDocs ==1 %}
+                    <i style="color: green" class="fa fa-check"></i>
+                {% else %}
+                    <i style="color: red" class="fa fa-remove"></i>
+                {% endif %}
+            </li>
+            <li><b>Purchase/Sale prices available: </b>
+                {% if investment.assetClass.showInvestmentPurchaseAndSaleDates ==1 %}
+                    <i style="color: green" class="fa fa-check"></i>
+                {% else %}
+                    <i style="color: red" class="fa fa-remove"></i>
+                {% endif %}
+            </li>
+            <li><b>Updated prices available: </b>
+                {% if investment.assetClass.updatedPriceAvailable ==1 %}
+                    <i style="color: green" class="fa fa-check"></i>
+                {% else %}
+                    <i style="color: red" class="fa fa-remove"></i>
+                {% endif %}
+            </li>
+            <hr>
+            <h2 style="color: blue" class="d-inline">Tax Scheme</h2>
+            <a target="_blank" href="{{ path('tax_schemes_index') }}"><i class="fas fa-link"></i></a>
+            <li><b><u>Scheme: </u></b>{{ investment.assetClass.taxScheme.name }}</li>
+            <li><b>Purchase: Income offset: </b>{{ investment.assetClass.taxScheme.purchaseIncomeOffset  *100 }}%</li>
+            <li><b>Purchase: Tax offset: </b>{{ investment.assetClass.taxScheme.purchaseTaxOffset  *100 }}%</li>
+            <li><b>Sale: Income offset: </b>{{ investment.assetClass.taxScheme.saleIncomeOffset  *100 }}%</li>
+            <li><b>Sale: Tax offset: </b>{{ investment.assetClass.taxScheme.saleIncomeOffset  *100 }}%</li>
+            <li><b>Include in tax summary: </b>
+                {% if investment.assetClass.taxScheme.includeTaxSummary ==1 %}
+                    <i style="color: green" class="fa fa-check"></i>
+                {% else %}
+                    <i style="color: red" class="fa fa-remove"></i>
+                {% endif %}
+            </li>
+            <li><b>CGT Rate: </b>{{ investment.assetClass.taxScheme.cgtRate *100 }}%</li>
         {% endif %}
-        {{ form_row(form.eisCert) }}
-
-
-
-        {% if investment.otherDocs is not empty %}
-            <strong>
-                <a target="_blank"
-                   href="{{ path('investment_viewfile',{ id:investment.id, filetype:'otherDocs' }) }}"> {{ investment.otherDocs }}  </a>
-            </strong><br>
-
-            {% if investment.otherDocs is not empty %}
-                <a class="btn btn-sm btn-danger" href="{{ path('investments_delete_attachment3',{id:investment.id}) }}">Delete
-                    attachment</a>
-            {% endif %}
-        {% endif %}
-        {{ form_row(form.otherDocs) }}
     </div>
 </div>
 <br>
@@ -76,7 +126,7 @@
 
 <div class="row">
     <div class="col-md-3">
-        <h2>Purchase</h2>
+        <h2 style="color: blue">Purchase</h2>
 
         <div class="row">
             <div class="col-6">
@@ -96,6 +146,7 @@
                 {{ form_row(form.eisPurchaseYear1SelfAssessmentCheck) }}
             </div>
         </div>
+
         <div class="row asset_class_dependent_tax">
             <div class="col-4">
                 {{ form_row(form.EISPurchaseYear2) }}
@@ -114,7 +165,7 @@
 
 
     <div class="col-md-3">
-        <h2>Sale</h2>
+        <h2 style="color: blue">Sale</h2>
         {% if investment.assetClass is not null %}
             Note: Income tax offset:{{ investment.assetClass.taxScheme.saleIncomeOffset *100 }}%
         {% endif %}

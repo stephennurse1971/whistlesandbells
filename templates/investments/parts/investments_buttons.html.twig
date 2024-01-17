@@ -16,8 +16,9 @@
 
 {% if grouping == "All" %}
     <a class="btn btn-secondary btn-sm" target="_blank"
-       href="{{ path('investments_index', {'grouping': 'AssetClass'}) }}">By Asset Class</a>
+       href="{{ path('investments_tax_view_index', {'grouping': 'AssetClass'}) }}">Tax view: By Asset Class</a>
 {% else %}
-    <a class="btn btn-primary btn-sm" target="_blank"
-       href="{{ path('investments_index', {'grouping': 'All'}) }}">All</a>
+    <a class="btn btn-secondary btn-sm" target="_blank"
+       href="{{ path('investments_tax_view_index', {'grouping': 'All'}) }}">Tax view: Aggregated</a>
 {% endif %}
+<a class="btn btn-info btn-sm" target="_blank" href="{{ path('investments_economic_index' ) }}">Economic view</a>

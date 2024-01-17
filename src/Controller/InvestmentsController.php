@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class InvestmentsController extends AbstractController
 {
     /**
-     * @Route("/index/{grouping}", name="investments_index", methods={"GET"})
+     * @Route("/index/tax/{grouping}", name="investments_tax_view_index", methods={"GET"})
      */
     public function index(string $grouping, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
     {
@@ -68,6 +68,28 @@ class InvestmentsController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/index/economic", name="investments_economic_index", methods={"GET"})
+     */
+    public function indexEconomic(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
+    {
+        return $this->render('investments/indexEconomicView.html.twig', [
+            'investmentsCurrent' => $investmentsRepository->findBy([
+                'investmentSaleDate' => null
+            ]),
+            'investmentsAll' => $investmentsRepository->findAll(),
+            'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
+            'asset_classes' => $assetClassesRepository->findAll(),
+            'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
+            'fxRates' => $fxRatesRepository->findAll(),
+            'USDGBPFXrate' => $fxRatesRepository->findOneBy([
+                'fx' => 'GBP'
+            ])
+        ]);
+    }
+
+
     /**
      * @Route("/tax_summary_of_investments/{show}", name="investments_tax_consequences", methods={"GET"})
      */
@@ -104,7 +126,7 @@ class InvestmentsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($investment);
             $entityManager->flush();
-            return $this->redirectToRoute('investments_index', ['grouping' => 'All']);
+            return $this->redirectToRoute('investments_tax_view_index', ['grouping' => 'All']);
         }
 
         return $this->render('investments/new.html.twig', [
@@ -183,7 +205,7 @@ class InvestmentsController extends AbstractController
             }
 
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('investments_index', ['grouping' => 'All']);
+            return $this->redirectToRoute('investments_tax_view_index', ['grouping' => 'All']);
         }
 
         return $this->render('investments/edit.html.twig', [
@@ -203,7 +225,7 @@ class InvestmentsController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('investments_index', ['grouping' => 'All']);
+        return $this->redirectToRoute('investments_tax_view_index', ['grouping' => 'All']);
     }
 
 
@@ -255,7 +277,6 @@ class InvestmentsController extends AbstractController
             $entityManager->persist($investment);
             $entityManager->flush($investment);
         }
-
         return $this->redirect($referer);
     }
 
@@ -284,17 +305,4 @@ class InvestmentsController extends AbstractController
         $json_data = json_encode($asset_class);
         return new JsonResponse($asset_class);
     }
-
-    /**
-     * @Route("/investment/edit/{id}/test", name="investment_edit_test")
-     */
-    public function editTest(Investments $investments, EntityManagerInterface $manager): Response
-    {
-        $val = '80,000';
-        // $val = floatval(str_replace(',','',$val));
-        $investments->setInvestmentAmount($val);
-        $manager->flush();
-        return new Response($val);
-    }
-
 }

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\AssetClasses;
+use App\Entity\ToDoListItems;
 use App\Form\AssetClassesType;
 use App\Repository\AssetClassesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,6 +79,46 @@ class AssetClassesController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/asset_class_change_status/{id}/{parameter}", name="asset_class_change_status", methods={"GET", "POST"})
+     */
+    public function assetClassChangeInputs(Request $request, $parameter, AssetClasses $assetClasses, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+
+        if($parameter=="investmentPurchaseAndSaleDates")
+        {
+            if($assetClasses->getShowInvestmentPurchaseAndSaleDates()==1)
+            {
+                $assetClasses->setShowInvestmentPurchaseAndSaleDates(0);
+            }
+            else $assetClasses->setShowInvestmentPurchaseAndSaleDates(1);
+        }
+
+        if($parameter=="requireLegalDocs")
+        {
+            if($assetClasses->getShowDocs()==1)
+            {
+                $assetClasses->setShowDocs(0);
+            }
+            else $assetClasses->setShowDocs(1);
+        }
+
+        if($parameter=="updatedPriceAvailable")
+        {
+            if($assetClasses->getUpdatedPriceAvailable()==1)
+            {
+                $assetClasses->setUpdatedPriceAvailable(0);
+            }
+            else $assetClasses->setUpdatedPriceAvailable(1);
+        }
+
+        $manager->flush();
+        return $this->redirect($referer);
+    }
+
+
 
     /**
      * @Route("/{id}", name="asset_classes_delete", methods={"POST"})

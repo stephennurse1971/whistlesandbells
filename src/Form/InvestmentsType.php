@@ -75,7 +75,6 @@ class InvestmentsType extends AbstractType
             ->add('assetClass', EntityType::class, [
                 'class' => AssetClasses::class,
                 'choice_label' => 'Asset Class',
-                'choice_value' => 'assetClass',
                 'label' => 'Asset Class',
                 'required' => true
             ])

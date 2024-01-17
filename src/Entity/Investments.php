@@ -208,8 +208,6 @@ class Investments
         return $this;
     }
 
-
-
     public function getInvestmentSoldPrice(): ?float
     {
         return $this->investmentSoldPrice;
@@ -325,8 +323,6 @@ class Investments
 
         return $this;
     }
-
-
 
     public function getEISSaleYear1Percentage(): ?float
     {

@@ -23,6 +23,7 @@ class AssetClassesType extends AbstractType
                 'empty_data' => null,
             ])
             ->add('showDocs')
+            ->add('showInvestmentPurchaseAndSaleDates')
         ;
     }
 

@@ -127,8 +127,6 @@
                                     <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending'}) }}">To
                                         Do
                                         List</a>
-                                    {#                                <a class="dropdown-item" href="{{ path('coding_timesheets_index') }}">Coding #}
-                                    {#                                    Timehseet</a> #}
                                 {% endif %}
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <hr>
@@ -159,7 +157,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Investments</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item"
-                                   href="{{ path('investments_index', {'grouping': 'All'}) }}">Investments</a>
+                                   href="{{ path('investments_tax_view_index', {'grouping': 'All'}) }}">Investments</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('tax_supporting_docs_index') }}">Supporting
                                     Tax

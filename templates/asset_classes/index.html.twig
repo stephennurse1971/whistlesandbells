@@ -9,18 +9,20 @@
         <thead>
         <tr>
             <th>Asset Class</th>
-            <th style="text-align: right">Show:<br>Purchase/<br>Sale Dates &<br>Purchase Price(s)</th>
-            <th style="text-align: right">Show:<br>Docs</th>
-            <th>Tax<br>Scheme</th>
+            <th style="text-align: right">Require:<br>Purchase/<br>Sale Dates &<br>Purchase Price(s)</th>
+            <th style="text-align: right">Require:<br>Legal Docs<br>(Form 3, Loan etc)</th>
+            <th style="text-align: right">Updated Prices<br>Available</th>
+            <th>
+                <a target="_blank" href="{{ path('tax_schemes_index') }}">
+                    Tax<br>Scheme</a>
+            </th>
             <th>--</th>
-            <th style="text-align: right">Show:<br>Tax Years</th>
-            <th style="text-align: right">Show:<br>Share Prices</th>
-            <th style="text-align: right">Traded Asset</th>
             <th style="text-align: right">Include in<br>Tax Summary</th>
-            <th style="text-align: right">Purchase:<br>Income offset</th>
-            <th style="text-align: right">Purchase:<br>Tax offset</th>
-            <th style="text-align: right">Sale:<br>Income offset</th>
-            <th style="text-align: right">Sale:<br>Tax offset</th>
+            <th style="text-align: right">Show:<br>Share Prices</th>
+            <th style="text-align: right">Purchase:<br>Income Offset</th>
+            <th style="text-align: right">Purchase:<br>Tax Offset</th>
+            <th style="text-align: right">Sale:<br>Income Offset</th>
+            <th style="text-align: right">Sale:<br>Tax Offset</th>
             <th style="text-align: right">CGT Rate</th>
         </tr>
         </thead>
@@ -32,16 +34,29 @@
                 </td>
                 <td style="text-align: center">
                     {% if asset_class.showInvestmentPurchaseAndSaleDates == 1 %}
-                        <i style="color: green" class="fa fa-check"></i>
+                        <a href="{{ path('asset_class_change_status', {'id':asset_class.id,'parameter':'investmentPurchaseAndSaleDates'}) }}"><i
+                                    style="color: green" class="fa fa-check"></i></a>
                     {% else %}
-                        <i style="color: red" class="fa fa-remove"></i>
+                        <a href="{{ path('asset_class_change_status',{'id':asset_class.id, 'parameter':'investmentPurchaseAndSaleDates'}) }}"><i
+                                    style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     {% if asset_class.showDocs == 1 %}
-                        <i style="color: green" class="fa fa-check"></i>
+                        <a href="{{ path('asset_class_change_status', {'id':asset_class.id,'parameter':'requireLegalDocs'}) }}"><i
+                                    style="color: green" class="fa fa-check"></i></a>
                     {% else %}
-                        <i style="color: red" class="fa fa-remove"></i>
+                        <a href="{{ path('asset_class_change_status',{'id':asset_class.id, 'parameter':'requireLegalDocs'}) }}"><i
+                                    style="color: red" class="fa fa-remove"></i></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if asset_class.updatedPriceAvailable == 1 %}
+                        <a href="{{ path('asset_class_change_status', {'id':asset_class.id,'parameter':'updatedPriceAvailable'}) }}"><i
+                                    style="color: green" class="fa fa-check"></i></a>
+                    {% else %}
+                        <a href="{{ path('asset_class_change_status',{'id':asset_class.id, 'parameter':'updatedPriceAvailable'}) }}"><i
+                                    style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
                 </td>
                 <td>
@@ -54,7 +69,7 @@
                 <td>--</td>
                 <td style="text-align: right">
                     {% if asset_class.taxScheme is not null %}
-                        {% if asset_class.taxScheme.showInTaxReturn == 1 %}
+                        {% if asset_class.taxScheme.includeTaxSummary == 1 %}
                             <i style="color: green" class="fa fa-check"></i>
                         {% else %}
                             <i style="color: red" class="fa fa-remove"></i>
@@ -73,24 +88,6 @@
                 </td>
 
 
-                <td style="text-align: right">
-                    {% if asset_class.taxScheme is not null %}
-                        {% if asset_class.taxScheme.tradedAsset == 1 %}
-                            <i style="color: green" class="fa fa-check"></i>
-                        {% else %}
-                            <i style="color: red" class="fa fa-remove"></i>
-                        {% endif %}
-                    {% endif %}
-                </td>
-                <td style="text-align: right">
-                    {% if asset_class.taxScheme is not null %}
-                        {% if asset_class.taxScheme.includeTaxSummary == 1 %}
-                            <i style="color: green" class="fa fa-check"></i>
-                        {% else %}
-                            <i style="color: red" class="fa fa-remove"></i>
-                        {% endif %}
-                    {% endif %}
-                </td>
                 <td style="text-align: right">
                     {% if asset_class.taxScheme is not null %}
                         {{ asset_class.taxScheme.purchaseIncomeOffset }}

@@ -39,6 +39,11 @@ class AssetClasses
      */
     private $showInvestmentPurchaseAndSaleDates;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $updatedPriceAvailable;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +95,18 @@ class AssetClasses
     public function setShowInvestmentPurchaseAndSaleDates(?bool $showInvestmentPurchaseAndSaleDates): self
     {
         $this->showInvestmentPurchaseAndSaleDates = $showInvestmentPurchaseAndSaleDates;
+
+        return $this;
+    }
+
+    public function getUpdatedPriceAvailable(): ?bool
+    {
+        return $this->updatedPriceAvailable;
+    }
+
+    public function setUpdatedPriceAvailable(?bool $updatedPriceAvailable): self
+    {
+        $this->updatedPriceAvailable = $updatedPriceAvailable;
 
         return $this;
     }
