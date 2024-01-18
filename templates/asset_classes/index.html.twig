@@ -32,7 +32,7 @@
                 <td>
                     <a href="{{ path('asset_classes_edit', {'id': asset_class.id}) }}">{{ asset_class.assetClass }}</a>
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: center" data-sort="{{ asset_class.showInvestmentPurchaseAndSaleDates }}">
                     {% if asset_class.showInvestmentPurchaseAndSaleDates == 1 %}
                         <a href="{{ path('asset_class_change_status', {'id':asset_class.id,'parameter':'investmentPurchaseAndSaleDates'}) }}"><i
                                     style="color: green" class="fa fa-check"></i></a>
@@ -41,7 +41,7 @@
                                     style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: center"data-sort="{{ asset_class.showDocs }}">
                     {% if asset_class.showDocs == 1 %}
                         <a href="{{ path('asset_class_change_status', {'id':asset_class.id,'parameter':'requireLegalDocs'}) }}"><i
                                     style="color: green" class="fa fa-check"></i></a>
@@ -50,7 +50,7 @@
                                     style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: center" data-sort="{{ asset_class.updatedPriceAvailable }}" >
                     {% if asset_class.updatedPriceAvailable == 1 %}
                         <a href="{{ path('asset_class_change_status', {'id':asset_class.id,'parameter':'updatedPriceAvailable'}) }}"><i
                                     style="color: green" class="fa fa-check"></i></a>

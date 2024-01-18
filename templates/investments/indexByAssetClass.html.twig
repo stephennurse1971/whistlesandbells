@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %}Investments: By Asset Class{% endblock %}
+{% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
-    <h1 style="color: red">Investments: By Asset Class</h1>
+    <h1 style="color: red">Investments: {{ grouping }}</h1>
         {% include 'investments/parts/investments_buttons.html.twig' %}
         {% for asset_class in asset_classes %}
         <br><br><br>

@@ -29,9 +29,6 @@ class Investments
      */
     private $investmentAmount;
 
-
-
-
     /**
      * @ORM\Column(type="date", nullable=true)
      */
@@ -56,8 +53,6 @@ class Investments
      * @ORM\OneToMany(targetEntity=InvestmentFutureComms::class, mappedBy="investment", orphanRemoval=true)
      */
     private $investmentFutureComms;
-
-
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -566,12 +561,4 @@ class Investments
 
         return $this;
     }
-
-
-
-
-
-
-
-
 }

@@ -16,12 +16,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class UsefulLinksController extends AbstractController
 {
     /**
-     * @Route("/", name="useful_links_index", methods={"GET"})
+     * @Route("/{category}", name="useful_links_index", methods={"GET"})
      */
-    public function index(UsefulLinksRepository $usefulLinksRepository): Response
+    public function index(Request $request, string $category, UsefulLinksRepository $usefulLinksRepository): Response
     {
+        $categories = ['ATS', 'Finance', 'Health', 'Cyprus Estate Agent', 'Other Estate Agent',
+            'Shopping', 'Gwenny', 'AX', 'IT', 'Recruitment'];
+        $useful_links = $usefulLinksRepository->findAll();
         return $this->render('useful_links/index.html.twig', [
-            'useful_links' => $usefulLinksRepository->findAll(),
+            'useful_links' => $useful_links,
+            'categories' => $categories,
+            'category' => $category
         ]);
     }
 
@@ -79,7 +84,7 @@ class UsefulLinksController extends AbstractController
      */
     public function delete(Request $request, UsefulLinks $usefulLink, UsefulLinksRepository $usefulLinksRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$usefulLink->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $usefulLink->getId(), $request->request->get('_token'))) {
             $usefulLinksRepository->remove($usefulLink);
         }
 

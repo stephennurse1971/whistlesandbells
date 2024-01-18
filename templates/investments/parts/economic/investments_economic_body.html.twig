@@ -1,7 +1,6 @@
 <tr>
-    <td data-sort="{{ investment.assetClass.assetClass }}">
-        <a target="_blank"
-           href="{{ path('asset_classes_edit',{'id':investment.investmentCompany.assetClass.id}) }}">{{ investment.investmentCompany.assetClass.assetClass }}</a>
+    <td>
+     {{ investment.investmentCompany.assetClass.assetClass }}
     </td>
     <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center; width: 10px">
         {% if investment.investmentCompany.assetSold ==1 %}

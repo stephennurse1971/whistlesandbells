@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %}Investments: Aggregated{% endblock %}
+{% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
-    <h1 style="color: red">Investments: Aggregated</h1>
+    <h1 style="color: red">Investments: {{ grouping }}</h1>
         {% include 'investments/parts/investments_buttons.html.twig' %}
 
         <br><br><br>

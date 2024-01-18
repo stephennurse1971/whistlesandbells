@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
-{% block title %}Investments: Economic view{% endblock %}
+{% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
-    <h1 style="color: red">Investments: Economic</h1>
-
+    <h1 style="color: red">Investments: {{ grouping }}</h1>
+    {% include 'investments/parts/investments_buttons.html.twig' %}
     <br><br><br>
     <table class="table table-responsive">
         <thead>
@@ -24,6 +24,8 @@
             <th style="text-align: right">MTM or Gain/Loss Crystallised(£)</th>
             <th style="text-align: right">PV (Local)</th>
             <th style="text-align: right;border-right:1px solid black">PV (£)</th>
+            <th style="text-align: right;border-right:1px solid black">xx</th>
+            <th style="text-align: right;border-right:1px solid black">xx</th>
         </tr>
         </thead>
         <tbody>

@@ -34,7 +34,7 @@ class InvestmentsController extends AbstractController
      */
     public function index(string $grouping, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
     {
-        if ($grouping == 'All') {
+        if ($grouping == 'Tax Details - Aggregated') {
             return $this->render('investments/indexAggregated.html.twig', [
                 'investmentsCurrent' => $investmentsRepository->findBy([
                     'investmentSaleDate' => null
@@ -50,7 +50,7 @@ class InvestmentsController extends AbstractController
                 'grouping' => $grouping
             ]);
         }
-        if ($grouping == 'AssetClass') {
+        if ($grouping == 'Tax Details - By Asset Class') {
             return $this->render('investments/indexByAssetClass.html.twig', [
                 'investmentsCurrent' => $investmentsRepository->findBy([
                     'investmentSaleDate' => null
@@ -85,7 +85,8 @@ class InvestmentsController extends AbstractController
             'fxRates' => $fxRatesRepository->findAll(),
             'USDGBPFXrate' => $fxRatesRepository->findOneBy([
                 'fx' => 'GBP'
-            ])
+            ]),
+            'grouping' => 'Economics - Active'
         ]);
     }
 

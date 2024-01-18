@@ -14,11 +14,23 @@
     </div>
 </div>
 
-{% if grouping == "All" %}
+{% if grouping == "Tax Details - Aggregated" %}
     <a class="btn btn-secondary btn-sm" target="_blank"
-       href="{{ path('investments_tax_view_index', {'grouping': 'AssetClass'}) }}">Tax view: By Asset Class</a>
-{% else %}
+       href="{{ path('investments_tax_view_index', {'grouping': 'Tax Details - By Asset Class'}) }}">Tax Details: By Asset Class</a>
+
+    <a class="btn btn-info btn-sm" target="_blank" href="{{ path('investments_economic_index' ) }}">Economics -
+        Active</a>
+
+{% elseif grouping == "Tax Details - By Asset Class" %}
     <a class="btn btn-secondary btn-sm" target="_blank"
-       href="{{ path('investments_tax_view_index', {'grouping': 'All'}) }}">Tax view: Aggregated</a>
+       href="{{ path('investments_tax_view_index', {'grouping': 'Tax Details - Aggregated'}) }}">Tax Details: Aggregated</a>
+
+    <a class="btn btn-info btn-sm" target="_blank" href="{{ path('investments_economic_index' ) }}">Economic: Active</a>
+
+{% elseif grouping == "Economics - Active" %}
+    <a class="btn btn-secondary btn-sm" target="_blank"
+       href="{{ path('investments_tax_view_index', {'grouping': 'Tax Details - Aggregated'}) }}">Tax Details: Aggregated</a>
+
+    <a class="btn btn-secondary btn-sm" target="_blank"
+       href="{{ path('investments_tax_view_index', {'grouping': 'Tax Details - By Asset Class'}) }}">Tax Details: By Asset Class</a>
 {% endif %}
-<a class="btn btn-info btn-sm" target="_blank" href="{{ path('investments_economic_index' ) }}">Economic view</a>
