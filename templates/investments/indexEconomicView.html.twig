@@ -3,6 +3,11 @@
 {% block body %}
     <h1 style="color: red">Investments: {{ grouping }}</h1>
     {% include 'investments/parts/investments_buttons.html.twig' %}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('investments_economic_index', {'subset':'All'}) }}">All </a>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('investments_economic_index', {'subset':'Active'}) }}">Active </a>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('investments_economic_index', {'subset':'Sold'}) }}">Sold</a>
+
     <br><br><br>
     <table class="table table-responsive">
         <thead>
@@ -34,7 +39,7 @@
         {% set PV_Total = 0 %}
         {% set CGT_Total = 0 %}
         {% set totalLossDeductibleAgainstIncome = 0 %}
-        {% for investment in investmentsAll %}
+        {% for investment in investments %}
             {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  investment.lossDeductibleAgainstIncome %}
             {% if 1 == 1 %}
                 {% set FXEffect =1 %}

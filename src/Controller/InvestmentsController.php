@@ -70,16 +70,32 @@ class InvestmentsController extends AbstractController
 
 
     /**
-     * @Route("/index/economic", name="investments_economic_index", methods={"GET"})
+     * @Route("/index/economic/{subset}", name="investments_economic_index", methods={"GET"})
      */
-    public function indexEconomic(InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
+    public function indexEconomic(Request $request, string $subset, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
     {
-        return $this->render('investments/indexEconomicView.html.twig', [
-            'investmentsCurrent' => $investmentsRepository->findBy([
+
+        $investmentsSold = [];
+        $all_investments = $investmentsRepository->findAll();
+        foreach ($all_investments as $investment) {
+            if ($investment->getInvestmentSaleDate() != null){
+                $investmentsSold[] = $investment;
+            }
+        }
+        if ($subset == "All") {
+            $investments = $all_investments;
+        }
+        if ($subset == "Active") {
+            $investments = $investmentsRepository->findBy([
                 'investmentSaleDate' => null
-            ]),
-            'investmentsAll' => $investmentsRepository->findAll(),
-            'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
+            ]);
+        }
+        if ($subset == "Sold") {
+            $investments = $investmentsSold;
+        }
+
+        return $this->render('investments/indexEconomicView.html.twig', [
+            'investments' => $investments,
             'asset_classes' => $assetClassesRepository->findAll(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
             'fxRates' => $fxRatesRepository->findAll(),
