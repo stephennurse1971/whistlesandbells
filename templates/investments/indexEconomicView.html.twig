@@ -14,6 +14,7 @@
         <tr>
             <th>Asset Class</th>
             <th style="width: 10px">Active/<br>Sold</th>
+            <th style="width: 10px">Tax/<br>Summary</th>
             <th style="width: 350px">Investment</th>
             <th style="text-align: left">Investment Date</th>
             <th style="width: 75px; text-align: right">
@@ -45,7 +46,6 @@
 
 
         {% for bankAccount in bankAccounts %}
-{#            {% include 'investments/parts/economic/investments_economic_body.html.twig' %}#}
         {% endfor %}
         {% for loanBond in loanBonds %}
 

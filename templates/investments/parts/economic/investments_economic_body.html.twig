@@ -1,6 +1,6 @@
 <tr>
     <td>
-     {{ investment.investmentCompany.assetClass.assetClass }}
+        {{ investment.investmentCompany.assetClass.assetClass }}
     </td>
     <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center; width: 10px">
         {% if investment.investmentCompany.assetSold ==1 %}
@@ -11,6 +11,13 @@
             {% endif %}
         {% else %}
             <i style="color: green" class="fa fa fa-check"></i>
+        {% endif %}
+    </td>
+    <td data-sort="{{ investment.assetClass.taxScheme.includeTaxSummary }}" style="text-align: center; width: 10px">
+        {% if investment.assetClass.taxScheme.includeTaxSummary==1 %}
+            <i style="color: green" class="fa fa fa-check"></i>
+        {% else %}
+            <i style="color: red" class="fa fa fa-remove"></i>
         {% endif %}
     </td>
     <td data-sort="{{ investment.investmentCompany.shareCompany }}">
