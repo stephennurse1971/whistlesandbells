@@ -9,6 +9,7 @@
         <thead>
         <tr>
             <th>Asset Class</th>
+            <th style="text-align: right">Include:<br>In form</th>
             <th style="text-align: right">Require:<br>Purchase/<br>Sale Dates &<br>Purchase Price(s)</th>
             <th style="text-align: right">Require:<br>Legal Docs<br>(Form 3, Loan etc)</th>
             <th style="text-align: right">Updated Prices<br>Available</th>
@@ -31,6 +32,13 @@
             <tr>
                 <td>
                     <a href="{{ path('asset_classes_edit', {'id': asset_class.id}) }}">{{ asset_class.assetClass }}</a>
+                </td>
+                <td style="text-align: center" data-sort="{{ asset_class.includeInStandardInvestmentForm }}">
+                    {% if asset_class.includeInStandardInvestmentForm == 1 %}
+                       <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
                 </td>
                 <td style="text-align: center" data-sort="{{ asset_class.showInvestmentPurchaseAndSaleDates }}">
                     {% if asset_class.showInvestmentPurchaseAndSaleDates == 1 %}

@@ -7,7 +7,8 @@
     <h1 style="color: red;">Share prices</h1>
 
 
-    <a class="btn btn-outline-success btn-sm" target="_blank" href="{{ path('market_data_history_index') }}">Market Data History</a>
+    <a class="btn btn-outline-success btn-sm" target="_blank" href="{{ path('market_data_history_index') }}">Market Data
+        History</a>
     <a target="_blank" class="btn btn-success btn-sm" href="{{ path('market_data_new') }}">New</a>
     {% for asset_class in asset_classes %}
         <h2>{{ asset_class.assetClass }}
@@ -16,7 +17,6 @@
         <table class="table table-responsive">
             <thead>
             <tr>
-                <th>Active/ Sold</th>
                 <th style="width: 250px;">Company</th>
                 <th style="text-align: right">Share Price</th>
                 <th style="width: 50px;">Corporate website</th>
@@ -33,19 +33,13 @@
                     {% set weblink = 'https://find-and-update.company-information.service.gov.uk/company/'~market_data.companiesHouse %}
                     <tr>
 
-                        <td style="text-align: center" data-sort="{{ market_data.assetSold }}">
-                            {% if  market_data.assetSold == 1 %}
-                                <i style="color: red" class="fa fa-remove"></i>
-                            {% else %}
-                                <i style="color: green" class="fa fa-check"></i>
-                            {% endif %}
-                        </td>
+
                         <td>
                             <a target="_blank"
                                href="{{ path('market_data_edit', {'id': market_data.id}) }}">{{ market_data.shareCompany }}</a>
                         </td>
                         <td style="text-align: right">
-                            {% if market_data.sharePrice<5 and market_data.sharePrice>-5  %}
+                            {% if market_data.sharePrice<5 and market_data.sharePrice>-5 %}
                                 {{ market_data.sharePrice|number_format(2) }}
                             {% else %}
                                 {{ market_data.sharePrice|number_format(0) }}
@@ -107,7 +101,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'], [1, 'asc']],
+                "order": [[0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

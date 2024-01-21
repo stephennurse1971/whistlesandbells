@@ -44,6 +44,11 @@ class AssetClasses
      */
     private $updatedPriceAvailable;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $includeInStandardInvestmentForm;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +112,18 @@ class AssetClasses
     public function setUpdatedPriceAvailable(?bool $updatedPriceAvailable): self
     {
         $this->updatedPriceAvailable = $updatedPriceAvailable;
+
+        return $this;
+    }
+
+    public function getIncludeInStandardInvestmentForm(): ?bool
+    {
+        return $this->includeInStandardInvestmentForm;
+    }
+
+    public function setIncludeInStandardInvestmentForm(?bool $includeInStandardInvestmentForm): self
+    {
+        $this->includeInStandardInvestmentForm = $includeInStandardInvestmentForm;
 
         return $this;
     }

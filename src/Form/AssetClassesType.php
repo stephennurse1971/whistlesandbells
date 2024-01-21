@@ -22,6 +22,7 @@ class AssetClassesType extends AbstractType
                 'required' => true,
                 'empty_data' => null,
             ])
+            ->add('includeInStandardInvestmentForm')
             ->add('showDocs')
             ->add('showInvestmentPurchaseAndSaleDates')
         ;
