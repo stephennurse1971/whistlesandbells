@@ -67,7 +67,7 @@
                 </td>
 
                 <td>--</td>
-                <td style="text-align: right">
+                <td style="text-align: right" data-sort="{{ asset_class.taxScheme.includeTaxSummary }}" >
                     {% if asset_class.taxScheme is not null %}
                         {% if asset_class.taxScheme.includeTaxSummary == 1 %}
                             <i style="color: green" class="fa fa-check"></i>
@@ -77,7 +77,7 @@
                     {% endif %}
                 </td>
 
-                <td style="text-align: right">
+                <td style="text-align: right" data-sort="{{ asset_class.taxScheme.showSharePrices }}" >
                     {% if asset_class.taxScheme is not null %}
                         {% if asset_class.taxScheme.showSharePrices == 1 %}
                             <i style="color: green" class="fa fa-check"></i>
