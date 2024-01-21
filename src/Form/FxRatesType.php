@@ -14,6 +14,7 @@ class FxRatesType extends AbstractType
         $builder
             ->add('fx')
             ->add('currentFxRate')
+            ->add('reciprocal')
             ->add('liveRateLink')
         ;
     }

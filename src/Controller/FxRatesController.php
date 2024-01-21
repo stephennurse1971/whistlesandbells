@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FxRatesController extends AbstractController
 {
     /**
-     * @Route("/", name="fx_rates_index", methods={"GET"})
+     * @Route("/index", name="fx_rates_index", methods={"GET"})
      */
     public function index(FxRatesRepository $fxRatesRepository): Response
     {
