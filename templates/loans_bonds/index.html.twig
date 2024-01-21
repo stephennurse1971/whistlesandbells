@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Loans/Bonds{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Loans/Bonds</h1>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Currency</th>
+            <th>Notional</th>
+            <th style="text-align: right">Interest<br>Rate</th>
+            <th style="text-align: right">Drawdown<br>Date</th>
+            <th style="text-align: right">Repayment<br>Date</th>
+            <th>Days</th>
+            <th>MTM</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for loans_bond in loans_bonds %}
+            <tr>
+                <td>{{ loans_bond.name }}</td>
+                <td style="text-align: right">{{ loans_bond.currency }}</td>
+                <td style="text-align: right">{{ loans_bond.notional|number_format(0, '.', ',') }}</td>
+                <td style="text-align: right">{{ (loans_bond.interestRate*100)|number_format(2, '.', ',') }} %</td>
+                <td style="text-align: right"
+                    data-sort="{{ loans_bond.drawdownDate|date('Y-m-d') }}">{{ loans_bond.drawdownDate|date('d-M-y') }}</td>
+                <td style="text-align: right" data-sort="{{ loans_bond.repaymentDate|date('Y-m-d') }}">
+                    {% if loans_bond.repaymentDate is not null %}
+                        {{ loans_bond.repaymentDate|date('d-M-y') }}
+                    {% else %}
+                        'N/A'
+                    {% endif %}
+                </td>
+                <td>
+                    Days | Years
+                </td>
+                <td style="text-align: right">
+                    {{ (loans_bond.notional *(1+loans_bond.interestRate))|number_format(0, '.', ',') }}
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('loans_bonds_edit', {'id': loans_bond.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn btn-success btn-sm" href="{{ path('loans_bonds_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -66,6 +66,7 @@ class InvestmentsController extends AbstractController
                 'grouping' => $grouping
             ]);
         }
+
     }
 
 
@@ -74,7 +75,6 @@ class InvestmentsController extends AbstractController
      */
     public function indexEconomic(Request $request, string $subset, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
     {
-
         $investmentsSold = [];
         $all_investments = $investmentsRepository->findAll();
         foreach ($all_investments as $investment) {
@@ -222,7 +222,7 @@ class InvestmentsController extends AbstractController
             }
 
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('investments_tax_view_index', ['grouping' => 'All']);
+            return $this->redirectToRoute('investments_tax_view_index', ['grouping' => 'Tax Details - By Asset Class']);
         }
 
         return $this->render('investments/edit.html.twig', [
@@ -236,13 +236,13 @@ class InvestmentsController extends AbstractController
      */
     public function delete(Request $request, Investments $investment): Response
     {
+        $referer = $request->headers->get('referer');
         if ($this->isCsrfTokenValid('delete' . $investment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($investment);
             $entityManager->flush();
         }
-
-        return $this->redirectToRoute('investments_tax_view_index', ['grouping' => 'All']);
+        return $this->redirect($referer);
     }
 
 

@@ -39,6 +39,13 @@ class FxRates
      */
     private $liveRateLink;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $reciprocal;
+
+
+
     public function __construct()
     {
         $this->investments = new ArrayCollection();
@@ -114,4 +121,18 @@ class FxRates
 
         return $this;
     }
+
+    public function getReciprocal(): ?bool
+    {
+        return $this->reciprocal;
+    }
+
+    public function setReciprocal(?bool $reciprocal): self
+    {
+        $this->reciprocal = $reciprocal;
+
+        return $this;
+    }
+
+
 }

@@ -90,7 +90,7 @@
 
                 <td style="text-align: right">
                     {% if asset_class.taxScheme is not null %}
-                        {{ asset_class.taxScheme.purchaseIncomeOffset }}
+                        {{ asset_class.taxScheme.purchaseIncomeOffset*100}}%
                     {% endif %}
                 </td>
                 <td style="text-align: right">

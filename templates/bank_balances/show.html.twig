@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bank Balances{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Bank Balances</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bank_balance.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ bank_balance.date ? bank_balance.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Balance GBP</th>
+                <td>{{ bank_balance.BalanceGbp }}</td>
+            </tr>
+            <tr>
+                <th>Balance USD</th>
+                <td>{{ bank_balance.BalanceUsd }}</td>
+            </tr>
+            <tr>
+                <th>Balance EUR</th>
+                <td>{{ bank_balance.BalanceEur }}</td>
+            </tr>
+            <tr>
+                <th>Balance CHF</th>
+                <td>{{ bank_balance.BalanceChf }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('bank_balances_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('bank_balances_edit', {'id': bank_balance.id}) }}">Edit</a>
+
+    {{ include('bank_balances/_delete_form.html.twig') }}
+{% endblock %}

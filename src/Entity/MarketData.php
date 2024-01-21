@@ -72,9 +72,6 @@ class MarketData
     private $assetClass;
 
 
-
-
-
     public function getId(): ?int
     {
         return $this->id;
@@ -202,14 +199,5 @@ class MarketData
 
         return $this;
     }
-
-
-
-
-
-
-
-
-
 
 }

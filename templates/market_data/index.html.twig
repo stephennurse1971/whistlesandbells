@@ -3,8 +3,12 @@
 {% block title %}Market Data index{% endblock %}
 
 {% block body %}
+
     <h1 style="color: red;">Share prices</h1>
-    <a target="_blank" class="btn btn-success btn-sm mt-2" href="{{ path('market_data_new') }}">New</a>
+
+
+    <a class="btn btn-outline-success btn-sm" target="_blank" href="{{ path('market_data_history_index') }}">Market Data History</a>
+    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('market_data_new') }}">New</a>
     {% for asset_class in asset_classes %}
         <h2>{{ asset_class.assetClass }}
             <a target="_blank" href="{{ path('asset_classes_index') }}">+</a>

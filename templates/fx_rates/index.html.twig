@@ -4,16 +4,24 @@
 
 {% block body %}
     <h1 style="color: red;">FX Rates</h1>
+    <div class="row">
+        <div class="col-6"></div>
+        <div class="col-3">
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('fx_rates_history_index') }}">Historical Rates</a>
+        </div>
+    </div>
     <h3 style="color: red;">Base currency: <a target="_blank"
                                               href="{{ path('static_text_edit', {'id': '3'}) }}">{{ StaticText.content.baseCurrency }}</a>
     </h3>
     <table class="table table-responsive">
         <thead>
         <tr>
-            <th >FX</th>
+            <th>FX</th>
             <th style="text-align: right">Quoted FX</th>
-            <th style="text-align: right">FX Rate (1 = £x)</th>
             <th>Live FX Rate link</th>
+            <th>Reciprical</th>
+            <th>£1 =</th>
+            <th>$1 =</th>
             <th style=" text-align: right">#</th>
         </tr>
         </thead>
@@ -25,18 +33,28 @@
                 <td style="text-align: right">
                     <a href="{{ path('fx_rates_edit', {'id': fx_rate.id}) }}">{{ fx_rate.currentFxRate |number_format(4) }}</a>
                 </td>
-                <td style="text-align: right">
-                    {{ (fx_rate.currentFxRate / USDGBPFXrate.currentFxRate) |number_format(4) }}
-                </td>
-
-
                 <td style="text-align: center">
                     <a target="_blank" title="{{ fx_rate.liveRateLink }}" href="{{ fx_rate.liveRateLink }}"><i
                                 class="fa fa-globe"></i></a>
                 </td>
+
+                <td style="text-align: center">
+                    {% if fx_rate.reciprocal ==1 %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {{ (fx_rate.currentFxRate / USDGBPFXrate.currentFxRate) |number_format(4) }}
+                </td>
+                <td style="text-align: right">
+                    1 USD
+                </td>
                 <td style="text-align: right">
                     <button onclick="currencyConverter('USD','{{ fx_rate.fx }}','{{ fx_rate.id }}')">Update</button>
                 </td>
+
             </tr>
         {% endfor %}
         </tbody>
@@ -53,14 +71,12 @@
             $('.table').DataTable({
                 'pageLength': 50,
                 "order": [[0, 'asc']],
-                "paging": true,
-                "searching": true,
+                "paging": false,
+                "searching": false,
                 "bInfo": false
             });
         });
     </script>
-
-
 {% endblock datatable %}
 
 {% block additionaljs %}

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FX Rates History{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">FX Rates History</h1><br>
+    <a class="btn btn-outline-primary btn-sm">Import historical rates</a>
+    <hr>
+    <table class="table-responsive">
+        <thead>
+        <tr>
+            <th style="border-right:1px dotted; width: 120px">Date</th>
+            <th style="width: 80px">USD</th>
+            <th style="width: 80px">GBP</th>
+            <th style="width: 80px">EUR</th>
+            <th style="width: 80px">CHF</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fx_rates_history in fx_rates_histories %}
+            <tr>
+                <td data-sort="{{ fx_rates_history.date|date('Y-m-d') }}">
+                    {{ fx_rates_history.date|date('d-M-y') }}
+                </td>
+                <td>
+                    1.00
+                </td>
+                <td>
+                    <a target="_blank"
+                       href="{{ path('fx_rates_edit', {'id':fx_rates_history.id}) }}">{{ fx_rates_history.GBPFXRate }}</a>
+                </td>
+                <td>
+                    <a target="_blank"
+                       href="{{ path('fx_rates_edit', {'id':fx_rates_history.id}) }}">{{ fx_rates_history.EURFXRate }}</a>
+                </td>
+                <td>
+                    <a target="_blank"
+                       href="{{ path('fx_rates_edit', {'id':fx_rates_history.id}) }}">{{ fx_rates_history.CHFFXRate }}</a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('fx_rates_history_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

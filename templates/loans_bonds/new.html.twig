@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Loan/Bond{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Loan/Bond</h1>
+
+    {{ include('loans_bonds/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('loans_bonds_index') }}">Return to list</a>
+{% endblock %}

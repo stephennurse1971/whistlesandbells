@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\BankAccounts;
+use App\Entity\BankBalances;
+use App\Entity\User;
+use Doctrine\DBAL\Types\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class BankBalancesType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('bank', EntityType::class, [
+                'class' => BankAccounts::class,
+                'choice_label' => 'bank',
+                'required' => true,
+                'empty_data' => null,
+            ])
+            ->add('date', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
+                'label' => 'Date',
+                'required' => false,
+                'widget' => 'single_text',
+            ])
+            ->add('BalanceGbp',NumberType::class,[
+              'label'=>'GBP Balance'
+            ])
+            ->add('BalanceUsd')
+            ->add('BalanceEur')
+            ->add('BalanceChf')
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => BankBalances::class,
+        ]);
+    }
+}

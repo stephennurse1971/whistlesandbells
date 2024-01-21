@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Market Data History{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Market Data History</h1>
+
+    {{ include('market_data_history/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index') }}">Return to list</a>
+{% endblock %}

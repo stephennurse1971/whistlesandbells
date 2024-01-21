@@ -8,4 +8,5 @@ twig:
         FindUser: '@App\Services\FindUser'
         UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
         TaxYearCalcs: '@App\Services\TaxYearCalcs'
+        MarketDataPrice: '@App\Services\MarketDataPrice'
 
