@@ -61,10 +61,7 @@ class MarketData
      */
     private $comment;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $assetSold;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=AssetClasses::class)
@@ -176,17 +173,7 @@ class MarketData
         return $this;
     }
 
-    public function getAssetSold(): ?bool
-    {
-        return $this->assetSold;
-    }
 
-    public function setAssetSold(?bool $assetSold): self
-    {
-        $this->assetSold = $assetSold;
-
-        return $this;
-    }
 
     public function getAssetClass(): ?AssetClasses
     {

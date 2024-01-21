@@ -1,8 +1,8 @@
 <tr>
     <td>
-        {{ investment.investmentCompany.assetClass.assetClass }}
+        {{ investment.assetClass.assetClass }}
     </td>
-    <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center; width: 10px">
+    <td data-sort="{{ investment.investmentCompany.assetSold }}" style="text-align: center; width: 10px">
         {% if investment.investmentCompany.assetSold ==1 %}
             {% if investment.investmentSaleDate is null or investment.saleSharePrice is null %}
                 <i style="color: orange" class="fa fa fa-question-circle"></i>

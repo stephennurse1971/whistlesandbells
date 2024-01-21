@@ -28,7 +28,6 @@ class MarketDataType extends AbstractType
                 'label' => 'Asset Class',
                 'required' => false
             ])
-            ->add('assetSold')
             ->add('comment')
         ;
     }
