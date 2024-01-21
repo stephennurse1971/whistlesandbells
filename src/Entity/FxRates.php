@@ -44,6 +44,11 @@ class FxRates
      */
     private $reciprocal;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $updatedDate;
+
 
 
     public function __construct()
@@ -130,6 +135,18 @@ class FxRates
     public function setReciprocal(?bool $reciprocal): self
     {
         $this->reciprocal = $reciprocal;
+
+        return $this;
+    }
+
+    public function getUpdatedDate(): ?\DateTimeInterface
+    {
+        return $this->updatedDate;
+    }
+
+    public function setUpdatedDate(?\DateTimeInterface $updatedDate): self
+    {
+        $this->updatedDate = $updatedDate;
 
         return $this;
     }

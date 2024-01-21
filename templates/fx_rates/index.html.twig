@@ -20,9 +20,12 @@
             <th style="text-align: right">Quoted FX</th>
             <th>Live FX Rate link</th>
             <th>Reciprical</th>
-            <th>£1 =</th>
             <th>$1 =</th>
+            <th>£1 =</th>
+            <th>Currency 1 = $ [x]</th>
+            <th>Currency 1 = £ [x]</th>
             <th style=" text-align: right">#</th>
+            <th style=" text-align: right">Updated</th>
         </tr>
         </thead>
 
@@ -41,26 +44,52 @@
                 <td style="text-align: center">
                     {% if fx_rate.reciprocal is not null %}
                         {% if fx_rate.reciprocal ==1 %}
-                            Yes
+                            <i style="color: green" class="fa fa-circle"></i>
                         {% else %}
-                            No
+                            <i style="color: red" class="fa fa-circle"></i>
                         {% endif %}
                     {% endif %}
                 </td>
+
                 <td style="text-align: right">
-                    {{ (fx_rate.currentFxRate / USDGBPFXrate.currentFxRate) |number_format(4) }}
+                    $1 = {{ fx_rate.fx }}
+                    {% if fx_rate.reciprocal ==1 %}
+                        {{ (1/(fx_rate.currentFxRate)) |number_format(4) }}
+                    {% else %}
+                        {{ (fx_rate.currentFxRate) |number_format(4) }}
+                    {% endif %}
                 </td>
+
                 <td style="text-align: right">
-                    1 USD
+                    £1 = {{ fx_rate.fx }}
+                    {% if fx_rate.reciprocal ==1 %}
+                        {{  (USDGBPFXrate.currentFxRate /(fx_rate.currentFxRate)) |number_format(4) }}
+                    {% else %}
+                        {{ (USDGBPFXrate.currentFxRate *fx_rate.currentFxRate) |number_format(4) }}
+                    {% endif %}
                 </td>
+
+
+                <td style="text-align: right">
+                    {{ fx_rate.fx }} 1 = ${{ (fx_rate.currentFxRate) |number_format(4) }}
+                </td>
+
+                <td style="text-align: right">
+                    {{ fx_rate.fx }} 1 = £ {{ (fx_rate.currentFxRate / USDGBPFXrate.currentFxRate) |number_format(4) }}
+                </td>
+
                 <td style="text-align: right">
                     <button onclick="currencyConverter('USD','{{ fx_rate.fx }}','{{ fx_rate.id }}')">Update</button>
                 </td>
 
+                <td style="text-align: right">
+                    {% if fx_rate.updatedDate is not null %}
+                        {{ (fx_rate.updatedDate) | date('d-M-Y h:i') }}
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
-
     </table>
 
 

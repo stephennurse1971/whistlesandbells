@@ -16,6 +16,11 @@ class FxRatesType extends AbstractType
             ->add('currentFxRate')
             ->add('reciprocal')
             ->add('liveRateLink')
+            ->add('updatedDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
+                'label' => 'Date',
+                'required' => false,
+                'widget' => 'single_text',
+            ])
         ;
     }
 
