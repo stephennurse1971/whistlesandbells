@@ -39,10 +39,12 @@
                 </td>
 
                 <td style="text-align: center">
-                    {% if fx_rate.reciprocal ==1 %}
-                        Yes
-                    {% else %}
-                        No
+                    {% if fx_rate.reciprocal is not null %}
+                        {% if fx_rate.reciprocal ==1 %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td style="text-align: right">
