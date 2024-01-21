@@ -31,9 +31,15 @@ class BankBalancesType extends AbstractType
             ->add('BalanceGbp',NumberType::class,[
               'label'=>'GBP Balance'
             ])
-            ->add('BalanceUsd')
-            ->add('BalanceEur')
-            ->add('BalanceChf')
+            ->add('BalanceUsd',NumberType::class,[
+                'label'=>'USD Balance'
+            ])
+            ->add('BalanceEur',NumberType::class,[
+                'label'=>'EUR Balance'
+            ])
+            ->add('BalanceChf',NumberType::class,[
+                'label'=>'CHF Balance'
+            ])
         ;
     }
 
