@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\BankAccounts;
 use App\Entity\BankBalances;
 use App\Form\BankBalancesType;
+use App\Repository\BankAccountsRepository;
 use App\Repository\BankBalancesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +20,10 @@ class BankBalancesController extends AbstractController
     /**
      * @Route("/", name="bank_balances_index", methods={"GET"})
      */
-    public function index(BankBalancesRepository $bankBalancesRepository): Response
+    public function index(BankBalancesRepository $bankBalancesRepository, BankAccountsRepository $bankAccountsRepository): Response
     {
         return $this->render('bank_balances/index.html.twig', [
+            'bank_accounts' => $bankAccountsRepository->findAll(),
             'bank_balances' => $bankBalancesRepository->findAll(),
         ]);
     }

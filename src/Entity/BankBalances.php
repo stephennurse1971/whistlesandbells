@@ -83,7 +83,7 @@ class BankBalances
 
     public function setBalanceGbp(?float $BalanceGbp): self
     {
-        $this->Balance_GBP = $BalanceGbp;
+        $this->BalanceGbp = $BalanceGbp;
 
         return $this;
     }

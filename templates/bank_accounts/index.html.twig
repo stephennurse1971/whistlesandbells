@@ -4,27 +4,31 @@
 
 {% block body %}
     <h1 style="color: red">Bank Accounts</h1>
-
+    <a class="btn btn-success btn-sm" href="{{ path('bank_accounts_new') }}">New</a>
+    <a class="btn btn-outline-primary btn-sm" target="_blank" href="{{ path('bank_balances_index') }}">Bank
+        Balances</a>
+    <br>
     <table class="table table-responsive">
         <thead>
-            <tr>
-                <th>Bank</th>
-                <th>#</th>
-            </tr>
+        <tr>
+            <th>Bank</th>
+            <th>#</th>
+        </tr>
         </thead>
         <tbody>
         {% for bank_account in bank_accounts %}
             <tr>
                 <td>{{ bank_account.bank }}</td>
                 <td>
-                    <a class="btn btn-outline-danger btn-sm" href="{{ path('bank_accounts_edit', {'id': bank_account.id}) }}">Edit</a>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('bank_accounts_edit', {'id': bank_account.id}) }}">Edit</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('bank_accounts_new') }}">New</a>
+
 {% endblock %}
 
 {% block datatable %}

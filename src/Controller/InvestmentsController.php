@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Investments;
 use App\Entity\TaxYear;
 use App\Entity\UkDays;
+use App\Repository\BankBalancesRepository;
+use App\Repository\LoansBondsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Form\InvestmentsType;
 use App\Repository\AssetClassesRepository;
@@ -73,12 +75,17 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/index/economic/{subset}", name="investments_economic_index", methods={"GET"})
      */
-    public function indexEconomic(Request $request, string $subset, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
+    public function indexEconomic(Request                         $request, string $subset, InvestmentsRepository $investmentsRepository,
+                                  InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository,
+                                  FxRatesRepository               $fxRatesRepository, BankBalancesRepository $bankBalancesRepository,
+                                  LoansBondsRepository            $loansBondsRepository): Response
     {
+        $loansBonds = $loansBondsRepository->findAll();
+        $bankAccounts = $bankBalancesRepository->findAll();
         $investmentsSold = [];
         $all_investments = $investmentsRepository->findAll();
         foreach ($all_investments as $investment) {
-            if ($investment->getInvestmentSaleDate() != null){
+            if ($investment->getInvestmentSaleDate() != null) {
                 $investmentsSold[] = $investment;
             }
         }
@@ -95,6 +102,8 @@ class InvestmentsController extends AbstractController
         }
 
         return $this->render('investments/indexEconomicView.html.twig', [
+            'loanBonds'=>$loansBonds,
+            'bankAccounts'=>$bankAccounts,
             'investments' => $investments,
             'asset_classes' => $assetClassesRepository->findAll(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
@@ -115,7 +124,7 @@ class InvestmentsController extends AbstractController
         $investments = [];
         $all_investments = $investmentsRepository->findAll();
         foreach ($all_investments as $investment) {
-            if ($investment->getTaxScheme()->getIncludeTaxSummary() == 1) {
+            if ($investment->getAssetClass()->getTaxScheme()->getIncludeTaxSummary() == 1) {
                 $investments[] = $investment;
             }
         }

@@ -20,7 +20,7 @@
             {% set totalLossDeductibleAgainstIncome = 0 %}
             {% for investment in investmentsAll %}
                 {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  investment.lossDeductibleAgainstIncome %}
-                {% if investment.investmentCompany.assetClass.assetClass == asset_class.assetClass %}
+                {% if investment.assetClass.assetClass == asset_class.assetClass %}
                     {% set FXEffect =1 %}
                     {% set InitialFXRate =1 %}
                     {% set CurrentFXRate =1 %}

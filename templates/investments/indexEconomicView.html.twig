@@ -29,16 +29,29 @@
             <th style="text-align: right">MTM or<br>Gain/Loss<br>Crystallised(£)</th>
             <th style="text-align: right">PV (Local)</th>
             <th style="text-align: right;border-right:1px solid black">PV (£)</th>
-            <th style="text-align: right;border-right:1px solid black">xx</th>
-            <th style="text-align: right;border-right:1px solid black">xx</th>
+            <th>Sale</th>
+            <th style="text-align: right;border-right:1px solid black">CGT</th>
         </tr>
         </thead>
+
+
         <tbody>
         {% set TaxSubsidyPurchase_Total = 0 %}
         {% set MTM_Total = 0 %}
         {% set PV_Total = 0 %}
         {% set CGT_Total = 0 %}
         {% set totalLossDeductibleAgainstIncome = 0 %}
+
+
+
+        {% for bankAccount in bankAccounts %}
+{#            {% include 'investments/parts/economic/investments_economic_body.html.twig' %}#}
+        {% endfor %}
+        {% for loanBond in loanBonds %}
+
+        {% endfor %}
+
+
         {% for investment in investments %}
             {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  investment.lossDeductibleAgainstIncome %}
             {% if 1 == 1 %}

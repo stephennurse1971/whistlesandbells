@@ -4,49 +4,67 @@
 
 {% block body %}
     <h1 style="color: red">Bank Balances</h1>
-    <table class="table table-responsive">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>Bank</th>
-            <th>GBP</th>
-            <th>USD</th>
-            <th>EUR</th>
-            <th>CHF</th>
-            <th>#</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for bank_balance in bank_balances %}
-            <tr>
-                <td data-sort="{{ bank_balance.date|date('Y-m-d') }}">
-                    {{ bank_balance.date|date('d-M-y') }}
-                </td>
-                <td>
-                    {{ bank_balance.bank.bank }}
-                </td>
-                <td style="text-align: right">
-                    {{ bank_balance.BalanceGbp|number_format(2, '.', ',') }}
-                </td>
-                <td style="text-align: right">
-                    {{ bank_balance.BalanceUsd|number_format(2, '.', ',') }}
-                </td>
-                <td style="text-align: right">
-                    {{ bank_balance.BalanceEur|number_format(2, '.', ',') }}
-                </td>
-                <td style="text-align: right">
-                    {{ bank_balance.BalanceChf|number_format(2, '.', ',') }}
-                </td>
-                <td>
-                    <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('bank_balances_edit', {'id': bank_balance.id}) }}">Edit</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
     <a class="btn btn-success btn-sm" href="{{ path('bank_balances_new') }}">New</a>
+    {% for bank_account in bank_accounts %}
+        <br>
+        <h2 style="color: blue">{{ bank_account.bank }}</h2>
+
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th style="width: 150px">Bank</th>
+                <th style="width: 70px; text-align: right">
+                    GBP
+                </th>
+                <th style="width: 70px; text-align: right">
+                    USD
+                </th>
+                <th style="width: 70px; text-align: right">
+                    EUR
+                </th>
+                <th style="width: 70px; text-align: right">
+                    CHF
+                </th>
+                <th>
+                    #
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for bank_balance in bank_balances %}
+                {% if bank_balance.bank.bank == bank_account.bank %}
+                    <tr>
+                        <td data-sort="{{ bank_balance.date|date('Y-m-d') }}">
+                            {{ bank_balance.date|date('d-M-y') }}
+                        </td>
+                        <td>
+                            {{ bank_balance.bank.bank }}
+                        </td>
+                        <td style="text-align: right">
+                            {{ bank_balance.BalanceGbp|number_format(2, '.', ',') }}
+                        </td>
+                        <td style="text-align: right">
+                            {{ bank_balance.BalanceUsd|number_format(2, '.', ',') }}
+                        </td>
+                        <td style="text-align: right">
+                            {{ bank_balance.BalanceEur|number_format(2, '.', ',') }}
+                        </td>
+                        <td style="text-align: right">
+                            {{ bank_balance.BalanceChf|number_format(2, '.', ',') }}
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-danger btn-sm"
+                               href="{{ path('bank_balances_edit', {'id': bank_balance.id}) }}">Edit</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+
 {% endblock %}
 
 {% block datatable %}
@@ -54,7 +72,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc'], [1, 'asc']],
+                "order": [[1, 'asc'], [0, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
