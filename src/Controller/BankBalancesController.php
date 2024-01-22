@@ -7,6 +7,7 @@ use App\Entity\BankBalances;
 use App\Form\BankBalancesType;
 use App\Repository\BankAccountsRepository;
 use App\Repository\BankBalancesRepository;
+use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +21,13 @@ class BankBalancesController extends AbstractController
     /**
      * @Route("/", name="bank_balances_index", methods={"GET"})
      */
-    public function index(BankBalancesRepository $bankBalancesRepository, BankAccountsRepository $bankAccountsRepository): Response
+    public function index(BankBalancesRepository $bankBalancesRepository, BankAccountsRepository $bankAccountsRepository, SettingsRepository $settingsRepository): Response
     {
+        $settings= $settingsRepository->find('1');
         return $this->render('bank_balances/index.html.twig', [
             'bank_accounts' => $bankAccountsRepository->findAll(),
             'bank_balances' => $bankBalancesRepository->findAll(),
+            'settings'=>$settings
         ]);
     }
 

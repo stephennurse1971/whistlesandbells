@@ -6,6 +6,7 @@ use App\Entity\MarketData;
 use App\Form\MarketDataType;
 use App\Repository\AssetClassesRepository;
 use App\Repository\MarketDataRepository;
+use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,11 +23,13 @@ class MarketDataController extends AbstractController
      * @Route("/", name="market_data_index", methods={"GET"})
      * @IsGranted("ROLE_ACCOUNTANT")
      */
-    public function index(MarketDataRepository $marketDataRepository, AssetClassesRepository $assetClassesRepository): Response
+    public function index(MarketDataRepository $marketDataRepository, AssetClassesRepository $assetClassesRepository, SettingsRepository $settingsRepository): Response
     {
+        $settings=$settingsRepository->find('1');
         return $this->render('market_data/index.html.twig', [
             'market_datas' => $marketDataRepository->findAll(),
             'asset_classes' => $assetClassesRepository->findAll(),
+            'settings'=>$settings
         ]);
     }
 

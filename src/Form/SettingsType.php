@@ -19,6 +19,11 @@ class SettingsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
             ])
+            ->add('investmentDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
+                'label' => 'Investment "As of" Date',
+                'required' => false,
+                'widget' => 'single_text',
+            ])
         ;
     }
 

@@ -27,6 +27,11 @@ class Settings
      */
     private $flightStatsStartDate;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $investmentDate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Settings
     public function setFlightStatsStartDate(?\DateTimeInterface $flightStatsStartDate): self
     {
         $this->flightStatsStartDate = $flightStatsStartDate;
+
+        return $this;
+    }
+
+    public function getInvestmentDate(): ?\DateTimeInterface
+    {
+        return $this->investmentDate;
+    }
+
+    public function setInvestmentDate(?\DateTimeInterface $investmentDate): self
+    {
+        $this->investmentDate = $investmentDate;
 
         return $this;
     }

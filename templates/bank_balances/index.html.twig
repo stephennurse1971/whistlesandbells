@@ -5,7 +5,16 @@
 {% block body %}
     <h1 style="color: red">Bank Balances</h1>
 
-    <a class="btn btn-success btn-sm" href="{{ path('bank_balances_new') }}">New</a>
+    <div class="row">
+        <div class="col-3">
+            <a class="btn btn-success btn-sm" href="{{ path('bank_balances_new') }}">New</a>
+        </div>
+
+        <div class="col-3">
+            {% include 'market_data/parts/investmentAsOfDate.html.twig' %}
+        </div>
+    </div>
+
     {% for bank_account in bank_accounts %}
         <br>
         <h2 style="color: blue">{{ bank_account.bank }}</h2>

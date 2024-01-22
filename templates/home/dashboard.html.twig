@@ -84,23 +84,18 @@
                 <h2 style="color: red">CV</h2>
                 <ul><a target="_blank" href="{{ path('curriculum_vitae_index') }}">CV - Segments</a></ul>
             </div>
+        </div>
+        <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">Flights</h2>
                 <ul><a target="_blank" href="{{ path('flight_destinations_index') }}">Flights Destinations</a></ul>
                 <ul><a target="_blank" href="{{ path('flight_stats_index') }}">Flights (Kayak)</a></ul>
-                <ul><a target="_blank" href="{{ path('settings_index') }}">Settings</a></ul>
+
             </div>
         </div>
 
 
         <div class="col-12 col-md-2">
-            <div class="border py-4">
-                <h3 style="color: red">CMS</h3>
-                <ul><a target="_blank" href="{{ path('static_text_index') }}">Static Text</a></ul>
-                <ul><a target="_blank" href="{{ path('cms_copy_index') }}">Copy</a></ul>
-                <ul><a target="_blank" href="{{ path('cms_photo_index') }}">Photos</a></ul>
-            </div>
-
             <div class="border py-4">
                 <h3 style="color: red">Photos</h3>
                 <ul><a target="_blank" href="{{ path('country_index') }}">Countries</a></ul>
@@ -108,7 +103,12 @@
                         locations</a></ul>
             </div>
         </div>
+    </div>
 
+    <br>
+    <hr><br>
+
+    <div class="row">
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">Tax</h2>
@@ -116,6 +116,7 @@
                 <ul><a href="{{ path('tax_schemes_index') }}">Tax Schemes</a></ul>
             </div>
         </div>
+
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">Market Data</h2>
@@ -128,6 +129,16 @@
                 <ul><a href="{{ path('loans_bonds_index') }}">Loans</a></ul>
             </div>
         </div>
+        <div class="col-12 col-md-2">
+            <div class="border py-4">
+                <h3 style="color: red">Settings</h3>
+                <ul><a target="_blank" href="{{ path('static_text_index') }}">CMS: Static Text</a></ul>
+                <ul><a target="_blank" href="{{ path('cms_copy_index') }}">CMS: Copy</a></ul>
+                <ul><a target="_blank" href="{{ path('cms_photo_index') }}">CMS: Photos</a></ul>
+                <ul><a target="_blank" href="{{ path('settings_index') }}">Settings</a></ul>
+            </div>
+        </div>
+
     </div>
 
 

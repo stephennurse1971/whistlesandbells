@@ -16,7 +16,6 @@ class MarketDataType extends AbstractType
     {
         $builder
             ->add('shareCompany')
-            ->add('sharePrice')
             ->add('companiesHouse')
             ->add('weblink')
             ->add('login')

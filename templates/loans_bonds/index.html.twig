@@ -5,6 +5,16 @@
 {% block body %}
     <h1 style="color: red">Loans/Bonds</h1>
 
+    <div class="row">
+        <div class="col-3">
+            <a class="btn btn-success btn-sm" href="{{ path('loans_bonds_new') }}">New</a>
+        </div>
+
+        <div class="col-3">
+            {% include 'market_data/parts/investmentAsOfDate.html.twig' %}
+        </div>
+    </div>
+
     <table class="table table-responsive">
         <thead>
         <tr>
@@ -49,7 +59,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <a class="btn btn-success btn-sm" href="{{ path('loans_bonds_new') }}">New</a>
+
 {% endblock %}
 
 {% block datatable %}

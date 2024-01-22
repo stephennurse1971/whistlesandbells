@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\LoansBonds;
 use App\Form\LoansBondsType;
 use App\Repository\LoansBondsRepository;
+use App\Repository\SettingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +19,12 @@ class LoansBondsController extends AbstractController
     /**
      * @Route("/", name="loans_bonds_index", methods={"GET"})
      */
-    public function index(LoansBondsRepository $loansBondsRepository): Response
+    public function index(LoansBondsRepository $loansBondsRepository, SettingsRepository $settingsRepository): Response
     {
+        $settings= $settingsRepository->find('1');
         return $this->render('loans_bonds/index.html.twig', [
             'loans_bonds' => $loansBondsRepository->findAll(),
+            'settings'=>$settings
         ]);
     }
 

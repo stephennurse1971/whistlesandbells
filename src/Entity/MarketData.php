@@ -17,10 +17,7 @@ class MarketData
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $sharePrice;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -74,17 +71,7 @@ class MarketData
         return $this->id;
     }
 
-    public function getSharePrice(): ?float
-    {
-        return $this->sharePrice;
-    }
 
-    public function setSharePrice(?float $sharePrice): self
-    {
-        $this->sharePrice = $sharePrice;
-
-        return $this;
-    }
 
     public function getShareCompany(): ?string
     {
