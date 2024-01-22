@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Asset Classes{% endblock %}
+{% block title %}Edit: {{ asset_class.assetClass }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit Asset Classes</h1>
+    <h1 style="color: red">Edit: {{ asset_class.assetClass}}</h1>
 
     {{ include('asset_classes/_form.html.twig', {'button_label': 'Update'}) }}
 
