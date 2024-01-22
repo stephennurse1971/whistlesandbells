@@ -9,4 +9,5 @@ twig:
         UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
         TaxYearCalcs: '@App\Services\TaxYearCalcs'
         MarketDataPrice: '@App\Services\MarketDataPrice'
+        LatestBankBalance: '@App\Services\LatestBankBalance'
 

@@ -1,3 +1,5 @@
-As Of Date: <a target="_blank"
-               href="{{ path('settings_edit', {id:'1'}) }}">{{ settings.investmentDate|date('d-M-Y') }}</a>
-<a class="btn btn-outline-info btn-sm" href="{{ path('app_home') }}">Today</a>
+<b>As Of Date:</b> {{ settings.investmentDate|date('d-M-Y') }}
+<a target="_blank" href="{{ path('settings_edit', {id:'1'}) }}">
+<i class="fa fa-calendar"></i>
+</a>
+<a class="btn btn-outline-info btn-sm" href="{{ path('asOfDate/set_to_today') }}">Today</a>

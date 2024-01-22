@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Settings;
 use App\Form\SettingsType;
 use App\Repository\SettingsRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,11 +82,24 @@ class SettingsController extends AbstractController
     }
 
     /**
+     * @Route("/asOfDate/set_to_today", name="asOfDate/set_to_today", methods={"GET","POST"})
+     */
+    public function setAsOfDateToday(Request $request, Settings $settings, EntityManager $entityManager): Response
+    {
+        $referer = $request->headers->get('referer');
+        $now = new \DateTime('now');
+        $settings->setInvestmentDate($now);
+        $entityManager->persist($settings);
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
      * @Route("/{id}", name="settings_delete", methods={"POST"})
      */
     public function delete(Request $request, Settings $setting): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$setting->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $setting->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($setting);
             $entityManager->flush();

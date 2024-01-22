@@ -11,18 +11,11 @@
     <a title="FX Rates" target="_blank" href="{{ path('fx_rates_index') }}"><i class="fas fa-euro-sign"></i></a>
 </div>
 
-<div>
+<div class="col-2">
     {% include 'market_data/parts/investmentAsOfDate.html.twig' %}
 </div>
 
 
-<div class="col-3">
-    <a class="btn btn-outline-primary btn-sm" href="{{ path('investments_economic_index', {'subset':'All'}) }}">All </a>
-    <a class="btn btn-outline-primary btn-sm"
-       href="{{ path('investments_economic_index', {'subset':'Active'}) }}">Active </a>
-    <a class="btn btn-outline-primary btn-sm"
-       href="{{ path('investments_economic_index', {'subset':'Sold'}) }}">Sold</a>
-</div>
 
 <div class="col-3">
     {% if grouping == "Tax Details - Aggregated" %}

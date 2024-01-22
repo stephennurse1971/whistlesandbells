@@ -35,10 +35,12 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/index/tax/{grouping}", name="investments_tax_view_index", methods={"GET"})
      */
-    public function index(string $grouping, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository): Response
+    public function index(string $grouping, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository, SettingsRepository $settingsRepository): Response
     {
+        $settings = $settingsRepository->find('1');
         if ($grouping == 'Tax Details - Aggregated') {
             return $this->render('investments/indexAggregated.html.twig', [
+                'settings' => $settings,
                 'investmentsCurrent' => $investmentsRepository->findBy([
                     'investmentSaleDate' => null
                 ]),
@@ -55,6 +57,7 @@ class InvestmentsController extends AbstractController
         }
         if ($grouping == 'Tax Details - By Asset Class') {
             return $this->render('investments/indexByAssetClass.html.twig', [
+                'settings' => $settings,
                 'investmentsCurrent' => $investmentsRepository->findBy([
                     'investmentSaleDate' => null
                 ]),
@@ -76,15 +79,9 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/index/economic/{subset}", name="investments_economic_index", methods={"GET"})
      */
-    public function indexEconomic(Request                         $request, string $subset, InvestmentsRepository $investmentsRepository,
-                                  InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository,
-                                  FxRatesRepository               $fxRatesRepository, BankBalancesRepository $bankBalancesRepository,
-                                  LoansBondsRepository            $loansBondsRepository,
-    SettingsRepository $settingsRepository
-
-    ): Response
+    public function indexEconomic(Request $request, string $subset, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository, BankBalancesRepository $bankBalancesRepository, LoansBondsRepository $loansBondsRepository, SettingsRepository $settingsRepository): Response
     {
-        $settings =$settingsRepository->find('1');
+        $settings = $settingsRepository->find('1');
         $loansBonds = $loansBondsRepository->findAll();
         $bankAccounts = $bankBalancesRepository->findAll();
         $investmentsSold = [];
@@ -107,9 +104,9 @@ class InvestmentsController extends AbstractController
         }
 
         return $this->render('investments/indexEconomicView.html.twig', [
-            'settings'=>$settings,
-            'loanBonds'=>$loansBonds,
-            'bankAccounts'=>$bankAccounts,
+            'settings' => $settings,
+            'loanBonds' => $loansBonds,
+            'bankAccounts' => $bankAccounts,
             'investments' => $investments,
             'asset_classes' => $assetClassesRepository->findAll(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
@@ -134,7 +131,6 @@ class InvestmentsController extends AbstractController
                 $investments[] = $investment;
             }
         }
-
         return $this->render('investments/taxConsequencesInvestmentindex.html.twig', [
             'taxinputs' => $taxInputsRepository->findAll(),
             'investments' => $investments,

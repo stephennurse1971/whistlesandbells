@@ -34,9 +34,7 @@
                 <ul>
                     <a target="_blank" href="{{ path('user_birthdays') }}">Birthdays</a>
                 </ul>
-                <ul>
-                    <a target="_blank" href="{{ path('log_index') }}">User log</a>
-                </ul>
+
             </div>
         </div>
 
@@ -45,27 +43,23 @@
             <div class="border py-4">
                 <h2 style="color: red">Recruiters</h2>
                 <ul>
-                    <a target="_blank" href="{{ path('user_index_recruiters_high_priority') }}">High
-                        Priority</a>
+                    <a target="_blank" href="{{ path('user_index_recruiters_high_priority') }}">Priority:: High</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('user_index_recruiters_later') }}">Medium
-                        Priority</a>
+                    <a target="_blank" href="{{ path('user_index_recruiters_later') }}">Priority:: Medium</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('user_index_recruiters_low_priority') }}">Low
-                        Priority</a>
+                    <a target="_blank" href="{{ path('user_index_recruiters_low_priority') }}">Priority:: Low</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('user_index_recruiters_uncategorised') }}">Uncategorised</a>
+                    <a target="_blank" href="{{ path('user_index_recruiters_uncategorised') }}">Priority: TBD</a>
                 </ul>
                 <hr>
                 <ul>
                     <a target="_blank" href="{{ path('introduction_index') }}">Email Templates</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('introduction_segment_index') }}">Email Templates
-                        (Country Add-on)</a>
+                    <a target="_blank" href="{{ path('introduction_segment_index') }}"> :: Country Add-ons</a>
                 </ul>
                 <ul>
                     <a target="_blank" href="{{ path('recruiter_emails_index') }}">Emails Sent</a>
@@ -89,7 +83,7 @@
             <div class="border py-4">
                 <h2 style="color: red">Flights</h2>
                 <ul><a target="_blank" href="{{ path('flight_destinations_index') }}">Flights Destinations</a></ul>
-                <ul><a target="_blank" href="{{ path('flight_stats_index') }}">Flights (Kayak)</a></ul>
+                <ul><a target="_blank" href="{{ path('flight_stats_index') }}">Flights</a></ul>
 
             </div>
         </div>
@@ -98,9 +92,8 @@
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h3 style="color: red">Photos</h3>
+                <ul><a target="_blank" href="{{ path('photo_locations_index') }}">Photo Locations</a></ul>
                 <ul><a target="_blank" href="{{ path('country_index') }}">Countries</a></ul>
-                <ul><a target="_blank" href="{{ path('photo_locations_index') }}">Photo
-                        locations</a></ul>
             </div>
         </div>
     </div>
@@ -109,20 +102,23 @@
     <hr><br>
 
     <div class="row">
-        <div class="col-12 col-md-2">
-            <div class="border py-4">
-                <h2 style="color: red">Tax</h2>
-                <ul><a href="{{ path('tax_year_index') }}">Tax Years & Bands</a></ul>
-                <ul><a href="{{ path('tax_schemes_index') }}">Tax Schemes</a></ul>
-            </div>
-        </div>
+
 
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">Investments</h2>
-                <ul><a href="{{ path('investments_economic_index', {subset:'All'}) }}">Economic View</a></ul>
+                <ul><a href="{{ path('investments_economic_index', {subset:'All'}) }}">Economic Summary</a></ul>
                 <ul><a href="{{ path('loans_bonds_index') }}">Loan MTMs</a></ul>
                 <ul><a href="{{ path('bank_balances_index') }}">Bank Balances</a></ul>
+            </div>
+        </div>
+        <div class="col-12 col-md-2">
+            <div class="border py-4">
+                <h2 style="color: red">Tax view</h2>
+                <ul><a href="{{ path('investments_tax_view_index', {'grouping': 'Tax Details - By Asset Class'}) }}">Tax
+                        Details: By Asset Class</a></ul>
+                <ul><a href="{{ path('investments_tax_view_index', {'grouping': 'Tax Details - Aggregated'}) }}">Tax
+                        Details: Aggregated</a></ul>
             </div>
         </div>
         <div class="col-12 col-md-2">
@@ -131,12 +127,18 @@
                 <ul><a href="{{ path('market_data_history_index') }}">Historical Shares Prices</a></ul>
                 <ul><a href="{{ path('fx_rates_index') }}">Current FX Rates</a></ul>
                 <ul><a href="{{ path('fx_rates_history_index') }}">Historical FX Rates</a></ul>
-                <br>
+            </div>
+        </div>
+        <div class="col-12 col-md-2">
+            <div class="border py-4">
                 <h2 style="color: red">SetUp</h2>
                 <ul><a href="{{ path('asset_classes_index') }}">Asset Classes</a></ul>
+                <ul><a href="{{ path('tax_schemes_index') }}">Tax Schemes</a></ul>
+                <ul><a href="{{ path('tax_year_index') }}">Tax Years & Bands</a></ul>
                 <ul><a href="{{ path('bank_accounts_index') }}">Bank Accounts</a></ul>
             </div>
         </div>
+
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h3 style="color: red">System settings</h3>
@@ -144,6 +146,7 @@
                 <ul><a target="_blank" href="{{ path('cms_copy_index') }}">CMS: Copy</a></ul>
                 <ul><a target="_blank" href="{{ path('cms_photo_index') }}">CMS: Photos</a></ul>
                 <ul><a target="_blank" href="{{ path('settings_index') }}">Settings</a></ul>
+                <ul><a target="_blank" href="{{ path('log_index') }}">User Log</a></ul>
             </div>
         </div>
 
