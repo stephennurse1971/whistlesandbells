@@ -6,6 +6,7 @@ use App\Entity\Settings;
 use App\Form\SettingsType;
 use App\Repository\SettingsRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,12 +85,13 @@ class SettingsController extends AbstractController
     /**
      * @Route("/asOfDate/set_to_today", name="asOfDate/set_to_today", methods={"GET","POST"})
      */
-    public function setAsOfDateToday(Request $request, Settings $settings, EntityManager $entityManager): Response
+    public function setAsOfDateToday(Request $request, SettingsRepository $settingsRepository, EntityManagerInterface $entityManager): Response
     {
         $referer = $request->headers->get('referer');
         $now = new \DateTime('now');
+        $settings = $settingsRepository->find('1');
         $settings->setInvestmentDate($now);
-        $entityManager->persist($settings);
+
         $entityManager->flush();
         return $this->redirect($referer);
     }

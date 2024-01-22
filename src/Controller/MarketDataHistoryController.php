@@ -8,6 +8,8 @@ use App\Form\MarketDataHistoryType;
 use App\Repository\MarketDataHistoryRepository;
 use App\Repository\MarketDataRepository;
 use App\Services\MarketDataPrice;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +25,12 @@ class MarketDataHistoryController extends AbstractController
      */
     public function index(MarketDataHistoryRepository $marketDataHistoryRepository, MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice): Response
     {
-        $securities=$marketDataRepository->findAll();
+        $securities=[];
+        foreach($marketDataRepository->findAll() as $relevantInvestment){
+            if($relevantInvestment->getAssetClass()->getIncludeInStandardInvestmentForm()==1){
+                $securities[]=$relevantInvestment;
+            }
+        }
         $marketDataHistory=$marketDataHistoryRepository->findAll();
         $today = new \DateTime('now');
         $dates=[];
@@ -34,14 +41,11 @@ class MarketDataHistoryController extends AbstractController
             $dates[] = new \DateTime($end_date->format('Y-m-d')) ;
             $end_date->modify("+1 month");
         }
-
         return $this->render('market_data_history/index.html.twig', [
             'dates'=>$dates,
             'securities' => $securities,
             'market_data_histories' => $marketDataHistory,
             'today'=>$today
-
-
         ]);
     }
 

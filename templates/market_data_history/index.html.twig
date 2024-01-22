@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h1 style="color: red">Market Data History</h1>
+    <h1 style="color: red">Market Data History xxx </h1>
     <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a><br>
 
     <table class="table">
@@ -14,26 +14,28 @@
             {% for security in securities|sort((a,b)=>a.assetClass.assetclass<=>b.assetClass.assetclass) %}
                 <th title="{{ security.assetClass.assetClass }}"
                     style="width: 50px; background-color: whitesmoke; border-bottom: 1px; border-right: 1px dotted">
-                <a target="_blank" href="{{ path('market_data_edit', {id:security.id}) }}">    {{ security.shareCompany }} [{{ security.assetClass.assetclass}}]</a>
+                    <a target="_blank"
+                       href="{{ path('market_data_edit', {id:security.id}) }}">    {{ security.shareCompany }}
+                        [{{ security.assetClass.assetclass }}]</a>
                 </th>
             {% endfor %}
         </tr>
         </thead>
 
         <tbody>
-
-
         {% for date in dates %}
             <tr>
                 <td style="border-right: 1px solid" data-sort="{{ date|date('Y-m-d') }}"> {{ date|date('d-M-y') }}</td>
-                {% for security in securities %}
+                {% for security in securities|sort((a,b)=>a.assetClass.assetclass<=>b.assetClass.assetclass) %}
                     {% if MarketDataPrice.findReal(date,security) %}
                         <td style="border-right: 1px dotted; text-align: center; background-color: lightyellow">
-                        <a target="_blank" href="{{path('market_data_history_edit', {id:MarketDataPrice.findMarketPrice(date, security).id })  }}">  {{ MarketDataPrice.findMarketPrice(date, security).marketPrice }}</a>
+                        <a target="_blank"
+                           href="{{ path('market_data_history_edit', {id:MarketDataPrice.findMarketPrice(date, security).id }) }}">  {{ MarketDataPrice.findMarketPrice(date, security).marketPrice }}</a>
                     {% else %}
                         <td style="border-right: 1px dotted; text-align: center">
                         {{ MarketDataPrice.findMarketPrice(date, security) }}
-                        <a target="_blank" href="{{path('market_data_history_new',{'securitiesID':security.id, 'date':date|date('Y-m-d')})  }}">+</a>
+                        <a target="_blank"
+                           href="{{ path('market_data_history_new',{'securitiesID':security.id, 'date':date|date('Y-m-d')}) }}">+</a>
                     {% endif %}
                     </td>
                 {% endfor %}

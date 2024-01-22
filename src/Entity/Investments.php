@@ -64,9 +64,6 @@ class Investments
      */
     private $EISPurchaseYear2Percentage;
 
-
-
-
     /**
      * @ORM\Column(type="float", nullable=true)
      */

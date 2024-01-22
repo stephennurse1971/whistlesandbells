@@ -14,14 +14,10 @@
         {% endif %}
     </td>
     <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center">
-        {% if investment.investmentCompany.assetSold ==1 %}
-            {% if investment.investmentSaleDate is null or investment.saleSharePrice is null %}
-                <i style="color: orange" class="fa fa fa-question-circle"></i>
-            {% else %}
-                <i style="color: red" class="fa fa fa-remove"></i>
-            {% endif %}
+        {% if investment.investmentSaleDate is null or investment.saleSharePrice is null %}
+            <i style="color: orange" class="fa fa fa-question-circle"></i>
         {% else %}
-            <i style="color: green" class="fa fa fa-check"></i>
+            <i style="color: red" class="fa fa fa-remove"></i>
         {% endif %}
     </td>
 
@@ -133,15 +129,15 @@
     </td>
 
     <!-- Share price now or sold -->
-    <td style="text-align: right"
-        title="{{ investment.investmentCompany.sharePrice|number_format('0') }}">
+    <td style="text-align: right">
         {% if investment.assetClass.taxScheme is not null %}
             {% if investment.assetClass.updatedPriceAvailable == 1 %}
                 {% if investment.investmentSaleDate is null %}
                     {% if investment.numberOfShares >0 %}
                         <a target="_blank"
                            href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
-                            {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}</a>
+{#                            {{ investment.investmentCompany.sharePrice | number_format (2, '.') }}#}
+                        </a>
                     {% else %}
                         <a target="_blank"
                            href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
@@ -168,13 +164,13 @@
             {% else %}
                 {% if investment.currency.fx == "GBP" %}
                     {% if investment.investmentSaleDate is empty %}
-                        {% set MTM = ((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+{#                        {% set MTM = ((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}#}
                     {% else %}
                         {% set MTM = ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
                     {% endif %}
                 {% else %}
                     {% if investment.investmentSaleDate is empty %}
-                        {% set MTM = (((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
+{#                        {% set MTM = (((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}#}
                     {% else %}
                         {% set MTM = 0 %}
                         {% set MTM = (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
@@ -192,7 +188,7 @@
         {% if investment.investmentSaleDate is not null %}
             {% set PV = 0 %}
         {% else %}
-            {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice %}
+{#            {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice %}#}
         {% endif %}
         {{ PV |number_format ('0') }}
     </td>
@@ -203,7 +199,7 @@
         {% if investment.investmentSaleDate is not null %}
             {% set PV = 0 %}
         {% else %}
-            {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice/ CurrentFXRate %}
+{#            {% set PV = investment.investmentAmount * investment.investmentCompany.sharePrice/investment.purchaseSharePrice/ CurrentFXRate %}#}
         {% endif %}
         {{ PV |number_format ('0') }}
         {% set PV_Total = PV_Total + PV %}

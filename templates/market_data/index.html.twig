@@ -21,8 +21,10 @@
     </div>
 </div>
 
-    {% for asset_class in asset_classes %}
-        <h2>{{ asset_class.assetClass }}
+{#    {% for assetClass in assetClasses  %}#}
+    {% for assetClass in assetClasses |sort((a,b)=>a.assetClass<=>b.assetClass) %}
+
+        <h2>{{ assetClass.assetClass }}
             <a target="_blank" href="{{ path('asset_classes_index') }}">+</a>
         </h2>
         <table class="table table-responsive">
@@ -39,51 +41,49 @@
             </tr>
             </thead>
             <tbody>
-            {% for market_data in market_datas %}
-                {% if market_data.assetClass.assetClass == asset_class.assetClass %}
-                    {% set weblink = 'https://find-and-update.company-information.service.gov.uk/company/'~market_data.companiesHouse %}
+            {% for marketData in marketDatas %}
+                {% if marketData.assetClass.assetClass == assetClass.assetClass %}
+                    {% set weblink = 'https://find-and-update.company-information.service.gov.uk/company/'~marketData.companiesHouse %}
                     <tr>
-
-
                         <td>
                             <a target="_blank"
-                               href="{{ path('market_data_edit', {'id': market_data.id}) }}">{{ market_data.shareCompany }}</a>
+                               href="{{ path('market_data_edit', {'id': marketData.id}) }}">{{ marketData.shareCompany }}</a>
                         </td>
                         <td style="text-align: right">
-                            Get from History
+                            {{MarketDataPrice.findMarketPrice(settings.investmentDate, marketData) }}
                         </td>
                         <td style="text-align: center">
-                            {% if market_data.weblink is not empty %}
-                                <a title="{{ market_data.weblink }}" target="_blank"
-                                   href="{{ market_data.weblink }}"><i class="fas fa-globe"
+                            {% if marketData.weblink is not empty %}
+                                <a title="{{ marketData.weblink }}" target="_blank"
+                                   href="{{ marketData.weblink }}"><i class="fas fa-globe"
                                                                        style="color:blue; text-align: center"></i></a>
                             {% endif %}
                         </td>
 
                         <td style="text-align: center">
-                            {% if market_data.companiesHouse != "NA" %}
+                            {% if marketData.companiesHouse != "NA" %}
                                 <a title={{ weblink }} target="_blank" href={{ weblink }}>
                                     <i class="fas fa-link" style="color:blue; text-align: center"></i></a>
                             {% endif %}
                         </td>
                         <td>
-                            {% if  market_data.investorSite is not empty %}
-                                {% if  market_data.investorSite starts with 'http' %}
-                                    {% set web =  market_data.investorSite %}
+                            {% if  marketData.investorSite is not empty %}
+                                {% if  marketData.investorSite starts with 'http' %}
+                                    {% set web =  marketData.investorSite %}
                                 {% else %}
-                                    {% set web = 'https://'~ market_data.investorSite %}
+                                    {% set web = 'https://'~ marketData.investorSite %}
                                 {% endif %}
-                                <a target="_blank" title="{{ market_data.investorSite }}" href="{{ web }}">
+                                <a target="_blank" title="{{ marketData.investorSite }}" href="{{ web }}">
                                     <i class="fas fa-globe"
                                        style="color:blue; text-align: center"></i></a>
                             {% endif %}
                         </td>
-                        <td>{{ market_data.login }}</td>
-                        <td>{{ market_data.password }}</td>
+                        <td>{{ marketData.login }}</td>
+                        <td>{{ marketData.password }}</td>
                         <td>
-                            {% if market_data.login is not null %}
+                            {% if marketData.login is not null %}
                                 <a class="btn btn-success btn-sm" target="_blank"
-                                   href="{{ market_data.investorSite }}">Login</a>
+                                   href="{{ marketData.investorSite }}">Login</a>
                             {% endif %}
                         </td>
                     </tr>

@@ -46,6 +46,7 @@ class InvestmentsController extends AbstractController
                 ]),
                 'investmentsAll' => $investmentsRepository->findAll(),
                 'investmentsSold' => $investmentsRepository->findByInvestmentSold(),
+
                 'asset_classes' => $assetClassesRepository->findAll(),
                 'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),
                 'fxRates' => $fxRatesRepository->findAll(),
@@ -211,7 +212,6 @@ class InvestmentsController extends AbstractController
                 $share_cert->move($share_cert_directory, $newFileName);
                 $investment->setShareCert($newFileName);
             }
-
             $eisCert = $form['eisCert']->getData();
             if ($eisCert) {
                 $eis_cert_directory = $this->getParameter('investments_attachment_directory');
@@ -253,7 +253,7 @@ class InvestmentsController extends AbstractController
             $entityManager->remove($investment);
             $entityManager->flush();
         }
-        return $this->redirect($referer);
+        return $this->redirectToRoute('investments_tax_view_index', ['grouping' => 'Tax Details - By Asset Class']);
     }
 
 

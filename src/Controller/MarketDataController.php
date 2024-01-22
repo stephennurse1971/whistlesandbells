@@ -7,6 +7,7 @@ use App\Form\MarketDataType;
 use App\Repository\AssetClassesRepository;
 use App\Repository\MarketDataRepository;
 use App\Repository\SettingsRepository;
+use App\Services\MarketDataPrice;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,12 +24,12 @@ class MarketDataController extends AbstractController
      * @Route("/", name="market_data_index", methods={"GET"})
      * @IsGranted("ROLE_ACCOUNTANT")
      */
-    public function index(MarketDataRepository $marketDataRepository, AssetClassesRepository $assetClassesRepository, SettingsRepository $settingsRepository): Response
+    public function index(MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice, AssetClassesRepository $assetClassesRepository, SettingsRepository $settingsRepository): Response
     {
         $settings=$settingsRepository->find('1');
         return $this->render('market_data/index.html.twig', [
-            'market_datas' => $marketDataRepository->findAll(),
-            'asset_classes' => $assetClassesRepository->findAll(),
+            'marketDatas' => $marketDataRepository->findAll(),
+            'assetClasses' => $assetClassesRepository->findAll(),
             'settings'=>$settings
         ]);
     }
@@ -57,7 +58,7 @@ class MarketDataController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="market_data_show", methods={"GET"})
+     * @Route("/show/{id}", name="market_data_show", methods={"GET"})
      */
     public function show(MarketData $marketDatum): Response
     {
@@ -67,7 +68,7 @@ class MarketDataController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="market_data_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="market_data_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, MarketData $marketData): Response
     {
@@ -87,7 +88,7 @@ class MarketDataController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="market_data_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="market_data_delete", methods={"POST"})
      */
     public function delete(Request $request, MarketData $marketDatum): Response
     {

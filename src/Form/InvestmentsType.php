@@ -11,6 +11,7 @@ use App\Entity\TaxSchemes;
 use App\Entity\TaxYear;
 use App\Repository\FxRatesRepository;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -76,7 +77,12 @@ class InvestmentsType extends AbstractType
                 'class' => AssetClasses::class,
                 'choice_label' => 'Asset Class',
                 'label' => 'Asset Class',
-                'required' => true
+                'required' => true,
+                'query_builder'=>function (EntityRepository $er):QueryBuilder {
+                    return $er->createQueryBuilder('u')
+                        ->where('u.includeInStandardInvestmentForm = 1')
+                        ->orderBy('u.assetClass', 'ASC');
+                },
             ])
             ->add('saleSharePrice')
             ->add('investmentSaleDate', DateType::class, [
