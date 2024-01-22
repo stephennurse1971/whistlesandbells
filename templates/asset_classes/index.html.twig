@@ -4,7 +4,9 @@
 
 {% block body %}
     <h1 style="color: red">Asset Classes</h1>
-
+<a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('investments_economic_index', {subset:'All'}) }}">Economic View</a>
+<a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_index') }}">Market Data</a>
+<a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index') }}">Market Data History</a>
     <table class="table table-responsive">
         <thead>
         <tr>

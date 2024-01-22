@@ -16,49 +16,65 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/market/data/history")
+ * @Route("/market_data_history")
  */
 class MarketDataHistoryController extends AbstractController
 {
     /**
-     * @Route("/", name="market_data_history_index", methods={"GET"})
+     * @Route("/index/{subset}", name="market_data_history_index", methods={"GET"})
      */
-    public function index(MarketDataHistoryRepository $marketDataHistoryRepository, MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice): Response
+    public function index(Request $request, $subset, MarketDataHistoryRepository $marketDataHistoryRepository, MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice): Response
     {
-        $securities=[];
-        foreach($marketDataRepository->findAll() as $relevantInvestment){
-            if($relevantInvestment->getAssetClass()->getIncludeInStandardInvestmentForm()==1){
-                $securities[]=$relevantInvestment;
+        $securities = [];
+        if ($subset = 'Active') {
+            $marketData = $marketDataRepository->findBy([
+                'isActive' => '1']);
+        }
+
+        elseif
+            ($subset = 'Sold') {
+            $marketData = $marketDataRepository->findBy([
+                'isActive' => '0']);
+        }
+        elseif
+            ($subset = 'All'){
+            $marketData = $marketDataRepository->findAll();
+        }
+
+
+        foreach ($marketData as $relevantInvestment) {
+            if ($relevantInvestment->getAssetClass()->getIncludeInStandardInvestmentForm() == 1) {
+                $securities[] = $relevantInvestment;
             }
         }
-        $marketDataHistory=$marketDataHistoryRepository->findAll();
+        $marketDataHistory = $marketDataHistoryRepository->findAll();
         $today = new \DateTime('now');
-        $dates=[];
+        $dates = [];
         $start_date = new \DateTime('now');
         $end_date = new \DateTime('now');
         $end_date->modify("-5 years");
-        while($end_date <= $start_date){
-            $dates[] = new \DateTime($end_date->format('Y-m-d')) ;
+        while ($end_date <= $start_date) {
+            $dates[] = new \DateTime($end_date->format('Y-m-d'));
             $end_date->modify("+1 month");
         }
         return $this->render('market_data_history/index.html.twig', [
-            'dates'=>$dates,
+            'dates' => $dates,
             'securities' => $securities,
             'market_data_histories' => $marketDataHistory,
-            'today'=>$today
+            'today' => $today,
+            'subset' => $subset
         ]);
     }
 
     /**
      * @Route("/new/{securitiesID}/{date}", name="market_data_history_new", methods={"GET", "POST"},defaults={"securitiesID"=null,"date"=null})
      */
-    public function new($securitiesID,$date,Request $request, MarketDataRepository $marketDataRepository,MarketDataHistoryRepository $marketDataHistoryRepository): Response
+    public function new($securitiesID, $date, Request $request, MarketDataRepository $marketDataRepository, MarketDataHistoryRepository $marketDataHistoryRepository): Response
     {
         $marketDataHistory = new MarketDataHistory();
-        if($securitiesID != null && $date != null){
-            $form = $this->createForm(MarketDataHistoryType::class, $marketDataHistory,['security'=>$marketDataRepository->find($securitiesID),'securities'=>$marketDataRepository->findBy(['id'=>$securitiesID]),'date'=>$date,'mode'=>'new']);
-        }
-        else{
+        if ($securitiesID != null && $date != null) {
+            $form = $this->createForm(MarketDataHistoryType::class, $marketDataHistory, ['security' => $marketDataRepository->find($securitiesID), 'securities' => $marketDataRepository->findBy(['id' => $securitiesID]), 'date' => $date, 'mode' => 'new']);
+        } else {
             $form = $this->createForm(MarketDataHistoryType::class, $marketDataHistory);
         }
         $form->handleRequest($request);
@@ -108,7 +124,7 @@ class MarketDataHistoryController extends AbstractController
      */
     public function delete(Request $request, MarketDataHistory $marketDataHistory, MarketDataHistoryRepository $marketDataHistoryRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$marketDataHistory->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $marketDataHistory->getId(), $request->request->get('_token'))) {
             $marketDataHistoryRepository->remove($marketDataHistory);
         }
 

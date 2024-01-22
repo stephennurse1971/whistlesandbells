@@ -65,6 +65,11 @@ class MarketData
      */
     private $assetClass;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isActive;
+
 
     public function getId(): ?int
     {
@@ -170,6 +175,18 @@ class MarketData
     public function setAssetClass(?AssetClasses $assetClass): self
     {
         $this->assetClass = $assetClass;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(?bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

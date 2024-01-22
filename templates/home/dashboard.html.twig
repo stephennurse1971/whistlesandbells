@@ -124,7 +124,7 @@
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">Market Data</h2>
-                <ul><a href="{{ path('market_data_history_index') }}">Historical Shares Prices</a></ul>
+                <ul><a href="{{ path('market_data_history_index', {subset: 'All'}) }}">Historical Shares Prices</a></ul>
                 <ul><a href="{{ path('fx_rates_index') }}">Current FX Rates</a></ul>
                 <ul><a href="{{ path('fx_rates_history_index') }}">Historical FX Rates</a></ul>
             </div>

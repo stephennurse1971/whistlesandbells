@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Market Data History{% endblock %}
+{% block title %}Market Data History: {{ subset }}{% endblock %}
 
 {% block body %}
 
-    <h1 style="color: red">Market Data History xxx </h1>
-    <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a><br>
+    <h1 style="color: red">Market Data History: {{ subset }} </h1>
+{#    <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a><br>#}
+
+    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index', {subset: 'All'}) }}">All</a></ul>
+    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index', {subset: 'Active'}) }}">Active</a></ul>
+    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index', {subset: 'Sold'}) }}">Sold</a></ul>
 
     <table class="table">
         <thead>
@@ -33,7 +37,7 @@
                            href="{{ path('market_data_history_edit', {id:MarketDataPrice.findMarketPrice(date, security).id }) }}">  {{ MarketDataPrice.findMarketPrice(date, security).marketPrice }}</a>
                     {% else %}
                         <td style="border-right: 1px dotted; text-align: center">
-                        {{ MarketDataPrice.findMarketPrice(date, security) }}
+                        {{ MarketDataPrice.findMarketPrice(date, security)|number_format(2, '.', ',') }}
                         <a target="_blank"
                            href="{{ path('market_data_history_new',{'securitiesID':security.id, 'date':date|date('Y-m-d')}) }}">+</a>
                     {% endif %}
