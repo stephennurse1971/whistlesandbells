@@ -7,6 +7,7 @@ use App\Entity\TaxYear;
 use App\Entity\UkDays;
 use App\Repository\BankBalancesRepository;
 use App\Repository\LoansBondsRepository;
+use App\Repository\SettingsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Form\InvestmentsType;
 use App\Repository\AssetClassesRepository;
@@ -78,8 +79,12 @@ class InvestmentsController extends AbstractController
     public function indexEconomic(Request                         $request, string $subset, InvestmentsRepository $investmentsRepository,
                                   InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository,
                                   FxRatesRepository               $fxRatesRepository, BankBalancesRepository $bankBalancesRepository,
-                                  LoansBondsRepository            $loansBondsRepository): Response
+                                  LoansBondsRepository            $loansBondsRepository,
+    SettingsRepository $settingsRepository
+
+    ): Response
     {
+        $settings =$settingsRepository->find('1');
         $loansBonds = $loansBondsRepository->findAll();
         $bankAccounts = $bankBalancesRepository->findAll();
         $investmentsSold = [];
@@ -102,6 +107,7 @@ class InvestmentsController extends AbstractController
         }
 
         return $this->render('investments/indexEconomicView.html.twig', [
+            'settings'=>$settings,
             'loanBonds'=>$loansBonds,
             'bankAccounts'=>$bankAccounts,
             'investments' => $investments,

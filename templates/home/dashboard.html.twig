@@ -119,19 +119,27 @@
 
         <div class="col-12 col-md-2">
             <div class="border py-4">
-                <h2 style="color: red">Market Data</h2>
-                <ul><a href="{{ path('asset_classes_index') }}">Asset Classes</a></ul>
-                <ul><a href="{{ path('fx_rates_index') }}">Current FX Rates</a></ul>
-                <ul><a href="{{ path('fx_rates_history_index') }}">Historical FX Rates</a></ul>
-                <ul><a href="{{ path('market_data_history_index') }}">Historical Shares Prices</a></ul>
-                <ul><a href="{{ path('bank_accounts_index') }}">Bank Accounts</a></ul>
+                <h2 style="color: red">Investments</h2>
+                <ul><a href="{{ path('investments_economic_index', {subset:'All'}) }}">Economic View</a></ul>
+                <ul><a href="{{ path('loans_bonds_index') }}">Loan MTMs</a></ul>
                 <ul><a href="{{ path('bank_balances_index') }}">Bank Balances</a></ul>
-                <ul><a href="{{ path('loans_bonds_index') }}">Loans</a></ul>
             </div>
         </div>
         <div class="col-12 col-md-2">
             <div class="border py-4">
-                <h3 style="color: red">Settings</h3>
+                <h2 style="color: red">Market Data</h2>
+                <ul><a href="{{ path('market_data_history_index') }}">Historical Shares Prices</a></ul>
+                <ul><a href="{{ path('fx_rates_index') }}">Current FX Rates</a></ul>
+                <ul><a href="{{ path('fx_rates_history_index') }}">Historical FX Rates</a></ul>
+                <br>
+                <h2 style="color: red">SetUp</h2>
+                <ul><a href="{{ path('asset_classes_index') }}">Asset Classes</a></ul>
+                <ul><a href="{{ path('bank_accounts_index') }}">Bank Accounts</a></ul>
+            </div>
+        </div>
+        <div class="col-12 col-md-2">
+            <div class="border py-4">
+                <h3 style="color: red">System settings</h3>
                 <ul><a target="_blank" href="{{ path('static_text_index') }}">CMS: Static Text</a></ul>
                 <ul><a target="_blank" href="{{ path('cms_copy_index') }}">CMS: Copy</a></ul>
                 <ul><a target="_blank" href="{{ path('cms_photo_index') }}">CMS: Photos</a></ul>
