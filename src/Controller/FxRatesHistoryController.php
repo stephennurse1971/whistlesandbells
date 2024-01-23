@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\FxRatesHistory;
 use App\Form\FxRatesHistoryType;
+use App\Repository\FlightDestinationsRepository;
+use App\Repository\FlightStatsRepository;
 use App\Repository\FxRatesHistoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,4 +85,24 @@ class FxRatesHistoryController extends AbstractController
 
         return $this->redirectToRoute('fx_rates_history_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    /**
+     * @Route("/delete/all", name="historic_fx_rates_delete_all", methods={"GET"})
+     */
+    public function deleteAll(Request $request, FxRatesHistoryRepository $fxRatesHistoryRepository): Response
+    {
+        $referer = $request->headers->get('referer');
+        $allFXRates = $fxRatesHistoryRepository->findAll();
+        foreach ($allFXRates as $FxRate) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($FxRate);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+
+
+
 }

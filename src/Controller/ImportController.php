@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Import;
 use App\Form\ImportType;
+use App\Repository\FxRatesHistoryRepository;
 use App\Repository\UserRepository;
 use App\Services\ChaveyDownImportService;
+use App\Services\FXRatesImportService;
 use App\Services\UserImportGrapevineService;
 use App\Services\UserImportOutlookService;
 use App\Services\UserImportService;
@@ -65,7 +67,44 @@ class ImportController extends AbstractController
             ]);
 
         }
-
         return $this->redirectToRoute('user_index');
     }
+
+
+    /**
+     * @Route("/import/FXRates", name="fx_rates_import")
+     */
+    public function fxRatesImport(Request $request, SluggerInterface $slugger, FXRatesImportService $fxRatesImportService,FxRatesHistoryRepository $fxRatesHistoryRepository): Response
+    {
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('File')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . 'csv';
+                try {
+                    $importFile->move(
+                        $this->getParameter('fx_attachments_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+
+                $fxRatesImportService->importFXRates($newFilename);
+                return $this->redirectToRoute('fx_rates_history_index');
+            }
+        }
+        return $this->render('admin/import/index.html.twig', [
+            'form' => $form->createView(),
+            'heading'=> 'FX Rates'
+        ]);
+
+
+
+    }
+
+
 }

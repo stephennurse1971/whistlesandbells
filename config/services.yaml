@@ -21,6 +21,7 @@ parameters:
     tourist_attraction_photos_directory: '%kernel.project_dir%/public/administration/attachments/TouristAttractionPhotos'
     temporary_attachment_directory: '%kernel.project_dir%/public/temporary/'
     user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
+    fx_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FXRates/'
     website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
     scraper: '%kernel.project_dir%/public/scrape/'
 
