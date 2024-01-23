@@ -101,8 +101,4 @@ class FxRatesHistoryController extends AbstractController
         }
         return $this->redirect($referer);
     }
-
-
-
-
 }

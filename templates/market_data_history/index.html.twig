@@ -6,8 +6,11 @@
 
     <h1 style="color: red">Market Data History: {{ subset }} </h1>
     <div class="row">
-        <div class="col-1">
-            <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a><br>
+        <div class="col-3">
+            <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('app_home') }}">Table View - All XXXX</a>
+{#            <a class="btn btn-success btn-sm" href="{{ path('market_data_history_index_table',{subset:'All', security: 'All'}) }}">Table</a><br>#}
+            <a class="btn btn-danger btn-sm" href="{{ path('historic_market_data_delete_all') }}">Delete All</a><br>
         </div>
         <div class="col-3">
             <a target="_blank" class="btn btn-outline-primary btn-sm"
@@ -20,16 +23,18 @@
     </div>
 
 
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th style="width: 90px; background-color: whitesmoke; border-bottom: 1px; border-right: 1px solid">Date</th>
             {% for security in securities|sort((a,b)=>a.assetClass.assetclass<=>b.assetClass.assetclass) %}
                 <th title="{{ security.assetClass.assetClass }}"
                     style="width: 50px; background-color: whitesmoke; border-bottom: 1px; border-right: 1px dotted">
-                    <a target="_blank"
-                       href="{{ path('market_data_edit', {id:security.id}) }}">    {{ security.shareCompany }}
-                        [{{ security.assetClass.assetclass }}]</a>
+                    <a target="_blank" href="{{ path('market_data_edit', {id:security.id}) }}">{{ security.shareCompany }}</a>
+                    <br>[{{ security.assetClass.assetclass }}]
+                <a class="btn btn-danger btn-sm" href="{{ path('app_home') }}">Delete XXXX</a>
+                <a class="btn btn-danger btn-sm" href="{{ path('app_home') }}">Table xxx</a>
+{#                <a class="btn btn-danger btn-sm" href="{{ path('market_data_history_index_table',{subset:'All', security: security}) }}">Table</a>#}
                 </th>
             {% endfor %}
         </tr>
@@ -38,7 +43,7 @@
         <tbody>
         {% for date in dates %}
             <tr>
-                <td style="border-right: 1px solid" data-sort="{{ date|date('Y-m-d') }}"> {{ date|date('d-M-y') }}</td>
+                <td style="border-right: 1px solid; width: 50px" data-sort="{{ date|date('Y-m-d') }}"> {{ date|date('d-M-y') }}</td>
                 {% for security in securities|sort((a,b)=>a.assetClass.assetclass<=>b.assetClass.assetclass) %}
                     {% if MarketDataPrice.findReal(date,security) %}
                         <td style="border-right: 1px dotted; text-align: center; background-color: lightyellow">

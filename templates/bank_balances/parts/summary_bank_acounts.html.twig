@@ -1,50 +1,58 @@
-<h2 style="color: blue">Summary - "As Of" Date: {{ AsOfDate|date('d-M-y') }}</h2>
+<div class="row">
+    <div class="col-6">
+
+
 <table class="table table-responsive bankAccountSummary">
-    {% set Total_GBP=0 %}
-    {% set Total_USD=0 %}
-    {% set Total_EUR=0 %}
-    {% set Total_CHF=0 %}
+    {% set Bank_Balance_Total_GBP=0 %}
+    {% set Bank_Balance_Total_USD=0 %}
+    {% set Bank_Balance_Total_EUR=0 %}
+    {% set Bank_Balance_Total_CHF=0 %}
 
     <thead>
     <tr style="background-color: whitesmoke">
-        <th style="width: 150px">Bank</th>
-        <th style="width: 70px; text-align: right">GBP</th>
-        <th style="width: 70px; text-align: right">USD</th>
-        <th style="width: 70px; text-align: right">EUR</th>
-        <th style="width: 70px; text-align: right">CHF</th>
+        <th style="width: 150px; border-top: 1px solid; border-left: 1px solid">Bank</th>
+        <th style="width: 70px; text-align: right; border-top: 1px solid">GBP</th>
+        <th style="width: 70px; text-align: right; border-top: 1px solid">USD</th>
+        <th style="width: 70px; text-align: right; border-top: 1px solid">EUR</th>
+        <th style="width: 70px; text-align: right; border-top: 1px solid; border-right: 1px solid ">CHF</th>
     </tr>
     </thead>
     <tbody>
     {% for bank_account in bank_accounts %}
         <tr>
-            <td>
+            <td style="border-left: 1px solid">
                 <b> {{ bank_account.bank }}</b>
             </td>
             <td style="text-align: right">
                 {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceGBP|number_format(2, '.', ',') }}
-                {% set Total_GBP = Total_GBP +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceGBP %}
+                {% set Bank_Balance_Total_GBP = Bank_Balance_Total_GBP +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceGBP %}
             </td>
             <td style="text-align: right">
                 {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceUSD|number_format(2, '.', ',') }}
-                {% set Total_USD = Total_USD +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceUSD %}
+                {% set Bank_Balance_Total_USD = Bank_Balance_Total_USD +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceUSD %}
             </td>
             <td style="text-align: right">
                 {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceEUR|number_format(2, '.', ',') }}
-                {% set Total_EUR = Total_EUR +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceEUR %}
+                {% set Bank_Balance_Total_EUR = Bank_Balance_Total_EUR +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceEUR %}
             </td>
-            <td style="text-align: right">
+            <td style="text-align: right; border-right: 1px solid">
                 {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceCHF|number_format(2, '.', ',') }}
-                {% set Total_CHF = Total_CHF +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceCHF %}
+                {% set Bank_Balance_Total_CHF = Bank_Balance_Total_CHF +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceCHF %}
             </td>
         </tr>
     {% endfor %}
     <tr style="background-color: whitesmoke; font-weight: bold">
-        <td style="width: 150px">Totals:</td>
-        <td style="width: 70px; text-align: right">{{ Total_GBP|number_format(2, '.', ',') }}</td>
-        <td style="width: 70px; text-align: right">{{ Total_USD|number_format(2, '.', ',') }}</td>
-        <td style="width: 70px; text-align: right">{{ Total_EUR|number_format(2, '.', ',') }}</td>
-        <td style="width: 70px; text-align: right">{{ Total_CHF|number_format(2, '.', ',') }}</td>
+        <td style="width: 150px; border-left: 1px solid">Totals:</td>
+        <td style="width: 70px; text-align: right">{{ Bank_Balance_Total_GBP|number_format(2, '.', ',') }}</td>
+        <td style="width: 70px; text-align: right">{{ Bank_Balance_Total_USD|number_format(2, '.', ',') }}</td>
+        <td style="width: 70px; text-align: right">{{ Bank_Balance_Total_EUR|number_format(2, '.', ',') }}</td>
+        <td style="width: 70px; text-align: right; border-right: 1px solid">{{ Bank_Balance_Total_CHF|number_format(2, '.', ',') }}</td>
     </tr>
     </tbody>
 </table>
-<br><hr><br>
+    </div>
+    <div class="col-6">
+        {% include 'bank_balances/parts/latest_FX_rates.html.twig' %}
+    </div>
+</div>
+<hr>

@@ -1,169 +1,219 @@
-<tr>
-    {% set SharePrice = MarketDataPrice.findMarketPrice(settings.investmentDate, investment.investmentCompany) %}
-
-    <td>
-        {{ investment.assetClass.assetClass }}
-    </td>
-    <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center; width: 10px">
-        {% if investment.investmentSaleDate is null or investment.saleSharePrice is null %}
-            <i style="color: green" class="fa fa-check"></i>
-        {% else %}
-            <i style="color: red" class="fa fa fa-remove"></i>
+<tbody>
+{% set TaxSubsidyPurchase_Total = 0 %}
+{% set MTM_Total = 0 %}
+{% set PV_Total = 0 %}
+{% set CGT_Total = 0 %}
+{% set totalLossDeductibleAgainstIncome = 0 %}
+{% for investment in investments %}
+    {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  investment.lossDeductibleAgainstIncome %}
+    {% if 1 == 1 %}
+        {% set FXEffect =1 %}
+        {% set InitialFXRate =1 %}
+        {% set CurrentFXRate =1 %}
+        {% if investment.currency.fx != "GBP" %}
+            {% set InitialFXRate =  (investment.investmentAmount/(investment.initialInvestmentAmountGBP +0.00001)) %}
+            {% set CurrentFXRate =  USDGBPFXrate.currentFxRate /investment.currency.currentFxRate %}
+            {% set FXEffect = InitialFXRate/CurrentFXRate %}
         {% endif %}
-    </td>
-    <td data-sort="{{ investment.assetClass.taxScheme.includeTaxSummary }}" style="text-align: center; width: 10px">
-        {% if investment.assetClass.taxScheme.includeTaxSummary==1 %}
-            <i style="color: green" class="fa fa fa-check"></i>
-        {% else %}
-            <i style="color: red" class="fa fa fa-remove"></i>
-        {% endif %}
-    </td>
-    <td data-sort="{{ investment.investmentCompany.shareCompany }}">
-        {% if Investment.findFutureComms(investment.id) == 1 %}
-            <button class="toggle-investment-child btn btn-outline-warning btn-sm"
-                    data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
-            </button>
-        {% endif %}
+        {% set investmentChildID = 'investment'~investment.id %}
+        <tr>
+            {% set SharePrice = MarketDataPrice.findMarketPrice(settings.investmentDate, investment.investmentCompany) %}
 
-        {% if investment.investmentCompany is not null %}
-            <a target="_blank"
-               href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
-        {% else %}
-            <a target="_blank" href="{{ path('investments_edit', {'id': investment.id}) }}">--</a>
-        {% endif %}
-    </td>
-
-    <td data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
-
-    <!-- Tax Scheme -->
-    <td style="text-align: center">
-        {% if investment.assetClass.taxScheme is not null %}
-            <a target="_blank"
-               href="{{ path('tax_schemes_edit', {'id':investment.assetClass.taxScheme.id}) }}">{{ investment.assetClass.taxScheme.name }}</a>
-        {% endif %}
-    </td>
-
-    <!-- Currency -->
-    <td>{{ investment.currency.fx }}</td>
-
-    <td style="text-align: right;border-right:1px solid black">
-        {% if investment.currency.fx == 'GBP' %}
-            {{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}
-        {% else %}
-            <a title="{{ investment.currency.fx }} {{ (investment.investmentAmount)| number_format (0, '.') }} ">
-                *{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>
-        {% endif %}
-    </td>
-
-
-    <!-- Share price invested -->
-    <td style="text-align: right">
-        {% if investment.assetClass.taxScheme is not null %}
-            {% if investment.assetClass.updatedPriceAvailable == 1 %}
-                {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
-            {% endif %}
-        {% endif %}
-    </td>
-
-    <!-- Share price now or sold -->
-    <td style="text-align: right">
-        {% if investment.assetClass.taxScheme is not null %}
-            {% if investment.assetClass.updatedPriceAvailable == 1 %}
-                {% if investment.investmentSaleDate is null %}
-                    {% if investment.numberOfShares >0 %}
-                        <a target="_blank"
-                           href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
-                            {{ SharePrice | number_format (2, '.') }}
-                        </a>
-                    {% else %}
-                        <a target="_blank"
-                           href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
-                            - </a>
-                    {% endif %}
+            <td>
+                {{ investment.assetClass.assetClass }}
+            </td>
+            <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center; width: 10px">
+                {% if investment.investmentSaleDate is null or investment.saleSharePrice is null %}
+                    <i style="color: green" class="fa fa-check"></i>
                 {% else %}
+                    <i style="color: red" class="fa fa fa-remove"></i>
+                {% endif %}
+            </td>
+            <td data-sort="{{ investment.assetClass.taxScheme.includeTaxSummary }}"
+                style="text-align: center; width: 10px">
+                {% if investment.assetClass.taxScheme.includeTaxSummary==1 %}
+                    <i style="color: green" class="fa fa fa-check"></i>
+                {% else %}
+                    <i style="color: red" class="fa fa fa-remove"></i>
+                {% endif %}
+            </td>
+            <td data-sort="{{ investment.investmentCompany.shareCompany }}">
+                {% if Investment.findFutureComms(investment.id) == 1 %}
+                    <button class="toggle-investment-child btn btn-outline-warning btn-sm"
+                            data-investment-child-Id="{{ investmentChildID }}"><i class="fas fa-caret-down"></i>
+                    </button>
+                {% endif %}
 
-                    {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}
-                        {{ (investment.saleSharePrice) | number_format (2, '.') }}*
-                    {% else %}
-                        {{ (investment.saleSharePrice) | number_format (0, '.') }}*
+                {% if investment.investmentCompany is not null %}
+                    <a target="_blank"
+                       href="{{ path('investments_edit', {'id': investment.id}) }}">{{ investment.investmentCompany.shareCompany }}</a>
+                {% else %}
+                    <a target="_blank" href="{{ path('investments_edit', {'id': investment.id}) }}">--</a>
+                {% endif %}
+            </td>
+
+            <td data-sort="{{ investment.investmentDate|date('Y-m-d') }}">{{ investment.investmentDate ? investment.investmentDate|date('d-M-Y') : '' }}</td>
+
+            <!-- Tax Scheme -->
+            <td style="text-align: center">
+                {% if investment.assetClass.taxScheme is not null %}
+                    <a target="_blank"
+                       href="{{ path('tax_schemes_edit', {'id':investment.assetClass.taxScheme.id}) }}">{{ investment.assetClass.taxScheme.name }}</a>
+                {% endif %}
+            </td>
+
+            <!-- Currency -->
+            <td>{{ investment.currency.fx }}</td>
+
+            <td style="text-align: right;border-right:1px solid black">
+                {% if investment.currency.fx == 'GBP' %}
+                    {{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}
+                {% else %}
+                    <a title="{{ investment.currency.fx }} {{ (investment.investmentAmount)| number_format (0, '.') }} ">
+                        *{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>
+                {% endif %}
+            </td>
+
+
+            <!-- Share price invested -->
+            <td style="text-align: right">
+                {% if investment.assetClass.taxScheme is not null %}
+                    {% if investment.assetClass.updatedPriceAvailable == 1 %}
+                        {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
                     {% endif %}
                 {% endif %}
-            {% endif %}
-        {% endif %}
-    </td>
+            </td>
 
-    <!-- MTM gain or Crystallized Gain -->
-    <td style="text-align: right">
-        {% if investment.assetClass.taxScheme is not null %}
-            {% set MTM = 0 %}
-            {% if investment.assetClass.updatedPriceAvailable ==0 %}
-                {% set MTM = 0 %}
-            {% else %}
-                {% if investment.currency.fx == "GBP" %}
-                    {% if investment.investmentSaleDate is empty %}
-                        {% set MTM = (( SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
-                    {% else %}
-                        {% set MTM = ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+            <!-- Share price now or sold -->
+            <td style="text-align: right">
+                {% if investment.assetClass.taxScheme is not null %}
+                    {% if investment.assetClass.updatedPriceAvailable == 1 %}
+                        {% if investment.investmentSaleDate is null %}
+                            {% if investment.numberOfShares >0 %}
+                                <a target="_blank"
+                                   href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
+                                    {{ SharePrice | number_format (2, '.') }}
+                                </a>
+                            {% else %}
+                                <a target="_blank"
+                                   href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
+                                    - </a>
+                            {% endif %}
+                        {% else %}
+
+                            {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}
+                                {{ (investment.saleSharePrice) | number_format (2, '.') }}*
+                            {% else %}
+                                {{ (investment.saleSharePrice) | number_format (0, '.') }}*
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
-                {% else %}
-                    {% if investment.investmentSaleDate is empty %}
-                        {% set MTM = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
-                    {% else %}
+                {% endif %}
+            </td>
+
+            <!-- MTM gain or Crystallized Gain -->
+            <td style="text-align: right">
+                {% if investment.assetClass.taxScheme is not null %}
+                    {% set MTM = 0 %}
+                    {% if investment.assetClass.updatedPriceAvailable ==0 %}
                         {% set MTM = 0 %}
-                        {% set MTM = (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
+                    {% else %}
+                        {% if investment.currency.fx == "GBP" %}
+                            {% if investment.investmentSaleDate is empty %}
+                                {% set MTM = (( SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+                            {% else %}
+                                {% set MTM = ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+                            {% endif %}
+                        {% else %}
+                            {% if investment.investmentSaleDate is empty %}
+                                {% set MTM = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
+                            {% else %}
+                                {% set MTM = 0 %}
+                                {% set MTM = (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
+                            {% endif %}
+                        {% endif %}
+                        {{ MTM  |number_format ('0') }}
                     {% endif %}
+                    {% set MTM_Total = MTM_Total + MTM %}
                 {% endif %}
-                {{ MTM  |number_format ('0') }}
-            {% endif %}
-            {% set MTM_Total = MTM_Total + MTM %}
-        {% endif %}
-    </td>
+            </td>
 
-    <!-- PV (Local) -->
-    <td style="text-align: right">
-        {% set PV =0 %}
-        {% if investment.investmentSaleDate is not null %}
-            {% set PV = 0 %}
-        {% else %}
-            {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}
-        {% endif %}
-        {{ PV |number_format ('0') }}
-    </td>
-
-    <!-- PV (£) -->
-    <td style="text-align: right;border-right:1px solid black">
-        {% set PV =0 %}
-        {% if investment.investmentSaleDate is not null %}
-            {% set PV = 0 %}
-        {% else %}
-            {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice/ CurrentFXRate %}
-        {% endif %}
-        {{ PV |number_format ('0') }}
-        {% set PV_Total = PV_Total + PV %}
-    </td>
-
-    <!-- Sale Date -->
-    <td style="text-align: right;border-right:1px gray"
-        data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">
-        {{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}
-    </td>
-
-    <!-- CGT (£) -->
-    <td style="text-align: right;border-right:1px solid black">
-        {% if investment.assetClass.taxScheme is not null %}
-            {% set CGT= 0 %}
-            {% if investment.assetClass.updatedPriceAvailable ==0 %}
-                {% set CGT = 0 %}
-            {% else %}
-                {% if investment.investmentSaleDate is empty %}
-                    {% set CGTAdd = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.assetClass.taxScheme.cgtRate %}
+            <!-- PV (Local) -->
+            <td style="text-align: right; border-right: 1px solid">
+                {% set PV =0 %}
+                {% if investment.investmentSaleDate is not null %}
+                    {% set PV = 0 %}
                 {% else %}
-                    {% set CGTAdd =  (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice) +(FXEffect-1))  * investment.investmentAmount *investment.assetClass.taxScheme.cgtRate %}
+                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}
                 {% endif %}
-                {{ CGT |number_format ('0') }}
-            {% endif %}
-            {% set CGT_Total = CGT_Total + CGT %}
-        {% endif %}
-    </td>
-</tr>
+                {{ PV |number_format ('0') }}
+            </td>
 
+            <!-- PV (£) -->
+            <td style="text-align: right">
+               xx $
+            </td>
+
+            <!-- PV ($) -->
+            <td style="text-align: right">
+               xx $
+            </td>
+
+            <!-- PV ($) -->
+            <td style="text-align: right">
+                xx €
+            </td>
+
+            <!-- PV ($) -->
+            <td style="text-align: right; border-right: 1px solid">
+                xx CHF
+            </td>
+
+            <!-- Sale Date -->
+            <td style="text-align: right"
+                data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">
+                {{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}
+            </td>
+
+            <!-- CGT (£) -->
+            <td style="text-align: right;border-right:1px solid black">
+                {% if investment.assetClass.taxScheme is not null %}
+                    {% set CGT= 0 %}
+                    {% if investment.assetClass.updatedPriceAvailable ==0 %}
+                        {% set CGT = 0 %}
+                    {% else %}
+                        {% if investment.investmentSaleDate is empty %}
+                            {% set CGTAdd = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.assetClass.taxScheme.cgtRate %}
+                        {% else %}
+                            {% set CGTAdd =  (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice) +(FXEffect-1))  * investment.investmentAmount *investment.assetClass.taxScheme.cgtRate %}
+                        {% endif %}
+                        {{ CGT |number_format ('0') }}
+                    {% endif %}
+                    {% set CGT_Total = CGT_Total + CGT %}
+                {% endif %}
+            </td>
+
+        </tr>
+    {% endif %}
+{% endfor %}
+
+<tr style="background-color: whitesmoke">
+    <th>z</th>
+    <th style="width: 10px"></th>
+    <th style="width: 10px"></th>
+    <th style="width: 350px">z</th>
+    <th style="text-align: left"></th>
+    <th style="width: 75px; text-align: right"></th>
+    <th style="text-align: right"></th>
+    <th style="text-align: right;border-right:1px solid black"></th>
+    <th style="text-align: right; width: 80px"></th>
+    <th style="text-align: right; width: 80px"></th>
+    <th style="text-align: right"></th>
+    <th style="text-align: right; border-right: 1px solid"></th>
+    <th style="text-align: right">£</th>
+    <th style="text-align: right">$</th>
+    <th style="text-align: right">€</th>
+    <th style="text-align: right">CHF</th>
+    <th style="border-left: 1px solid"></th>
+    <th style="border-right: 1px solid"></th>
+</tr>

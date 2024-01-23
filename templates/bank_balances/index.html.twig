@@ -3,24 +3,29 @@
 {% block title %}Bank Balances{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Bank Balances</h1>
+
     {% set AsOfDate = settings.investmentDate %}
 
     <div class="row">
-        <div class="col-3"></div>
+        <div class="col-3">
+            <h1 style="color: red">Bank Balances</h1>
+        </div>
         <div class="col-3">
             {% include 'market_data/parts/investmentAsOfDate.html.twig' %}
         </div>
     </div>
     {% include 'bank_balances/parts/summary_bank_acounts.html.twig' %}
 
-    {% for bank_account in bank_accounts %}
-        <br>
-        <h2 style="color: blue">{{ bank_account.bank }}
-            <a class="btn btn-outline-primary btn-sm" href="{{ path('bank_balances_new') }}">+</a></h2>
-        {% include 'bank_balances/parts/bank_accounts_headers.html.twig' %}
-        {% include 'bank_balances/parts/bank_accounts_body.html.twig' %}
-    {% endfor %}
+    <div class="row">
+        {% for bank_account in bank_accounts %}
+            <div class="col-3">
+                <h2 style="color: blue">{{ bank_account.bank }}
+                    <a class="btn btn-outline-primary btn-sm" href="{{ path('bank_balances_new') }}">+</a></h2>
+                {% include 'bank_balances/parts/bank_accounts_headers.html.twig' %}
+                {% include 'bank_balances/parts/bank_accounts_body.html.twig' %}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block datatable %}
@@ -28,7 +33,7 @@
         $(document).ready(function () {
             $('.bankAccountSummary').DataTable({
                 'pageLength': 50,
-                "order": [[1, 'asc'] ],
+                "order": [[0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

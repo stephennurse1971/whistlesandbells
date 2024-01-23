@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Market Data History: {{ subset }}{% endblock %}
+
+{% block body %}
+
+    <h1 style="color: red">Market Data History: {{ subset }} </h1>
+    <div class="row">
+        <div class="col-1">
+            <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a><br>
+            <a class="btn btn-success btn-sm"
+               href="{{ path('market_data_history_index_table',{subset:'All', security: 'All'}) }}">Table</a><br>
+            <a class="btn btn-success btn-sm" href="{{ path('app_home') }}">Delete All</a><br>
+        </div>
+        <div class="col-3">
+            <a target="_blank" class="btn btn-outline-primary btn-sm"
+               href="{{ path('market_data_history_index', {subset: 'All'}) }}">All</a></ul>
+            <a target="_blank" class="btn btn-outline-primary btn-sm"
+               href="{{ path('market_data_history_index', {subset: 'Active'}) }}">Active</a></ul>
+            <a target="_blank" class="btn btn-outline-primary btn-sm"
+               href="{{ path('market_data_history_index', {subset: 'Sold'}) }}">Sold</a></ul>
+        </div>
+    </div>
+
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th style="width: 90px; background-color: whitesmoke; border-bottom: 1px; border-right: 1px solid">Date</th>
+            <th>Asset</th>
+            <th>Share Price</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for market_data_history in market_data_histories %}
+            <tr>
+                <td style="border-right: 1px solid" data-sort="{{ market_data_history.date|date('Y-m-d') }}">
+                    {{ market_data_history.date|date('d-M-y') }}
+                </td>
+                <td>
+                    {{ market_data_history.security.shareCompany }}
+                </td>
+                <td style="border-right: 1px dotted; text-align: center">
+                    {{ market_data_history.marketPrice }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'desc'], [1, 'desc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

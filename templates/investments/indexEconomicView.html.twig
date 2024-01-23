@@ -2,7 +2,7 @@
 {% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
     <h1 style="color: red">Investments: {{ grouping }}</h1>
-    {% set AsOfDate = settings.investmentDate  %}
+    {% set AsOfDate = settings.investmentDate %}
     {% include 'investments/parts/economic/economic_view_buttons.twig' %}
 
     {% include 'investments/parts/economic/bank_accounts_buttons.twig' %}
@@ -15,35 +15,13 @@
 
 
     <table class="table table-responsive economicSummary">
-
         {% include 'investments/parts/economic/investments_economic_headers.html.twig' %}
-        <tbody>
-        {% set TaxSubsidyPurchase_Total = 0 %}
-        {% set MTM_Total = 0 %}
-        {% set PV_Total = 0 %}
-        {% set CGT_Total = 0 %}
-        {% set totalLossDeductibleAgainstIncome = 0 %}
-        {% for investment in investments %}
-            {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  investment.lossDeductibleAgainstIncome %}
-            {% if 1 == 1 %}
-                {% set FXEffect =1 %}
-                {% set InitialFXRate =1 %}
-                {% set CurrentFXRate =1 %}
-                {% if investment.currency.fx != "GBP" %}
-                    {% set InitialFXRate =  (investment.investmentAmount/(investment.initialInvestmentAmountGBP +0.00001)) %}
-                    {% set CurrentFXRate =  USDGBPFXrate.currentFxRate /investment.currency.currentFxRate %}
-                    {% set FXEffect = InitialFXRate/CurrentFXRate %}
-                {% endif %}
-                {% set investmentChildID = 'investment'~investment.id %}
-                {% include 'investments/parts/economic/investments_economic_body.html.twig' %}
-            {% endif %}
-        {% endfor %}
-        </tbody>
-        {#        <tfoot> #}
-        {#                {% include 'investments/parts/investments_incl_tax_footer.html.twig' %} #}
-        {#        </tfoot> #}
+        {% include 'investments/parts/economic/investments_economic_body.html.twig' %}
     </table>
     <br>
+
+    {% include 'investments/parts/economic/grandTotal.twig' %}
+
 {% endblock %}
 
 
@@ -61,18 +39,34 @@
         $(document).ready(function () {
             $('.bankAccountSummary').DataTable({
                 'pageLength': 50,
-                "order": [[1, 'asc'] ],
+                "order": [[0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
             });
             $('.economicSummary').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc'],[2, 'asc']],
+                "order": [[0, 'asc'], [3, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
             });
+            $('.loansBondsSummary').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc'], [4, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+            $('.grandTotal').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc'], [1, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+
+
         });
     </script>
 {% endblock datatable %}

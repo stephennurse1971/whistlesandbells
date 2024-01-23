@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Market Data index{% endblock %}
-
+{% block title %}Asset List{% endblock %}
 {% block body %}
 
-    <h1 style="color: red;">Assets - Details</h1>
+    <h1 style="color: red;">Assets List</h1>
 
     <div class="row">
         <div class="col-3">
-            <a class="btn btn-outline-success btn-sm" target="_blank" href="{{ path('market_data_history_index',{subset:'All'}) }}">Market
+            <a class="btn btn-outline-success btn-sm" target="_blank"
+               href="{{ path('market_data_history_index',{subset:'All'}) }}">Market
                 Data
                 History</a>
             <a target="_blank" class="btn btn-success btn-sm" href="{{ path('market_data_new') }}">New</a>
@@ -24,24 +23,22 @@
         </div>
     </div>
 
-    {#    {% for assetClass in assetClasses  %} #}
     {% for assetClass in assetClasses |sort((a,b)=>a.assetClass<=>b.assetClass) %}
-
         <h2>{{ assetClass.assetClass }}
             <a target="_blank" href="{{ path('asset_classes_index') }}">+</a>
         </h2>
         <table class="table table-responsive">
             <thead>
-            <tr>
-                <th style="width: 250px;">Company</th>
+            <tr style="background-color: whitesmoke">
+                <th style="width: 190px;">Company</th>
                 <th>Active</th>
                 <th style="text-align: right">Share Price <br> ("As of" Date)</th>
                 <th style="width: 50px;">Corporate website</th>
                 <th style="width: 50px;">Companies House</th>
                 <th>Investor site</th>
-                <th>Login</th>
-                <th>Password</th>
-                <th>#</th>
+                <th style="width: 250px;">Login</th>
+                <th style="width: 150px;">Password</th>
+                <th style="width: 50px;"></th>
             </tr>
             </thead>
             <tbody>
@@ -49,7 +46,7 @@
                 {% if marketData.assetClass.assetClass == assetClass.assetClass %}
                     {% set weblink = 'https://find-and-update.company-information.service.gov.uk/company/'~marketData.companiesHouse %}
                     <tr>
-                        <td>
+                        <td style="width: 400px">
                             <a target="_blank"
                                href="{{ path('market_data_edit', {'id': marketData.id}) }}">{{ marketData.shareCompany }}</a>
                         </td>
@@ -61,7 +58,7 @@
                             {% endif %}
                         </td>
                         <td style="text-align: right">
-                            {{ MarketDataPrice.findMarketPrice(settings.investmentDate, marketData)|number_format(2, '.', ',')  }}
+                            {{ MarketDataPrice.findMarketPrice(settings.investmentDate, marketData)|number_format(2, '.', ',') }}
                         </td>
                         <td style="text-align: center">
                             {% if marketData.weblink is not empty %}
@@ -70,14 +67,13 @@
                                                                       style="color:blue; text-align: center"></i></a>
                             {% endif %}
                         </td>
-
                         <td style="text-align: center">
                             {% if marketData.companiesHouse != "NA" %}
                                 <a title={{ weblink }} target="_blank" href={{ weblink }}>
                                     <i class="fas fa-link" style="color:blue; text-align: center"></i></a>
                             {% endif %}
                         </td>
-                        <td>
+                        <td style="text-align: center">
                             {% if  marketData.investorSite is not empty %}
                                 {% if  marketData.investorSite starts with 'http' %}
                                     {% set web =  marketData.investorSite %}
@@ -102,16 +98,8 @@
             {% endfor %}
             </tbody>
         </table>
-        <br>
-        <br>
-        <hr>
-        <br>
-        <br>
-        <br>
+        <br><br>
     {% endfor %}
-
-
-    <a target="_blank" class="btn btn-success btn-sm mt-2" href="{{ path('market_data_new') }}">New</a>
 {% endblock %}
 
 {% block datatable %}

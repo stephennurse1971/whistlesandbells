@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\MarketData;
 use App\Entity\MarketDataHistory;
 use App\Form\MarketDataHistoryType;
+use App\Repository\FxRatesHistoryRepository;
 use App\Repository\MarketDataHistoryRepository;
 use App\Repository\MarketDataRepository;
 use App\Services\MarketDataPrice;
@@ -30,7 +31,6 @@ class MarketDataHistoryController extends AbstractController
             $marketData = $marketDataRepository->findBy([
                 'isActive' => '1']);
         }
-
         elseif
             ($subset == 'Sold') {
             $marketData = $marketDataRepository->findBy([
@@ -40,20 +40,18 @@ class MarketDataHistoryController extends AbstractController
             ($subset == 'All'){
             $marketData = $marketDataRepository->findAll();
         }
-
-
         foreach ($marketData as $relevantInvestment) {
             if ($relevantInvestment->getAssetClass()->getTaxScheme()->getShowSharePrices() == 1) {
                 $securities[] = $relevantInvestment;
             }
         }
         $marketDataHistory = $marketDataHistoryRepository->findAll();
-        $today = new \DateTime('now');
+
         $dates = [];
-        $start_date = new \DateTime('now');
+        $start_date = new \DateTime('tomorrow');
         $end_date = new \DateTime('now');
         $end_date->modify("-5 years");
-        while ($end_date <= $start_date) {
+        while ($end_date < $start_date) {
             $dates[] = new \DateTime($end_date->format('Y-m-d'));
             $end_date->modify("+1 month");
         }
@@ -61,10 +59,55 @@ class MarketDataHistoryController extends AbstractController
             'dates' => $dates,
             'securities' => $securities,
             'market_data_histories' => $marketDataHistory,
-            'today' => $today,
             'subset' => $subset
         ]);
     }
+
+    /**
+     * @Route("/index/{subset}/{security}", name="market_data_history_index_table", methods={"GET"})
+     */
+    public function indexGrid(Request $request, string $subset, string $security,  MarketDataHistoryRepository $marketDataHistoryRepository, MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice): Response
+    {
+        $securities = [];
+        if ($subset == 'Active') {
+            $marketData = $marketDataRepository->findBy([
+                'isActive' => '1']);
+        }
+
+        elseif
+        ($subset == 'Sold') {
+            $marketData = $marketDataRepository->findBy([
+                'isActive' => '0']);
+        }
+        elseif
+        ($subset == 'All'){
+            $marketData = $marketDataRepository->findAll();
+        }
+
+        foreach ($marketData as $relevantInvestment) {
+            if ($relevantInvestment->getAssetClass()->getTaxScheme()->getShowSharePrices() == 1) {
+                $securities[] = $relevantInvestment;
+            }
+        }
+        $marketDataHistory = $marketDataHistoryRepository->findAll();
+
+        $dates = [];
+        $start_date = new \DateTime('tomorrow');
+        $end_date = new \DateTime('now');
+        $end_date->modify("-5 years");
+        while ($end_date < $start_date) {
+            $dates[] = new \DateTime($end_date->format('Y-m-d'));
+            $end_date->modify("+1 month");
+        }
+        return $this->render('market_data_history/indexGrid.html.twig', [
+            'dates' => $dates,
+            'securities' => $securities,
+            'market_data_histories' => $marketDataHistory,
+            'subset' => $subset
+        ]);
+    }
+
+
 
     /**
      * @Route("/new/{securitiesID}/{date}", name="market_data_history_new", methods={"GET", "POST"},defaults={"securitiesID"=null,"date"=null})
@@ -127,7 +170,25 @@ class MarketDataHistoryController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $marketDataHistory->getId(), $request->request->get('_token'))) {
             $marketDataHistoryRepository->remove($marketDataHistory);
         }
-
         return $this->redirectToRoute('market_data_history_index', ['subset'=>'All'], Response::HTTP_SEE_OTHER);
     }
+
+
+    /**
+     * @Route("/delete/all", name="historic_market_data_delete_all", methods={"GET"})
+     */
+    public function deleteAll(Request $request, MarketDataHistoryRepository $marketDataHistoryRepository): Response
+    {
+        $referer = $request->headers->get('referer');
+        $marketDatas = $marketDataHistoryRepository->findAll();
+        foreach ($marketDatas as $marketData) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($marketData);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+
+
 }

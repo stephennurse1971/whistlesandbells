@@ -1,5 +1,5 @@
 <tr>
-
+    {% set SharePrice = MarketDataPrice.findMarketPrice(settings.investmentDate, investment.investmentCompany) %}
     {% if grouping!="AssetClass" %}
         <td>
             {{ investment.assetClass.assetClass }}
@@ -15,7 +15,7 @@
     </td>
     <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center">
         {% if investment.investmentSaleDate is null or investment.saleSharePrice is null %}
-            <i style="color: orange" class="fa fa fa-question-circle"></i>
+            <i style="color: green" class="fa fa-check"></i>
         {% else %}
             <i style="color: red" class="fa fa fa-remove"></i>
         {% endif %}
@@ -242,7 +242,7 @@
                 {% set CGT = 0 %}
             {% else %}
                 {% if investment.investmentSaleDate is empty %}
-                    {% set CGTAdd = (((investment.investmentCompany.sharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.assetClass.taxScheme.cgtRate %}
+                    {% set CGTAdd = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.assetClass.taxScheme.cgtRate %}
                 {% else %}
                     {% set CGTAdd =  (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice) +(FXEffect-1))  * investment.investmentAmount *investment.assetClass.taxScheme.cgtRate %}
                 {% endif %}

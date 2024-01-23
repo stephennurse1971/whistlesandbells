@@ -9,7 +9,7 @@
 <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index', {subset:'All'}) }}">Market Data History</a>
     <table class="table table-responsive">
         <thead>
-        <tr>
+        <tr style="background-color: whitesmoke">
             <th>Asset Class</th>
             <th style="text-align: right">Include:<br>In form</th>
             <th style="text-align: right">Require:<br>Purchase/<br>Sale Dates &<br>Purchase Price(s)</th>
@@ -77,7 +77,7 @@
                 </td>
 
                 <td>--</td>
-                <td style="text-align: right" data-sort="{{ asset_class.taxScheme.includeTaxSummary }}" >
+                <td style="text-align: center" data-sort="{{ asset_class.taxScheme.includeTaxSummary }}" >
                     {% if asset_class.taxScheme is not null %}
                         {% if asset_class.taxScheme.includeTaxSummary == 1 %}
                             <i style="color: green" class="fa fa-check"></i>
@@ -87,7 +87,7 @@
                     {% endif %}
                 </td>
 
-                <td style="text-align: right" data-sort="{{ asset_class.taxScheme.showSharePrices }}" >
+                <td style="text-align: center" data-sort="{{ asset_class.taxScheme.showSharePrices }}" >
                     {% if asset_class.taxScheme is not null %}
                         {% if asset_class.taxScheme.showSharePrices == 1 %}
                             <i style="color: green" class="fa fa-check"></i>
