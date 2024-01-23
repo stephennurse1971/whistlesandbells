@@ -19,59 +19,8 @@
         <br>
         <h2 style="color: blue">{{ bank_account.bank }}</h2>
 
-        <table class="table table-responsive">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th style="width: 150px">Bank</th>
-                <th style="width: 70px; text-align: right">
-                    GBP
-                </th>
-                <th style="width: 70px; text-align: right">
-                    USD
-                </th>
-                <th style="width: 70px; text-align: right">
-                    EUR
-                </th>
-                <th style="width: 70px; text-align: right">
-                    CHF
-                </th>
-                <th>
-                    #
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for bank_balance in bank_balances %}
-                {% if bank_balance.bank.bank == bank_account.bank %}
-                    <tr>
-                        <td data-sort="{{ bank_balance.date|date('Y-m-d') }}">
-                            {{ bank_balance.date|date('d-M-y') }}
-                        </td>
-                        <td>
-                            {{ bank_balance.bank.bank }}
-                        </td>
-                        <td style="text-align: right">
-                            {{ bank_balance.BalanceGbp|number_format(2, '.', ',') }}
-                        </td>
-                        <td style="text-align: right">
-                            {{ bank_balance.BalanceUsd|number_format(2, '.', ',') }}
-                        </td>
-                        <td style="text-align: right">
-                            {{ bank_balance.BalanceEur|number_format(2, '.', ',') }}
-                        </td>
-                        <td style="text-align: right">
-                            {{ bank_balance.BalanceChf|number_format(2, '.', ',') }}
-                        </td>
-                        <td>
-                            <a class="btn btn-outline-danger btn-sm"
-                               href="{{ path('bank_balances_edit', {'id': bank_balance.id}) }}">Edit</a>
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
+            {% include 'bank_balances/parts/bank_accounts_headers.html.twig' %}
+            {% include 'bank_balances/parts/bank_accounts_body.html.twig' %}
     {% endfor %}
 
 {% endblock %}
