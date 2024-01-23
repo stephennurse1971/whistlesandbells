@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Investments;
 use App\Entity\TaxYear;
 use App\Entity\UkDays;
+use App\Repository\BankAccountsRepository;
 use App\Repository\BankBalancesRepository;
 use App\Repository\LoansBondsRepository;
 use App\Repository\SettingsRepository;
@@ -80,11 +81,12 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/index/economic/{subset}", name="investments_economic_index", methods={"GET"})
      */
-    public function indexEconomic(Request $request, string $subset, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository, BankBalancesRepository $bankBalancesRepository, LoansBondsRepository $loansBondsRepository, SettingsRepository $settingsRepository): Response
+    public function indexEconomic(Request $request, string $subset, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository, BankBalancesRepository $bankBalancesRepository, BankAccountsRepository $bankAccountsRepository, LoansBondsRepository $loansBondsRepository, SettingsRepository $settingsRepository): Response
     {
         $settings = $settingsRepository->find('1');
-        $loansBonds = $loansBondsRepository->findAll();
-        $bankAccounts = $bankBalancesRepository->findAll();
+        $loans_bonds = $loansBondsRepository->findAll();
+        $bank_accounts = $bankAccountsRepository->findAll();
+        $bank_balances = $bankBalancesRepository->findAll();
         $investmentsSold = [];
         $all_investments = $investmentsRepository->findAll();
         foreach ($all_investments as $investment) {
@@ -106,8 +108,9 @@ class InvestmentsController extends AbstractController
 
         return $this->render('investments/indexEconomicView.html.twig', [
             'settings' => $settings,
-            'loanBonds' => $loansBonds,
-            'bankAccounts' => $bankAccounts,
+            'loans_bonds' => $loans_bonds,
+            'bank_accounts' => $bank_accounts,
+            'bank_balances' => $bank_balances,
             'investments' => $investments,
             'asset_classes' => $assetClassesRepository->findAll(),
             'investmentsFutureComms' => $investmentFutureCommsRepository->findAll(),

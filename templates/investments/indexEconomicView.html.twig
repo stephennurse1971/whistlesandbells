@@ -2,26 +2,32 @@
 {% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
     <h1 style="color: red">Investments: {{ grouping }}</h1>
+    {% set AsOfDate = settings.investmentDate|date('Y-m-d') %}
+    {% include 'investments/parts/economic/economic_view_buttons.twig' %}
 
-    <div class="row">
-        {% include 'investments/parts/investments_buttons.html.twig' %}
+    {% include 'bank_balances/parts/bank_accounts_headers.html.twig' %}
+    {% include 'bank_balances/parts/bank_accounts_body.html.twig' %}
 
-        <div class="col-2">
-            <a class="btn btn-outline-primary btn-sm" href="{{ path('investments_economic_index', {'subset':'All'}) }}">All </a>
-            <a class="btn btn-outline-primary btn-sm"
-               href="{{ path('investments_economic_index', {'subset':'Active'}) }}">Active </a>
-            <a class="btn btn-outline-primary btn-sm"
-               href="{{ path('investments_economic_index', {'subset':'Sold'}) }}">Sold</a>
-        </div>
-    </div>
-    <br>
+
+
+
+
+{#    {% include 'loans_bonds/parts/loans_headers.html.twig' %}#}
+{#    {% include 'loans_bonds/parts/loans_body.html.twig' %}#}
+
+
+
+
+
+
+
 
     <table class="table table-responsive">
         <thead>
         <tr>
             <th>Asset Class</th>
             <th style="width: 10px">Active/<br>Sold</th>
-            <th style="width: 10px">Tax/<br>Summary</th>
+            <th style="width: 10px">Include in:<br>Tax Summary</th>
             <th style="width: 350px">Investment</th>
             <th style="text-align: left">Investment Date</th>
             <th style="width: 75px; text-align: right">
@@ -51,14 +57,6 @@
         {% set totalLossDeductibleAgainstIncome = 0 %}
 
 
-
-        {% for bankAccount in bankAccounts %}
-        {% endfor %}
-        {% for loanBond in loanBonds %}
-
-        {% endfor %}
-
-
         {% for investment in investments %}
             {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  investment.lossDeductibleAgainstIncome %}
             {% if 1 == 1 %}
@@ -75,9 +73,9 @@
             {% endif %}
         {% endfor %}
         </tbody>
-        <tfoot>
-        {#        {% include 'investments/parts/investments_incl_tax_footer.html.twig' %} #}
-        </tfoot>
+        {#        <tfoot> #}
+        {#                {% include 'investments/parts/investments_incl_tax_footer.html.twig' %} #}
+        {#        </tfoot> #}
     </table>
     <br>
 {% endblock %}
@@ -97,7 +95,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[2, 'asc'], [3, 'asc']],
+                "order": [[0, 'asc'], [4, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

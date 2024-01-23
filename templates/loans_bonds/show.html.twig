@@ -7,34 +7,34 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ loans_bond.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ loans_bond.name }}</td>
-            </tr>
-            <tr>
-                <th>Currency</th>
-                <td>{{ loans_bond.currency }}</td>
-            </tr>
-            <tr>
-                <th>Notional</th>
-                <td>{{ loans_bond.notional }}</td>
-            </tr>
-            <tr>
-                <th>InterestRate</th>
-                <td>{{ loans_bond.interestRate }}</td>
-            </tr>
-            <tr>
-                <th>DrawdownDate</th>
-                <td>{{ loans_bond.drawdownDate ? loans_bond.drawdownDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>RepaymentDate</th>
-                <td>{{ loans_bond.repaymentDate ? loans_bond.repaymentDate|date('Y-m-d') : '' }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ loans_bond.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ loans_bond.name }}</td>
+        </tr>
+        <tr>
+            <th>Currency</th>
+            <td>{{ loans_bond.currency }}</td>
+        </tr>
+        <tr>
+            <th>Notional</th>
+            <td>{{ loans_bond.notional }}</td>
+        </tr>
+        <tr>
+            <th>InterestRate</th>
+            <td>{{ loans_bond.interestRate }}</td>
+        </tr>
+        <tr>
+            <th>DrawdownDate</th>
+            <td>{{ loans_bond.drawdownDate ? loans_bond.drawdownDate|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>RepaymentDate</th>
+            <td>{{ loans_bond.repaymentDate ? loans_bond.repaymentDate|date('Y-m-d') : '' }}</td>
+        </tr>
         </tbody>
     </table>
 

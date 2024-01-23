@@ -5,11 +5,20 @@
 {% block body %}
 
     <h1 style="color: red">Market Data History: {{ subset }} </h1>
-{#    <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a><br>#}
+    <div class="row">
+        <div class="col-1">
+            <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a><br>
+        </div>
+        <div class="col-3">
+            <a target="_blank" class="btn btn-outline-primary btn-sm"
+               href="{{ path('market_data_history_index', {subset: 'All'}) }}">All</a></ul>
+            <a target="_blank" class="btn btn-outline-primary btn-sm"
+               href="{{ path('market_data_history_index', {subset: 'Active'}) }}">Active</a></ul>
+            <a target="_blank" class="btn btn-outline-primary btn-sm"
+               href="{{ path('market_data_history_index', {subset: 'Sold'}) }}">Sold</a></ul>
+        </div>
+    </div>
 
-    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index', {subset: 'All'}) }}">All</a></ul>
-    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index', {subset: 'Active'}) }}">Active</a></ul>
-    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index', {subset: 'Sold'}) }}">Sold</a></ul>
 
     <table class="table">
         <thead>

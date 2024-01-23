@@ -26,24 +26,24 @@ class MarketDataHistoryController extends AbstractController
     public function index(Request $request, $subset, MarketDataHistoryRepository $marketDataHistoryRepository, MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice): Response
     {
         $securities = [];
-        if ($subset = 'Active') {
+        if ($subset == 'Active') {
             $marketData = $marketDataRepository->findBy([
                 'isActive' => '1']);
         }
 
         elseif
-            ($subset = 'Sold') {
+            ($subset == 'Sold') {
             $marketData = $marketDataRepository->findBy([
                 'isActive' => '0']);
         }
         elseif
-            ($subset = 'All'){
+            ($subset == 'All'){
             $marketData = $marketDataRepository->findAll();
         }
 
 
         foreach ($marketData as $relevantInvestment) {
-            if ($relevantInvestment->getAssetClass()->getIncludeInStandardInvestmentForm() == 1) {
+            if ($relevantInvestment->getAssetClass()->getTaxScheme()->getShowSharePrices() == 1) {
                 $securities[] = $relevantInvestment;
             }
         }
@@ -81,7 +81,7 @@ class MarketDataHistoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $marketDataHistoryRepository->add($marketDataHistory);
-            return $this->redirectToRoute('market_data_history_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('market_data_history_index', ['subset'=>'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('market_data_history/new.html.twig', [
@@ -110,7 +110,7 @@ class MarketDataHistoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $marketDataHistoryRepository->add($marketDataHistory);
-            return $this->redirectToRoute('market_data_history_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('market_data_history_index', ['subset'=>'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('market_data_history/edit.html.twig', [
@@ -128,6 +128,6 @@ class MarketDataHistoryController extends AbstractController
             $marketDataHistoryRepository->remove($marketDataHistory);
         }
 
-        return $this->redirectToRoute('market_data_history_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('market_data_history_index', ['subset'=>'All'], Response::HTTP_SEE_OTHER);
     }
 }

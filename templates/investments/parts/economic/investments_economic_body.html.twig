@@ -1,13 +1,12 @@
 <tr>
-    {% set SharePrice = MarketDataPrice.findMarketPrice(settings.investmentDate, investment.investmentCompany)   %}
+    {% set SharePrice = MarketDataPrice.findMarketPrice(settings.investmentDate, investment.investmentCompany) %}
 
     <td>
-        {{ SharePrice }} ....
         {{ investment.assetClass.assetClass }}
     </td>
     <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center; width: 10px">
         {% if investment.investmentSaleDate is null or investment.saleSharePrice is null %}
-            <i style="color: orange" class="fa fa fa-question-circle"></i>
+            <i style="color: green" class="fa fa-check"></i>
         {% else %}
             <i style="color: red" class="fa fa fa-remove"></i>
         {% endif %}
@@ -61,15 +60,7 @@
     <td style="text-align: right">
         {% if investment.assetClass.taxScheme is not null %}
             {% if investment.assetClass.updatedPriceAvailable == 1 %}
-                {% if investment.numberOfShares >0 %}
-                    {% if investment.purchaseSharePrice<5 and investment.purchaseSharePrice>-5 %}
-                        {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
-                    {% else %}
-                        {{ (investment.purchaseSharePrice) | number_format (0, '.') }}
-                    {% endif %}
-                {% else %}
-                    -
-                {% endif %}
+                {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
             {% endif %}
         {% endif %}
     </td>
@@ -82,7 +73,7 @@
                     {% if investment.numberOfShares >0 %}
                         <a target="_blank"
                            href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
-                            {{ sharePrice | number_format (2, '.') }}
+                            {{ SharePrice | number_format (2, '.') }}
                         </a>
                     {% else %}
                         <a target="_blank"

@@ -25,6 +25,7 @@ class AssetClassesType extends AbstractType
             ->add('includeInStandardInvestmentForm')
             ->add('showDocs')
             ->add('showInvestmentPurchaseAndSaleDates')
+            ->add('updatedPriceAvailable')
         ;
     }
 
