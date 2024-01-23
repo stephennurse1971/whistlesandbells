@@ -1,0 +1,50 @@
+<h2 style="color: blue">Summary - "As Of" Date: {{ AsOfDate|date('d-M-y') }}</h2>
+<table class="table table-responsive bankAccountSummary">
+    {% set Total_GBP=0 %}
+    {% set Total_USD=0 %}
+    {% set Total_EUR=0 %}
+    {% set Total_CHF=0 %}
+
+    <thead>
+    <tr style="background-color: whitesmoke">
+        <th style="width: 150px">Bank</th>
+        <th style="width: 70px; text-align: right">GBP</th>
+        <th style="width: 70px; text-align: right">USD</th>
+        <th style="width: 70px; text-align: right">EUR</th>
+        <th style="width: 70px; text-align: right">CHF</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for bank_account in bank_accounts %}
+        <tr>
+            <td>
+                <b> {{ bank_account.bank }}</b>
+            </td>
+            <td style="text-align: right">
+                {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceGBP|number_format(2, '.', ',') }}
+                {% set Total_GBP = Total_GBP +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceGBP %}
+            </td>
+            <td style="text-align: right">
+                {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceUSD|number_format(2, '.', ',') }}
+                {% set Total_USD = Total_USD +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceUSD %}
+            </td>
+            <td style="text-align: right">
+                {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceEUR|number_format(2, '.', ',') }}
+                {% set Total_EUR = Total_EUR +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceEUR %}
+            </td>
+            <td style="text-align: right">
+                {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceCHF|number_format(2, '.', ',') }}
+                {% set Total_CHF = Total_CHF +BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceCHF %}
+            </td>
+        </tr>
+    {% endfor %}
+    <tr style="background-color: whitesmoke; font-weight: bold">
+        <td style="width: 150px">Totals:</td>
+        <td style="width: 70px; text-align: right">{{ Total_GBP|number_format(2, '.', ',') }}</td>
+        <td style="width: 70px; text-align: right">{{ Total_USD|number_format(2, '.', ',') }}</td>
+        <td style="width: 70px; text-align: right">{{ Total_EUR|number_format(2, '.', ',') }}</td>
+        <td style="width: 70px; text-align: right">{{ Total_CHF|number_format(2, '.', ',') }}</td>
+    </tr>
+    </tbody>
+</table>
+<br><hr><br>

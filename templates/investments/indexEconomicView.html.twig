@@ -2,16 +2,11 @@
 {% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
     <h1 style="color: red">Investments: {{ grouping }}</h1>
-    {% set AsOfDate = settings.investmentDate|date('Y-m-d') %}
+    {% set AsOfDate = settings.investmentDate  %}
     {% include 'investments/parts/economic/economic_view_buttons.twig' %}
 
-
-
-
     {% include 'investments/parts/economic/bank_accounts_buttons.twig' %}
-    {% include 'bank_balances/parts/bank_accounts_headers.html.twig' %}
-    {% include 'bank_balances/parts/bank_accounts_body.html.twig' %}
-
+    {% include 'bank_balances/parts/summary_bank_acounts.html.twig' %}
 
     {% include 'investments/parts/economic/loans_bonds_buttons.twig' %}
     {% include 'loans_bonds/parts/loans_bonds_headers.html.twig' %}
@@ -19,46 +14,15 @@
 
 
 
+    <table class="table table-responsive economicSummary">
 
-
-
-
-
-    <table class="table table-responsive">
-        <thead>
-        <tr>
-            <th>Asset Class</th>
-            <th style="width: 10px">Active/<br>Sold</th>
-            <th style="width: 10px">Include in:<br>Tax Summary</th>
-            <th style="width: 350px">Investment</th>
-            <th style="text-align: left">Investment Date</th>
-            <th style="width: 75px; text-align: right">
-                Tax Schemes
-                <a target="_blank" href="{{ path('tax_schemes_index') }}">
-                    <i class="fa f a-link"></i>
-                </a>
-            </th>
-            <th style="text-align: right">Ccy</th>
-            <th style="text-align: right;border-right:1px solid black">£ invested</th>
-            <th style="text-align: right; width: 80px">Share Price (Purchase)</th>
-            <th style="text-align: right; width: 80px">Share Price (Current/Sale*) (£)</th>
-            <th style="text-align: right">MTM or<br>Gain/Loss<br>Crystallised(£)</th>
-            <th style="text-align: right">PV (Local)</th>
-            <th style="text-align: right;border-right:1px solid black">PV (£)</th>
-            <th>Sale</th>
-            <th style="text-align: right;border-right:1px solid black">CGT</th>
-        </tr>
-        </thead>
-
-
+        {% include 'investments/parts/economic/investments_economic_headers.html.twig' %}
         <tbody>
         {% set TaxSubsidyPurchase_Total = 0 %}
         {% set MTM_Total = 0 %}
         {% set PV_Total = 0 %}
         {% set CGT_Total = 0 %}
         {% set totalLossDeductibleAgainstIncome = 0 %}
-
-
         {% for investment in investments %}
             {% set totalLossDeductibleAgainstIncome = totalLossDeductibleAgainstIncome +  investment.lossDeductibleAgainstIncome %}
             {% if 1 == 1 %}
@@ -95,9 +59,16 @@
 {% block datatable %}
     <script>
         $(document).ready(function () {
-            $('.table').DataTable({
+            $('.bankAccountSummary').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc'], [4, 'asc']],
+                "order": [[1, 'asc'] ],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+            $('.economicSummary').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'asc'],[2, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

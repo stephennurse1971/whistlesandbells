@@ -4,33 +4,38 @@
 
 {% block body %}
     <h1 style="color: red">Bank Balances</h1>
+    {% set AsOfDate = settings.investmentDate %}
 
     <div class="row">
-        <div class="col-3">
-            <a class="btn btn-success btn-sm" href="{{ path('bank_balances_new') }}">New</a>
-        </div>
-
+        <div class="col-3"></div>
         <div class="col-3">
             {% include 'market_data/parts/investmentAsOfDate.html.twig' %}
         </div>
     </div>
+    {% include 'bank_balances/parts/summary_bank_acounts.html.twig' %}
 
     {% for bank_account in bank_accounts %}
         <br>
-        <h2 style="color: blue">{{ bank_account.bank }}</h2>
-
-            {% include 'bank_balances/parts/bank_accounts_headers.html.twig' %}
-            {% include 'bank_balances/parts/bank_accounts_body.html.twig' %}
+        <h2 style="color: blue">{{ bank_account.bank }}
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('bank_balances_new') }}">+</a></h2>
+        {% include 'bank_balances/parts/bank_accounts_headers.html.twig' %}
+        {% include 'bank_balances/parts/bank_accounts_body.html.twig' %}
     {% endfor %}
-
 {% endblock %}
 
 {% block datatable %}
     <script>
         $(document).ready(function () {
-            $('.table').DataTable({
+            $('.bankAccountSummary').DataTable({
                 'pageLength': 50,
-                "order": [[1, 'asc'], [0, 'desc']],
+                "order": [[1, 'asc'] ],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+            $('.byBankAccount').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

@@ -1,7 +1,6 @@
 <tbody>
 {% for bank_balance in bank_balances %}
-    {% for bank_balance in bank_balances %}
-        {#    {% if bank_balance.bank.bank == bank_account.bank %} #}
+    {% if bank_balance.bank.bank == bank_account.bank %}
         <tr>
             <td data-sort="{{ bank_balance.date|date('Y-m-d') }}">
                 {{ bank_balance.date|date('d-M-y') }}
@@ -26,9 +25,9 @@
                    href="{{ path('bank_balances_edit', {'id': bank_balance.id}) }}">Edit</a>
             </td>
         </tr>
-        {#    {% endif %} #}
-    {% endfor %}
+    {% endif %}
 {% endfor %}
 </tbody>
 </table>
-<br><hr><br>
+<br>
+<hr><br>

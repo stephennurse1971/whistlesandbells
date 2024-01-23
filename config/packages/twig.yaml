@@ -2,12 +2,12 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
+        BankBalanceOnAsOfDate: '@App\Services\BankBalanceOnAsOfDate'
+        FindUser: '@App\Services\FindUser'
         Investment: '@App\Services\Investment'
+        MarketDataPrice: '@App\Services\MarketDataPrice'
         StaticText: '@App\Services\StaticText'
         TaxYear: '@App\Services\TaxYear'
-        FindUser: '@App\Services\FindUser'
-        UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
         TaxYearCalcs: '@App\Services\TaxYearCalcs'
-        MarketDataPrice: '@App\Services\MarketDataPrice'
-        LatestBankBalance: '@App\Services\LatestBankBalance'
+        UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
 

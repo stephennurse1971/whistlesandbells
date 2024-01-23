@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\BankAccounts;
 use App\Entity\BankBalances;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -75,4 +76,16 @@ class BankBalancesRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findPricePrevious(BankAccounts $bankAccounts,\DateTimeInterface $date)
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.bank = :bank')
+            ->setParameter('bank', $bankAccounts)
+            ->andWhere('m.date < :date')
+            ->setParameter('date',$date)
+            ->orderBy('m.date', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
