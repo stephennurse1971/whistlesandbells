@@ -75,4 +75,15 @@ class FxRatesHistoryRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findPreviousRate(\DateTimeInterface $date)
+    {
+        return $this->createQueryBuilder('m')
+
+            ->andWhere('m.date < :date')
+            ->setParameter('date',$date)
+            ->orderBy('m.date', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
