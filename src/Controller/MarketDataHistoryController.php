@@ -30,14 +30,12 @@ class MarketDataHistoryController extends AbstractController
         if ($subset == 'Active') {
             $marketData = $marketDataRepository->findBy([
                 'isActive' => '1']);
-        }
-        elseif
-            ($subset == 'Sold') {
+        } elseif
+        ($subset == 'Sold') {
             $marketData = $marketDataRepository->findBy([
                 'isActive' => '0']);
-        }
-        elseif
-            ($subset == 'All'){
+        } elseif
+        ($subset == 'All') {
             $marketData = $marketDataRepository->findAll();
         }
         foreach ($marketData as $relevantInvestment) {
@@ -64,32 +62,33 @@ class MarketDataHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/index/{subset}/{security}", name="market_data_history_index_table", methods={"GET"})
+     * @Route("/index_table/{subset}/{security}", name="market_data_history_index_table", methods={"GET"})
      */
-    public function indexGrid(Request $request, string $subset, string $security,  MarketDataHistoryRepository $marketDataHistoryRepository, MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice): Response
+    public function indexGrid(Request $request, string $subset, $security, MarketDataHistoryRepository $marketDataHistoryRepository, MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice): Response
     {
         $securities = [];
-        if ($subset == 'Active') {
-            $marketData = $marketDataRepository->findBy([
-                'isActive' => '1']);
-        }
+        if ($security != 'All') {
+            $marketData = $marketDataHistoryRepository->findBy(['security' => $marketDataRepository->find($security)]);
+        } else {
 
-        elseif
-        ($subset == 'Sold') {
-            $marketData = $marketDataRepository->findBy([
-                'isActive' => '0']);
-        }
-        elseif
-        ($subset == 'All'){
-            $marketData = $marketDataRepository->findAll();
-        }
-
-        foreach ($marketData as $relevantInvestment) {
-            if ($relevantInvestment->getAssetClass()->getTaxScheme()->getShowSharePrices() == 1) {
-                $securities[] = $relevantInvestment;
+            if
+            ($subset == 'Active') {
+                $marketData = $marketDataHistoryRepository->findBy([
+                    'isActive' => '1']);
+            } elseif
+            ($subset == 'Sold') {
+                $marketData = $marketDataHistoryRepository->findBy([
+                    'isActive' => '0']);
+            } elseif
+            ($subset == 'All') {
+                $marketData = $marketDataHistoryRepository->findAll();
             }
         }
-        $marketDataHistory = $marketDataHistoryRepository->findAll();
+//        foreach ($marketData as $relevantInvestment) {
+//            if ($relevantInvestment->getAssetClass()->getTaxScheme()->getShowSharePrices() == 1) {
+//                $securities[] = $relevantInvestment;
+//            }
+//        }
 
         $dates = [];
         $start_date = new \DateTime('tomorrow');
@@ -102,11 +101,10 @@ class MarketDataHistoryController extends AbstractController
         return $this->render('market_data_history/indexGrid.html.twig', [
             'dates' => $dates,
             'securities' => $securities,
-            'market_data_histories' => $marketDataHistory,
+            'market_data_histories' => $marketData,
             'subset' => $subset
         ]);
     }
-
 
 
     /**
@@ -124,7 +122,7 @@ class MarketDataHistoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $marketDataHistoryRepository->add($marketDataHistory);
-            return $this->redirectToRoute('market_data_history_index', ['subset'=>'All'], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('market_data_history_index', ['subset' => 'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('market_data_history/new.html.twig', [
@@ -153,7 +151,7 @@ class MarketDataHistoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $marketDataHistoryRepository->add($marketDataHistory);
-            return $this->redirectToRoute('market_data_history_index', ['subset'=>'All'], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('market_data_history_index', ['subset' => 'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('market_data_history/edit.html.twig', [
@@ -170,7 +168,7 @@ class MarketDataHistoryController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $marketDataHistory->getId(), $request->request->get('_token'))) {
             $marketDataHistoryRepository->remove($marketDataHistory);
         }
-        return $this->redirectToRoute('market_data_history_index', ['subset'=>'All'], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('market_data_history_index', ['subset' => 'All'], Response::HTTP_SEE_OTHER);
     }
 
 
@@ -188,7 +186,6 @@ class MarketDataHistoryController extends AbstractController
         }
         return $this->redirect($referer);
     }
-
 
 
 }

@@ -8,8 +8,7 @@
     <div class="row">
         <div class="col-3">
             <a class="btn btn-success btn-sm" href="{{ path('market_data_history_new') }}">New</a>
-            <a class="btn btn-outline-primary btn-sm" href="{{ path('app_home') }}">Table View - All XXXX</a>
-{#            <a class="btn btn-success btn-sm" href="{{ path('market_data_history_index_table',{subset:'All', security: 'All'}) }}">Table</a><br>#}
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('market_data_history_index_table', {subset:'Active', security: 'All'}) }}">Table View - All</a>
             <a class="btn btn-danger btn-sm" href="{{ path('historic_market_data_delete_all') }}">Delete All</a><br>
         </div>
         <div class="col-3">
@@ -32,9 +31,7 @@
                     style="width: 50px; background-color: whitesmoke; border-bottom: 1px; border-right: 1px dotted">
                     <a target="_blank" href="{{ path('market_data_edit', {id:security.id}) }}">{{ security.shareCompany }}</a>
                     <br>[{{ security.assetClass.assetclass }}]
-                <a class="btn btn-danger btn-sm" href="{{ path('app_home') }}">Delete XXXX</a>
-                <a class="btn btn-danger btn-sm" href="{{ path('app_home') }}">Table xxx</a>
-{#                <a class="btn btn-danger btn-sm" href="{{ path('market_data_history_index_table',{subset:'All', security: security}) }}">Table</a>#}
+                <a class="btn btn-danger btn-sm" href="{{ path('market_data_history_index_table',{subset:'All', security: security.id}) }}">Table</a>
                 </th>
             {% endfor %}
         </tr>
