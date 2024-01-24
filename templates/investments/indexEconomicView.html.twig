@@ -88,19 +88,23 @@
 
         // <--- GrandTotal --->
         $(document).ready(function(){
-            var balanceGBP = $('.totalSharesGBP').text();
+            var balanceGBP = parseInt($('.totalBankBalanceGBP').text().replaceAll(',','')) + parseInt($('.totalLoansBondsGBP').text().replaceAll(',','')) + parseInt($('.totalSharesGBP').text().replaceAll(',',''));
+             balanceGBP = balanceGBP.toLocaleString();
             $('.grandTotalGBP').text(balanceGBP);
         })
         $(document).ready(function(){
-            var balanceUSD = $('.totalSharesUSD').text();
+            var balanceUSD = parseInt($('.totalBankBalanceUSD').text().replaceAll(',','')) + parseInt($('.totalLoansBondsUSD').text().replaceAll(',','')) + parseInt($('.totalSharesUSD').text().replaceAll(',',''));
+            balanceUSD = balanceUSD.toLocaleString();
             $('.grandTotalUSD').text(balanceUSD);
         })
         $(document).ready(function(){
-            var balanceEUR = $('.totalSharesEUR').text();
+            var balanceEUR = parseInt($('.totalBankBalanceEUR').text().replaceAll(',','')) + parseInt($('.totalLoansBondsEUR').text().replaceAll(',','')) + parseInt($('.totalSharesEUR').text().replaceAll(',',''));
+            balanceEUR = balanceEUR.toLocaleString();
             $('.grandTotalEUR').text(balanceEUR);
         })
         $(document).ready(function(){
-            var balanceCHF = $('.totalSharesCHF').text();
+            var balanceCHF = parseInt($('.totalBankBalanceCHF').text().replaceAll(',','')) + parseInt($('.totalLoansBondsCHF').text().replaceAll(',','')) + parseInt($('.totalSharesCHF').text().replaceAll(',',''));
+            balanceCHF = balanceCHF.toLocaleString();
             $('.grandTotalCHF').text(balanceCHF);
         })
 
