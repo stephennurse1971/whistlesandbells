@@ -45,7 +45,7 @@ class FxRates
     private $reciprocal;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedDate;
 

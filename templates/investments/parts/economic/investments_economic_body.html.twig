@@ -1,6 +1,12 @@
 <tbody>
 {% set TaxSubsidyPurchase_Total = 0 %}
 {% set MTM_Total = 0 %}
+
+{% set Shares_Total_GBP = 0 %}
+{% set Shares_Total_USD = 0 %}
+{% set Shares_Total_EUR = 0 %}
+{% set Shares_Total_CHF = 0 %}
+
 {% set PV_Total = 0 %}
 {% set CGT_Total = 0 %}
 {% set totalLossDeductibleAgainstIncome = 0 %}
@@ -19,7 +25,7 @@
         <tr>
             {% set SharePrice = MarketDataPrice.findMarketPrice(settings.investmentDate, investment.investmentCompany) %}
 
-            <td>
+            <td style="border-left: 1px solid">
                 {{ investment.assetClass.assetClass }}
             </td>
             <td data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}" style="text-align: center; width: 10px">
@@ -151,22 +157,34 @@
 
             <!-- PV (£) -->
             <td style="text-align: right">
-               xx $
+                {% if investment.currency.fx == 'GBP' %}
+                    {{ PV |number_format ('0') }}
+                    {% set Shares_Total_GBP = Shares_Total_GBP + PV  %}
+                {% endif %}
             </td>
 
             <!-- PV ($) -->
             <td style="text-align: right">
-               xx $
+                {% if investment.currency.fx == 'USD' %}
+                    {{ PV |number_format ('0') }}
+                    {% set Shares_Total_USD = Shares_Total_USD + PV  %}
+                {% endif %}
             </td>
 
-            <!-- PV ($) -->
+            <!-- PV (€) -->
             <td style="text-align: right">
-                xx €
+                {% if investment.currency.fx == 'EUR' %}
+                    {{ PV |number_format ('0') }}
+                    {% set Shares_Total_EUR = Shares_Total_EUR + PV  %}
+                {% endif %}
             </td>
 
-            <!-- PV ($) -->
+            <!-- PV (CHF) -->
             <td style="text-align: right; border-right: 1px solid">
-                xx CHF
+                {% if investment.currency.fx == 'CHF' %}
+                    {{ PV |number_format ('0') }}
+                    {% set Shares_Total_CHF = Shares_Total_CHF + PV  %}
+                {% endif %}
             </td>
 
             <!-- Sale Date -->
@@ -198,7 +216,7 @@
 {% endfor %}
 
 <tr style="background-color: whitesmoke">
-    <th>z</th>
+    <th style="border-left: 1px solid">z</th>
     <th style="width: 10px"></th>
     <th style="width: 10px"></th>
     <th style="width: 350px">z</th>
@@ -210,10 +228,10 @@
     <th style="text-align: right; width: 80px"></th>
     <th style="text-align: right"></th>
     <th style="text-align: right; border-right: 1px solid"></th>
-    <th style="text-align: right">£</th>
-    <th style="text-align: right">$</th>
-    <th style="text-align: right">€</th>
-    <th style="text-align: right">CHF</th>
+    <th style="text-align: right" class="totalSharesGBP">{{ Shares_Total_GBP|number_format ('0') }}</th>
+    <th style="text-align: right" class="totalSharesUSD">{{ Shares_Total_USD|number_format ('0') }}</th>
+    <th style="text-align: right" class="totalSharesEUR">{{Shares_Total_EUR|number_format ('0')}}</th>
+    <th style="text-align: right" class="totalSharesCHF">{{ Shares_Total_CHF|number_format ('0') }}</th>
     <th style="border-left: 1px solid"></th>
     <th style="border-right: 1px solid"></th>
 </tr>

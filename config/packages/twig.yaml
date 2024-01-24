@@ -4,10 +4,12 @@ twig:
     globals:
         BankBalanceOnAsOfDate: '@App\Services\BankBalanceOnAsOfDate'
         FindUser: '@App\Services\FindUser'
+        FXRatesOnAsOfDate: '@App\Services\FXRatesOnAsOfDate'
         Investment: '@App\Services\Investment'
         MarketDataPrice: '@App\Services\MarketDataPrice'
         StaticText: '@App\Services\StaticText'
         TaxYear: '@App\Services\TaxYear'
         TaxYearCalcs: '@App\Services\TaxYearCalcs'
         UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
+
 

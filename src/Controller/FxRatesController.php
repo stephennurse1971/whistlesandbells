@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\FxRates;
+use App\Entity\FxRatesHistory;
 use App\Form\FxRatesType;
+use App\Repository\FxRatesHistoryRepository;
 use App\Repository\FxRatesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,8 +25,8 @@ class FxRatesController extends AbstractController
     {
         return $this->render('fx_rates/index.html.twig', [
             'fx_rates' => $fxRatesRepository->findAll(),
-            'USDGBPFXrate'=>$fxRatesRepository->findOneBy([
-                'fx'=> 'GBP'
+            'USDGBPFXrate' => $fxRatesRepository->findOneBy([
+                'fx' => 'GBP'
             ]),
         ]);
     }
@@ -87,7 +89,7 @@ class FxRatesController extends AbstractController
      */
     public function delete(Request $request, FxRates $fxRate): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$fxRate->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $fxRate->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($fxRate);
             $entityManager->flush();
@@ -99,15 +101,42 @@ class FxRatesController extends AbstractController
     /**
      * @Route("/ajax/update/currency/rate", name="ajax_update_currency_rate",methods={"POST"})
      */
-    public function fxRateUpdate(FxRatesRepository $fxRatesRepository,EntityManagerInterface $manager)
+    public function fxRateUpdate(FxRatesRepository $fxRatesRepository, FxRatesHistoryRepository $fxRatesHistoryRepository, EntityManagerInterface $manager)
     {
-        if(isset($_POST['fx_rate']))
-        {
+        $now = new \DateTime('now');
+        if (isset($_POST['fx_rate'])) {
             $rate = $_POST['fx_rate'];
             $fxRate_id = $_POST['fxRate_id'];
             $getFxRateById = $fxRatesRepository->find($fxRate_id);
             $getFxRateById->setCurrentFxRate($rate);
+            $getFxRateById->setUpdatedDate($now);
+
+            $dateToday = $now->format('Y-m-d');
+            $fxRateHistoryPrevious = $fxRatesHistoryRepository->findOneBy(['date' => new \DateTime($dateToday)]);
+            if ($fxRateHistoryPrevious) {
+                if ($getFxRateById->getFx() == 'CHF') {
+                    $fxRateHistoryPrevious->setCHFFXRate($rate);
+                } elseif ($getFxRateById->getFx() == 'EUR') {
+                    $fxRateHistoryPrevious->setEURFXRate($rate);
+                } elseif ($getFxRateById->getFx() == 'GBP') {
+                    $fxRateHistoryPrevious->setGBPFXRate($rate);
+                }
+            }
+            else{
+                $fxHistoryNew= new FxRatesHistory();
+                $fxHistoryNew->setDate(new \datetime($dateToday));
+                if ($getFxRateById->getFx() == 'CHF') {
+                    $fxHistoryNew->setCHFFXRate($rate);
+                } elseif ($getFxRateById->getFx() == 'EUR') {
+                    $fxHistoryNew->setEURFXRate($rate);
+                } elseif ($getFxRateById->getFx() == 'GBP') {
+                    $fxHistoryNew->setGBPFXRate($rate);
+                }
+                $manager->persist($fxHistoryNew);
+            }
+
             $manager->flush();
+
         }
         return new Response(null);
     }

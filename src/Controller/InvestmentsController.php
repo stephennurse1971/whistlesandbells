@@ -9,6 +9,7 @@ use App\Repository\BankAccountsRepository;
 use App\Repository\BankBalancesRepository;
 use App\Repository\LoansBondsRepository;
 use App\Repository\SettingsRepository;
+use App\Services\FXRatesOnAsOfDate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Form\InvestmentsType;
 use App\Repository\AssetClassesRepository;
@@ -81,7 +82,7 @@ class InvestmentsController extends AbstractController
     /**
      * @Route("/index/economic/{subset}", name="investments_economic_index", methods={"GET"})
      */
-    public function indexEconomic(Request $request, string $subset, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository, BankBalancesRepository $bankBalancesRepository, BankAccountsRepository $bankAccountsRepository, LoansBondsRepository $loansBondsRepository, SettingsRepository $settingsRepository): Response
+    public function indexEconomic(Request $request, string $subset, InvestmentsRepository $investmentsRepository, InvestmentFutureCommsRepository $investmentFutureCommsRepository, AssetClassesRepository $assetClassesRepository, FxRatesRepository $fxRatesRepository, BankBalancesRepository $bankBalancesRepository, BankAccountsRepository $bankAccountsRepository, LoansBondsRepository $loansBondsRepository, SettingsRepository $settingsRepository, FXRatesOnAsOfDate $FXRatesOnAsOfDate): Response
     {
         $settings = $settingsRepository->find('1');
         $loans_bonds = $loansBondsRepository->findAll();

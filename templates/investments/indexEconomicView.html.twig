@@ -3,23 +3,22 @@
 {% block body %}
     <h1 style="color: red">Investments: {{ grouping }}</h1>
     {% set AsOfDate = settings.investmentDate %}
-    {% include 'investments/parts/economic/economic_view_buttons.twig' %}
 
+
+    {% include 'investments/parts/economic/economic_view_buttons.twig' %}
     {% include 'investments/parts/economic/bank_accounts_buttons.twig' %}
-    {% include 'bank_balances/parts/summary_bank_acounts.html.twig' %}
+
+    {% include 'bank_balances/parts/summary_bank_acounts.html.twig'  %}
 
     {% include 'investments/parts/economic/loans_bonds_buttons.twig' %}
     {% include 'loans_bonds/parts/loans_bonds_headers.html.twig' %}
     {% include 'loans_bonds/parts/loans_bonds_body.html.twig' %}
-
-
 
     <table class="table table-responsive economicSummary">
         {% include 'investments/parts/economic/investments_economic_headers.html.twig' %}
         {% include 'investments/parts/economic/investments_economic_body.html.twig' %}
     </table>
     <br>
-
     {% include 'investments/parts/economic/grandTotal.twig' %}
 
 {% endblock %}
@@ -31,7 +30,83 @@
         $('.toggle-investment-child').click(function () {
             var investment_Child_ID = $(this).attr("data-investment-Child-Id");
             $("#" + investment_Child_ID).toggle();
+        });
+
+        // <--- Bank Accounts --->
+        $(document).ready(function(){
+            var balanceGBP = $('.totalBankBalanceGBP').text();
+            $('.grandTotalBankBalanceGBP').text(balanceGBP);
         })
+        $(document).ready(function(){
+            var balanceUSD = $('.totalBankBalanceUSD').text();
+            $('.grandTotalBankBalanceUSD').text(balanceUSD);
+        })
+        $(document).ready(function(){
+            var balanceEUR = $('.totalBankBalanceEUR').text();
+            $('.grandTotalBankBalanceEUR').text(balanceEUR);
+        })
+        $(document).ready(function(){
+            var balanceCHF = $('.totalBankBalanceCHF').text();
+            $('.grandTotalBankBalanceCHF').text(balanceCHF);
+        })
+
+        // <--- Loans/Bonds --->
+        $(document).ready(function(){
+            var balanceGBP = $('.totalLoansBondsGBP').text();
+            $('.grandTotalLoansBondsBalanceGBP').text(balanceGBP);
+        })
+        $(document).ready(function(){
+            var balanceUSD = $('.totalLoansBondsUSD').text();
+            $('.grandTotalLoansBondsBalanceUSD').text(balanceUSD);
+        })
+        $(document).ready(function(){
+            var balanceEUR = $('.totalLoansBondsEUR').text();
+            $('.grandTotalLoansBondsBalanceEUR').text(balanceEUR);
+        })
+        $(document).ready(function(){
+            var balanceCHF = $('.totalLoansBondsCHF').text();
+            $('.grandTotalLoansBondsBalanceCHF').text(balanceCHF);
+        })
+
+        // <--- Shares --->
+        $(document).ready(function(){
+            var balanceGBP = $('.totalSharesGBP').text();
+            $('.grandTotalSharesBalanceGBP').text(balanceGBP);
+        })
+        $(document).ready(function(){
+            var balanceUSD = $('.totalSharesUSD').text();
+            $('.grandTotalSharesBalanceUSD').text(balanceUSD);
+        })
+        $(document).ready(function(){
+            var balanceEUR = $('.totalSharesEUR').text();
+            $('.grandTotalSharesBalanceEUR').text(balanceEUR);
+        })
+        $(document).ready(function(){
+            var balanceCHF = $('.totalSharesCHF').text();
+            $('.grandTotalSharesBalanceCHF').text(balanceCHF);
+        })
+
+        // <--- GrandTotal --->
+        $(document).ready(function(){
+            var balanceGBP = $('.totalSharesGBP').text();
+            $('.grandTotalGBP').text(balanceGBP);
+        })
+        $(document).ready(function(){
+            var balanceUSD = $('.totalSharesUSD').text();
+            $('.grandTotalUSD').text(balanceUSD);
+        })
+        $(document).ready(function(){
+            var balanceEUR = $('.totalSharesEUR').text();
+            $('.grandTotalEUR').text(balanceEUR);
+        })
+        $(document).ready(function(){
+            var balanceCHF = $('.totalSharesCHF').text();
+            $('.grandTotalCHF').text(balanceCHF);
+        })
+
+
+
+
     </script>
 {% endblock additionaljs %}
 {% block datatable %}

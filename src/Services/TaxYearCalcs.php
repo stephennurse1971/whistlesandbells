@@ -23,22 +23,22 @@ class TaxYearCalcs
          foreach ($this->investmentRepository->findAll() as $investment ){
              if($investment->getEisPurchaseYear1()){
                  if($investment->getEisPurchaseYear1() == $taxYear){
-                     $tax_relief_offset = $tax_relief_offset + ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear1Percentage() * ($investment->getTaxScheme()->getPurchaseTaxOffset()/100));
+                     $tax_relief_offset = $tax_relief_offset + ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear1Percentage() * ($investment->getAssetClass()->getTaxScheme()->getPurchaseTaxOffset()/100));
                  }
              }
              if($investment->getEisPurchaseYear2()){
                  if($investment->getEisPurchaseYear2() == $taxYear){
-                     $tax_relief_offset = $tax_relief_offset + ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear2Percentage() * ($investment->getTaxScheme()->getPurchaseTaxOffset()/100));
+                     $tax_relief_offset = $tax_relief_offset + ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear2Percentage() * ($investment->getAssetClass()->getTaxScheme()->getPurchaseTaxOffset()/100));
                  }
              }
              if($investment->getEisSaleYear1()){
                  if($investment->getEisSaleYear1() == $taxYear){
-                     $tax_relief_offset = $tax_relief_offset + ($investment->getInvestmentAmount() * $investment->getEISSaleYear1Percentage() * $investment->getTaxScheme()->getSaleTaxOffset()/100);
+                     $tax_relief_offset = $tax_relief_offset + ($investment->getInvestmentAmount() * $investment->getEISSaleYear1Percentage() * $investment->getAssetClass()->getTaxScheme()->getSaleTaxOffset()/100);
                  }
              }
              if($investment->getEisSaleYear2()){
                  if($investment->getEisPurchaseYear2() == $taxYear){
-                     $tax_relief_offset = $tax_relief_offset + ($investment->getInvestmentAmount() * $investment->getEISSaleYear2Percentage() * $investment->getTaxScheme()->getSaleTaxOffset()/100);
+                     $tax_relief_offset = $tax_relief_offset + ($investment->getInvestmentAmount() * $investment->getEISSaleYear2Percentage() * $investment->getAssetClass()->getTaxScheme()->getSaleTaxOffset()/100);
                  }
              }
          }
@@ -51,12 +51,12 @@ class TaxYearCalcs
         foreach ($this->investmentRepository->findAll() as $investment ){
             if($investment->getEisPurchaseYear1()){
                 if($investment->getEisPurchaseYear1() == $taxYear){
-                    $income_offset = $income_offset - ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear1Percentage() * ($investment->getTaxScheme()->getPurchaseIncomeOffset()/100));
+                    $income_offset = $income_offset - ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear1Percentage() * ($investment->getAssetClass()->getTaxScheme()->getPurchaseIncomeOffset()/100));
                 }
             }
             if($investment->getEisPurchaseYear2()){
                 if($investment->getEisPurchaseYear2() == $taxYear){
-                    $income_offset = $income_offset - ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear2Percentage() * ($investment->getTaxScheme()->getPurchaseIncomeOffset()/100));
+                    $income_offset = $income_offset - ($investment->getInvestmentAmount() * $investment->getEISPurchaseYear2Percentage() * ($investment->getAssetClass()->getTaxScheme()->getPurchaseIncomeOffset()/100));
                 }
             }
 

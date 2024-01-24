@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: FX Rates History{% endblock %}
+{% block title %}FX Rates History {{ fx_rates_history.date|date('d-M-y') }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: FX Rates History</h1>
+    <h1 style="color: red">FX Rates History: {{ fx_rates_history.date|date('d-M-y') }}</h1>
 
     {{ include('fx_rates_history/_form.html.twig', {'button_label': 'Update'}) }}
 

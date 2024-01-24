@@ -13,19 +13,19 @@
 
     <tr>
         <td style="border-left: 1px solid; border-bottom: 1px solid">
-            AsOfDate
+            {{ AsOfDate|date('d-M-y') }}
         </td>
         <td style="text-align: right; border-bottom: 1px solid">
-            GBP
+            {{ FXRatesOnAsOfDate.findFXRates(AsOfDate, 'GBP') |number_format(4, '.', ',')}}
         </td>
         <td style="text-align: right; border-bottom: 1px solid">
-            1.00
+            1.0000
         </td>
         <td style="text-align: right; border-bottom: 1px solid">
-            EUR
+            {{ FXRatesOnAsOfDate.findFXRates(AsOfDate, 'EUR') |number_format(4, '.', ',')}}
         </td>
         <td style="text-align: right; border-bottom: 1px solid; border-right: 1px solid">
-            CHF
+            {{ FXRatesOnAsOfDate.findFXRates(AsOfDate, 'CHF') |number_format(4, '.', ',')}}
         </td>
     </tr>
     </tbody>

@@ -22,7 +22,6 @@
     <tr>
         <td style="border-left: 1px solid">
             {{ loans_bond.name }}
-            <br>MF{{ Loan_Bond_MaturedFactor }}
         </td>
         <td style="text-align: right">{{ loans_bond.currency }}</td>
         <td style="text-align: right">{{ loans_bond.notional|number_format(0, '.', ',') }}</td>
@@ -118,17 +117,40 @@
     <td style="width: 50px"></td>
     <td style="width: 50px"></td>
     <td style="width: 50px; border-right: 1px dotted"></td>
-    <td style="width: 50px">{{ Loans_Bonds_Total_GBP|number_format(0, '.', ',') }}
-        <br>({{ Loans_Bonds_DailyAccrual_Total_GBP|number_format(0, '.', ',') }})
+    <td style="width: 50px" class="totalLoansBondsGBP">{{ Loans_Bonds_Total_GBP|number_format(0, '.', ',') }}
     </td>
-    <td style="width: 50px">{{ Loans_Bonds_Total_USD|number_format(0, '.', ',') }}
-        <br>({{ Loans_Bonds_DailyAccrual_Total_USD|number_format(0, '.', ',') }})
+    <td style="width: 50px" class="totalLoansBondsUSD">{{ Loans_Bonds_Total_USD|number_format(0, '.', ',') }}
     </td>
-    <td style="width: 50px">{{ Loans_Bonds_Total_EUR|number_format(0, '.', ',') }}
-        <br>({{ Loans_Bonds_DailyAccrual_Total_EUR|number_format(0, '.', ',') }})
+    <td style="width: 50px" class="totalLoansBondsEUR">{{ Loans_Bonds_Total_EUR|number_format(0, '.', ',') }}
     </td>
-    <td style="width: 50px; border-right: 1px solid">{{ Loans_Bonds_Total_CHF|number_format(0, '.', ',') }}
-        <br>({{ Loans_Bonds_DailyAccrual_Total_CHF|number_format(0, '.', ',') }})
+    <td style="width: 50px; border-right: 1px solid" class="totalLoansBondsCHF">{{ Loans_Bonds_Total_CHF|number_format(0, '.', ',') }}
+    </td>
+</tr>
+
+<tr style="background-color: whitesmoke; text-align: right; border-top: 1px solid; border-bottom: 1px solid">
+    <td style="width: 190px; font-weight: lighter; border-left: 1px solid; color: lightgrey">z</td>
+    <td style="width: 60px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px"></td>
+    <td style="width: 50px; border-right: 1px dotted"></td>
+    <td style="width: 50px">
+     {{ Loans_Bonds_DailyAccrual_Total_GBP|number_format(0, '.', ',') }}
+    </td>
+    <td style="width: 50px">
+     {{ Loans_Bonds_DailyAccrual_Total_USD|number_format(0, '.', ',') }}
+    </td>
+    <td style="width: 50px">
+     {{ Loans_Bonds_DailyAccrual_Total_EUR|number_format(0, '.', ',') }}
+    </td>
+    <td style="width: 50px; border-right: 1px solid">
+     {{ Loans_Bonds_DailyAccrual_Total_CHF|number_format(0, '.', ',') }}
     </td>
 </tr>
 
