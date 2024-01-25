@@ -149,8 +149,8 @@
                 {% if investment.investmentSaleDate is not null %}
                     {% set PV = 0 %}
                 {% else %}
-{#                    {% set PV = 100 %}#}
-                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}
+                    {% set PV = 100 %}
+{#                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}#}
                 {% endif %}
                 {{ PV |number_format ('0') }}
             </td>
