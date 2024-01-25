@@ -94,6 +94,8 @@
             <td style="text-align: right">
                 <a target="_blank"
                    href="{{ path('market_data_history_index_table',{subset:'All', security: investment.investmentCompany.id}) }}">
+                <i class="fa fa-chart-line"></i>
+                </a>
                     {% if investment.assetClass.taxScheme is not null %}
                         {% if investment.assetClass.updatedPriceAvailable == 1 %}
                             {% if investment.investmentSaleDate is null %}
@@ -111,7 +113,7 @@
                             {% endif %}
                         {% endif %}
                     {% endif %}
-                </a>
+
             </td>
 
             <!-- MTM gain or Crystallized Gain -->
@@ -147,8 +149,8 @@
                 {% if investment.investmentSaleDate is not null %}
                     {% set PV = 0 %}
                 {% else %}
-                    {% set PV = 100 %}
-{#                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}#}
+{#                    {% set PV = 100 %}#}
+                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}
                 {% endif %}
                 {{ PV |number_format ('0') }}
             </td>

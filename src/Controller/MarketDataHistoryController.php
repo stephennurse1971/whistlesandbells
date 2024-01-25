@@ -124,6 +124,7 @@ class MarketDataHistoryController extends AbstractController
      */
     public function new($securitiesID, $date, Request $request, MarketDataRepository $marketDataRepository, MarketDataHistoryRepository $marketDataHistoryRepository): Response
     {
+        $referer = $request->headers->get('referer');
         $marketDataHistory = new MarketDataHistory();
         if ($securitiesID != null ) {
             $form = $this->createForm(MarketDataHistoryType::class, $marketDataHistory, ['security' => $marketDataRepository->find($securitiesID), 'securities' => $marketDataRepository->findBy(['id' => $securitiesID]), 'date' => $date, 'mode' => 'new']);
@@ -177,10 +178,11 @@ class MarketDataHistoryController extends AbstractController
      */
     public function delete(Request $request, MarketDataHistory $marketDataHistory, MarketDataHistoryRepository $marketDataHistoryRepository): Response
     {
+        $referer = $request->headers->get('referer');
         if ($this->isCsrfTokenValid('delete' . $marketDataHistory->getId(), $request->request->get('_token'))) {
             $marketDataHistoryRepository->remove($marketDataHistory);
         }
-        return $this->redirectToRoute('market_data_history_index', ['subset' => 'All'], Response::HTTP_SEE_OTHER);
+        return $this->redirect($referer);
     }
 
 
