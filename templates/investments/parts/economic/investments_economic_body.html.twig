@@ -114,32 +114,32 @@
                 </a>
             </td>
 
-{#            <!-- MTM gain or Crystallized Gain -->#}
-{#            <td style="text-align: right">#}
-{#                {% if investment.assetClass.taxScheme is not null %}#}
-{#                    {% set MTM = 0 %}#}
-{#                    {% if investment.assetClass.updatedPriceAvailable ==0 %}#}
-{#                        {% set MTM = 0 %}#}
-{#                    {% else %}#}
-{#                        {% if investment.currency.fx == "GBP" %}#}
-{#                            {% if investment.investmentSaleDate is empty %}#}
-{#                                {% set MTM = (( SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}#}
-{#                            {% else %}#}
-{#                                {% set MTM = ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}#}
-{#                            {% endif %}#}
-{#                        {% else %}#}
-{#                            {% if investment.investmentSaleDate is empty %}#}
-{#                                {% set MTM = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}#}
-{#                            {% else %}#}
-{#                                {% set MTM = 0 %}#}
-{#                                {% set MTM = (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}#}
-{#                            {% endif %}#}
-{#                        {% endif %}#}
-{#                        {{ MTM  |number_format ('0') }}#}
-{#                    {% endif %}#}
-{#                    {% set MTM_Total = MTM_Total + MTM %}#}
-{#                {% endif %}#}
-{#            </td>#}
+            <!-- MTM gain or Crystallized Gain -->
+            <td style="text-align: right">
+                {% if investment.assetClass.taxScheme is not null %}
+                    {% set MTM = 0 %}
+                    {% if investment.assetClass.updatedPriceAvailable ==0 %}
+                        {% set MTM = 0 %}
+                    {% else %}
+                        {% if investment.currency.fx == "GBP" %}
+                            {% if investment.investmentSaleDate is empty %}
+                                {% set MTM = (( SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+                            {% else %}
+                                {% set MTM = ((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )  * investment.investmentAmount %}
+                            {% endif %}
+                        {% else %}
+                            {% if investment.investmentSaleDate is empty %}
+                                {% set MTM = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
+                            {% else %}
+                                {% set MTM = 0 %}
+                                {% set MTM = (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP %}
+                            {% endif %}
+                        {% endif %}
+                        {{ MTM  |number_format ('0') }}
+                    {% endif %}
+                    {% set MTM_Total = MTM_Total + MTM %}
+                {% endif %}
+            </td>
 
 {#            <!-- PV (Local) -->#}
 {#            <td style="text-align: right; border-right: 1px solid">#}
