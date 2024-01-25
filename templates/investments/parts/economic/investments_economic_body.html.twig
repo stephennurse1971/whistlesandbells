@@ -71,14 +71,14 @@
             <!-- Currency -->
             <td>{{ investment.currency.fx }}</td>
 
-            <td style="text-align: right;border-right:1px solid black">
-                {% if investment.currency.fx == 'GBP' %}
-                    {{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}
-                {% else %}
-                    <a title="{{ investment.currency.fx }} {{ (investment.investmentAmount)| number_format (0, '.') }} ">
-                        *{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>
-                {% endif %}
-            </td>
+{#            <td style="text-align: right;border-right:1px solid black">#}
+{#                {% if investment.currency.fx == 'GBP' %}#}
+{#                    {{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}#}
+{#                {% else %}#}
+{#                    <a title="{{ investment.currency.fx }} {{ (investment.investmentAmount)| number_format (0, '.') }} ">#}
+{#                        *{{ (investment.initialInvestmentAmountGBP)| number_format (0, '.') }}</a>#}
+{#                {% endif %}#}
+{#            </td>#}
 
 
             <!-- Share price invested -->
