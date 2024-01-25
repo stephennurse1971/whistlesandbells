@@ -147,66 +147,67 @@
                 {% if investment.investmentSaleDate is not null %}
                     {% set PV = 0 %}
                 {% else %}
-                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}
+                    {% set PV = 100 %}
+{#                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}#}
                 {% endif %}
                 {{ PV |number_format ('0') }}
             </td>
 
-{#            <!-- PV (£) -->#}
-{#            <td style="text-align: right">#}
-{#                {% if investment.currency.fx == 'GBP' %}#}
-{#                    {{ PV |number_format ('0') }}#}
-{#                    {% set Shares_Total_GBP = Shares_Total_GBP + PV %}#}
-{#                {% endif %}#}
-{#            </td>#}
+            <!-- PV (£) -->
+            <td style="text-align: right">
+                {% if investment.currency.fx == 'GBP' %}
+                    {{ PV |number_format ('0') }}
+                    {% set Shares_Total_GBP = Shares_Total_GBP + PV %}
+                {% endif %}
+            </td>
 
-{#            <!-- PV ($) -->#}
-{#            <td style="text-align: right">#}
-{#                {% if investment.currency.fx == 'USD' %}#}
-{#                    {{ PV |number_format ('0') }}#}
-{#                    {% set Shares_Total_USD = Shares_Total_USD + PV %}#}
-{#                {% endif %}#}
-{#            </td>#}
+            <!-- PV ($) -->
+            <td style="text-align: right">
+                {% if investment.currency.fx == 'USD' %}
+                    {{ PV |number_format ('0') }}
+                    {% set Shares_Total_USD = Shares_Total_USD + PV %}
+                {% endif %}
+            </td>
 
-{#            <!-- PV (€) -->#}
-{#            <td style="text-align: right">#}
-{#                {% if investment.currency.fx == 'EUR' %}#}
-{#                    {{ PV |number_format ('0') }}#}
-{#                    {% set Shares_Total_EUR = Shares_Total_EUR + PV %}#}
-{#                {% endif %}#}
-{#            </td>#}
+            <!-- PV (€) -->
+            <td style="text-align: right">
+                {% if investment.currency.fx == 'EUR' %}
+                    {{ PV |number_format ('0') }}
+                    {% set Shares_Total_EUR = Shares_Total_EUR + PV %}
+                {% endif %}
+            </td>
 
-{#            <!-- PV (CHF) -->#}
-{#            <td style="text-align: right; border-right: 1px solid">#}
-{#                {% if investment.currency.fx == 'CHF' %}#}
-{#                    {{ PV |number_format ('0') }}#}
-{#                    {% set Shares_Total_CHF = Shares_Total_CHF + PV %}#}
-{#                {% endif %}#}
-{#            </td>#}
+            <!-- PV (CHF) -->
+            <td style="text-align: right; border-right: 1px solid">
+                {% if investment.currency.fx == 'CHF' %}
+                    {{ PV |number_format ('0') }}
+                    {% set Shares_Total_CHF = Shares_Total_CHF + PV %}
+                {% endif %}
+            </td>
 
-{#            <!-- Sale Date -->#}
-{#            <td style="text-align: right"#}
-{#                data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">#}
-{#                {{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}#}
-{#            </td>#}
+            <!-- Sale Date -->
+            <td style="text-align: right"
+                data-sort="{{ investment.investmentSaleDate|date('Y-m-d') }}">
+                {{ investment.investmentSaleDate ? investment.investmentSaleDate|date('d-M-Y') : '' }}
+            </td>
 
-{#            <!-- CGT (£) -->#}
-{#            <td style="text-align: right;border-right:1px solid black">#}
-{#                {% if investment.assetClass.taxScheme is not null %}#}
-{#                    {% set CGT= 0 %}#}
-{#                    {% if investment.assetClass.updatedPriceAvailable ==0 %}#}
-{#                        {% set CGT = 0 %}#}
-{#                    {% else %}#}
-{#                        {% if investment.investmentSaleDate is empty %}#}
-{#                            {% set CGTAdd = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.assetClass.taxScheme.cgtRate %}#}
-{#                        {% else %}#}
-{#                            {% set CGTAdd =  (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice) +(FXEffect-1))  * investment.investmentAmount *investment.assetClass.taxScheme.cgtRate %}#}
-{#                        {% endif %}#}
-{#                        {{ CGT |number_format ('0') }}#}
-{#                    {% endif %}#}
-{#                    {% set CGT_Total = CGT_Total + CGT %}#}
-{#                {% endif %}#}
-{#            </td>#}
+            <!-- CGT (£) -->
+            <td style="text-align: right;border-right:1px solid black">
+                {% if investment.assetClass.taxScheme is not null %}
+                    {% set CGT= 0 %}
+                    {% if investment.assetClass.updatedPriceAvailable ==0 %}
+                        {% set CGT = 0 %}
+                    {% else %}
+                        {% if investment.investmentSaleDate is empty %}
+                            {% set CGTAdd = (((SharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice )+(FXEffect-1))  * investment.initialInvestmentAmountGBP*investment.assetClass.taxScheme.cgtRate %}
+                        {% else %}
+                            {% set CGTAdd =  (((investment.saleSharePrice-investment.purchaseSharePrice)/investment.purchaseSharePrice) +(FXEffect-1))  * investment.investmentAmount *investment.assetClass.taxScheme.cgtRate %}
+                        {% endif %}
+                        {{ CGT |number_format ('0') }}
+                    {% endif %}
+                    {% set CGT_Total = CGT_Total + CGT %}
+                {% endif %}
+            </td>
 
         </tr>
     {% endif %}
