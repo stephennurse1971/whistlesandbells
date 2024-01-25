@@ -92,29 +92,26 @@
 
             <!-- Share price now or sold -->
             <td style="text-align: right">
-                {% if investment.assetClass.taxScheme is not null %}
-                    {% if investment.assetClass.updatedPriceAvailable == 1 %}
-                        {% if investment.investmentSaleDate is null %}
-                            {% if investment.numberOfShares >0 %}
-                                <a target="_blank"
-                                   href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
+                <a target="_blank"
+                   href="{{ path('market_data_history_index_table',{subset:'All', security: investment.investmentCompany.id}) }}">
+                    {% if investment.assetClass.taxScheme is not null %}
+                        {% if investment.assetClass.updatedPriceAvailable == 1 %}
+                            {% if investment.investmentSaleDate is null %}
+                                {% if investment.numberOfShares >0 %}
                                     {{ SharePrice | number_format (2, '.') }}
-                                </a>
+                                {% else %}
+                                    -
+                                {% endif %}
                             {% else %}
-                                <a target="_blank"
-                                   href="{{ path('market_data_edit',{id: investment.investmentCompany.id}) }}">
-                                    - </a>
-                            {% endif %}
-                        {% else %}
-
-                            {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}
-                                {{ (investment.saleSharePrice) | number_format (2, '.') }}*
-                            {% else %}
-                                {{ (investment.saleSharePrice) | number_format (0, '.') }}*
+                                {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}
+                                    {{ (investment.saleSharePrice) | number_format (2, '.') }}*
+                                {% else %}
+                                    {{ (investment.saleSharePrice) | number_format (0, '.') }}*
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     {% endif %}
-                {% endif %}
+                </a>
             </td>
 
             <!-- MTM gain or Crystallized Gain -->
@@ -159,7 +156,7 @@
             <td style="text-align: right">
                 {% if investment.currency.fx == 'GBP' %}
                     {{ PV |number_format ('0') }}
-                    {% set Shares_Total_GBP = Shares_Total_GBP + PV  %}
+                    {% set Shares_Total_GBP = Shares_Total_GBP + PV %}
                 {% endif %}
             </td>
 
@@ -167,7 +164,7 @@
             <td style="text-align: right">
                 {% if investment.currency.fx == 'USD' %}
                     {{ PV |number_format ('0') }}
-                    {% set Shares_Total_USD = Shares_Total_USD + PV  %}
+                    {% set Shares_Total_USD = Shares_Total_USD + PV %}
                 {% endif %}
             </td>
 
@@ -175,7 +172,7 @@
             <td style="text-align: right">
                 {% if investment.currency.fx == 'EUR' %}
                     {{ PV |number_format ('0') }}
-                    {% set Shares_Total_EUR = Shares_Total_EUR + PV  %}
+                    {% set Shares_Total_EUR = Shares_Total_EUR + PV %}
                 {% endif %}
             </td>
 
@@ -183,7 +180,7 @@
             <td style="text-align: right; border-right: 1px solid">
                 {% if investment.currency.fx == 'CHF' %}
                     {{ PV |number_format ('0') }}
-                    {% set Shares_Total_CHF = Shares_Total_CHF + PV  %}
+                    {% set Shares_Total_CHF = Shares_Total_CHF + PV %}
                 {% endif %}
             </td>
 
@@ -230,7 +227,7 @@
     <th style="text-align: right; border-right: 1px solid"></th>
     <th style="text-align: right" class="totalSharesGBP">{{ Shares_Total_GBP|number_format ('0') }}</th>
     <th style="text-align: right" class="totalSharesUSD">{{ Shares_Total_USD|number_format ('0') }}</th>
-    <th style="text-align: right" class="totalSharesEUR">{{Shares_Total_EUR|number_format ('0')}}</th>
+    <th style="text-align: right" class="totalSharesEUR">{{ Shares_Total_EUR|number_format ('0') }}</th>
     <th style="text-align: right" class="totalSharesCHF">{{ Shares_Total_CHF|number_format ('0') }}</th>
     <th style="border-left: 1px solid"></th>
     <th style="border-right: 1px solid"></th>
