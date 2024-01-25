@@ -81,38 +81,38 @@
             </td>
 
 
-{#            <!-- Share price invested -->#}
-{#            <td style="text-align: right">#}
-{#                {% if investment.assetClass.taxScheme is not null %}#}
-{#                    {% if investment.assetClass.updatedPriceAvailable == 1 %}#}
-{#                        {{ (investment.purchaseSharePrice) | number_format (2, '.') }}#}
-{#                    {% endif %}#}
-{#                {% endif %}#}
-{#            </td>#}
+            <!-- Share price invested -->
+            <td style="text-align: right">
+                {% if investment.assetClass.taxScheme is not null %}
+                    {% if investment.assetClass.updatedPriceAvailable == 1 %}
+                        {{ (investment.purchaseSharePrice) | number_format (2, '.') }}
+                    {% endif %}
+                {% endif %}
+            </td>
 
-{#            <!-- Share price now or sold -->#}
-{#            <td style="text-align: right">#}
-{#                <a target="_blank"#}
-{#                   href="{{ path('market_data_history_index_table',{subset:'All', security: investment.investmentCompany.id}) }}">#}
-{#                    {% if investment.assetClass.taxScheme is not null %}#}
-{#                        {% if investment.assetClass.updatedPriceAvailable == 1 %}#}
-{#                            {% if investment.investmentSaleDate is null %}#}
-{#                                {% if investment.numberOfShares >0 %}#}
-{#                                    {{ SharePrice | number_format (2, '.') }}#}
-{#                                {% else %}#}
-{#                                    -#}
-{#                                {% endif %}#}
-{#                            {% else %}#}
-{#                                {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}#}
-{#                                    {{ (investment.saleSharePrice) | number_format (2, '.') }}*#}
-{#                                {% else %}#}
-{#                                    {{ (investment.saleSharePrice) | number_format (0, '.') }}*#}
-{#                                {% endif %}#}
-{#                            {% endif %}#}
-{#                        {% endif %}#}
-{#                    {% endif %}#}
-{#                </a>#}
-{#            </td>#}
+            <!-- Share price now or sold -->
+            <td style="text-align: right">
+                <a target="_blank"
+                   href="{{ path('market_data_history_index_table',{subset:'All', security: investment.investmentCompany.id}) }}">
+                    {% if investment.assetClass.taxScheme is not null %}
+                        {% if investment.assetClass.updatedPriceAvailable == 1 %}
+                            {% if investment.investmentSaleDate is null %}
+                                {% if investment.numberOfShares >0 %}
+                                    {{ SharePrice | number_format (2, '.') }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            {% else %}
+                                {% if investment.saleSharePrice<5 and investment.saleSharePrice>-5 %}
+                                    {{ (investment.saleSharePrice) | number_format (2, '.') }}*
+                                {% else %}
+                                    {{ (investment.saleSharePrice) | number_format (0, '.') }}*
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </a>
+            </td>
 
 {#            <!-- MTM gain or Crystallized Gain -->#}
 {#            <td style="text-align: right">#}
