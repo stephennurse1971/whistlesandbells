@@ -141,16 +141,16 @@
                 {% endif %}
             </td>
 
-{#            <!-- PV (Local) -->#}
-{#            <td style="text-align: right; border-right: 1px solid">#}
-{#                {% set PV =0 %}#}
-{#                {% if investment.investmentSaleDate is not null %}#}
-{#                    {% set PV = 0 %}#}
-{#                {% else %}#}
-{#                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}#}
-{#                {% endif %}#}
-{#                {{ PV |number_format ('0') }}#}
-{#            </td>#}
+            <!-- PV (Local) -->
+            <td style="text-align: right; border-right: 1px solid">
+                {% set PV =0 %}
+                {% if investment.investmentSaleDate is not null %}
+                    {% set PV = 0 %}
+                {% else %}
+                    {% set PV = investment.investmentAmount * SharePrice/investment.purchaseSharePrice %}
+                {% endif %}
+                {{ PV |number_format ('0') }}
+            </td>
 
 {#            <!-- PV (£) -->#}
 {#            <td style="text-align: right">#}
