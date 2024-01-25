@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\MarketData;
 use App\Entity\MarketDataHistory;
 use App\Entity\User;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,6 +45,10 @@ class MarketDataHistoryType extends AbstractType
                     'class' => MarketData::class,
                     'choice_label' => 'shareCompany',
                     'required' => false,
+                    'query_builder' => function (EntityRepository $er): \Doctrine\ORM\QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.shareCompany', 'ASC');
+                    },
                 ])
             ;
         }

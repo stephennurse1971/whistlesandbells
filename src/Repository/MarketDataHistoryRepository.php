@@ -61,7 +61,14 @@ class MarketDataHistoryRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
+    public function findUniqueSecurity()
+    {
+        return $this->createQueryBuilder('m')
+            ->select('DISTINCT IDENTITY(m.security)')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     /*
     public function findOneBySomeField($value): ?MarketDataHistory

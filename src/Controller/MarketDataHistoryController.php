@@ -66,22 +66,32 @@ class MarketDataHistoryController extends AbstractController
      */
     public function indexGrid(Request $request, string $subset, $security, MarketDataHistoryRepository $marketDataHistoryRepository, MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice): Response
     {
-        $securities = [];
+
         if ($security != 'All') {
             $marketData = $marketDataHistoryRepository->findBy(['security' => $marketDataRepository->find($security)]);
+            $heading = $marketDataRepository->find($security)->getShareCompany();
+            $aggregated="No";
+            $securities = $marketDataRepository->findBy(['id'=>$security]);
         } else {
+              foreach ( $marketDataHistoryRepository->findUniqueSecurity() as $item){
+                  $securities[] = $marketDataRepository->find($item[1]);
+              }
 
             if
             ($subset == 'Active') {
-                $marketData = $marketDataHistoryRepository->findBy([
-                    'isActive' => '1']);
+                $marketData = $marketDataHistoryRepository->findAll();
+                $heading=$subset;
+                $aggregated="Yes";
             } elseif
             ($subset == 'Sold') {
-                $marketData = $marketDataHistoryRepository->findBy([
-                    'isActive' => '0']);
+                $marketData = $marketDataHistoryRepository->findAll();
+                $heading=$subset;
+                $aggregated="Yes";
             } elseif
             ($subset == 'All') {
                 $marketData = $marketDataHistoryRepository->findAll();
+                $heading=$subset;
+                $aggregated="Yes";
             }
         }
 //        foreach ($marketData as $relevantInvestment) {
@@ -98,11 +108,13 @@ class MarketDataHistoryController extends AbstractController
             $dates[] = new \DateTime($end_date->format('Y-m-d'));
             $end_date->modify("+1 month");
         }
-        return $this->render('market_data_history/indexGrid.html.twig', [
+        return $this->render('market_data_history/indexTable.html.twig', [
             'dates' => $dates,
             'securities' => $securities,
             'market_data_histories' => $marketData,
-            'subset' => $subset
+            'heading' => $heading,
+            'subset' => $subset,
+            'aggregated' => $aggregated
         ]);
     }
 
@@ -113,7 +125,7 @@ class MarketDataHistoryController extends AbstractController
     public function new($securitiesID, $date, Request $request, MarketDataRepository $marketDataRepository, MarketDataHistoryRepository $marketDataHistoryRepository): Response
     {
         $marketDataHistory = new MarketDataHistory();
-        if ($securitiesID != null && $date != null) {
+        if ($securitiesID != null ) {
             $form = $this->createForm(MarketDataHistoryType::class, $marketDataHistory, ['security' => $marketDataRepository->find($securitiesID), 'securities' => $marketDataRepository->findBy(['id' => $securitiesID]), 'date' => $date, 'mode' => 'new']);
         } else {
             $form = $this->createForm(MarketDataHistoryType::class, $marketDataHistory);

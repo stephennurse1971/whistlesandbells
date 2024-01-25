@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Import;
+use App\Entity\MarketData;
 use App\Form\ImportType;
 use App\Repository\FxRatesHistoryRepository;
+use App\Repository\MarketDataHistoryRepository;
+use App\Repository\MarketDataRepository;
 use App\Repository\UserRepository;
 use App\Services\ChaveyDownImportService;
 use App\Services\FXRatesImportService;
+use App\Services\SecurityPricesImportService;
 use App\Services\UserImportGrapevineService;
 use App\Services\UserImportOutlookService;
 use App\Services\UserImportService;
@@ -105,6 +109,44 @@ class ImportController extends AbstractController
 
 
     }
+
+
+    /**
+     * @Route("/import/securityPrice/{security}", name="security_prices_import")
+     */
+    public function securityPricesImport(Request $request, $security, SluggerInterface $slugger, SecurityPricesImportService $securityPricesImportService, MarketDataRepository $marketDataRepository,MarketDataHistoryRepository $marketDataHistoryRepository): Response
+    {
+        $security = $marketDataRepository->find($security);
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('File')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . 'csv';
+                try {
+                    $importFile->move(
+                        $this->getParameter('security_prices_attachments_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+
+                $securityPricesImportService->importSecurityPrices($newFilename,$security);
+                return $this->redirectToRoute('app_home');
+            }
+        }
+        return $this->render('admin/import/index.html.twig', [
+            'form' => $form->createView(),
+            'heading'=> 'Security Prices'
+        ]);
+
+
+
+    }
+
 
 
 }
