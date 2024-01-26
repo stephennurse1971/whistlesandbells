@@ -14,7 +14,7 @@
 
 {% for loans_bond in loans_bonds %}
 
-    {% if loans_bond.eBT == "No"  %}
+    {% if loans_bond.eBT != "No"  %}
 
     {% include 'loans_bonds/parts/body_calcs.html.twig' %}
     {% endif %}

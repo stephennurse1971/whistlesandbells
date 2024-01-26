@@ -13,6 +13,7 @@ class BankAccountsType extends AbstractType
     {
         $builder
             ->add('bank')
+            ->add('isPension')
         ;
     }
 

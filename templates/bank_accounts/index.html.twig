@@ -12,6 +12,7 @@
         <thead>
         <tr style="background-color: whitesmoke">
             <th style="border-left: 1px solid; border-top: 1px solid">Bank</th>
+            <th style="border-top: 1px solid">Pension</th>
             <th style="border-right: 1px solid; border-top: 1px solid">#</th>
         </tr>
         </thead>
@@ -19,6 +20,13 @@
         {% for bank_account in bank_accounts %}
             <tr>
                 <td style="border-left: 1px solid">{{ bank_account.bank }}</td>
+                <td style="text-align: center" data-sort="{{ bank_account.isPension }}">
+                    {% if bank_account.isPension==1 %}
+                        <i style="color: green" class="fa fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa fa-remove"></i>
+                    {% endif %}
+                </td>
                 <td style="border-right: 1px solid">
                     <a class="btn btn-outline-danger btn-sm"
                        href="{{ path('bank_accounts_edit', {'id': bank_account.id}) }}">Edit</a>
@@ -36,7 +44,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'asc']],
+                "order": [[1, 'asc'],[0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

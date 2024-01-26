@@ -6,13 +6,15 @@
 
 
     {% include 'investments/parts/economic/economic_view_buttons.twig' %}
-    {% include 'investments/parts/economic/bank_accounts_buttons.twig' %}
 
-    {% include 'bank_balances/parts/summary_bank_acounts.html.twig'  %}
+    {% include 'investments/parts/economic/bank_accounts_buttons.twig' %}
+    {% include 'bank_balances/parts/summary_bank_acounts.html.twig' %}
 
     {% include 'investments/parts/economic/loans_bonds_buttons.twig' %}
     {% include 'loans_bonds/parts/loans_bonds_headers.html.twig' %}
     {% include 'loans_bonds/parts/loans_bonds_body.html.twig' %}
+    {% include 'loans_bonds/parts/loans_bonds_headers.html.twig' %}
+    {% include 'loans_bonds/parts/loans_bonds_ebt_body.html.twig' %}
 
     <table class="table table-responsive economicSummary">
         {% include 'investments/parts/economic/investments_economic_headers.html.twig' %}
@@ -33,82 +35,80 @@
         });
 
         // <--- Bank Accounts --->
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceGBP = $('.totalBankBalanceGBP').text();
             $('.grandTotalBankBalanceGBP').text(balanceGBP);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceUSD = $('.totalBankBalanceUSD').text();
             $('.grandTotalBankBalanceUSD').text(balanceUSD);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceEUR = $('.totalBankBalanceEUR').text();
             $('.grandTotalBankBalanceEUR').text(balanceEUR);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceCHF = $('.totalBankBalanceCHF').text();
             $('.grandTotalBankBalanceCHF').text(balanceCHF);
         })
 
         // <--- Loans/Bonds --->
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceGBP = $('.totalLoansBondsGBP').text();
             $('.grandTotalLoansBondsBalanceGBP').text(balanceGBP);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceUSD = $('.totalLoansBondsUSD').text();
             $('.grandTotalLoansBondsBalanceUSD').text(balanceUSD);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceEUR = $('.totalLoansBondsEUR').text();
             $('.grandTotalLoansBondsBalanceEUR').text(balanceEUR);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceCHF = $('.totalLoansBondsCHF').text();
             $('.grandTotalLoansBondsBalanceCHF').text(balanceCHF);
         })
 
         // <--- Shares --->
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceGBP = $('.totalSharesGBP').text();
             $('.grandTotalSharesBalanceGBP').text(balanceGBP);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceUSD = $('.totalSharesUSD').text();
             $('.grandTotalSharesBalanceUSD').text(balanceUSD);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceEUR = $('.totalSharesEUR').text();
             $('.grandTotalSharesBalanceEUR').text(balanceEUR);
         })
-        $(document).ready(function(){
+        $(document).ready(function () {
             var balanceCHF = $('.totalSharesCHF').text();
             $('.grandTotalSharesBalanceCHF').text(balanceCHF);
         })
 
         // <--- GrandTotal --->
-        $(document).ready(function(){
-            var balanceGBP = parseInt($('.totalBankBalanceGBP').text().replaceAll(',','')) + parseInt($('.totalLoansBondsGBP').text().replaceAll(',','')) + parseInt($('.totalSharesGBP').text().replaceAll(',',''));
-             balanceGBP = balanceGBP.toLocaleString();
+        $(document).ready(function () {
+            var balanceGBP = parseInt($('.totalBankBalanceGBP').text().replaceAll(',', '')) + parseInt($('.totalLoansBondsGBP').text().replaceAll(',', '')) + parseInt($('.totalSharesGBP').text().replaceAll(',', ''));
+            balanceGBP = balanceGBP.toLocaleString();
             $('.grandTotalGBP').text(balanceGBP);
         })
-        $(document).ready(function(){
-            var balanceUSD = parseInt($('.totalBankBalanceUSD').text().replaceAll(',','')) + parseInt($('.totalLoansBondsUSD').text().replaceAll(',','')) + parseInt($('.totalSharesUSD').text().replaceAll(',',''));
+        $(document).ready(function () {
+            var balanceUSD = parseInt($('.totalBankBalanceUSD').text().replaceAll(',', '')) + parseInt($('.totalLoansBondsUSD').text().replaceAll(',', '')) + parseInt($('.totalSharesUSD').text().replaceAll(',', ''));
             balanceUSD = balanceUSD.toLocaleString();
             $('.grandTotalUSD').text(balanceUSD);
         })
-        $(document).ready(function(){
-            var balanceEUR = parseInt($('.totalBankBalanceEUR').text().replaceAll(',','')) + parseInt($('.totalLoansBondsEUR').text().replaceAll(',','')) + parseInt($('.totalSharesEUR').text().replaceAll(',',''));
+        $(document).ready(function () {
+            var balanceEUR = parseInt($('.totalBankBalanceEUR').text().replaceAll(',', '')) + parseInt($('.totalLoansBondsEUR').text().replaceAll(',', '')) + parseInt($('.totalSharesEUR').text().replaceAll(',', ''));
             balanceEUR = balanceEUR.toLocaleString();
             $('.grandTotalEUR').text(balanceEUR);
         })
-        $(document).ready(function(){
-            var balanceCHF = parseInt($('.totalBankBalanceCHF').text().replaceAll(',','')) + parseInt($('.totalLoansBondsCHF').text().replaceAll(',','')) + parseInt($('.totalSharesCHF').text().replaceAll(',',''));
+        $(document).ready(function () {
+            var balanceCHF = parseInt($('.totalBankBalanceCHF').text().replaceAll(',', '')) + parseInt($('.totalLoansBondsCHF').text().replaceAll(',', '')) + parseInt($('.totalSharesCHF').text().replaceAll(',', ''));
             balanceCHF = balanceCHF.toLocaleString();
             $('.grandTotalCHF').text(balanceCHF);
         })
-
-
 
 
     </script>

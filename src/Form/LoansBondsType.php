@@ -24,6 +24,17 @@ class LoansBondsType extends AbstractType
                     'USD' => 'USD',
                     'CHF' => 'CHF'
                 ],])
+            ->add('EBT', ChoiceType::class, [
+                'multiple' => false,
+                'label' => 'Held within an EBT',
+                'required' =>true,
+                'expanded' => false,
+                'choices' => [
+                    'No' => 'No',
+                    'EBT 1998' => 'EBT 1998',
+                    'EBT 2007' => 'EBT 2007',
+                    'EFRB 2010' => 'EFRB 2010'
+                ],])
             ->add('notional')
             ->add('interestRate')
             ->add('drawdownDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [

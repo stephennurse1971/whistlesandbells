@@ -1,0 +1,88 @@
+{% set Loan_Bond_MaturedFactor = 1 %}
+    {% if loans_bond.repaymentDate is not empty and (AsOfDate|date('Y-m-d') > loans_bond.repaymentDate|date('Y-m-d')) %}
+        {% set Loan_Bond_MaturedFactor = 0 %}
+    {% endif %}
+
+<tr>
+    <td style="border-left: 1px solid">
+        <a target="_blank" href="{{ path('loans_bonds_edit', {'id': loans_bond.id}) }}">{{ loans_bond.name }}</a>
+    </td>
+    <td>
+        {{ loans_bond.EBT }}
+    </td>
+    <td style="text-align: right">{{ loans_bond.currency }}</td>
+    <td style="text-align: right">{{ loans_bond.notional|number_format(0, '.', ',') }}</td>
+    <td style="text-align: right">{{ (loans_bond.interestRate*100)|number_format(2, '.', ',') }} %</td>
+    <td style="text-align: right"
+        data-sort="{{ loans_bond.drawdownDate|date('Y-m-d') }}">{{ loans_bond.drawdownDate|date('d-M-y') }}</td>
+    <td style="text-align: right" data-sort="{{ loans_bond.repaymentDate|date('Y-m-d') }}">
+        {% if loans_bond.repaymentDate is not null %}
+            {{ loans_bond.repaymentDate|date('d-M-y') }}
+        {% else %}
+            N/A
+        {% endif %}
+    </td>
+
+    {% if loans_bond.repaymentDate is not empty and AsOfDate > loans_bond.repaymentDate %}
+        {% set dayCount = date(loans_bond.repaymentDate).diff(date(loans_bond.drawdownDate)) %}
+    {% else %}
+        {% set dayCount = date(AsOfDate).diff(date(loans_bond.drawdownDate)) %}
+    {% endif %}
+    {% set accruedDays = dayCount.days %}
+
+    <td style="text-align: right">
+        {{ accruedDays|number_format(0, '.', ',') }}
+    </td>
+    <td style="text-align: right">
+        {{ (accruedDays/365)|number_format(2, '.', ',') }}
+    </td>
+    <td style="text-align: right">
+        {{ (Loan_Bond_MaturedFactor * loans_bond.notional * loans_bond.interestRate/365)|number_format(0, '.', ',') }}
+        {% if loans_bond.currency == "GBP" %}
+            {% set Loans_Bonds_DailyAccrual_Total_GBP = Loans_Bonds_DailyAccrual_Total_GBP + Loan_Bond_MaturedFactor * loans_bond.notional * loans_bond.interestRate/365 %}
+        {% endif %}
+        {% if loans_bond.currency == "USD" %}
+            {% set Loans_Bonds_DailyAccrual_Total_USD = Loans_Bonds_DailyAccrual_Total_USD + Loan_Bond_MaturedFactor * loans_bond.notional * loans_bond.interestRate/365 %}
+        {% endif %}
+        {% if loans_bond.currency == "EUR" %}
+            {% set Loans_Bonds_DailyAccrual_Total_EUR = Loans_Bonds_DailyAccrual_Total_EUR + Loan_Bond_MaturedFactor * loans_bond.notional * loans_bond.interestRate/365 %}
+        {% endif %}
+        {% if loans_bond.currency == "CHF" %}
+            {% set Loans_Bonds_DailyAccrual_Total_CHF = Loans_Bonds_DailyAccrual_Total_CHF + Loan_Bond_MaturedFactor * loans_bond.notional * loans_bond.interestRate/365 %}
+        {% endif %}
+    </td>
+    <td style="text-align: right">
+        {{ (Loan_Bond_MaturedFactor*loans_bond.notional * loans_bond.interestRate * accruedDays/365)|number_format(0, '.', ',') }}
+    </td>
+    <td style="text-align: right; border-right: 1px dotted">
+        {% set loan_bond_PV = Loan_Bond_MaturedFactor * loans_bond.notional *(1+ loans_bond.interestRate * accruedDays/365) %}
+        {{ loan_bond_PV |number_format(0, '.', ',') }}
+    </td>
+
+
+
+    <td style="text-align: right">
+        {% if loans_bond.currency == "GBP" %}
+            {{ loan_bond_PV|number_format(0, '.', ',') }}
+            {% set Loans_Bonds_Total_GBP = Loans_Bonds_Total_GBP + loan_bond_PV %}
+        {% endif %}
+    </td>
+    <td style="text-align: right">
+        {% if loans_bond.currency == "USD" %}
+            {{ loan_bond_PV|number_format(0, '.', ',') }}
+            {% set Loans_Bonds_Total_USD = Loans_Bonds_Total_USD + loan_bond_PV %}
+        {% endif %}
+    </td>
+    <td style="text-align: right">
+        {% if loans_bond.currency == "EUR" %}
+            {{ loan_bond_PV|number_format(0, '.', ',') }}
+            {% set Loans_Bonds_Total_EUR = Loans_Bonds_Total_EUR + loan_bond_PV %}
+        {% endif %}
+    </td>
+    <td style="text-align: right; border-right: 1px solid">
+        {% if loans_bond.currency == "CHF" %}
+            {{ loan_bond_PV|number_format(0, '.', ',') }}
+            {% set Loans_Bonds_Total_CHF = Loans_Bonds_Total_CHF + loan_bond_PV %}
+        {% endif %}
+    </td>
+</tr>

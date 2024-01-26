@@ -47,6 +47,11 @@ class LoansBonds
      */
     private $repaymentDate;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $EBT;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class LoansBonds
     public function setRepaymentDate(?\DateTimeInterface $repaymentDate): self
     {
         $this->repaymentDate = $repaymentDate;
+
+        return $this;
+    }
+
+    public function getEBT(): ?string
+    {
+        return $this->EBT;
+    }
+
+    public function setEBT(?string $EBT): self
+    {
+        $this->EBT = $EBT;
 
         return $this;
     }

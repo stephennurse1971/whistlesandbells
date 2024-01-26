@@ -22,6 +22,11 @@ class BankAccounts
      */
     private $bank;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isPension;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class BankAccounts
     public function setBank(?string $bank): self
     {
         $this->bank = $bank;
+
+        return $this;
+    }
+
+    public function getIsPension(): ?bool
+    {
+        return $this->isPension;
+    }
+
+    public function setIsPension(?bool $isPension): self
+    {
+        $this->isPension = $isPension;
 
         return $this;
     }

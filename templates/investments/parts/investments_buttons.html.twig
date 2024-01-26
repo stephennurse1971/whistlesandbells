@@ -6,9 +6,12 @@
 </div>
 
 <div class="col-1">
-    <a title="Asset Level Prices" target="_blank" href="{{ path('market_data_history_index',{subset:'Active'}) }}"><i
-                class="fas fa-chart-line"></i></a>
-    <a title="FX Rates" target="_blank" href="{{ path('fx_rates_index') }}"><i class="fas fa-euro-sign"></i></a>
+    <a title="Security Level Details" target="_blank" href="{{ path('market_data_index',{subset:'Active'}) }}">
+        <i style="color: green" class="fas fa-chart-bar"></i></a>
+    <a title="Historical Prices" target="_blank" href="{{ path('market_data_history_index',{subset:'Active'}) }}">
+        <i style="color: red;" class="fas fa-chart-line"></i></a>
+    <a title="FX Rates" target="_blank" href="{{ path('fx_rates_index') }}">
+        <i style="color: blue" class="fas fa-euro-sign"></i></a>
 </div>
 
 <div class="col-2">

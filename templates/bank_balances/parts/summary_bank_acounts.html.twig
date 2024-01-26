@@ -19,9 +19,7 @@
             <tbody>
             {% for bank_account in bank_accounts %}
                 <tr>
-                    <td style="border-left: 1px solid">
-                        <b> {{ bank_account.bank }}</b>
-                    </td>
+                    <td style="border-left: 1px solid">{{ bank_account.bank }}</td>
                     <td style="text-align: right">
                         {% if BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account) is not null %}
                             {{ BankBalanceOnAsOfDate.findBankBalance (AsOfDate, bank_account).balanceGBP|number_format(0, '.', ',') }}
