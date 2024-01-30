@@ -17,7 +17,7 @@
         margin-bottom: 0px!important;
     }
     .desktop{
-       display: none;
+       display: none!important;
     }
     .mobile{
         display: table-cell;
