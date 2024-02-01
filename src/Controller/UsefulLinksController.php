@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/useful/links")
+ * @Route("/useful_links")
  */
 class UsefulLinksController extends AbstractController
 {
     /**
-     * @Route("/{category}", name="useful_links_index", methods={"GET"})
+     * @Route("/index/{category}", name="useful_links_index", methods={"GET"})
      */
     public function index(Request $request, string $category, UsefulLinksRepository $usefulLinksRepository): Response
     {
@@ -41,7 +41,7 @@ class UsefulLinksController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $usefulLinksRepository->add($usefulLink);
-            return $this->redirectToRoute('useful_links_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('useful_links_index', ['category'=>'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('useful_links/new.html.twig', [
@@ -51,7 +51,7 @@ class UsefulLinksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="useful_links_show", methods={"GET"})
+     * @Route("/show/{id}", name="useful_links_show", methods={"GET"})
      */
     public function show(UsefulLinks $usefulLink): Response
     {
@@ -61,7 +61,7 @@ class UsefulLinksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="useful_links_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="useful_links_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, UsefulLinks $usefulLink, UsefulLinksRepository $usefulLinksRepository): Response
     {
@@ -70,7 +70,7 @@ class UsefulLinksController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $usefulLinksRepository->add($usefulLink);
-            return $this->redirectToRoute('useful_links_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('useful_links_index', ['category'=>'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('useful_links/edit.html.twig', [
@@ -80,14 +80,19 @@ class UsefulLinksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="useful_links_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="useful_links_delete", methods={"POST"})
      */
     public function delete(Request $request, UsefulLinks $usefulLink, UsefulLinksRepository $usefulLinksRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $usefulLink->getId(), $request->request->get('_token'))) {
-            $usefulLinksRepository->remove($usefulLink);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($usefulLink);
+            $entityManager->flush();
         }
 
-        return $this->redirectToRoute('useful_links_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('useful_links_index', ['category'=>'All'], Response::HTTP_SEE_OTHER);
     }
 }
+
+
+
