@@ -78,9 +78,11 @@
                 {% include 'user/parts/roles_headers.html.twig' %}
 
                 {#                <th style="color: red;">Plain Password</th> #}
-                <th class="desktop" style="color: red;">#</th>
-                <th class="desktop" style="color: red;">#</th>
-                <th class="desktop" style="color: red;">#</th>
+                <th class="desktop" style="color: red">#</th>
+                <th class="desktop" style="color: red">#</th>
+                <th class="desktop" style="color: red">#</th>
+                <th class="desktop" style="color: red">London</th>
+                <th class="desktop" style="color: red">Message</th>
                 <th class="desktop" style="color: red;">Last edited</th>
                 <th class="desktop" style="color: red;">Imported</th>
             {% endif %}
@@ -122,14 +124,16 @@
             <td style="text-align: center">
                 {% if user.mobile is not empty %}
                     <a target="_blank" href="https://wa.me/{{ user.mobile  | replace({' ': ''}) }}">
-                        <i title="{{ user.mobile }}" class="fab fa-whatsapp"  style="color:green; text-align: center"></i></a>
+                        <i title="{{ user.mobile }}" class="fab fa-whatsapp"
+                           style="color:green; text-align: center"></i></a>
                 {% endif %}
 
                 {% if user.mobile is not empty and user.mobile2 is not empty %} /
                 {% endif %}
                 {% if user.mobile2 is not empty %}
                     <a target="_blank" href="https://wa.me/{{ user.mobile2  | replace({' ': ''}) }}">
-                        <i title="{{ user.mobile2 }}" class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
+                        <i title="{{ user.mobile2 }}" class="fab fa-whatsapp"
+                           style="color:green; text-align: center"></i></a>
                 {% endif %}
             </td>
 
@@ -233,6 +237,29 @@
                         {{ user.inviteDate|date('d-M-Y') }}
                     {% endif %}
                 </td>
+                <td data-sort="{{ user.londoner }}" style="text-align: center">
+                    {% if user.londoner== 1 %}
+                        <a href="{{ path('londoner_status', {londoner_or_message:'London', id:user.id}) }}">
+                            <i style="color: green" class="fa fa-check"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('londoner_status', {londoner_or_message:'London', id:user.id}) }}">
+                            <i style="color: red" class="fa fa-remove"></i>
+                        </a>
+                    {% endif %}
+                </td>
+                <td data-sort="{{ user.londonerMessage }}" style="text-align: center">
+                    {% if user.londonerMessage== 1 %}
+                        <a href="{{ path('londoner_status', {londoner_or_message:'Message', id:user.id}) }}">
+                            <i style="color: green" class="fa fa-check"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('londoner_status', {londoner_or_message:'Message', id:user.id}) }}">
+                            <i style="color: red" class="fa fa-remove"></i>
+                        </a>
+                    {% endif %}
+                </td>
+
                 <td class="desktop" data-sort="{{ user.lastEdited|date('Y-m-d') }}">
                     {% if user.lastEdited is not empty %}
                         {{ user.lastEdited|date('d-M-Y') }}

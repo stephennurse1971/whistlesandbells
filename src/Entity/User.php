@@ -271,6 +271,16 @@ class User implements UserInterface
      */
     private $recruiterResponse;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $londoner;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $londonerMessage;
+
 
 
 
@@ -1047,6 +1057,30 @@ class User implements UserInterface
     public function setRecruiterResponse(?string $recruiterResponse): self
     {
         $this->recruiterResponse = $recruiterResponse;
+
+        return $this;
+    }
+
+    public function getLondoner(): ?bool
+    {
+        return $this->londoner;
+    }
+
+    public function setLondoner(?bool $londoner): self
+    {
+        $this->londoner = $londoner;
+
+        return $this;
+    }
+
+    public function getLondonerMessage(): ?bool
+    {
+        return $this->londonerMessage;
+    }
+
+    public function setLondonerMessage(?bool $londonerMessage): self
+    {
+        $this->londonerMessage = $londonerMessage;
 
         return $this;
     }

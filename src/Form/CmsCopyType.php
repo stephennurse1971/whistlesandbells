@@ -35,7 +35,7 @@ class CmsCopyType extends AbstractType
                     'Introduction Email - Guest' => 'Introduction Email - Guest',
                     'Introduction Email - Job Applicant' => 'Introduction Email - Job Applicant',
                     'Introduction Email - Recruiter' => 'Introduction Email - Recruiter',
-
+                    'Festive and Londoners Message'=>'Festive and Londoners Messages'
                 ],])
             ->add('contentTitle', TextType::class, [
                 'required' => false,

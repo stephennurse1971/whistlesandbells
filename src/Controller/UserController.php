@@ -386,9 +386,9 @@ class UserController extends AbstractController
         $cmsContact = $cmsCopyRepository->findOneBy([
             'name' => 'Introduction Email - Contact']);
         $cmsFamily = $cmsCopyRepository->findOneBy([
-            'name' => 'Introduction Email - Family']) ;
+            'name' => 'Introduction Email - Family']);
         $cmsGuest = $cmsCopyRepository->findOneBy([
-            'name' => 'Introduction Email - Guest']) ;
+            'name' => 'Introduction Email - Guest']);
         $cmsRecruiter = $cmsCopyRepository->findOneBy([
             'name' => 'Introduction Email - Recruiter']);
         $cmsJobApplicant = $cmsCopyRepository->findOneBy([
@@ -441,7 +441,7 @@ class UserController extends AbstractController
                     $mailer->send($email);
                 }
                 if ($logged_user_fullName != $fullName) {
-                    return $this->redirect ($referer);
+                    return $this->redirect($referer);
                 } else {
                     $this->redirectToRoute('user_index');
                 }
@@ -605,6 +605,41 @@ class UserController extends AbstractController
             ->html($html);
         $mailer->send($email);
         $manager->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/{userid}/londoner-email", name="user_londoner_email", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function londonerEmail(EntityManagerInterface $manager, int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
+    {
+        $sender = $staticTextRepository->find(1)->getEmailAddress();
+        $users = $userRepository->findBy([
+            'londoner' => '1'
+        ]);
+        $today = new \DateTime('now');
+        $html = $this->renderView('emails/festive_email.html.twig', [
+            'user' => $user,
+            'CMSCopyContact' => $cmsCopyRepository->findOneBy([
+                'name' => 'Londoner Message'
+            ])->getContentText(),
+        ]);
+        $subject = $cmsCopyRepository->findOneBy([
+            'name' => 'Londoner Message'
+        ])->getContentTitle();
+
+        $email = (new Email())
+            ->from($sender)
+            ->to($user->getEmail())
+            ->bcc('nurse_stephen@hotmail.com')
+            ->subject($subject)
+            ->html($html);
+        $mailer->send($email);
+        $manager->flush();
+
+
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);
     }
@@ -893,5 +928,34 @@ class UserController extends AbstractController
         }
         $manager->flush();
         return $this->redirect($request->headers->get('Referer'));
+    }
+
+    /**
+     * @Route("/londoner_status/{londoner_or_message}/{id}", name="londoner_status", methods={"GET","POST"})
+     */
+    public function editLondonStatus(string $londoner_or_message, int $id, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        $user = $userRepository->findOneBy([
+            'id' => $id
+        ]);
+        if ($londoner_or_message == 'London') {
+            if ($user->getLondoner() == '1') {
+                $user->setLondoner('0');
+            } else {
+                $user->setLondoner('1');
+            }
+        }
+
+        if ($londoner_or_message == 'Message') {
+            if ($user->getLondonerMessage() == '1') {
+                $user->setLondonerMessage('0');
+            } else {
+                $user->setLondonerMessage('1');
+            }
+        }
+
+        $entityManager->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
     }
 }

@@ -66,7 +66,6 @@ class UserType extends AbstractType
                 'required' => false
             ])
             ->add('email')
-
             ->add('email2', TextType::class, [
                 'required' => false
             ])
@@ -104,7 +103,9 @@ class UserType extends AbstractType
             ->add('sendEmail', HiddenType::class, [
                 'mapped' => false,
                 'required' => false
-            ]);
+            ])
+            ->add('londoner')
+            ->add('londonerMessage');
         $logged_user_roles = $this->security->getUser()->getRoles();
         $user_roles = $options['user']->getRoles();
         if (in_array('ROLE_RECRUITER', $user_roles)) {
@@ -124,9 +125,9 @@ class UserType extends AbstractType
                         'Private Equity' => 'PE',
                         'CEOs' => 'CEOs',
                         'Compliance' => 'Compl',
-                        'HR'=>'HR',
-                        'Human Resources'=>'Human Resources',
-                        'Benefits'=>'Benefits'
+                        'HR' => 'HR',
+                        'Human Resources' => 'Human Resources',
+                        'Benefits' => 'Benefits'
                     ],])
                 ->add('recruiterResponse', ChoiceType::class, [
                     'multiple' => false,
@@ -137,12 +138,10 @@ class UserType extends AbstractType
                         'Replied and No' => 'Replied and No',
                         'Replied and Follow-up' => 'Replied and Follow-up'
                     ],
-                    'data'=>'No reply',
-                    ])
-
-            ;
+                    'data' => 'No reply',
+                ]);
         }
-        if  (in_array('ROLE_ADMIN', $logged_user_roles) || in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
+        if (in_array('ROLE_ADMIN', $logged_user_roles) || in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
             $builder
                 ->add('lastEdited', DateType::class, [
                     'required' => false,
