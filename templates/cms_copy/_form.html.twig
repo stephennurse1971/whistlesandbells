@@ -6,15 +6,22 @@
 </style>
 {{ form_start(form) }}
 
-<h2>Field names</h2>
+
 <div class="row">
+
     <div class="col-md-3">
+        <h2>Names</h2>
         {{ form_row(form.name) }}
         {{ form_row(form.pageTitle) }}
         {{ form_row(form.hyperlinks) }}
     </div>
     <div class="col-md-3">
+        <h2>Webpage (or Emails)</h2>
         {{ form_row(form.sitePage) }}
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+        <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
     </div>
 </div>
 

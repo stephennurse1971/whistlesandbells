@@ -2,63 +2,72 @@
 {% block title %}Users: {{ role }} {% endblock %}
 {% block body %}
     <h1><span class="text-danger">Users: {{ role }}</span></h1>
-    <div class="desktop">
-        {% if is_granted('ROLE_SUPER_ADMIN') %}
+
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <div class="desktop">
             <div class="row">
-                <div class="col-5">
+
+                <div class="col-4">
                     <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete All Users
-                        (excl
-                        Admin)</a>
+                        (excl Admin)</a>
                     <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete AX Users (excl
                         Admin)</a>
                     <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete Personal Users
                         (excl Admin) </a>
                 </div>
-                <div class="col-3">
-                    <a class="btn btn-success btn-sm" href="{{ path('user_export', {Subset: 'All'}) }}">Export users to
-                        CSV</a>
+
+                <div class="col-2">
+                    <a class="btn btn-success btn-sm" href="{{ path('user_export', {Subset: 'All'}) }}">Export</a>
                     <a class="btn btn-success btn-sm" href="{{ path('user_new') }}">New user</a>
                 </div>
-                <div class="col-4">
+
+                <div class="col-2">
                     {% if FindUser.checkConflict %}
-                        <a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Import
-                            from Outlook</a>
+                        <a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Import:
+                            Outlook</a>
                     {% else %}
-                        <a class="btn btn-outline-primary btn-sm" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import
-                            from Outlook</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{ path('userImport',{ source: 'Outlook'}) }}">Import:
+                            Outlook</a>
                     {% endif %}
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Notice</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body mt-1">
-                                    <h5> Please resolve all conflict before import.</h5>
-                                </div>
-                                <div class="modal-footer text-center">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <a type="button" class="btn btn-primary"
-                                       href="{{ path('userImport',{ source: 'Outlook'}) }}">Import</a>
-                                </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Notice</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mt-1">
+                                <h5> Please resolve all conflict before import.</h5>
+                            </div>
+                            <div class="modal-footer text-center">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a type="button" class="btn btn-primary"
+                                   href="{{ path('userImport',{ source: 'Outlook'}) }}">Import</a>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import
-                        from Grapevine (Recruiters)</a>
+                <div class="col-2">
+                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('userImport',{ source: 'Grapevine'}) }}">Import:Grapevine</a>
                     <a class="btn btn-outline-secondary btn-sm"
                        href="https://www.datagrapevine.com/recruitment/welcome">Grapevine</a>
                 </div>
+
+                <div class="col-2">
+                    <a class="btn btn-outline-primary btn-sm" href="{{ path('user_londoner_email') }}">Coming to London</a>
+                </div>
             </div>
-            <br>
-        {% endif %}
-    </div>
+
+
+        </div>
+    {% endif %}
+    <br>
 
     <table class="table table-responsive">
         <thead>
@@ -76,12 +85,10 @@
             <th class="desktop">!</th>
             {% if is_granted('ROLE_ADMIN') %}
                 {% include 'user/parts/roles_headers.html.twig' %}
-
-                {#                <th style="color: red;">Plain Password</th> #}
                 <th class="desktop" style="color: red">#</th>
                 <th class="desktop" style="color: red">#</th>
                 <th class="desktop" style="color: red">#</th>
-                <th class="desktop" style="color: red">London</th>
+                <th class="desktop" style="color: red">Londoner</th>
                 <th class="desktop" style="color: red">Message</th>
                 <th class="desktop" style="color: red;">Last edited</th>
                 <th class="desktop" style="color: red;">Imported</th>
@@ -149,16 +156,16 @@
                 {% endif %}
             </td>
 
-            <td style="text-align: center">
+            <td data-sort="{{ user.email }}" style="text-align: center">
                 {% set instring = '@no_email.com' in user.email %}
                 {% if user.email is not empty and instring != 1 %}
+{#                    {{ user.email }}#}
                     <a title="{{ user.email }}" href="mailto:{{ user.email }}">
                         <i class="fa fa-envelope"></i>
                     </a>
                 {% else %}
                     <a title="{{ user.email }}" href="">N/A</a>
                 {% endif %}
-
                 {% if user.email2 is not empty %} /
                     <a title="{{ user.email2 }}" href="mailto:{{ user.email2 }}">
                         <i class="fa fa-envelope"></i>

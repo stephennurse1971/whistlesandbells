@@ -22,6 +22,7 @@ class CmsCopyType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
+                    'Emails'=>'Emails',
                     'HomePage' => 'HomePage',
                     'AboutSN' => 'AboutSN',
                     'Risk & Capital Consulting' => 'Risk & Capital Consulting',
@@ -29,13 +30,7 @@ class CmsCopyType extends AbstractType
                     'WebDesign' => 'WebDesign',
                     'Flying' => 'Flying',
                     'Tennis' => 'Tennis',
-                    'Cyprus' => 'Cyprus',
-                    'Introduction Email - Family' => 'Introduction Email - Family',
-                    'Introduction Email - Contact' => 'Introduction Email - Contact',
-                    'Introduction Email - Guest' => 'Introduction Email - Guest',
-                    'Introduction Email - Job Applicant' => 'Introduction Email - Job Applicant',
-                    'Introduction Email - Recruiter' => 'Introduction Email - Recruiter',
-                    'Festive and Londoners Message'=>'Festive and Londoners Messages'
+                    'Cyprus' => 'Cyprus'
                 ],])
             ->add('contentTitle', TextType::class, [
                 'required' => false,

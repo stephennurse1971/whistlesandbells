@@ -578,7 +578,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{userid}/festive-email", name="user_festive_email", methods={"GET"})
+     * @Route("/festive-email/{userid}", name="user_festive_email", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function festiveEmail(EntityManagerInterface $manager, int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
@@ -610,18 +610,18 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{userid}/londoner-email", name="user_londoner_email", methods={"GET"})
+     * @Route("/email/londoner", name="user_londoner_email", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function londonerEmail(EntityManagerInterface $manager, int $userid, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
+    public function londonerEmail(EntityManagerInterface $manager, MailerInterface $mailer, Request $request, UserRepository $userRepository, CmsCopyRepository $cmsCopyRepository, StaticTextRepository $staticTextRepository): Response
     {
+        $today = new \DateTime('now');
         $sender = $staticTextRepository->find(1)->getEmailAddress();
         $users = $userRepository->findBy([
-            'londoner' => '1'
+            'londonerMessage' => '1'
         ]);
-        $today = new \DateTime('now');
+
         $html = $this->renderView('emails/festive_email.html.twig', [
-            'user' => $user,
             'CMSCopyContact' => $cmsCopyRepository->findOneBy([
                 'name' => 'Londoner Message'
             ])->getContentText(),
@@ -630,14 +630,16 @@ class UserController extends AbstractController
             'name' => 'Londoner Message'
         ])->getContentTitle();
 
-        $email = (new Email())
-            ->from($sender)
-            ->to($user->getEmail())
-            ->bcc('nurse_stephen@hotmail.com')
-            ->subject($subject)
-            ->html($html);
-        $mailer->send($email);
-        $manager->flush();
+        foreach ($users as $user) {
+            $email = (new Email())
+                ->from($sender)
+                ->to($user->getEmail())
+                ->bcc('nurse_stephen@hotmail.com')
+                ->subject($subject)
+                ->html($html);
+            $mailer->send($email);
+//            $manager->flush();
+        }
 
 
         $referer = $request->server->get('HTTP_REFERER');
