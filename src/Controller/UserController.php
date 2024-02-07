@@ -522,13 +522,12 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        $referer = $request->server->get('HTTP_REFERER');
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
         }
-        return $this->redirect($referer);
+        return $this->redirectToRoute( 'user_index');
     }
 
 
@@ -638,7 +637,6 @@ class UserController extends AbstractController
                 ->subject($subject)
                 ->html($html);
             $mailer->send($email);
-//            $manager->flush();
         }
 
 

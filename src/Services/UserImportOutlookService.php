@@ -135,12 +135,12 @@ class UserImportOutlookService
                       $old_user->getNotes() == $notes
                   )
                   {
-                      Continue;
+                      $old_user->setEmail($email.'Duplicate');
                   }
                   else{
                       $new_user = new User();
                       $new_user->setSalutation($salutation)
-                          ->setEmail($email.'Duplicate')
+                          ->setEmail($email)
                           ->setFirstName($firstName)
                           ->setLastName($lastName)
                           ->setFullName($firstName . ' ' . $lastName)

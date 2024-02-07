@@ -105,9 +105,6 @@ class ImportController extends AbstractController
             'form' => $form->createView(),
             'heading'=> 'FX Rates'
         ]);
-
-
-
     }
 
 
