@@ -14,13 +14,17 @@
         </div>
     {% endif %}
 
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th>Name</th>
+            <th style="text-align: right">Mobile 1 (Len)</th>
             <th style="text-align: right">Mobile 1</th>
+            <th style="text-align: right">Mobile 2 (Len)</th>
             <th style="text-align: right">Mobile 2</th>
+            <th style="text-align: right">Business Phone (Len)</th>
             <th style="text-align: right">Business Phone</th>
+            <th style="text-align: right">Home Phone (Len)</th>
             <th style="text-align: right">Home Phone</th>
         </tr>
         </thead>
@@ -30,17 +34,47 @@
             <tr>
                 <td>
                     {% if is_granted('ROLE_SUPER_ADMIN') or app.user.id==user.id %}
-                        <b><a target="_blank"
-                              href="{{ path('user_edit', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
+                        <b><a target="_blank" href="{{ path('user_edit', {'fullName': user.fullName}) }}">  {{ user.fullName }}</a></b>
                     {% else %}
                         <b>{{ user.fullName }}</b>
                     {% endif %}
                 </td>
-                <td align="right">{{ user.mobile }}</td>
-                <td align="right">{{ user.mobile2 }}</td>
 
-                <td align="right">{{ user.businessPhone }}</td>
-                <td align="right">{{ user.homePhone }}</td>
+
+                <td style="text-align: right">
+                    {{ user.mobile|slice(0,3) }} -
+                    {{ user.mobile|length }}
+                </td>
+                <td style="text-align: right">
+                    {{ user.mobile }}
+                </td>
+
+
+                <td style="text-align: right">
+                    {{ user.mobile2|slice(0,3) }} -
+                    {{ user.mobile2|length }}
+                </td>
+                <td style="text-align: right">
+                    {{ user.mobile2 }}
+                </td>
+
+
+                <td style="text-align: right">
+                    {{ user.businessPhone|slice(0,3) }} -
+                    {{ user.businessPhone|length }}
+                </td>
+                <td style="text-align: right">
+                    {{ user.businessPhone }}
+                </td>
+
+
+                <td style="text-align: right">
+                    {{ user.homePhone|slice(0,3) }} -
+                    {{ user.homePhone|length }}
+                </td>
+                <td style="text-align: right">
+                    {{ user.homePhone }}
+                </td>
             </tr>
         {% endfor %}
 
