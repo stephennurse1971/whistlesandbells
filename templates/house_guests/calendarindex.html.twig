@@ -4,34 +4,8 @@
 
 {% block body %}
     <h1 style="color: red">House Guests Calendar</h1>
-    {% if is_granted('ROLE_ADMIN') %}
-        <div class="row">
-            <div class="col-3">
-                <a class="btn btn-outline-secondary btn-sm"
-                   href="{{ path('house_guests_flight_price_scrape_all') }}">Scrape</a>
-                Default date range:
-                {{ settings.flightStatsStartDate|date('d-M-Y') }} -
-                {{ settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' )|date('d-M-y') }}
-                <a target="_blank" href="{{ path('settings_edit', {id: '1'}) }}"><i style="color:red"
-                                                                                    class="fa fa-pen"></i></a>
-            </div>
 
-            <div class="col-2">
-                <a target="_blank" class="btn btn-outline-primary btn-sm"
-                   href="https://www.hermesairports.com/flight-info/arrivals-and-departures-pfo">PFO Arrivals</a>
-                <a target="_blank" class="btn btn-outline-primary btn-sm"
-                   href="https://www.hermesairports.com/flight-info/arrivals-and-departures-lca">LCA Arrivals</a>
-            </div>
-            <div class="col-3">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete</a>
-                    <a class="btn btn-outline-secondary btn-sm" target="_blank"
-                       href="{{ path('flight_destinations_index') }}">Destinations</a>
-                {% endif %}
-            </div>
-        </div>
-    {% endif %}
-
+    {% include 'house_guests/parts/house_guest_buttons.html.twig' %}
 
     <table class="table table-responsive">
         <thead>
@@ -47,184 +21,127 @@
                     Delete
                 </th>
             {% endif %}
-
-            {% for flight_destination in flight_destinations %}
-                {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
-                    {% if flight_destination.id is even %}
-                        <th style="text-align: center; background-color: lightgrey; border-right: 1px dotted grey">
-                    {% else %}
-                        <th style="text-align: center; background-color: lightgrey">
-                    {% endif %}
-                    <a target="_blank" href="{{ path('flight_destinations_edit', {id:flight_destination.id}) }}">
-                        <span title={{ flight_destination.departureCity }}>{{ flight_destination.departureCode }}</span>
-                        - <br>
-                        <span title={{ flight_destination.arrivalCity }}>{{ flight_destination.arrivalCode }}</span>
-                    </a>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        {% if flight_destination.adminOnly==1 %}
-                            <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'0'}) }}"><i
-                                        style="color: green" class="fa fa-hat-wizard"></i></a>
-                        {% endif %}
-                        {% if flight_destination.isActive==1 %}
-                            <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'0'}) }}"><i
-                                        style="color: green" class="fa fa-check"></i></a>
-                            <a class="btn btn-outline-secondary btn-sm"
-                               href="{{ path('house_guests_flight_price_scrape_one_destination', {id:flight_destination.id}) }}">
-                                <i style="color: red" class="fa fa-download"></i>
-                            </a>
-                        {% endif %}
-                        {% if flight_destination.isActive==0 %}
-                            <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'1'}) }}"><i
-                                        style="color: red" class="fa fa-remove"></i></a>
-                        {% endif %}
-                    {% endif %}
-                    {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null and
-                        flight_destination.isActive ==1 %}
-                        <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }}
-                        <br>-{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}
-                    {% endif %}
-                    {% if flight_destination.lastScraped is not null %}
-                        <hr>Last scraped:<br>{{ flight_destination.lastScraped ? flight_destination.lastScraped|date('d-M-y h:i') : '' }}
-                    {% endif %}
-                {% endif %}
-                </th>
-            {% endfor %}
+            {% include 'house_guests/parts/house_guest_flight_prices_headers.html.twig' %}
         </tr>
+
+{#        <tr>#}
+{#            <th>Date</th>#}
+{#            <th>Book</th>#}
+{#            <th>Travel Notes</th>#}
+{#            <th style="border-right: 1px solid grey">#}
+{#                Notes#}
+{#            </th>#}
+{#            {% if is_granted('ROLE_ADMIN') %}#}
+{#                <th style="border-right: 1px solid grey">#}
+{#                    Delete#}
+{#                </th>#}
+{#            {% endif %}#}
+{#            {% include 'house_guests/parts/house_guest_flight_prices_headers.html.twig' %}#}
+{#        </tr>#}
+
         </thead>
+
         <tbody>
         {% for date in dates %}
             {% set id = '' %}
-            {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
-                <tr style="background-color: lightblue">
-            {% else %}
-                <tr>
-            {% endif %}
+            <tr>
+                {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
+                    <td style="background-color: lightblue" data-sort="{{ date| date('Y-m-d') }}">
+                        {{ date | date('D d-M-y') }}
+                    </td>
+                {% else %}
+                    <td data-sort="{{ date| date('Y-m-d') }}">
+                        {{ date | date('D d-M-y') }}
+                    </td>
+                {% endif %}
 
-            <td data-sort={{ date| date('Y-m-d') }}>{{ date | date('D d-M-Y') }}</td>
+                <td style="background-color: white">
+                    {% set flag = 0 %}
+                    {% for house_guest in house_guests %}
+                        {% if house_guest['date'] == date|date('d-m-y') %}
 
-            <td style="background-color: white">
-                {% set flag = 0 %}
-                {% for house_guest in house_guests %}
-                    {% if house_guest['date'] == date|date('d-m-y') %}
-
-                        {% if house_guest['referenceInformation'] == "Internal Note" %}
-                            {% set flag = 1 %}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a target="_blank"
-                                   href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">Internal Note</a>
-                            {% endif %}
-                        {% elseif house_guest['referenceInformation'] == "Block-Out" %}
-                            {% set flag = 1 %}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a target="_blank"
-                                   href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">Block-Out</a>
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        {% else %}
-                            {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                                {% if house_guest['guest'] is not null %}
+                            {% if house_guest['referenceInformation'] == "Internal Note" %}
+                                {% set flag = 1 %}
+                                {% if is_granted('ROLE_ADMIN') %}
                                     <a target="_blank"
-                                       href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">{{ house_guest['guest'].fullName }}</a>
+                                       href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">Internal
+                                        Note</a>
+                                {% endif %}
+                            {% elseif house_guest['referenceInformation'] == "Block-Out" %}
+                                {% set flag = 1 %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a target="_blank"
+                                       href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">Block-Out</a>
+                                {% else %}
+                                    N/A
                                 {% endif %}
                             {% else %}
-                                Booked
+                                {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                                    {% if house_guest['guest'] is not null %}
+                                        <a target="_blank"
+                                           href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">{{ house_guest['guest'].fullName }}</a>
+                                    {% endif %}
+                                {% else %}
+                                    Booked
+                                {% endif %}
+                                {% set flag = 1 %}
+                                {% set id = house_guest['id'] %}
                             {% endif %}
-                            {% set flag = 1 %}
-                            {% set id = house_guest['id'] %}
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-
-                {% if flag==0 %}
-                    <a target="_blank" class="btn btn-success btn-sm"
-                       href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
-                {% endif %}
-            </td>
-
-            <td style="background-color: white">
-                {% for house_guest in house_guests %}
-                    {% if house_guest['referenceInformation'] == "Guest Booking" %}
-                        {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                            {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
-                                {{ house_guest['arrivalNotes'] |raw }}
-                            {% endif %}
-                            {% if house_guest['departureDate'] == date|date('d-m-y') %}
-                                {{ house_guest['departureNotes'] |raw }}
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </td>
-
-            <td style="border-right: 1px solid grey; background-color: white">
-                {% for house_guest in house_guests %}
-                    {% if house_guest['referenceInformation'] == "Guest Booking" %}
-                        {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                            {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
-                                {{ house_guest['notes'] |raw }}
-                            {% endif %}
-                        {% endif %}
-                    {% else %}
-                        {% if is_granted('ROLE_ADMIN') and house_guest['arrivalDate'] == date|date('d-m-y') %}
-                            {{ house_guest['notes'] |raw }}
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </td>
-
-            {% if is_granted('ROLE_ADMIN') %}
-                <td style="border-right: 1px solid grey; background-color: white">
-                    {% if id != '' %}
-                        <form method="post" action="{{ path('house_guests_delete', {'id':id }) }}"
-                              onsubmit="return confirm('Are you sure you want to delete this item?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    {% endif %}
-                </td>
-            {% endif %}
-
-            {% for flight_destination in flight_destinations %}
-                {% if flight_destination.dateStart is null and flight_destination.dateStart is null %}
-                    {% set whiteSmokeBackgroundStart = settings.flightStatsStartDate|date('d-M-Y') %}
-                    {% set whiteSmokeBackgroundEnd = settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' )|date('Y-m-d') %}
-                {% else %}
-                    {% set whiteSmokeBackgroundStart = flight_destination.dateStart|date('Y-m-d') %}
-                    {% set whiteSmokeBackgroundEnd = flight_destination.dateEnd|date('Y-m-d') %}
-                {% endif %}
-
-                {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
-
-                    {% if flight_destination.id is even %}
-                        {% if whiteSmokeBackgroundStart|date('Y-m-d') <= date|date('Y-m-d') and whiteSmokeBackgroundEnd|date('Y-m-d') >= date|date('Y-m-d') and
-                            flight_destination.isActive ==1 %}
-                            <td style="text-align: center; border-right: 1px dotted grey; background-color: whitesmoke">
-                        {% else %}
-                            <td style="text-align: center; border-right: 1px dotted grey; background-color: white">
-                        {% endif %}
-
-                    {% else %}
-                        {% if whiteSmokeBackgroundStart|date('Y-m-d') <= date|date('Y-m-d') and whiteSmokeBackgroundEnd|date('Y-m-d') >= date|date('Y-m-d') and
-                            flight_destination.isActive ==1 %}
-                            <td style="text-align: center; background-color: whitesmoke">
-                        {% else %}
-                            <td style="text-align: center; background-color: white">
-                        {% endif %}
-                    {% endif %}
-
-                    {% for flight in flights %}
-                        {% if flight.date == date and flight.flightFrom==flight_destination.departureCode and flight.flightTo ==flight_destination.arrivalCode %}
-                            {% set URL = "https://www.kayak.co.uk/flights/"~flight.flightFrom~"-"~ flight.flightTo ~"/"~ date|date('Y-m-d')  ~ "?sort=price_a&fs=stops=0" %}
-                            <a target="_blank" href="{{ URL }}">£{{ flight.lowestPrice|number_format('0') }}</a>
                         {% endif %}
                     {% endfor %}
 
-                {% endif %}
+                    {% if flag==0 %}
+                        <a target="_blank" class="btn btn-success btn-sm"
+                           href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
+                    {% endif %}
                 </td>
-            {% endfor %}
+
+                <td style="background-color: white">
+                    {% for house_guest in house_guests %}
+                        {% if house_guest['referenceInformation'] == "Guest Booking" %}
+                            {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                                {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
+                                    {{ house_guest['arrivalNotes'] |raw }}
+                                {% endif %}
+                                {% if house_guest['departureDate'] == date|date('d-m-y') %}
+                                    {{ house_guest['departureNotes'] |raw }}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+
+                <td style="border-right: 1px solid grey; background-color: white">
+                    {% for house_guest in house_guests %}
+                        {% if house_guest['referenceInformation'] == "Guest Booking" %}
+                            {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                                {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
+                                    {{ house_guest['notes'] |raw }}
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            {% if is_granted('ROLE_ADMIN') and house_guest['arrivalDate'] == date|date('d-m-y') %}
+                                {{ house_guest['notes'] |raw }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td style="border-right: 1px solid grey; background-color: white">
+                        {% if id != '' %}
+                            <form method="post" action="{{ path('house_guests_delete', {'id':id }) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                {% endif %}
+                {% include 'house_guests/parts/house_guest_flight_prices.html.twig' %}
             </tr>
         {% endfor %}
+
         </tbody>
     </table>
     <br>
