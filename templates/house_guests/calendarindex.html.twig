@@ -7,7 +7,7 @@
 
     {% include 'house_guests/parts/house_guest_buttons.html.twig' %}
 
-    <table class="table table-responsive">
+    <table class="table">
         <thead>
         <tr>
             <th>Date</th>
@@ -24,20 +24,17 @@
             {% include 'house_guests/parts/house_guest_flight_prices_headers.html.twig' %}
         </tr>
 
-{#        <tr>#}
-{#            <th>Date</th>#}
-{#            <th>Book</th>#}
-{#            <th>Travel Notes</th>#}
-{#            <th style="border-right: 1px solid grey">#}
-{#                Notes#}
-{#            </th>#}
-{#            {% if is_granted('ROLE_ADMIN') %}#}
-{#                <th style="border-right: 1px solid grey">#}
-{#                    Delete#}
-{#                </th>#}
-{#            {% endif %}#}
-{#            {% include 'house_guests/parts/house_guest_flight_prices_headers.html.twig' %}#}
-{#        </tr>#}
+        <tr>
+            <th class="desktop"></th>
+            <th class="desktop"></th>
+            <th class="desktop"></th>
+            <th class="desktop" style="border-right: 1px solid grey"></th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th style="border-right: 1px solid grey">
+                </th>
+            {% endif %}
+            {% include 'house_guests/parts/house_guest_flight_prices_headers2.html.twig' %}
+        </tr>
 
         </thead>
 
