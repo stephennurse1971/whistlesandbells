@@ -30,25 +30,27 @@
                     {% endif %}
 
                     <!-- Nav Item #2 - Interests -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Interests
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital
-                                consulting</a>
-                            <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private
-                                Equity</a>
-                            <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>
-                            <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
-                            <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
-                            <hr class="mobile">
-                            <a class="dropdown-item mobile" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful
-                                links</a>
-                        </div>
-                    </li>
-
+                    {% if app.user %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Interests
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital
+                                    consulting</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private
+                                    Equity</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
+                                <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
+                                <hr class="mobile">
+                                <a class="dropdown-item mobile"
+                                   href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful
+                                    links</a>
+                            </div>
+                        </li>
+                    {% endif %}
 
                     <!-- Nav Item #3 - Photos -->
                     {% if is_granted('ROLE_GUEST') or is_granted('ROLE_FAMILY') %}
@@ -102,7 +104,7 @@
                             href="skype:{{ StaticText.content.skype }}?call"><i style="color: royalblue"
                                                                                 class="fab fa-skype"></i> {{ StaticText.content.skype }}
                             </a>
-                            {% if is_granted('ROLE_USER') %}
+                            {% if app.user %}
                                 <a target="_blank" title="{{ StaticText.content.address }} "
                                    href="{{ path('/homeaddress') }}"> <i style="color: royalblue"
                                                                          class="fa fa-car"></i> {{ StaticText.content.address }}
