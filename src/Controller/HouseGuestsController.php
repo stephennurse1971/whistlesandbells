@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\HouseGuests;
 use App\Form\HouseGuestsType;
-use App\Repository\CmsCopyRepository;
-use App\Repository\CmsPhotoRepository;
 use App\Repository\FlightDestinationsRepository;
 use App\Repository\FlightStatsRepository;
 use App\Repository\HouseGuestsRepository;
@@ -32,11 +30,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class HouseGuestsController extends AbstractController
 {
     /**
-     * @Route("/", name="house_guests_index", methods={"GET"})
+     * @Route("/{subset}", name="house_guests_index", methods={"GET"})
      */
-    public function index(HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository, FlightDestinationsRepository $flightDestinationsRepository): Response
+    public function index(Request $request, string $subset, HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
-        $flightDestinations = $flightDestinationsRepository->findAll();
+        if($subset == "All"){
+            $flightDestinations = $flightDestinationsRepository->findAll();
+        }
+        if($subset == "Active"){
+            $flightDestinations = $flightDestinationsRepository->findBy([
+                'isActive'=>1
+            ]);
+        }
         $date = new \DateTime('now');
         $month = $date->format('m');
         $year = $date->format('Y');
