@@ -4,7 +4,11 @@
 
 {% block body %}
     <h1 style="color: red">Flight Destinations</h1>
-
+    <b>Default
+        dates:</b> {{ settings.flightStatsStartDate|date('d-M-y') }} - {{ settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' )|date('d-M-y') }} ({{ settings.flightStatsDays }} days)
+    <br>
+    <a class="btn btn-outline-info btn-sm" href="{{ path('house_guests_index', {subset:'All'}) }}">House Guest</a>
+    <br>
     <table class="table table-responsive">
         <thead>
         <tr>
@@ -30,27 +34,38 @@
                 <td>{{ flight_destination.departureCode }}</td>
                 <td>{{ flight_destination.arrivalCity }}</td>
                 <td>{{ flight_destination.arrivalCode }}</td>
-                <td data-sort="{{ flight_destination.dateStart|date('Y-m-d') }}">    {{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }}</td>
-                <td data-sort="{{ flight_destination.dateEnd|date('Y-m-d') }}">    {{ flight_destination.dateStart ? flight_destination.dateEnd|date('d-M-y') : '' }}</td>
+                <td data-sort="{{ flight_destination.dateStart|date('Y-m-d') }}">{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }}</td>
+                <td data-sort="{{ flight_destination.dateEnd|date('Y-m-d') }}">{{ flight_destination.dateStart ? flight_destination.dateEnd|date('d-M-y') : '' }}
+                    {% if flight_destination.dateStart|date('Y-m-d') == settings.flightStatsStartDate|date('Y-m-d')
+                        and flight_destination.dateEnd|date('Y-m-d') ==
+                        (settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' ))|date('Y-m-d') %}
+                    {% else %}
+                        <a href="{{ path('flight_destinations_reset_dates', {id:flight_destination.id}) }}">
+                            <i style="color: red" class="fa fa-rotate-left"></i></a>
+                    {% endif %}
+                </td>
                 <td style="text-align: center">
                     {% if flight_destination.adminOnly ==1 %}
-                        <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'0'}) }}"><i style="color: green" class="fa fa-hat-wizard"></i></a>
+                        <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'0'}) }}"><i
+                                    style="color: green" class="fa fa-hat-wizard"></i></a>
                     {% else %}
-                        <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'1'}) }}"><i style="color: red" class="fa fa-remove"></i></a>
-
+                        <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'1'}) }}"><i
+                                    style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     {% if flight_destination.isActive ==1 %}
-                        <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id, 'active':'0'}) }}"><i style="color: green" class="fa fa-check"></i></a>
+                        <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id, 'active':'0'}) }}"><i
+                                    style="color: green" class="fa fa-check"></i></a>
                     {% else %}
-                        <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id, 'active':'1'}) }}"><i style="color: red" class="fa fa-remove"></i></a>
+                        <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id, 'active':'1'}) }}"><i
+                                    style="color: red" class="fa fa-remove"></i></a>
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     {% if flight_destination.lastScraped is not null %}
                         {{ flight_destination.lastScraped|date('d-M-y') }}
-                     {% endif %}
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

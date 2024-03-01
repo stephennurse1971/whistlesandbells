@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\FlightDestinations;
 use App\Form\FlightDestinationsType;
 use App\Repository\FlightDestinationsRepository;
+use App\Repository\SettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +20,18 @@ class FlightDestinationsController extends AbstractController
     /**
      * @Route("/", name="flight_destinations_index", methods={"GET"})
      */
-    public function index(FlightDestinationsRepository $flightDestinationsRepository): Response
+    public function index(FlightDestinationsRepository $flightDestinationsRepository, SettingsRepository $settingsRepository): Response
     {
+        $today= new \DateTime('now');
+        $settings=$settingsRepository->find('1');
+        $startDate=$settings->getFlightStatsStartDate();
+        if ($startDate < $today){
+            $settings->setFlightStatsStartDate($today);
+        }
+
         return $this->render('flight_destinations/index.html.twig', [
             'flight_destinations' => $flightDestinationsRepository->findAll(),
+            'settings'=>$settings
         ]);
     }
 
@@ -97,6 +106,25 @@ class FlightDestinationsController extends AbstractController
         $flightDestination = $flightDestinationsRepository->find($id);
         $flightDestination->setAdminOnly($admin);
         $manager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/flight_destination_reset_dates/{id}", name="flight_destinations_reset_dates", methods={"GET", "POST"})
+     */
+    public function resetDates(Request $request, $id, FlightDestinationsRepository $flightDestinationsRepository, SettingsRepository $settingsRepository, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $settings= $settingsRepository->find('1');
+        $startDate = $settings->getFlightStatsStartDate();
+        $daysCount = $settings->getFlightStatsDays();
+        $flightDestination = $flightDestinationsRepository->find($id);
+        $flightDestination->setDateStart($startDate);
+        $manager->flush();
+        $endDate = date_modify($startDate, +$daysCount. ' days');
+        $flightDestination->setDateEnd($endDate);
+        $manager->flush();
+
         return $this->redirect($referer);
     }
 

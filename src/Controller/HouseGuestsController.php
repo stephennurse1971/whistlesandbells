@@ -11,6 +11,7 @@ use App\Repository\SettingsRepository;
 use App\Repository\UserRepository;
 use App\Services\FlightPrice;
 use App\Services\HouseGuestPerDayList;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,14 +33,26 @@ class HouseGuestsController extends AbstractController
     /**
      * @Route("/{subset}", name="house_guests_index", methods={"GET"})
      */
-    public function index(Request $request, string $subset, HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList, FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository, FlightDestinationsRepository $flightDestinationsRepository): Response
+    public function index(Request $request, string $subset, HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList,
+                          FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository,
+                          FlightDestinationsRepository $flightDestinationsRepository, EntityManagerInterface $entityManager): Response
     {
-        if($subset == "All"){
+        $today = new \DateTime('now');
+        $settings = $settingsRepository->find('1');
+        $startDate = $settings->getFlightStatsStartDate();
+        if ($startDate < $today) {
+            $settings->setFlightStatsStartDate($today);
+            $entityManager->flush();
+        }
+
+
+
+        if ($subset == "All") {
             $flightDestinations = $flightDestinationsRepository->findAll();
         }
-        if($subset == "Active"){
+        if ($subset == "Active") {
             $flightDestinations = $flightDestinationsRepository->findBy([
-                'isActive'=>1
+                'isActive' => 1
             ]);
         }
         $date = new \DateTime('now');
@@ -65,7 +78,7 @@ class HouseGuestsController extends AbstractController
             'house_guests' => $lists = $houseGuestPerDayList->guestList(),
             'dates' => $dates,
             'flights' => $flightStatsRepository->findAll(),
-            'settings' => $settingsRepository->find('1')
+            'settings' => $settings
         ]);
     }
 
@@ -88,7 +101,7 @@ class HouseGuestsController extends AbstractController
             $referenceInformation = "Guest Booking";
         }
         $houseGuest = new HouseGuests();
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list,'referenceInformation'=>$referenceInformation]);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list, 'referenceInformation' => $referenceInformation]);
         $houseGuest->setDateArrival(new \DateTime($startdate));
         $houseGuest->setDateDeparture($defaultDepartureDate);
 
@@ -151,7 +164,7 @@ class HouseGuestsController extends AbstractController
             $referenceInformation = "Guest Booking";
         }
         $startdate = $houseGuest->getDateArrival()->format('d-m-y');
-        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list,'referenceInformation'=>$referenceInformation]);
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list, 'referenceInformation' => $referenceInformation]);
 
         $form->handleRequest($request);
 
