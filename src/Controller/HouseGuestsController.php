@@ -45,8 +45,6 @@ class HouseGuestsController extends AbstractController
             $entityManager->flush();
         }
 
-
-
         if ($subset == "All") {
             $flightDestinations = $flightDestinationsRepository->findAll();
         }

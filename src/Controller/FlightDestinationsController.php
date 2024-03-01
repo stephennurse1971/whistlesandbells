@@ -20,15 +20,15 @@ class FlightDestinationsController extends AbstractController
     /**
      * @Route("/", name="flight_destinations_index", methods={"GET"})
      */
-    public function index(FlightDestinationsRepository $flightDestinationsRepository, SettingsRepository $settingsRepository): Response
+    public function index(FlightDestinationsRepository $flightDestinationsRepository, SettingsRepository $settingsRepository, EntityManagerInterface $entityManager): Response
     {
-        $today= new \DateTime('now');
-        $settings=$settingsRepository->find('1');
-        $startDate=$settings->getFlightStatsStartDate();
-        if ($startDate < $today){
+        $today = new \DateTime('now');
+        $settings = $settingsRepository->find('1');
+        $startDate = $settings->getFlightStatsStartDate();
+        if ($startDate < $today) {
             $settings->setFlightStatsStartDate($today);
+            $entityManager->flush();
         }
-
         return $this->render('flight_destinations/index.html.twig', [
             'flight_destinations' => $flightDestinationsRepository->findAll(),
             'settings'=>$settings
