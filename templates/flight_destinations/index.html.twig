@@ -23,6 +23,8 @@
             <th>Admin Only</th>
             <th>Active</th>
             <th>Last Scraped</th>
+            <th>Scrape</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -67,6 +69,17 @@
                     {% if flight_destination.lastScraped is not null %}
                         {{ flight_destination.lastScraped|date('d-M-y') }}
                     {% endif %}
+                </td>
+                <td style="text-align: center">
+                    <a href="{{ path('house_guests_flight_price_scrape_one_destination', {id:flight_destination.id}) }}">
+                        <i style="color: blue" class="fa fa-download"></i>
+                    </a>
+                </td>
+                <td>
+                    <form method="post" action="{{ path('flight_destinations_delete', {'id': flight_destination.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ flight_destination.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}

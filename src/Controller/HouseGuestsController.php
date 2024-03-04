@@ -31,10 +31,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class HouseGuestsController extends AbstractController
 {
     /**
-     * @Route("/{subset}", name="house_guests_index", methods={"GET"})
+     * @Route("/{subset}", name="house_guests_index", methods={"GET"}, defaults={"subset"="All"})
      */
     public function index(Request $request, string $subset, HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList,
-                          FlightStatsRepository $flightStatsRepository, SettingsRepository $settingsRepository,
+                          FlightStatsRepository        $flightStatsRepository, SettingsRepository $settingsRepository,
                           FlightDestinationsRepository $flightDestinationsRepository, EntityManagerInterface $entityManager): Response
     {
         $today = new \DateTime('now');
@@ -45,13 +45,13 @@ class HouseGuestsController extends AbstractController
             $settings->setFlightStatsStartDate($today);
             $entityManager->flush();
         }
-        $flightDestinationsAllDateReset= $flightDestinationsRepository->findAll();
-        foreach ($flightDestinationsAllDateReset as $destination){
-            if ($destination->getDateStart()<$today){
+        $flightDestinationsAllDateReset = $flightDestinationsRepository->findAll();
+        foreach ($flightDestinationsAllDateReset as $destination) {
+            if ($destination->getDateStart() < $today) {
                 $destination->setDateStart($today);
                 $entityManager->flush();
             }
-            if ($destination->getDateEnd()<$today){
+            if ($destination->getDateEnd() < $today) {
                 $destination->setDateEnd($tomorrow);
                 $entityManager->flush();
             }
@@ -232,7 +232,11 @@ class HouseGuestsController extends AbstractController
      */
     public function getPriceOne(Request $request, $id, FlightPrice $flightPrice, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
+        $today = new \DateTime('now');
+        $flightPriceS = $flightDestinationsRepository->find($id);
+        $flightPriceS->setLastScraped($today);
         $flightPrice->getPrice($id);
+
         return $this->redirectToRoute('house_guests_index');
     }
 }

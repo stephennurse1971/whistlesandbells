@@ -8,9 +8,8 @@
         {% endif %}
 
         {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null and
-            flight_destination.isActive ==1 and flight_destination.dateStart|date('Y-m-d') !=settings.flightStatsStartDate|date('Y-m-d')
-        and flight_destination.dateEnd|date('Y-m-d') !=(settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' ))|date('Y-m-d')
-        %}
+            flight_destination.isActive == 1 and
+            flight_destination.dateEnd|date('Y-m-d') != (settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' ))|date('Y-m-d') %}
             <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }}
             <br>-{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}
             {% if flight_destination.dateStart|date('Y-m-d') == settings.flightStatsStartDate|date('Y-m-d')
