@@ -8,6 +8,7 @@
         dates:</b> {{ settings.flightStatsStartDate|date('d-M-y') }} - {{ settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' )|date('d-M-y') }} ({{ settings.flightStatsDays }} days)
     <br>
     <a class="btn btn-outline-info btn-sm" href="{{ path('house_guests_index', {subset:'All'}) }}">House Guest</a>
+    <a target="_blank" class="btn btn-outline-info btn-sm" href="{{ path('settings_edit', {id:'1'}) }}">Settings</a>
     <br>
     <table class="table table-responsive">
         <thead>

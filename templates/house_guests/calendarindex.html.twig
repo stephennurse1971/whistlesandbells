@@ -30,8 +30,7 @@
             <th class="desktop"></th>
             <th class="desktop" style="border-right: 1px solid grey"></th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th style="border-right: 1px solid grey">
-                </th>
+                <th style="border-right: 1px solid grey"> </th>
             {% endif %}
             {% include 'house_guests/parts/house_guest_flight_prices_headers2.html.twig' %}
         </tr>

@@ -1,4 +1,5 @@
 {% for flight_destination in flight_destinations %}
+
     {% if is_granted('ROLE_ADMIN') or flight_destination.adminOnly==0 %}
         {% if flight_destination.id is even %}
             <th class="desktop" style="text-align: center; background-color: lightgrey; border-right: 1px dotted grey">

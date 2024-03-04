@@ -38,11 +38,23 @@ class HouseGuestsController extends AbstractController
                           FlightDestinationsRepository $flightDestinationsRepository, EntityManagerInterface $entityManager): Response
     {
         $today = new \DateTime('now');
+        $tomorrow = new \DateTime('tomorrow');
         $settings = $settingsRepository->find('1');
         $startDate = $settings->getFlightStatsStartDate();
         if ($startDate < $today) {
             $settings->setFlightStatsStartDate($today);
             $entityManager->flush();
+        }
+        $flightDestinationsAllDateReset= $flightDestinationsRepository->findAll();
+        foreach ($flightDestinationsAllDateReset as $destination){
+            if ($destination->getDateStart()<$today){
+                $destination->setDateStart($today);
+                $entityManager->flush();
+            }
+            if ($destination->getDateEnd()<$today){
+                $destination->setDateEnd($tomorrow);
+                $entityManager->flush();
+            }
         }
 
         if ($subset == "All") {
