@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CMS: Interests WebPages{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CMS: "Interests" WebPages</h1>
+
+    <a class="btn btn-success btn-sm" href="{{ path('interests_new') }}">New</a>
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Active</th>
+            <th>Public</th>
+            <th>Access Roles</th>
+            <th>Menu</th>
+            <th>Text1</th>
+            <th>Text2</th>
+            <th>Text3</th>
+            <th>Photo1</th>
+            <th>Photo2</th>
+            <th>Photo3</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for interest in interests %}
+            <tr>
+                <td>{{ interest.ranking }}</td>
+                <td>{{ interest.name }}</td>
+                <td style="text-align: center">
+                    {% if interest.isActive == 1 %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if interest.isPublic == 1 %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
+                <td>{{ interest.accessRoles }}</td>
+                <td>{{ interest.menu }}</td>
+                <td>{{ interest.cmsText1 }}</td>
+                <td>{{ interest.cmsText2 }}</td>
+                <td>{{ interest.cmsText3 }}</td>
+                <td>{{ interest.cmsPhoto1 }}</td>
+                <td>{{ interest.cmsPhoto2 }}</td>
+                <td>{{ interest.cmsPhoto3 }}</td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('interests_edit', {'id': interest.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "ordering": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

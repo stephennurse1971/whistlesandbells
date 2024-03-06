@@ -37,10 +37,10 @@
                                 Interests
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital
-                                    consulting</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private
-                                    Equity</a>
+                                {#                                <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital #}
+                                {#                                    consulting</a> #}
+                                {#                                <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private #}
+                                {#                                    Equity</a> #}
                                 <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>
                                 <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
                                 <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
@@ -51,6 +51,20 @@
                             </div>
                         </li>
                     {% endif %}
+
+{#                    <!-- Nav Item #2 - Interests -->#}
+{#                    {% if app.user %}#}
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+{#                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                Interests2#}
+{#                            </a>#}
+{#                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                                <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                    {% endif %}#}
+
 
                     <!-- Nav Item #3 - Photos -->
                     {% if is_granted('ROLE_GUEST') or is_granted('ROLE_FAMILY') %}
@@ -67,7 +81,8 @@
                                 Cyprus
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('house_guests_index', {subset:'Active'}) }}">House Guest</a>
+                                <a class="dropdown-item" href="{{ path('house_guests_index', {subset:'Active'}) }}">House
+                                    Guest</a>
                                 <a class="dropdown-item" href="{{ path('whattobring') }}">What To Bring</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('tourist_attraction_index') }}">Tourist
