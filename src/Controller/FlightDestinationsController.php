@@ -67,6 +67,7 @@ class FlightDestinationsController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="flight_destinations_edit", methods={"GET", "POST"})
+     *
      */
     public function edit(Request $request, FlightDestinations $flightDestination, FlightDestinationsRepository $flightDestinationsRepository): Response
     {

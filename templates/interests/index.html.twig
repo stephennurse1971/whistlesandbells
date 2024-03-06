@@ -9,12 +9,12 @@
     <table class="table table-responsive">
         <thead>
         <tr>
+            <th>Menu</th>
             <th>#</th>
             <th>Name</th>
             <th>Active</th>
             <th>Public</th>
             <th>Access Roles</th>
-            <th>Menu</th>
             <th>Text1</th>
             <th>Text2</th>
             <th>Text3</th>
@@ -27,6 +27,7 @@
         <tbody>
         {% for interest in interests %}
             <tr>
+                <td>{{ interest.menu }}</td>
                 <td>{{ interest.ranking }}</td>
                 <td>{{ interest.name }}</td>
                 <td style="text-align: center">
@@ -44,7 +45,6 @@
                     {% endif %}
                 </td>
                 <td>{{ interest.accessRoles }}</td>
-                <td>{{ interest.menu }}</td>
                 <td>{{ interest.cmsText1 }}</td>
                 <td>{{ interest.cmsText2 }}</td>
                 <td>{{ interest.cmsText3 }}</td>
@@ -66,7 +66,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "ordering": [[0, 'asc']],
+                "ordering": [[0, 'asc'],[1, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

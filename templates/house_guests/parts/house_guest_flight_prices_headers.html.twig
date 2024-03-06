@@ -5,11 +5,21 @@
         {% else %}
             <th style="text-align: center; background-color: lightgrey">
         {% endif %}
-        <a target="_blank" href="{{ path('flight_destinations_edit', {id:flight_destination.id}) }}">
+
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a target="_blank" href="{{ path('flight_destinations_edit', {id:flight_destination.id}) }}">
+                <span title={{ flight_destination.departureCity }}>{{ flight_destination.departureCode }}</span>
+                - <br>
+                <span title={{ flight_destination.arrivalCity }}>{{ flight_destination.arrivalCode }}</span>
+            </a>
+        {% else %}
             <span title={{ flight_destination.departureCity }}>{{ flight_destination.departureCode }}</span>
             - <br>
             <span title={{ flight_destination.arrivalCity }}>{{ flight_destination.arrivalCode }}</span>
-        </a>
+
+        {% endif %}
+
         {% if is_granted('ROLE_ADMIN') %}
             {% if flight_destination.adminOnly==1 %}
                 <a href="{{ path('flight_destinations_change_admin_status', {'id':flight_destination.id,'admin':'0'}) }}"><i
@@ -27,6 +37,11 @@
                 <a href="{{ path('flight_destinations_change_isactive_status', {'id':flight_destination.id,'active':'1'}) }}"><i
                             style="color: red" class="fa fa-remove"></i></a>
             {% endif %}
+        {% else %}
+            <a class="btn btn-outline-secondary btn-sm"
+               href="{{ path('house_guests_flight_price_scrape_one_destination', {id:flight_destination.id}) }}">
+                <i style="color: red" class="fa fa-download"></i>
+            </a>
         {% endif %}
         </th>
     {% endif %}

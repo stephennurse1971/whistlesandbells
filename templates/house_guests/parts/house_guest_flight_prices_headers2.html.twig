@@ -7,23 +7,26 @@
             <th class="desktop" style="text-align: center; background-color: lightgrey">
         {% endif %}
 
-        {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null and
-            flight_destination.isActive == 1 and
-            flight_destination.dateEnd|date('Y-m-d') != (settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' ))|date('Y-m-d') %}
-            <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }}
-            <br>-{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}
-            {% if flight_destination.dateStart|date('Y-m-d') == settings.flightStatsStartDate|date('Y-m-d')
-                and flight_destination.dateEnd|date('Y-m-d') ==
-                (settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' ))|date('Y-m-d') %}
-            {% else %}
-                <a href="{{ path('flight_destinations_reset_dates', {id:flight_destination.id}) }}">
-                    <i style="color: red" class="fa fa-rotate-left"></i></a>
+        {% if is_granted('ROLE_ADMIN') %}
+            {% if flight_destination.dateStart is not null and flight_destination.dateEnd  is not null and
+                flight_destination.isActive == 1 and
+                flight_destination.dateEnd|date('Y-m-d') != (settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' ))|date('Y-m-d') %}
+                <br>{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }}
+                <br>-{{ flight_destination.dateEnd ? flight_destination.dateEnd|date('d-M-y') : '' }}
+                {% if flight_destination.dateStart|date('Y-m-d') == settings.flightStatsStartDate|date('Y-m-d')
+                    and flight_destination.dateEnd|date('Y-m-d') ==
+                    (settings.flightStatsStartDate|date_modify('+'~ settings.flightStatsDays~'days' ))|date('Y-m-d') %}
+                {% else %}
+                    <a href="{{ path('flight_destinations_reset_dates', {id:flight_destination.id}) }}">
+                        <i style="color: red" class="fa fa-rotate-left"></i></a>
+                {% endif %}
             {% endif %}
         {% endif %}
         {% if flight_destination.lastScraped is not null %}
             <hr>Last scraped:
             <br>{{ flight_destination.lastScraped ? flight_destination.lastScraped|date('d-M-y h:i') : '' }}
         {% endif %}
+
         </th>
     {% endif %}
 

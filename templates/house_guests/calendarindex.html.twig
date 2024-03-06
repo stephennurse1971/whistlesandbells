@@ -55,7 +55,6 @@
                     {% set flag = 0 %}
                     {% for house_guest in house_guests %}
                         {% if house_guest['date'] == date|date('d-m-y') %}
-
                             {% if house_guest['referenceInformation'] == "Internal Note" %}
                                 {% set flag = 1 %}
                                 {% if is_granted('ROLE_ADMIN') %}
