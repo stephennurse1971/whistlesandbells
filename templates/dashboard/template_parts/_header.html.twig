@@ -30,14 +30,15 @@
                     {% endif %}
 
                     <!-- Nav Item #2 - Interests -->
-                    {% if app.user %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Interests
-                            </a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Interests
+                        </a>
+                        {% if app.user %}
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {% set webPages = WebPages.getWebPagesInterests %}
+                                {% set webPages = WebPages.getWebPagesInterestsAll %}
                                 {% for webPage in webPages %}
                                     <a class="dropdown-item" target="_blank"
                                        href="{{ path('interests_pages', {interest:webPage.name }) }}">
@@ -45,8 +46,18 @@
                                     </a>
                                 {% endfor %}
                             </div>
-                        </li>
-                    {% endif %}
+                        {% else %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set webPages = WebPages.getWebPagesInterestsPublic %}
+                                {% for webPage in webPages %}
+                                    <a class="dropdown-item" target="_blank"
+                                       href="{{ path('interests_pages', {interest:webPage.name }) }}">
+                                        {{ webPage.name }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </li>
 
 
                     <!-- Nav Item #3 - Photos -->
@@ -66,7 +77,8 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('house_guests_index', {subset:'Active'}) }}">House
                                     Guest</a>
-                                <a class="dropdown-item" href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
+                                <a class="dropdown-item"
+                                   href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
                                     attractions</a>
@@ -108,6 +120,11 @@
                                                                          class="fa fa-car"></i> {{ StaticText.content.address }}
                                 </a>
                             {% endif %}
+                            <a class="dropdown-item" title="Contact details"
+                               href="{{ path('create_vcard_SN') }}">
+                               <i class="fa fa-credit-card"></i> Business Card
+                            </a>
+
                         </div>
                     </li>
 

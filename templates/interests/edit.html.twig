@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Interests{% endblock %}
+{% block title %}Page SetUp: {{ interest.name }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Interests</h1>
+    <h1 style="color: red">Page SetUp: {{ interest.name }}</h1>
 
     {{ include('interests/_form.html.twig', {'button_label': 'Update'}) }}
 

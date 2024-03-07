@@ -13,7 +13,7 @@ class WebPages
         ]);
     }
 
-    public function getWebPagesInterests()
+    public function getWebPagesInterestsAll()
     {
         $interests = $this->interestsRepository->findBy([
             'isActive'=>1,
@@ -22,9 +22,19 @@ class WebPages
         usort($interests,function($first,$second){
             return $first->getRanking() > $second->getRanking();
         });
-
         return $interests;
-
+    }
+    public function getWebPagesInterestsPublic()
+    {
+        $interests = $this->interestsRepository->findBy([
+            'isActive'=>1,
+            'isPublic'=>1,
+            'menu'=>'Interests'
+        ]);
+        usort($interests,function($first,$second){
+            return $first->getRanking() > $second->getRanking();
+        });
+        return $interests;
     }
     public function __construct(InterestsRepository $interestsRepository)
     {

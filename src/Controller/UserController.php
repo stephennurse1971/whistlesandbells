@@ -381,7 +381,7 @@ class UserController extends AbstractController
      */
     public function edit(string $fullName, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder, CmsCopyRepository $cmsCopyRepository): Response
     {
-       // $referer = $request->server->get('HTTP_REFERER');
+        // $referer = $request->server->get('HTTP_REFERER');
 
         $cmsContact = $cmsCopyRepository->findOneBy([
             'name' => 'Introduction Email - Contact']);
@@ -523,7 +523,7 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
         }
-        return $this->redirectToRoute( 'user_index');
+        return $this->redirectToRoute('user_index');
     }
 
 
@@ -793,7 +793,7 @@ class UserController extends AbstractController
         $vcard->addEmail($user->getEmail())
             ->addJobtitle($user->getJobTitle())
             ->addCompany($user->getCompany())
-            ->addPhoneNumber($user->getBusinessPhone(), 'work')
+            ->addPhoneNumber($user->getHomePhone(), 'work')
             ->addPhoneNumber($user->getMobile(), 'home')
             ->addURL("https://stephen-nurse.com/")
             ->addNote($user->getNotes());
