@@ -37,33 +37,16 @@
                                 Interests
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {#                                <a class="dropdown-item" target="_blank" href="{{ path('XVAConsulting') }}">Risk/Capital #}
-                                {#                                    consulting</a> #}
-                                {#                                <a class="dropdown-item" target="_blank" href="{{ path('private_equity') }}">Private #}
-                                {#                                    Equity</a> #}
-                                <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('tennis') }}">Tennis</a>
-                                <a class="dropdown-item" target="_blank" href="{{ path('flying') }}">Flying</a>
-                                <hr class="mobile">
-                                <a class="dropdown-item mobile"
-                                   href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful
-                                    links</a>
+                                {% set webPages = WebPages.getWebPagesInterests %}
+                                {% for webPage in webPages %}
+                                    <a class="dropdown-item" target="_blank"
+                                       href="{{ path('interests_pages', {interest:webPage.name }) }}">
+                                        {{ webPage.name }}
+                                    </a>
+                                {% endfor %}
                             </div>
                         </li>
                     {% endif %}
-
-{#                    <!-- Nav Item #2 - Interests -->#}
-{#                    {% if app.user %}#}
-{#                        <li class="nav-item dropdown">#}
-{#                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
-{#                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-{#                                Interests2#}
-{#                            </a>#}
-{#                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">#}
-{#                                <a class="dropdown-item" target="_blank" href="{{ path('webdesign') }}">Web Design</a>#}
-{#                            </div>#}
-{#                        </li>#}
-{#                    {% endif %}#}
 
 
                     <!-- Nav Item #3 - Photos -->
@@ -83,9 +66,9 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('house_guests_index', {subset:'Active'}) }}">House
                                     Guest</a>
-                                <a class="dropdown-item" href="{{ path('whattobring') }}">What To Bring</a>
+                                <a class="dropdown-item" href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
                                 <hr>
-                                <a class="dropdown-item" href="{{ path('tourist_attraction_index') }}">Tourist
+                                <a class="dropdown-item" href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
                                     attractions</a>
                                 <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files</a>
                                 <hr>
@@ -139,8 +122,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 {% if is_granted('ROLE_IT') %}
-                                    <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending'}) }}">To
-                                        Do List</a>
+                                    <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending'}) }}">
+                                        To Do List</a>
                                 {% endif %}
 
                                 <hr>

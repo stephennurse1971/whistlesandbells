@@ -1,0 +1,16 @@
+<th class="desktop">Photo*</th>
+<th style="width: 190px">Name</th>
+<th class="desktop"><i class="fa fa-envelope"></i></th>
+<th class="desktop"><i class="fa fa-envelope"></i></th>
+<th><i class="fa fa-phone"></i></th>
+<th><i class="fa fa-mobile"></i></th>
+<th><i class="fa fa-link"></i></th>
+<th class="desktop"><i class="fa fa-city"></i>*</th>
+<th><i style="color: red" class="fa fa-map-marker"></i></th>
+<th><i style="color: blue" class="fa fa-info-circle"></i></th>
+<th class="desktop">Notes</th>
+<th class="desktop">VCF</th>
+{% if is_granted('ROLE_ADMIN') %}
+    <th class="desktop" style="color: red"></th>
+    <th class="desktop" style="color: red">Country</th>
+{% endif %}

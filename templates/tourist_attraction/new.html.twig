@@ -7,5 +7,6 @@
 
     {{ include('tourist_attraction/_form.html.twig') }}
 
-    <a class="btn btn-outline-info btn-sm" href="{{ path('tourist_attraction_index') }}">Return to list</a>
+    <a class="btn btn-outline-info btn-sm" href="{{ path('tourist_attraction_index', {type:'All'}) }}">Return to
+        list</a>
 {% endblock %}

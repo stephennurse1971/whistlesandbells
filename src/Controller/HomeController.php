@@ -7,6 +7,7 @@ use App\Entity\TaxInputs;
 use App\Entity\User;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
+use App\Repository\InterestsRepository;
 use App\Repository\IntroductionRepository;
 use App\Repository\RecruiterEmailsRepository;
 use App\Repository\StaticTextRepository;
@@ -15,6 +16,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -26,9 +28,7 @@ class HomeController extends AbstractController
      */
     public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-
         return $this->render('home/home.html.twig', [
-
             'Text1' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePage1'
             ]),
@@ -98,12 +98,8 @@ class HomeController extends AbstractController
             $manager->flush();
         }
         $manager->flush();
-       return $this->redirectToRoute('app_home');
-//        return $this->render('home/home.html.twig', [
-//            'controller_name' => 'HomeController',
-//        ]);
+        return $this->redirectToRoute('app_home');
     }
-
 
 
     /**
@@ -116,241 +112,42 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/test_page", name="test_page")
+     * @Route("/interests/{interest}", name="interests_pages", methods={"GET"})
      */
-    public function testPage(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function dynamicInterests(Request $request, string $interest, InterestsRepository $interestsRepository, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {
-        return $this->render('home/test.html.twig');
-    }
-
-
-    /**
-     * @Route("/aboutSN", name="aboutSN", methods={"GET"})
-     */
-    public function aboutSN(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/otherPages.twig', [
-
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'SN1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'SN2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'SN3'
-            ]),
-
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'SN1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'SN2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'SN3'
-            ]),
-
+        $interest = $interestsRepository->findOneBy([
+            'name' => $interest
         ]);
-    }
+        $CmsText1 = $interest->getCmsText1();
+        $CmsText2 = $interest->getCmsText2();
+        $CmsText3 = $interest->getCmsText3();
+        $CmsPhoto1 = $interest->getCmsPhoto1();
+        $CmsPhoto2 = $interest->getCmsPhoto2();
+        $CmsPhoto3 = $interest->getCmsPhoto3();
 
-    /**
-     * @Route("/PrivateEquity", name="private_equity", methods={"GET"})
-     */
-    public function privateEquity(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
         return $this->render('home/otherPages.twig', [
             'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'PrivateEquity1'
+                'name' => $CmsText1
             ]),
             'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'PrivateEquity2'
+                'name' => $CmsText2
             ]),
             'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'PrivateEquity3'
+                'name' => $CmsText3
             ]),
-
             'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'PrivateEquity1'
+                'name' => $CmsPhoto1
             ]),
             'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'PrivateEquity2'
+                'name' => $CmsPhoto2
             ]),
             'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'PrivateEquity3'
+                'name' => $CmsPhoto3
             ]),
         ]);
     }
 
-    /**
-     * @Route("/Webdesign", name="webdesign", methods={"GET"})
-     */
-    public function webDesign(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/otherPages.twig', [
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'WebDesign1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'WebDesign2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'WebDesign3'
-            ]),
-
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'WebDesign1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'WebDesign2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'WebDesign3'
-            ]),
-        ]);
-    }
-
-    /**
-     * @Route("/Tennis", name="tennis", methods={"GET"})
-     */
-    public function tennis(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/otherPages.twig', [
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'Tennis1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'Tennis2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'Tennis3'
-            ]),
-
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Tennis1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Tennis2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Tennis3'
-            ]),
-        ]);
-    }
-
-    /**
-     * @Route("/Flying", name="flying", methods={"GET"})
-     */
-    public function flying(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/otherPages.twig', [
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'Flying1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'Flying2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'Flying3'
-            ]),
-
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Flying1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Flying2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Flying3'
-            ]),
-        ]);
-    }
-
-
-    /**
-     * @Route("/XVAConsulting", name="XVAConsulting", methods={"GET"})
-     */
-    public function xvaconsulting(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/otherPages.twig', [
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'RiskCapitalConsulting1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'RiskCapitalConsulting2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'RiskCapitalConsulting3'
-            ]),
-
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'RiskCapitalConsulting1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'RiskCapitalConsulting2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'RiskCapitalConsulting3'
-            ]),
-        ]);
-    }
-
-    /**
-     * @Route("/Cyprus", name="cyprus", methods={"GET"})
-     */
-    public function cyprus(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/otherPages.twig', [
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'Cyprus1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'Cyprus2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'Cyprus3'
-            ]),
-
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Cyprus1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Cyprus2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Cyprus3'
-            ]),
-        ]);
-    }
-
-    /**
-     * @Route("/WhatToBring", name="whattobring", methods={"GET"})
-     */
-    public function whatToBring(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
-    {
-        return $this->render('home/otherPages.twig', [
-
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'ComingToCyprus1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'ComingToCyprus2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'ComingToCyprus3'
-            ]),
-
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => 'ComingToCyprus1'
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => 'ComingToCyprus2'
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => 'ComingToCyprus3'
-            ]),
-        ]);
-    }
 
     /**
      * @Route("/homeaddress", name="/homeaddress", methods={"GET"})
@@ -422,7 +219,6 @@ class HomeController extends AbstractController
                 'filepath' => $filepath,
             ]);
         }
-
         return $this->render('error/file_not_found.html.twig');
     }
 

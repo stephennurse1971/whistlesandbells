@@ -381,7 +381,7 @@ class UserController extends AbstractController
      */
     public function edit(string $fullName, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder, CmsCopyRepository $cmsCopyRepository): Response
     {
-        $referer = $request->server->get('HTTP_REFERER');
+       // $referer = $request->server->get('HTTP_REFERER');
 
         $cmsContact = $cmsCopyRepository->findOneBy([
             'name' => 'Introduction Email - Contact']);
@@ -440,11 +440,7 @@ class UserController extends AbstractController
                         ->html($html);
                     $mailer->send($email);
                 }
-                if ($logged_user_fullName != $fullName) {
-                    return $this->redirect($referer);
-                } else {
-                    $this->redirectToRoute('user_index');
-                }
+                return $this->redirect($referer);
             }
 
             return $this->render('user/edit.html.twig', [

@@ -1,5 +1,5 @@
 <style>
-    .ck-editor__editable{
+    .ck-editor__editable {
         height: 400px;
     }
 </style>
@@ -11,7 +11,14 @@
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
         {{ form_row(form.jobTitle) }}
-        {{ form_row(form.company) }}
+
+        {% if form.company is defined %}
+            {{ form_row(form.company) }}
+            {{ form_row(form.londoner) }}
+            {{ form_row(form.londonerMessage) }}
+        {% endif %}
+
+
         {{ form_row(form.birthday) }}
         {{ form_row(form.linkedIn) }}
     </div>
@@ -77,8 +84,10 @@
 <hr>
 
 <input type="hidden" name="referer" value="{{ app.request.headers.get('referer') }}">
-<button id="save" class="btn btn-primary btn-sm">{{ button_label|default('Save (no welcome email)') }}</button>
-<button id="sendEmail" class="btn-success btn-sm">Save & send welcome e-mail</button>
+<button id="save" class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{% if form.company is defined %}
+    <button id="sendEmail" class="btn-success btn-sm">Save & send welcome e-mail</button>
+{% endif %}
 {{ form_end(form) }}
 
 

@@ -5,7 +5,6 @@
 {% block body %}
     <h1 style="color: red">CMS: "Interests" WebPages</h1>
 
-    <a class="btn btn-success btn-sm" href="{{ path('interests_new') }}">New</a>
     <table class="table table-responsive">
         <thead>
         <tr>
@@ -21,7 +20,7 @@
             <th>Photo1</th>
             <th>Photo2</th>
             <th>Photo3</th>
-            <th>#</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -29,7 +28,11 @@
             <tr>
                 <td>{{ interest.menu }}</td>
                 <td>{{ interest.ranking }}</td>
-                <td>{{ interest.name }}</td>
+                <td>
+                    <a href="{{ path('interests_edit', {'id': interest.id}) }}">
+                        {{ interest.name }}
+                    </a>
+                </td>
                 <td style="text-align: center">
                     {% if interest.isActive == 1 %}
                         <i style="color: green" class="fa fa-check"></i>
@@ -52,12 +55,17 @@
                 <td>{{ interest.cmsPhoto2 }}</td>
                 <td>{{ interest.cmsPhoto3 }}</td>
                 <td>
-                    <a class="btn btn-outline-danger btn-sm" href="{{ path('interests_edit', {'id': interest.id}) }}">Edit</a>
+                    <form method="post" action="{{ path('interests_delete', {'id': interest.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ interest.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <a class="btn btn-success btn-sm" href="{{ path('interests_new') }}">New</a>
 
 {% endblock %}
 
@@ -65,8 +73,8 @@
     <script>
         $(document).ready(function () {
             $('.table').DataTable({
-                'pageLength': 100,
-                "ordering": [[0, 'asc'],[1, 'asc']],
+                'pageLength': 50,
+                "order": [[0, 'desc'],[1, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

@@ -2,17 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\CmsPhoto;
-use App\Entity\FileAttachments;
+
 use App\Entity\TouristAttraction;
 use App\Form\ImportType;
 use App\Form\TouristAttractionType;
+use App\Repository\AccommodationRepository;
 use App\Repository\LocationPinRepository;
 use App\Repository\TouristAttractionRepository;
-use App\Repository\UserRepository;
 use App\Services\TouristAttractionImportOutlookService;
-use App\Services\UserImportGrapevineService;
-use App\Services\UserImportOutlookService;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,28 +25,29 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class TouristAttractionController extends AbstractController
 {
     /**
-     * @Route("/", name="tourist_attraction_index", methods={"GET"})
+     * @Route("/index/{type}", name="tourist_attraction_index", methods={"GET"})
      */
-    public function index(TouristAttractionRepository $touristAttractionRepository): Response
+    public function index(Request $request, string $type, TouristAttractionRepository $touristAttractionRepository): Response
     {
-        $types = ['Beach', 'Historical interest', 'Hotel', 'Restaurant', 'Cafe',  'Admin Services', 'Sport', 'Cycling Stop', 'Shop', 'Taxi', 'TBD'];
+        if ($type == 'All') {
+            $tourist_attractions = $touristAttractionRepository->findAll();
+            $types = ['Beach', 'Historical interest', 'Hotel', 'Restaurant', 'Cafe', 'Sport Venue', 'Cycling Stop', 'Shop', 'Taxi', 'Admin Services', 'TBD'];
+        }
+
+        if ($type != 'All') {
+            $tourist_attractions = $touristAttractionRepository->findBy([
+                'type' => $type
+            ]);
+            $types = [ 'Beach', 'Historical interest', 'Hotel', 'Restaurant', 'Cafe', 'Sport Venue', 'Cycling Stop', 'Shop', 'Taxi', 'Admin Services', 'TBD'];
+        }
+
         return $this->render('tourist_attraction/index.html.twig', [
-            'tourist_attractions' => $touristAttractionRepository->findAll(),
+            'tourist_attractions' => $tourist_attractions,
+            'type' => $type,
             'types' => $types
         ]);
     }
 
-    /**
-     * @Route("/by/place", name="tourist_attraction_index_by_place", methods={"GET"})
-     */
-    public function indexByPlace(TouristAttractionRepository $touristAttractionRepository): Response
-    {
-        $types = ['Beach', 'Historical interest', 'Hotel', 'Restaurant', 'Cafe', 'Sport venue', 'Cycling Stop', 'Shop', 'TBD'];
-        return $this->render('tourist_attraction/indexByPlace.html.twig', [
-            'tourist_attractions' => $touristAttractionRepository->findAll(),
-            'types' => $types
-        ]);
-    }
 
     /**
      * @Route("/new", name="tourist_attraction_new", methods={"GET","POST"})
@@ -76,7 +74,7 @@ class TouristAttractionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($touristAttraction);
             $entityManager->flush();
-            return $this->redirectToRoute('tourist_attraction_index');
+            return $this->redirectToRoute('tourist_attraction_index', ['type'=>'All']);
         }
 
         return $this->render('tourist_attraction/new.html.twig', [
@@ -119,7 +117,7 @@ class TouristAttractionController extends AbstractController
             $touristAttraction->setFullName($firstName . ' ' . $lastName);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('tourist_attraction_index');
+            return $this->redirectToRoute('tourist_attraction_index', ['type'=>'All']);
         }
 
         return $this->render('tourist_attraction/edit.html.twig', [
@@ -165,10 +163,6 @@ class TouristAttractionController extends AbstractController
         $vcard = new VCard();
         $userFirstName = $touristattraction->getFirstName();
         $userLastName = $touristattraction->getLastName();
-//        $temp_country_field = '1';
-//        if ($touristattraction->getCountry()) {
-//            $temp_country_field = $touristattraction->getCountry();
-//        }
         $vcard->addName($userLastName, $userFirstName);
         $vcard->addEmail($touristattraction->getEmail())
             ->addEmail($touristattraction->getEmail2())
@@ -179,7 +173,7 @@ class TouristAttractionController extends AbstractController
                 null,
                 $touristattraction->getBusinessPostCode(),
                 $touristattraction->getCountry()->getCountry(),
-            'work')
+                'work')
             ->addPhoneNumber($touristattraction->getBusinessPhone(), 'work')
             ->addPhoneNumber($touristattraction->getMobile(), 'home')
             ->addURL($touristattraction->getWebPage())
@@ -250,4 +244,24 @@ class TouristAttractionController extends AbstractController
         $imagename = $touristAttraction->getPhoto();
         return $this->render('static_text/image_view.html.twig', ['imagename' => $imagename]);
     }
+
+
+    /**
+     * @Route("/save/location", name="tourist_attraction_save_location", methods={"POST"})
+     */
+    public function saveLocation(EntityManagerInterface $manager, TouristAttractionRepository $touristAttractionRepository): Response
+    {
+        if (isset($_POST['latitude'])) {
+            $latitude = $_POST['latitude'];
+            $longitude = $_POST['longitude'];
+            $gps = $latitude . "," . $longitude;
+            $id = $_POST['id'];
+            $accommodation = $touristAttractionRepository->find($id);
+            $accommodation->setGpsLocation($gps);
+            $manager->flush();
+        }
+        return new Response(null);
+    }
+
+
 }

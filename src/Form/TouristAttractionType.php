@@ -36,7 +36,9 @@ class TouristAttractionType extends AbstractType
                     'Cafe' => 'Cafe',
                     'Sport venue' => 'Sport venue',
                     'Cycling Stop' => 'Cycling Stop',
-                    'Shop' => 'Shop'
+                    'Shop' => 'Shop',
+                    'Taxi'=>'Taxi',
+                    'TBD'=>'TBD',
                 ],])
             ->add('businessPhone')
             ->add('webPage')

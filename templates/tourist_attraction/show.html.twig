@@ -5,7 +5,7 @@
 {% block body %}
     <h1 style="color: red">{{ tourist_attraction.fullName }}</h1>
 
-    <table class="table">
+    <table class="table table-responsive">
         <tbody>
         {% if tourist_attraction.photo is not empty %}
             <tr>
@@ -86,13 +86,15 @@
         <tr>
             <th>Address</th>
             <td>{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }}
-                {{ tourist_attraction.BusinessPostCode }}  <br>
+                {{ tourist_attraction.BusinessPostCode }} <br>
                 {% if tourist_attraction.gpsLocation is not empty %}
                     <a target="_blank"
                        href="{{ path('show_location_google_maps',{pin:tourist_attraction.gpsLocation}) }}">
                         <i class='fas fa-map-marker-alt text-danger'></i></a>
                 {% else %}
-{#                    <button class="btn btn-primary btn-sm" onclick="getLocation()">Get Current Co-ordinates</button>#}
+                    <button class="btn btn-primary btn-sm save-location" data-id="{{ tourist_attraction.id }}">
+                        <i class="fa fa-download"></i>
+                    </button>
                 {% endif %}
             </td>
         </tr>
@@ -100,7 +102,8 @@
         </tbody>
     </table>
 
-    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tourist_attraction_index') }}">Return to list</a>
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('tourist_attraction_index', {type:'All'}) }}">Return to
+        list</a>
 
     {% if is_granted('ROLE_ADMIN') %}
         <a class="btn btn-outline-danger btn-sm mt-2"

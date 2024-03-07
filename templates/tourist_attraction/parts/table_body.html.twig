@@ -1,0 +1,108 @@
+<td class="desktop">
+    {% if tourist_attraction.photo is not null %}
+        {% set loc = asset('administration/attachments/touristattractionphotos')~"/"~tourist_attraction.photo %}
+        <a class="btn btn-outline-danger btn-sm" target="_blank"
+           href="{{ path('touristattraction_view_photo', {'id': tourist_attraction.id}) }}">
+            <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+    {% endif %}
+</td>
+<td>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a target="_blank"
+           href="{{ path('tourist_attraction_edit', {'id': tourist_attraction.id}) }}">{{ tourist_attraction.fullName }}</a>
+    {% else %}
+        {{ tourist_attraction.fullName }}
+    {% endif %}
+</td>
+<td class="desktop">
+    {% if tourist_attraction.email is not empty %}
+        <a title="{{ tourist_attraction.email }}" href="mailto:{{ tourist_attraction.email }}">
+            <i style="color: green" class="fa fa-envelope"></i>
+        </a>
+    {% endif %}
+</td>
+<td class="desktop">
+    {% if tourist_attraction.email2 is not empty %}
+        <a title="{{ tourist_attraction.email2 }}" href="mailto:{{ tourist_attraction.email2 }}">
+            <i style="color: green" class="fa fa-envelope"></i>
+        </a>
+    {% endif %}
+</td>
+<td>
+    {% if tourist_attraction.businessPhone is not empty %}
+        <a title="{{ tourist_attraction.businessPhone }}"
+           href="tel:{{ tourist_attraction.businessPhone|replace({' ': ''}) }}"><i
+                    class="fas fa-phone mr-3"></i></a>
+    {% endif %}
+</td>
+<td>
+    {% if tourist_attraction.mobile is not empty %}
+        <a title=" {{ tourist_attraction.mobile }}" target="_blank"
+           href="https://wa.me/{{ tourist_attraction.mobile|replace({' ': ''}) }}">
+            <i class="fab fa-whatsapp mr-3" style="color:green; text-align: center"></i></a>
+    {% endif %}
+</td>
+<td style="text-align: center">
+    {% if tourist_attraction.webPage is not empty %}
+        {% if tourist_attraction.webPage starts with 'http' %}
+            {% set web = tourist_attraction.webPage %}
+        {% else %}
+            {% set web = 'https://'~tourist_attraction.webPage %}
+        {% endif %}
+        <a target="_blank" title="{{ tourist_attraction.webPage }}" href="{{ web }}">
+            <i class="fa fa-globe"></i>
+        </a>
+    {% endif %}
+</td>
+<td class="desktop" style="text-align: center">
+    {% if tourist_attraction.businessStreet is not empty %}
+        <i class="fa fa-home"
+           title="{{ tourist_attraction.businessStreet }}, {{ tourist_attraction.BusinessCity }}, {{ tourist_attraction.BusinessPostCode }}"></i>
+    {% endif %}
+</td>
+<td style="text-align: center">
+    {% if tourist_attraction.gpsLocation is not empty %}
+        <a target="_blank"
+           href="{{ path('show_location_google_maps',{pin:tourist_attraction.gpsLocation}) }}">
+            <i class='fas fa-map-marker-alt text-danger'></i></a>
+    {% else %}
+        <button class="btn btn-primary btn-sm save-location" data-id="{{ tourist_attraction.id }}">
+            <i class="fa fa-download"></i>
+        </button>
+    {% endif %}
+</td>
+
+<td>
+    <a target="_blank"
+       href="{{ path('tourist_attraction_show',{id:tourist_attraction.id}) }}">
+        <i style="color: blue" class='fas fa-info-circle'></i></a>
+</td>
+
+<td class="desktop" style="text-align: center">
+    {% if tourist_attraction.notes is not empty %}
+        <i style="color: blue" title="{{ tourist_attraction.notes }}"
+           class="fa fa-info-circle"></i>
+    {% endif %}
+</td>
+<td class="desktop" style="text-align: center">
+    <a class="btn btn-outline-info btn-sm"
+       href="{{ path('create_vcard_user_ta',{'touristattractionid': tourist_attraction.id}) }}"><i
+                style="font-size: 15px; color: blue" class="fas fa-credit-card"></i></a>
+</td>
+{% if is_granted('ROLE_ADMIN') %}
+    <td class="desktop" style="color: red ;text-align: center">
+        <form method="post"
+              action="{{ path('tourist_attraction_delete', {'id': tourist_attraction.id}) }}">
+            <input type="hidden" name="_token"
+                   value="{{ csrf_token('delete' ~ tourist_attraction.id) }}">
+            <button class="btn btn-danger btn-sm">
+                <i style="font-size: 15px" class="fas fa-trash "></i>
+            </button>
+        </form>
+    </td>
+    <td style="text-align: right" class="desktop">
+        {% if tourist_attraction.country is not null %}
+            {{ tourist_attraction.country.country }}
+        {% endif %}
+    </td>
+{% endif %}

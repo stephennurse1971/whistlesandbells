@@ -38,9 +38,6 @@ class UserType extends AbstractType
             ->add('linkedIn', TextType::class, [
                 'required' => false
             ])
-            ->add('company', TextType::class, [
-                'required' => false
-            ])
             ->add('businessStreet', TextType::class, [
                 'required' => false
             ])
@@ -103,11 +100,23 @@ class UserType extends AbstractType
             ->add('sendEmail', HiddenType::class, [
                 'mapped' => false,
                 'required' => false
-            ])
-            ->add('londoner')
-            ->add('londonerMessage');
+            ]);
         $logged_user_roles = $this->security->getUser()->getRoles();
         $user_roles = $options['user']->getRoles();
+        if(in_array('ROLE_ADMIN', $user_roles)){
+            $builder
+                ->add('company', TextType::class, [
+                    'required' => false
+                ])
+                ->add('londoner', TextType::class, [
+                    'required' => false
+                ])
+                ->add('londonerMessage', TextType::class, [
+                    'required' => false
+                ]);
+        }
+
+
         if (in_array('ROLE_RECRUITER', $user_roles)) {
             $builder
                 ->add('recruiterHighPriority')
