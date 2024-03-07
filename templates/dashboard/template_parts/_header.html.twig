@@ -30,7 +30,6 @@
                     {% endif %}
 
                     <!-- Nav Item #2 - Interests -->
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,6 +42,9 @@
                                     <a class="dropdown-item" target="_blank"
                                        href="{{ path('interests_pages', {interest:webPage.name }) }}">
                                         {{ webPage.name }}
+                                        {% if webPage.isPublic == 0 and is_granted('ROLE_ADMIN') %}
+                                            <span style="color: red">*</span>
+                                        {% endif %}
                                     </a>
                                 {% endfor %}
                             </div>
@@ -79,23 +81,25 @@
                                     Guest</a>
                                 <a class="dropdown-item"
                                    href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
-                                    attractions</a>
-                                <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files</a>
-                                <hr>
-                                <a class="dropdown-item" href="{{ path('wine_list_index') }}">Wine List</a>
+
+
+                                    <hr>
+                                    <a class="dropdown-item"
+                                       href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
+                                        attractions</a>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files
+                                        <span style="color: red">*</span></a>
+                                    <hr>
+                                    <a class="dropdown-item" href="{{ path('wine_list_index') }}">Wine List
+                                        <span style="color: red">*</span></a>
+                                {% endif %}
                             </div>
                         </li>
                     {% endif %}
 
 
-                    <!-- Nav Item #5 - CV -->
-                    <li class="nav-item dropdown">
-                        <a href="{{ path('curriculum_vitae' ) }}">CV</a>
-                    </li>
-
-                    <!-- Nav Item #6 - Contact -->
+                    <!-- Nav Item #5 - Contact -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -122,14 +126,19 @@
                             {% endif %}
                             <a class="dropdown-item" title="Contact details"
                                href="{{ path('create_vcard_SN') }}">
-                               <i class="fa fa-credit-card"></i> Business Card
+                                <i class="fa fa-credit-card"></i> Business Card
                             </a>
 
                         </div>
                     </li>
 
+                    <!-- Nav Item #6 - CV -->
+                    <li class="nav-item dropdown">
+                        <a href="{{ path('curriculum_vitae' ) }}">CV</a>
+                    </li>
 
-                    <!-- Nav Item #8 - SN Admin -->
+
+                    <!-- Nav Item #7 - SN Admin -->
                     {% if is_granted('ROLE_IT') %}
                         <li class="nav-item dropdown">
                             <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
@@ -142,7 +151,6 @@
                                     <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending'}) }}">
                                         To Do List</a>
                                 {% endif %}
-
                                 <hr>
                                 <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful
                                     links</a>
@@ -155,7 +163,7 @@
                     {% endif %}
 
 
-                    <!-- Nav Item #9 - Investments -->
+                    <!-- Nav Item #8 - Investments -->
                     {% if is_granted('ROLE_ACCOUNTANT') %}
                         <li class="nav-item dropdown">
                             <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
@@ -176,7 +184,7 @@
                         </li>
                     {% endif %}
 
-                    <!-- Nav Item #10 - Tax -->
+                    <!-- Nav Item #9 - Tax -->
                     {% if is_granted('ROLE_ACCOUNTANT') %}
                         <li class="nav-item dropdown">
                             <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
@@ -198,9 +206,7 @@
                     {% endif %}
 
 
-
-
-
+                    <!-- Nav Item #10 - Login -->
                     {% if app.user %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
