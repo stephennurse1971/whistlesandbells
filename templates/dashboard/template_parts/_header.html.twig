@@ -63,11 +63,12 @@
 
 
                     <!-- Nav Item #3 - Photos -->
-                    {% if is_granted('ROLE_GUEST') or is_granted('ROLE_FAMILY') %}
+                    {% if is_granted('ROLE_FAMILY') %}
                         <li class="nav-item dropdown">
                             <a class="dropdown-item" href="{{ path('photos_index') }}">Photos</a>
                         </li>
                     {% endif %}
+
 
                     <!-- Nav Item #4 - Come Visit -->
                     {% if is_granted('ROLE_GUEST') %}
@@ -81,8 +82,6 @@
                                     Guest</a>
                                 <a class="dropdown-item"
                                    href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
-
-
                                     <hr>
                                     <a class="dropdown-item"
                                        href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
