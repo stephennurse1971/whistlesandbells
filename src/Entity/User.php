@@ -87,10 +87,7 @@ class User implements UserInterface
      */
     private $houseGuests;
 
-//    /**
-//     * @ORM\ManyToMany(targetEntity=Photos::class, mappedBy="person")
-//     */
-//    private $photos;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

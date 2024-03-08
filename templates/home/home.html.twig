@@ -8,7 +8,7 @@
                         {% if photo.photo is not null %}
                             {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
                             {% if photo.link is not null or photo.heading is not null %}
-                                <a title="{{ photo.heading }}" target="_blank" href="{{ photo.link }}">
+                                <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
                                     <img class="homepage-image" src="{{ loc }}">
                                 </a>
                             {% else %}

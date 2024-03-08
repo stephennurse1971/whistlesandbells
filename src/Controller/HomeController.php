@@ -62,7 +62,7 @@ class HomeController extends AbstractController
                 'name' => 'HomePageHyperlink'
             ]),
             'photos' => $cmsPhotoRepository->findBy([
-                'sitePage' => 'HomePage'
+                'name' => 'HomePage'
             ])
         ]);
     }
@@ -112,7 +112,7 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/interests/{interest}", name="interests_pages", methods={"GET"})
+     * @Route("/interest/{interest}", name="interests_pages", methods={"GET"})
      */
     public function dynamicInterests(Request $request, string $interest, InterestsRepository $interestsRepository, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {

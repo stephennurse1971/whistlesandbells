@@ -18,20 +18,7 @@ class CmsCopyType extends AbstractType
         $builder
             ->add('name')
             ->add('pageTitle')
-            ->add('sitePage', ChoiceType::class, [
-                'multiple' => false,
-                'expanded' => true,
-                'choices' => [
-                    'Emails'=>'Emails',
-                    'HomePage' => 'HomePage',
-                    'AboutSN' => 'AboutSN',
-                    'Risk & Capital Consulting' => 'Risk & Capital Consulting',
-                    'PrivateEquity' => 'PrivateEquity',
-                    'WebDesign' => 'WebDesign',
-                    'Flying' => 'Flying',
-                    'Tennis' => 'Tennis',
-                    'Cyprus' => 'Cyprus'
-                ],])
+
             ->add('contentTitle', TextType::class, [
                 'required' => false,
                 'label' => 'Title (English)'

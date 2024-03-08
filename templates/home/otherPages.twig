@@ -65,9 +65,9 @@
                                     {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo1.photo %}
                                     {% if Photo1.link is not null %}
                                         <a target="_blank" href="{{ Photo1.link }}">
-                                            <img class="other-page-image" src="{{ loc }}"></a>
+                                            <img title="{{ Photo1.title }}" class="other-page-image" src="{{ loc }}"></a>
                                     {% else %}
-                                        <img class="other-page-image" src="{{ loc }}"></a>
+                                        <img title="{{ Photo1.title }}" class="other-page-image" src="{{ loc }}"></a>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
@@ -123,9 +123,9 @@
                                     {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo2.photo %}
                                     {% if Photo2.link is not null %}
                                         <a target="_blank" href="{{ Photo2.link }}">
-                                            <img class="other-page-image" src="{{ loc }}"></a>
+                                            <img title="{{ Photo2.title }}" class="other-page-image" src="{{ loc }}"></a>
                                     {% else %}
-                                        <img class="other-page-image" src="{{ loc }}"></a>
+                                        <img title="{{ Photo2.title }}" class="other-page-image" src="{{ loc }}"></a>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
@@ -183,9 +183,9 @@
                                     {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo3.photo %}
                                     {% if Photo2.link is not null %}
                                         <a target="_blank" href="{{ Photo3.link }}">
-                                            <img class="other-page-image" src="{{ loc }}"></a>
+                                            <img title="{{ Photo3.title }}" class="other-page-image" src="{{ loc }}"></a>
                                     {% else %}
-                                        <img class="other-page-image" src="{{ loc }}"></a>
+                                        <img title="{{ Photo3.title }}" class="other-page-image" src="{{ loc }}"></a>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}

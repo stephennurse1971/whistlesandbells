@@ -16,20 +16,6 @@ class CmsPhotoType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('sitePage', ChoiceType::class, [
-                'multiple' => false,
-                'expanded' => true,
-                'choices' => [
-                    'HomePage' => 'HomePage',
-                    'AboutSN' => 'AboutSN',
-                    'Risk & Capital Consulting' => 'Risk & Capital Consulting',
-                    'PrivateEquity' => 'PrivateEquity',
-                    'WebDesign' => 'WebDesign',
-                    'Flying' => 'Flying',
-                    'Tennis' => 'Tennis',
-                    'Cyprus' => 'Cyprus',
-                ],])
-            ->add('heading')
             ->add('photoOrVideo', ChoiceType::class, [
                 'multiple' => false,
                 'expanded' => true,
@@ -48,14 +34,7 @@ class CmsPhotoType extends AbstractType
                 'required' => false,
                 'label' => 'Title (English)'
             ])
-            ->add('titleFR', TextType::class, [
-                'required' => false,
-                'label' => 'Title (French)'
-            ])
-            ->add('titleDE', TextType::class, [
-                'required' => false,
-                'label' => 'Title (German)'
-            ])
+
             ->add('link');
     }
 

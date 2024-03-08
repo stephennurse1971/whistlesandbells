@@ -57,10 +57,7 @@ class CmsCopy
      */
     private $contentTitleDE;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $sitePage;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -168,17 +165,7 @@ class CmsCopy
         return $this;
     }
 
-    public function getSitePage(): ?string
-    {
-        return $this->sitePage;
-    }
 
-    public function setSitePage(?string $sitePage): self
-    {
-        $this->sitePage = $sitePage;
-
-        return $this;
-    }
 
     public function getPageTitle(): ?string
     {
