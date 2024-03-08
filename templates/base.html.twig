@@ -104,13 +104,16 @@
         #popup-form-mail {
             display: none;
         }
+        html,body{
+            height:100%
+        }
     </style>
 
 </head>
 <body>
 {% include ('dashboard/template_parts/_header.html.twig') %}
 
-<div class="container-fluid" style="margin-top:90px;margin-bottom: 320px;">
+<div class="container-fluid" style="margin-top:90px;">
     <div class="row m-auto">
         <div class="col-12 mt-2">
             {% block body %}
