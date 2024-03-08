@@ -3,7 +3,7 @@
 {% block title %} CMS Photo: {{ cms_photo.name }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: CMS Photo</h1>
+    <h1 style="color: red">Edit: {{ cms_photo.name }}</h1>
 
     {{ include('cms_photo/_form.html.twig', {'button_label': 'Update'}) }}
 
