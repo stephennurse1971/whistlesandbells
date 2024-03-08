@@ -103,17 +103,27 @@ class UserType extends AbstractType
             ]);
         $logged_user_roles = $this->security->getUser()->getRoles();
         $user_roles = $options['user']->getRoles();
-        if(in_array('ROLE_ADMIN', $user_roles)){
+        if (in_array('ROLE_ADMIN', $user_roles)) {
             $builder
-                ->add('company', TextType::class, [
+                ->add('company', ChoiceType::class, [
                     'required' => false
                 ])
-                ->add('londoner', TextType::class, [
-                    'required' => false
-                ])
-                ->add('londonerMessage', TextType::class, [
-                    'required' => false
-                ]);
+                ->add('londoner', ChoiceType::class, [
+                    'multiple' => false,
+                    'required' => false,
+                    'expanded' => false,
+                    'choices' => [
+                        'Yes' => 1,
+                        'No' => 0,
+                    ],])
+                ->add('londonerMessage', ChoiceType::class, [
+                    'multiple' => false,
+                    'required' => false,
+                    'expanded' => false,
+                    'choices' => [
+                        'Yes' => 1,
+                        'No' => 0,
+                    ],]);
         }
 
 
