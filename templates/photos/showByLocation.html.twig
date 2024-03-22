@@ -37,27 +37,29 @@
                 <div class=" p-1 mb-1 ">
                     {% if photo.rotate==1 %}
                         <div class="image-container">
-                            <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}"><img src="{{ image }}" class=" rotate-90">
+                            <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}"><img
+                                        src="{{ image }}" class="photosByLocation rotate-90">
                             </a>
                         </div>
                         <div class="text-center py-2">
-                            {% if is_granted ('ROLE_ADMIN') %}
+                            {% if is_granted ('ROLE_ADMIN') or app.user == photo.uploadedBy %}
                                 <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"><i
                                             class="fa fa-rotate-left"></i></a>
-                                {% include 'photos/parts/rotate_and_like_buttons.html.twig' %}
                             {% endif %}
+                            {% include 'photos/parts/rotate_and_like_buttons.html.twig' %}
                         </div>
                     {% else %}
                         <div class="image-container">
-                            <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}"> <img src="{{ image }}">
+                            <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}"> <img
+                                        class="photosByLocation" src="{{ image }}">
                             </a>
                         </div>
                         <div class="text-center py-1">
-                            {% if is_granted ('ROLE_ADMIN') %}
+                            {% if is_granted ('ROLE_ADMIN') or app.user == photo.uploadedBy %}
                                 <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"><i
                                             class="fa fa-rotate-right"></i></a>
-                                {% include 'photos/parts/rotate_and_like_buttons.html.twig' %}
                             {% endif %}
+                            {% include 'photos/parts/rotate_and_like_buttons.html.twig' %}
                         </div>
                     {% endif %}
                 </div>

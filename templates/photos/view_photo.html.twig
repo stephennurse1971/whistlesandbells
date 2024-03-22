@@ -11,12 +11,11 @@
 
     <div class="row ">
         <div class="col-12 m-auto">
-
             <div class="image-container">
-                {% if photo.rotate==1 %}
-                    <img src="{{ image }}" class=" rotate-90">
+                {% if photo.rotate %}
+                    <img class="photosOnePage rotate-90" src="{{ image }}" >
                 {% else %}
-                    <img src="{{ image }}">
+                    <img class="photosOnePage" src="{{ image }}">
                 {% endif %}
             </div>
         </div>

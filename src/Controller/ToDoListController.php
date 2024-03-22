@@ -37,6 +37,9 @@ class ToDoListController extends AbstractController
             ]);
             $project_title=$project;
         }
+        usort($projects, function ($first, $second) {
+            return strcmp($first->getProject(), $second->getProject());
+        });
         return $this->render('to_do_list/index.html.twig', [
             'status' => $status,
             'project_title' => $project_title,

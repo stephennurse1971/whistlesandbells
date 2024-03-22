@@ -39,20 +39,6 @@ class Photos
      */
     private $uploadedBy;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $priority;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $date;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class)
@@ -116,45 +102,6 @@ class Photos
     public function setUploadedBy(?User $uploadedBy): self
     {
         $this->uploadedBy = $uploadedBy;
-
-        return $this;
-    }
-
-
-
-
-    public function getEmail(): ?bool
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?bool $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getPriority(): ?bool
-    {
-        return $this->priority;
-    }
-
-    public function setPriority(?bool $priority): self
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(?\DateTimeInterface $date): self
-    {
-        $this->date = $date;
 
         return $this;
     }

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class PhotosType extends AbstractType
 {
@@ -30,26 +31,30 @@ class PhotosType extends AbstractType
                 'multiple' => true,
                 'mapped' => false
             ])
-            ->add('uploadedBy', EntityType::class, [
-                'class' => User::class,
-                'required' => false,
-                'choice_label'=>'fullName'
-            ])
-            ->add('priority')
-            ->add('date',DateType::class, [
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker datetime'
-                ],
-            ])
-            ->add('email')
+
             ->add('favourites', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'fullName',
                 'required' => false,
                 'empty_data' => null,
+                'multiple'=>true
             ])
         ;
+        if($options['mode']=='new'){
+            $builder->add('uploadedBy', EntityType::class, [
+                'class' => User::class,
+                'required' => false,
+                'choice_label'=>'fullName',
+                'data'=>$this->security->getUser()
+            ]);
+        }
+        else{
+            $builder->add('uploadedBy', EntityType::class, [
+                'class' => User::class,
+                'required' => false,
+                'choice_label'=>'fullName',
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -57,7 +62,11 @@ class PhotosType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Photos::class,
             'location' => null,
+             'mode'=>null
           //  'allow_extra_fields' => true,
         ]);
+    }
+    public function __construct(Security $security){
+        $this->security = $security;
     }
 }

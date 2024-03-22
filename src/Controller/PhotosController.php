@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Photos;
+use App\Entity\User;
 use App\Form\PhotosType;
+use App\Repository\FileAttachmentsRepository;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\PhotosRepository;
 use App\Repository\UserRepository;
@@ -12,8 +14,12 @@ use App\Services\PhotoAuthorsByLocation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\Response\CurlResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Security;
@@ -48,7 +54,7 @@ class PhotosController extends AbstractController
     /**
      * @Route("/location/{location}/{author}/{format}", name="show_photos_by_location")
      */
-    public function showPhotosByLocation(Security $security,Request $request, string $author, string $format, string $location, PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository, UserRepository $userRepository, PhotoLocationsRepository $photoLocationsRepository, PhotoAuthorsByLocation $authorsByLocation)
+    public function showPhotosByLocation(Security $security, Request $request, string $author, string $format, string $location, PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository, UserRepository $userRepository, PhotoLocationsRepository $photoLocationsRepository, PhotoAuthorsByLocation $authorsByLocation)
     {
         $locationID = $photoLocationsRepository->findOneBy([
             'location' => $location
@@ -76,15 +82,14 @@ class PhotosController extends AbstractController
         }
         $favourite_photos = [];
         $unfavourite_photos = [];
-        foreach($photos as $photo){
-            if(in_array($security->getUser(),$photo->getFavourites()->toArray())){
+        foreach ($photos as $photo) {
+            if (in_array($security->getUser(), $photo->getFavourites()->toArray())) {
                 $favourite_photos[] = $photo;
-            }
-            else{
-                $unfavourite_photos[]=$photo;
+            } else {
+                $unfavourite_photos[] = $photo;
             }
         }
-        $photos = array_merge($favourite_photos,$unfavourite_photos);
+        $photos = array_merge($favourite_photos, $unfavourite_photos);
 
         return $this->render('photos/showByLocation.html.twig', [
             'photos' => $photos,
@@ -93,7 +98,7 @@ class PhotosController extends AbstractController
             'format' => $format,
             'authors' => $authors,
             'all_or_by_author' => $all_or_by_author,
-            'specified_author'=>$author
+            'specified_author' => $author
         ]);
     }
 
@@ -123,7 +128,7 @@ class PhotosController extends AbstractController
         $logged_user = $this->getUser();
         $now = new \DateTime('now');
         $photo = new Photos();
-        $form = $this->createForm(PhotosType::class, $photo, ['location' => $locationsRepository->findOneBy(['location' => $location])]);
+        $form = $this->createForm(PhotosType::class, $photo, ['location' => $locationsRepository->findOneBy(['location' => $location]), 'mode' => 'new']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $photos = $form->get('photos')->getData();
@@ -139,9 +144,6 @@ class PhotosController extends AbstractController
                     $photo_single->setLocation($photo->getLocation());
                     $photo_single->setPhotoFile($newFilename);
                     $photo_single->setUploadedBy($logged_user);
-                    $photo_single->setDate($now);
-                    $photo_single->setEmail(0);
-                    $photo_single->setPriority(1);
                     $photo_single->setRotate(0);
                     $manager->persist($photo_single);
                     $manager->flush();
@@ -287,7 +289,7 @@ class PhotosController extends AbstractController
         $referer = $request->headers->get('referer');
         $photo = $photosRepository->find($photo);
         $user = $userRepository->find($user);
-        if ($favoured=='favourite') {
+        if ($favoured == 'favourite') {
             $photo->addFavourite($userRepository->find($user));
         } else {
             $photo->removeFavourite($userRepository->find($user));
@@ -302,10 +304,86 @@ class PhotosController extends AbstractController
      */
     public function viewPhoto(Request $request, $photoId, PhotosRepository $photosRepository)
     {
-        $photo=$photosRepository->find($photoId);
+        $photo = $photosRepository->find($photoId);
         return $this->render('photos/view_photo.html.twig', ['photo' => $photo]);
     }
 
+    /**
+     * @Route("/{photoId}/email_photo", name="email_photo")
+     */
+    public function emailPhoto(Request $request, Security $security, string $photoId, UserRepository $userRepository, PhotosRepository $photosRepository, MailerInterface $mailer)
+    {
+        $referer = $request->headers->get('referer');
+        $photo = $photosRepository->find($photoId);
+        $senderEmail = 'nurse_stephen@hotmail.com';
+        $recipient = $userRepository->findOneBy([
+            'email' => $security->getUser()->getEmail()]);
+        $subject = 'Photo: ' . $photo->getLocation()->getLocation();
+        $html = $this->renderView('emails/photo_email.html.twig', [
+            'description' => $photo->getLocation()->getLocation(),
+        ]);
+        $photo_file_name = $photo->getPhotoFile();
+        $attachments = [];
+        $attachments[] = $photo_file_name;
+        $email = (new Email())
+            ->to($recipient->getEmail())
+            ->subject($subject)
+            ->from($senderEmail)
+            ->html($html);
+        if ($attachments) {
+            foreach ($attachments as $attachment) {
+                $attachment_path = $this->getParameter('photos_upload_default_directory') . $attachment;
+                $email->attachFromPath($attachment_path);
+            }
+        }
+        $mailer->send($email);
+        return $this->redirect($referer);
+    }
 
 
+    /**
+     * @Route("/{photoId}/download/photo", name="download_photo")
+     */
+    public function downloadPhoto(Request $request, string $photoId, PhotosRepository $photosRepository)
+    {
+        $referer = $request->headers->get('referer');
+        $photo = $photosRepository->find($photoId);
+        $file = $this->getParameter('photos_upload_default_directory') . $photo->getPhotoFile();
+        $response = new BinaryFileResponse($file);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+        return $response;
+    }
+
+    /**
+     * @Route("/download/all_photos/{author}/{location}", name="download_all_photo_all_by_author_and_location")
+     */
+    public function downloadAllPhotoByAuthorAndLocation(Request $request, string $author, string $location, PhotosRepository $photosRepository, UserRepository $userRepository, PhotoLocationsRepository $photoLocationsRepository)
+    {
+        $referer = $request->headers->get('referer');
+        $author = $userRepository->findOneBy([
+            'fullName' => $author
+            ]);
+        $photos = [];
+        $photos = $photosRepository->findBy([
+            'uploadedBy' => $author,
+            'location' => $photoLocationsRepository->findOneBy([
+                'location' => $location
+            ]),
+        ]);
+
+
+        $zipname = 'file.zip';
+        $zip = new \ZipArchive();
+        $zip->open($zipname, \ZipArchive::CREATE);
+        foreach ($photos as $photo) {
+            $file = $this->getParameter('photos_upload_default_directory') . $photo->getPhotoFile();
+            $zip->addFromString(basename($file),  file_get_contents($file));
+        }
+        $zip->close();
+        header('Content-Type: application/zip');
+        header('Content-disposition: attachment; filename='.$zipname);
+        header('Content-Length: ' . filesize($zipname));
+        readfile($zipname);
+
+    }
 }

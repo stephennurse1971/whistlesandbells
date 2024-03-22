@@ -28,3 +28,17 @@
     height: 550px;
     width: 500px;
 }
+.image-container{
+    height: 300px;
+    width: 300px;
+}
+.photosByLocation{
+    height: 300px;
+    width: 300px;
+    object-fit:cover;
+}
+.photosOnePage{
+    height: 800px;
+    width: 900px;
+    object-fit:cover;
+}
