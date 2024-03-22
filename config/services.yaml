@@ -14,7 +14,7 @@ parameters:
     investments_future_comms_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments/InvestmentsFutureComms'
     garmin_attachments_directory: '%kernel.project_dir%/public/administration/attachments/GarminGPXFiles'
     jpm_ic_history_directory: '%kernel.project_dir%/public/administration/attachments/JPMICHistory'
-    photos_upload_default_directory: '%kernel.project_dir%/public/photos/'
+    photos_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/photos/'
     winelist_directory: '%kernel.project_dir%/public/administration/img/winelist'
     tax_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments'
     tax_supporting_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments/TaxSupportingDocuments'

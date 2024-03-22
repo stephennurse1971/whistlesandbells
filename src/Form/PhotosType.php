@@ -43,6 +43,12 @@ class PhotosType extends AbstractType
                 ],
             ])
             ->add('email')
+            ->add('favourites', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'fullName',
+                'required' => false,
+                'empty_data' => null,
+            ])
         ;
     }
 

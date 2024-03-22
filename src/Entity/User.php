@@ -522,14 +522,14 @@ class User implements UserInterface
     }
 
 //    /**
-//     * @return Collection|Photos[]
+//     * @return Collection|photos[]
 //     */
 //    public function getPhotos(): Collection
 //    {
 //        return $this->photos;
 //    }
 //
-//    public function addPhoto(Photos $photo): self
+//    public function addPhoto(photos $photo): self
 //    {
 //        if (!$this->photos->contains($photo)) {
 //            $this->photos[] = $photo;
@@ -539,7 +539,7 @@ class User implements UserInterface
 //        return $this;
 //    }
 //
-//    public function removePhoto(Photos $photo): self
+//    public function removePhoto(photos $photo): self
 //    {
 //        if ($this->photos->removeElement($photo)) {
 //            $photo->removePerson($this);

@@ -68,7 +68,7 @@ class ToDoListItemsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $toDoListItemsRepository->add($toDoListItem);
-            return $this->redirectToRoute('to_do_list_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('to_do_list_index', ['project'=>'All', 'status'=>'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('to_do_list_items/edit.html.twig', [

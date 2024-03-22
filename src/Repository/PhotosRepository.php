@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\PhotoLocations;
 use App\Entity\Photos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,7 +21,7 @@ class PhotosRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Photos[] Returns an array of Photos objects
+    //  * @return photos[] Returns an array of photos objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +38,7 @@ class PhotosRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Photos
+    public function findOneBySomeField($value): ?photos
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')
@@ -47,4 +48,13 @@ class PhotosRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByLocation(PhotoLocations $photoLocations)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.location = :val')
+            ->setParameter('val', $photoLocations)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

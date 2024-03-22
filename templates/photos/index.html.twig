@@ -38,7 +38,7 @@
 {#                                    {{ location.location }}#}
                                     {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
                                         <a title="Private" class="btn btn-outline-danger btn-sm" target="_blank"
-                                           href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
+                                           href="{{ path('show_photos_by_location', { location: location.location, author: 'All', format: 'Full' }) }}">{{ location.location }}</a>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
@@ -63,7 +63,7 @@
                             {% if location.publicPrivate =="Public" %}
 {#                                {{ location.location }}#}
                                 <a title="Public" class="btn btn-outline-success btn-sm" target="_blank"
-                                   href="{{ path('show_photos_by_location', { 'locationName':location.location}) }}">{{ location.location }}</a>
+                                   href="{{ path('show_photos_by_location', { location: location.location, author: 'All', format: 'All'}) }}">{{ location.location }}</a>
                             {% endif %}
                         </td>
 

@@ -7,6 +7,7 @@ twig:
         FXRatesOnAsOfDate: '@App\Services\FXRatesOnAsOfDate'
         Investment: '@App\Services\Investment'
         MarketDataPrice: '@App\Services\MarketDataPrice'
+        PhotoAuthorsByLocation: '@App\Services\PhotoAuthorsByLocation'
         StaticText: '@App\Services\StaticText'
         TaxYear: '@App\Services\TaxYear'
         TaxYearCalcs: '@App\Services\TaxYearCalcs'

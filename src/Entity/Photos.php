@@ -54,10 +54,17 @@ class Photos
      */
     private $date;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     */
+    private $favourites;
+
+
 
         public function __construct()
     {
       //  $this->person = new ArrayCollection();
+      $this->favourites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,6 +158,32 @@ class Photos
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFavourites(): Collection
+    {
+        return $this->favourites;
+    }
+
+    public function addFavourite(User $favourite): self
+    {
+        if (!$this->favourites->contains($favourite)) {
+            $this->favourites[] = $favourite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavourite(User $favourite): self
+    {
+        $this->favourites->removeElement($favourite);
+
+        return $this;
+    }
+
+
 
 
 

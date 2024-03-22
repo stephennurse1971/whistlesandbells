@@ -17,20 +17,8 @@
         }
     </style>
 
+    {% include 'photos/parts/buttons.html.twig' %}
 
-    {% if app.user %}
-        {% if is_granted('ROLE_ADMIN') or app.user.id in location.enabledUsers %}
-            <a class="btn btn-success btn-sm mt-2" href="{{ path('photos_new', {location:location.location }) }}">Add
-                photos</a>
-        {% endif %}
-    {% endif %}
-
-    <a class="btn btn-primary btn-sm mt-2" href="{{ path('photos_index') }}">Back to List</a>
-
-    {% if is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-danger btn-sm mt-2"
-           href="{{ path('photos_delete_all_by_location', {location:location.location }) }}">Delete All</a>
-    {% endif %}
 
     <div>
         <h1 style="color: red">{{ location.location }}</h1>
@@ -45,40 +33,31 @@
 
         <div class="row my-2 border p-2 bg-white">
             {% for photo in photos %}
-                {% set loc = asset('photos')~"/"~photo.photoFile %}
+                {% set image = asset('administration/attachments/photos/')~photo.photoFile %}
                 <div class=" p-1 mb-1 ">
                     {% if photo.rotate==1 %}
                         <div class="image-container">
-                            <img src="{{ loc }}" class=" rotate-90">
+                            <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}"><img src="{{ image }}" class=" rotate-90">
+                            </a>
                         </div>
                         <div class="text-center py-2">
                             {% if is_granted ('ROLE_ADMIN') %}
-                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">
-                                    <i class="fa fa-rotate-left"></i></a>
-                                <form class="d-inline" method="post"
-                                      action="{{ path('photos_delete', {'id': photo.id}) }}">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </form>
+                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"><i
+                                            class="fa fa-rotate-left"></i></a>
+                                {% include 'photos/parts/rotate_and_like_buttons.html.twig' %}
                             {% endif %}
                         </div>
                     {% else %}
                         <div class="image-container">
-                            <img src="{{ loc }}">
+                            <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}"> <img src="{{ image }}">
+                            </a>
                         </div>
                         <div class="text-center py-1">
-
                             {% if is_granted ('ROLE_ADMIN') %}
-                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">
-                                    <i class="fa fa-rotate-right"></i></a>
-                                <form class="d-inline" method="post"
-                                      action="{{ path('photos_delete', {'id': photo.id}) }}">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </form>
+                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"><i
+                                            class="fa fa-rotate-right"></i></a>
+                                {% include 'photos/parts/rotate_and_like_buttons.html.twig' %}
                             {% endif %}
-
-                            </a>
                         </div>
                     {% endif %}
                 </div>
@@ -87,17 +66,3 @@
     {% endif %}
 
 {% endblock %}
-
-{% block datatable %}
-    <script>
-        $(document).ready(function () {
-            $('.table').DataTable({
-                'pageLength': 50,
-                "order": [[0, 'asc'],[1, 'asc'],[2, 'asc']],
-                "paging": false,
-                "searching": false,
-                "bInfo": false
-            });
-        });
-    </script>
-{% endblock datatable %}
