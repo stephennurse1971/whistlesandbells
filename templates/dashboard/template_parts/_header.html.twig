@@ -147,7 +147,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 {% if is_granted('ROLE_IT') %}
-                                    <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending'}) }}">
+                                    <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending',project:'All'}) }}">
                                         To Do List</a>
                                 {% endif %}
                                 <hr>

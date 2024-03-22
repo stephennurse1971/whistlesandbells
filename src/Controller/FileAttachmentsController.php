@@ -137,7 +137,6 @@ class FileAttachmentsController extends AbstractController
                     } else {
                         $files = array_merge($files_name);
                     }
-
                     $fileAttachments->setAttachments($files);
                 }
             }
@@ -159,7 +158,6 @@ class FileAttachmentsController extends AbstractController
 
 
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('/admin/fileattachments/index');
         }
 

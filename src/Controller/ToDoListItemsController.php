@@ -83,7 +83,7 @@ class ToDoListItemsController extends AbstractController
     public function updatePriorityWithRank(ToDoListRepository $toDoListRepository, ToDoListItemsRepository $toDoListItemsRepository, Request $request, EntityManagerInterface $manager): Response
     {
         foreach ($toDoListRepository->findAll() as $toDoList) {
-            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList]);
+            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status'=>'Complete']);
             if ($toDoListByProject) {
                 $rankingContainer = [];
                 foreach ($toDoListByProject as $item) {
@@ -99,6 +99,44 @@ class ToDoListItemsController extends AbstractController
                     $minRank = $minRank + 1;
                 }
             }
+
+            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status'=>'Pending']);
+            if ($toDoListByProject) {
+                $rankingContainer = [];
+                foreach ($toDoListByProject as $item) {
+                    $rankingContainer[] = ['id' => $item->getId(), 'priority' => $item->getPriority()];
+                }
+                array_multisort(array_column($rankingContainer, 'priority'), SORT_ASC, $rankingContainer);
+                $minRank = 1;
+
+                foreach ($rankingContainer as $sortedItem) {
+                    $getToDoList = $toDoListItemsRepository->find($sortedItem['id']);
+                    $getToDoList->setPriority($minRank);
+                    $manager->flush();
+                    $minRank = $minRank + 1;
+                }
+            }
+
+            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status'=>'Blocked']);
+            if ($toDoListByProject) {
+                $rankingContainer = [];
+                foreach ($toDoListByProject as $item) {
+                    $rankingContainer[] = ['id' => $item->getId(), 'priority' => $item->getPriority()];
+                }
+                array_multisort(array_column($rankingContainer, 'priority'), SORT_ASC, $rankingContainer);
+                $minRank = 1;
+
+                foreach ($rankingContainer as $sortedItem) {
+                    $getToDoList = $toDoListItemsRepository->find($sortedItem['id']);
+                    $getToDoList->setPriority($minRank);
+                    $manager->flush();
+                    $minRank = $minRank + 1;
+                }
+            }
+
+
+
+
         }
         $referer = $request->headers->get('Referer');
         return $this->redirect($referer);

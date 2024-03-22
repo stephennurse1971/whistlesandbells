@@ -105,7 +105,7 @@ class UserType extends AbstractType
         $user_roles = $options['user']->getRoles();
         if (in_array('ROLE_ADMIN', $user_roles)) {
             $builder
-                ->add('company', ChoiceType::class, [
+                ->add('company', TextType::class, [
                     'required' => false
                 ])
                 ->add('londoner', ChoiceType::class, [

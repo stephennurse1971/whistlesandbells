@@ -75,7 +75,6 @@ class UserController extends AbstractController
                 $users_container[] = $user;
             }
         }
-
         return $this->render('user/indexAddresses.html.twig', [
             'users' => $users_container,
             'role' => 'All',
@@ -793,11 +792,10 @@ class UserController extends AbstractController
         $vcard->addEmail($user->getEmail())
             ->addJobtitle($user->getJobTitle())
             ->addCompany($user->getCompany())
-            ->addPhoneNumber($user->getHomePhone(), 'work')
-            ->addPhoneNumber($user->getMobile(), 'home')
+            ->addPhoneNumber($user->getMobile(), 'work')
+            ->addPhoneNumber($user->getHomePhone(), 'home')
             ->addURL("https://stephen-nurse.com/")
             ->addNote($user->getNotes());
-
         $vcard->download();
         return new Response(null);
     }

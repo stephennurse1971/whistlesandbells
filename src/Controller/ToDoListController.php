@@ -24,13 +24,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class ToDoListController extends AbstractController
 {
     /**
-     * @Route("/index/{status}", name="to_do_list_index", methods={"GET"},defaults={"status"="Pending"})
+     * @Route("/index/{status}/{project}", name="to_do_list_index", methods={"GET"},defaults={"status"="Pending"})
      */
-    public function index(ToDoListRepository $toDoListRepository, $status, ToDoListItemsRepository $toDoListItemsRepository): Response
+    public function index(ToDoListRepository $toDoListRepository, $status, $project, ToDoListItemsRepository $toDoListItemsRepository): Response
     {
+        $projects = $toDoListRepository->findAll();
+        $project_title = 'All';
+
+        if ($project != "All") {
+            $projects = $toDoListRepository->findBy([
+                'project' => $project
+            ]);
+            $project_title=$project;
+        }
         return $this->render('to_do_list/index.html.twig', [
-            'status'=>$status,
-            'to_do_lists' => $toDoListRepository->findAll(),
+            'status' => $status,
+            'project_title' => $project_title,
+            'to_do_lists' => $projects,
             'to_do_lists_items' => $toDoListItemsRepository->findAll(),
         ]);
     }
@@ -95,9 +105,8 @@ class ToDoListController extends AbstractController
     public function toDoListFileLaunch(string $fileName): Response
     {
         $publicResourcesFolderPath = $this->getParameter('files_upload_default_directory');
-        return new BinaryFileResponse($publicResourcesFolderPath."/".$fileName);
+        return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
     }
-
 
 
     /**
