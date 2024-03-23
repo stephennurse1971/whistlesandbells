@@ -36,7 +36,6 @@ class PhotosType extends AbstractType
                 'class' => User::class,
                 'choice_label' => 'fullName',
                 'required' => false,
-                'empty_data' => null,
                 'multiple'=>true
             ])
         ;
