@@ -42,4 +42,40 @@
         left: 0;
         z-index: 1;
     }
+    .image-container{
+        height: 300px;
+        width: 300px;
+    }
+    .photosByLocation{
+        height: 300px;
+        width: 300px;
+        object-fit:cover;
+    }
+    .photosOnePage{
+        height: 300px;
+        width: 300px;
+        object-fit:cover;
+    }
+    .image-containerThumbnail {
+        display: flex;
+        max-height: 100px;
+        max-width: 100px;
+        height: 100px;
+        align-items: center;
+    }
+    .image-containerFull {
+        width:300px;
+        height: 300px;
+        align-items: center;
+    }
+    .photosByLocationThumbnail{
+        height: 100px;
+        width: 100px;
+        object-fit:cover;
+    }
+    .photosByLocationFull{
+        height: 300px;
+        width: 300px;
+        object-fit:cover;
+    }
 }

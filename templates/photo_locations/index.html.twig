@@ -34,17 +34,17 @@
                         <i title="Private" style="color: red" class="fa fa-circle"></i>
                     {% endif %}
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: left">
                     {% for user_id in photo_location.enabledUsers %}
                         {% set user = FindUser.getUser(user_id) %}
                         {% if user is not null %}
-                            <a href="{{ path('user_edit',{'fullName': user.fullName}) }}">  {{ user.fullName }},</a>
+                            {{ user.fullName }},
                         {% endif %}
                     {% endfor %}
                 </td>
                 <td style="text-align: center">
                     <a target="_blank" class="btn btn-outline-primary btn-sm"
-                       href="{{ path('show_photos_by_location', {location: photo_location.location}) }}">
+                       href="{{ path('show_photos_by_location', {location: photo_location.location, author: 'All', format:'Full'}) }}">
                         <i class="fa fa-photo"></i>
                     </a>
                 </td>

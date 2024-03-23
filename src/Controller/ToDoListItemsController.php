@@ -39,7 +39,7 @@ class ToDoListItemsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $toDoListItemsRepository->add($toDoListItem);
-            return $this->redirectToRoute('to_do_list_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('to_do_list_index', ['status'=>'Pending', 'project'=>'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('to_do_list_items/new.html.twig', [
@@ -133,10 +133,6 @@ class ToDoListItemsController extends AbstractController
                     $minRank = $minRank + 1;
                 }
             }
-
-
-
-
         }
         $referer = $request->headers->get('Referer');
         return $this->redirect($referer);
@@ -207,7 +203,6 @@ class ToDoListItemsController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $toDoListItem->getId(), $request->request->get('_token'))) {
             $toDoListItemsRepository->remove($toDoListItem);
         }
-
-        return $this->redirectToRoute('to_do_list_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('to_do_list_index', ['status'=>'Pending', 'project'=>'All'], Response::HTTP_SEE_OTHER);
     }
 }

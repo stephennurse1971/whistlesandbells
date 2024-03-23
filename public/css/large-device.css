@@ -5,4 +5,33 @@
     .desktop{
         display: table-cell;
     }
+    .photosOnePage{
+        height: 800px;
+        width: 900px;
+        object-fit:cover;
+    }
+    .image-containerThumbnail {
+        display: flex;
+        max-height: 100px;
+        max-width: 100px;
+        height: 100px;
+        align-items: center;
+    }
+    .image-containerFull {
+        display: flex;
+        max-height: 500px;
+        max-width: 500px;
+        height: 500px;
+        align-items: center;
+    }
+    .photosByLocationThumbnail{
+        height: 100px;
+        width: 100px;
+        object-fit:cover;
+    }
+    .photosByLocationFull{
+        height: 500px;
+        width: 500px;
+        object-fit:cover;
+    }
 }

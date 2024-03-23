@@ -10,8 +10,8 @@
     <table class="table table-responsive" style="width: 100%">
         <thead>
         <tr>
-            <th>Date</th>
-            <th>Book</th>
+            <th style="width: 115px">Date</th>
+            <th style="width: 115px">Book</th>
             <th>Travel Notes</th>
             <th style="border-right: 1px solid grey">
                 Notes
@@ -42,11 +42,11 @@
             {% set id = '' %}
             <tr>
                 {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
-                    <td style="background-color: lightblue" data-sort="{{ date| date('Y-m-d') }}">
+                    <td style="background-color: lightblue; text-align: right" data-sort="{{ date| date('Y-m-d') }}">
                         {{ date | date('D d-M-y') }}
                     </td>
                 {% else %}
-                    <td data-sort="{{ date| date('Y-m-d') }}">
+                    <td style="text-align: right" data-sort="{{ date| date('Y-m-d') }}">
                         {{ date | date('D d-M-y') }}
                     </td>
                 {% endif %}

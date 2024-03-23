@@ -9,6 +9,7 @@ use App\Repository\FileAttachmentsRepository;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\PhotosRepository;
 use App\Repository\UserRepository;
+use App\Services\CountPhotos;
 use App\Services\ImageResize;
 use App\Services\PhotoAuthorsByLocation;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,7 +36,7 @@ class PhotosController extends AbstractController
      * @Route("/", name="photos_index", methods={"GET"})
      * @IsGranted("ROLE_GUEST")
      */
-    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository): Response
+    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository, CountPhotos $countPhotos): Response
     {
         $photos = $photosRepository->findAll();
         $photolocations_public = $photoLocationsRepository->findBy([

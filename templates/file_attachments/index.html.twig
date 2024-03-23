@@ -28,11 +28,18 @@
                         {{ file_attachment.description|slice(0,15) }}...
                     {% endif %}
                 </td>
+
                 <td>
+                    {% set rawNotes = file_attachment.notes|striptags|raw %}
                     {% if file_attachment.notes is not null %}
-                        <i style="color: blue" title="{{ file_attachment.notes }}" class="fa fa-info-circle"></i>
-                        {{ file_attachment.notes|slice(0,15) }}...
-                    {% endif %}</td>
+
+                        <i style="color: blue" title="{{ rawNotes }}" class="fa fa-info-circle"></i>
+                        {{ file_attachment.notes|striptags|slice(0,15)|raw|raw }}...
+
+                    {% endif %}
+                </td>
+
+
                 <td style="text-align: center">
                     {% if file_attachment.attachments is not empty %}
                         {% for attachment in file_attachment.attachments %}

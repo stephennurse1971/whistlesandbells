@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ToDoListController extends AbstractController
 {
     /**
-     * @Route("/index/{status}/{project}", name="to_do_list_index", methods={"GET"},defaults={"status"="Pending"})
+     * @Route("/index/{status}/{project}", name="to_do_list_index", methods={"GET"},defaults={"status"="Pending", "project"="All"})
      */
     public function index(ToDoListRepository $toDoListRepository, $status, $project, ToDoListItemsRepository $toDoListItemsRepository): Response
     {

@@ -3,6 +3,7 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         BankBalanceOnAsOfDate: '@App\Services\BankBalanceOnAsOfDate'
+        CountPhotos: '@App\Services\CountPhotos'
         FindUser: '@App\Services\FindUser'
         FXRatesOnAsOfDate: '@App\Services\FXRatesOnAsOfDate'
         Investment: '@App\Services\Investment'

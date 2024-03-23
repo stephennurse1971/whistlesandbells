@@ -22,51 +22,93 @@
     {% endif %}
 
     <div class="row">
-        <div class="col-6 col-md-2">
-            <table class="table">
+        <div class="col-6">
+            <table class="table table-responsive">
                 <thead>
-                <tr>
+                <tr style="background-color: lightgrey">
                     <th style="text-align: left">Private</th>
+                    <th style="text-align: left">Date</th>
+                    <th style="text-align: left">#</th>
+                    <th style="text-align: left">Access</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for location in locations_private %}
                     <tr>
-                        <td style="text-align: left">
-                            {% if app.user is not null %}
-                                {% if location.publicPrivate =="Private" %}
-{#                                    {{ location.location }}#}
-                                    {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
+                        {% if app.user is not null %}
+                            {% if location.publicPrivate =="Private" %}
+                                {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
+                                    <td style="text-align: left">
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <a target="_blank"
+                                               href="{{ path('photo_locations_edit', { id: location.id }) }}">{{ location.location }}</a>
+                                        {% else %}
+                                            {{ location.location }}
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: right"
+                                        data-sort="{{ location.date|date('Y-m-d') }}">{{ location.date|date('M-Y') }}</td>
+                                    <td style="text-align: right">
+                                        {{ CountPhotos.calculateTotalPhotos(location) }}
+                                    </td>
+                                    <td style="text-align: left">
+                                        {% for user_id in location.enabledUsers %}
+                                            {% set user = FindUser.getUser(user_id) %}
+                                            {% if user is not null %}
+                                                  {{ user.fullName }},
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td style="text-align: center">
                                         <a title="Private" class="btn btn-outline-danger btn-sm" target="_blank"
-                                           href="{{ path('show_photos_by_location', { location: location.location, author: 'All', format: 'Full' }) }}">{{ location.location }}</a>
-                                    {% endif %}
+                                           href="{{ path('show_photos_by_location', { location: location.location, author: 'All', format: 'Full' }) }}">
+                                            <i class="fa fa-picture-o"></i>
+                                        </a>
+                                    </td>
                                 {% endif %}
                             {% endif %}
-                        </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <div class="col-6 col-md-2">
-            <table class="table">
+        <div class="col-6">
+            <table class="table table-responsive">
                 <thead>
-                <tr>
+                <tr style="background-color: lightgrey">
                     <th style="text-align: left">Public</th>
+                    <th style="text-align: left">Date</th>
+                    <th style="text-align: left">#</th>
+                    <th style="text-align: right">Access</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for location in locations_public %}
                     <tr>
                         <td style="text-align: left">
-                            {% if location.publicPrivate =="Public" %}
-{#                                {{ location.location }}#}
-                                <a title="Public" class="btn btn-outline-success btn-sm" target="_blank"
-                                   href="{{ path('show_photos_by_location', { location: location.location, author: 'All', format: 'All'}) }}">{{ location.location }}</a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a target="_blank"
+                                   href="{{ path('photo_locations_edit', { id: location.id }) }}">{{ location.location }}</a>
+                            {% else %}
+                                {{ location.location }}
                             {% endif %}
                         </td>
-
+                        <td style="text-align: right"
+                            data-sort="{{ location.date|date('Y-m-d') }}">{{ location.date|date('M-Y') }}</td>
+                        <td style="text-align: right">
+                            {{ CountPhotos.calculateTotalPhotos(location) }}
+                        </td>
+                        <td style="text-align: right">..</td>
+                        <td style="text-align: center">
+                            <a title="Private" class="btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('show_photos_by_location', { location: location.location, author: 'All', format: 'Full' }) }}">
+                                <i class="fa fa-picture-o"></i>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -81,7 +123,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc']],
+                "order": [[1, 'asc'], [0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

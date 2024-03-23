@@ -21,7 +21,7 @@
         <i style="color: red" class="fa fa-download"></i></a>
 {% endif %}
 
-{% if is_granted('ROLE_ADMIN') or app.user==photo.uploadedBy.id %}
+{% if is_granted('ROLE_ADMIN') or app.user.id==photo.uploadedBy.id %}
     <form class="d-inline" method="post"
           action="{{ path('photos_delete', {'id': photo.id}) }}">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
