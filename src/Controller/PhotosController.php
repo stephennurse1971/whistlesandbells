@@ -385,6 +385,10 @@ class PhotosController extends AbstractController
         header('Content-disposition: attachment; filename='.$zipname);
         header('Content-Length: ' . filesize($zipname));
         readfile($zipname);
+        if(file_exists($zipname)){
+            unlink($zipname);
+        }
+
 
     }
 }
