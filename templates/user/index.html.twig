@@ -92,6 +92,7 @@
                 <th class="desktop" style="color: red">Message</th>
                 <th class="desktop" style="color: red;">Last edited</th>
                 <th class="desktop" style="color: red;">Imported</th>
+                <th class="desktop" style="color: red;">Reset password</th>
             {% endif %}
         </tr>
         </thead>
@@ -276,6 +277,11 @@
                     {% if user.importTime is not empty %}
                         {{ user.importTime|date('d-M-Y H:i') }}
                     {% endif %}
+                </td>
+                <td class="desktop">
+                    <a href="{{ path('reset_user_password',{userId: user.id} ) }}">
+                        <i class="fa fa-rotate-left"></i>
+                    </a>
                 </td>
             {% endif %}
             </tr>

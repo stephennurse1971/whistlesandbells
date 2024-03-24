@@ -286,11 +286,20 @@ class UserController extends AbstractController
     {
         $allPersonalUser = $userRepository->findByCompany('Personal');
         foreach ($allPersonalUser as $PersonalUser)
-            if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) && !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
-                $userIsHouseGuest->userExist($PersonalUser) == false) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($PersonalUser);
-                $entityManager->flush();
+            if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) &&
+                !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
+                $userIsHouseGuest->userExist($PersonalUser) == false)
+            {
+
+                try{
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->remove($PersonalUser);
+                    $entityManager->flush();
+                }
+                catch (\mysqli_sql_exception $exception){
+                    continue;
+                }
+
             }
         return $this->redirectToRoute('user_index');
     }
@@ -952,4 +961,29 @@ class UserController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);
     }
+
+
+
+    /**
+     * @Route("/reset_user_password/{userId}", name="reset_user_password", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function resetUserPasswords(Request $request, user $user, UserRepository $userRepository): Response
+    {
+
+        if ($userId=!All){
+            $user=$userRepository->findOneBy($userId);
+            $user->setPlainPassword('password');
+        }
+
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findByRole($role),
+            'role' => $role,
+            'role_title' => $role
+        ]);
+    }
+
+
+
+
 }

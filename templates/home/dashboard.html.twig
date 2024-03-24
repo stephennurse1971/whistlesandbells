@@ -15,7 +15,11 @@
                     <a target="_blank" href="{{ path('user_index') }}">Users - All</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('user_index_edited_since_download') }}">Users - Edited</a></ul>
+                    <a target="_blank" href="{{ path('user_index_edited_since_download') }}">Users - Edited</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('reset_user_password', {user: 'All'}) }}">Reset All User Passwords</a>
+                </ul>
                 <ul>
                     <a target="_blank" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
                 </ul>
