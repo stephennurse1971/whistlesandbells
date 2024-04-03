@@ -39,6 +39,11 @@ class ToDoListItems
      */
     private $task;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $hoursAllocated;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +94,18 @@ class ToDoListItems
     public function setTask(?string $task): self
     {
         $this->task = $task;
+
+        return $this;
+    }
+
+    public function getHoursAllocated(): ?int
+    {
+        return $this->hoursAllocated;
+    }
+
+    public function setHoursAllocated(?int $hoursAllocated): self
+    {
+        $this->hoursAllocated = $hoursAllocated;
 
         return $this;
     }

@@ -40,7 +40,8 @@ class ToDoListItemsType extends AbstractType
                     'Complete' => 'Complete',
                     'Pending' => 'Pending',
                     'Blocked' => 'Blocked',
-                ],]);
+                ],])
+        ->add('hoursAllocated');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
