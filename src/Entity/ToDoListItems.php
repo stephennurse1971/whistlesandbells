@@ -44,6 +44,11 @@ class ToDoListItems
      */
     private $hoursAllocated;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $NeedsResearch;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +111,18 @@ class ToDoListItems
     public function setHoursAllocated(?int $hoursAllocated): self
     {
         $this->hoursAllocated = $hoursAllocated;
+
+        return $this;
+    }
+
+    public function getNeedsResearch(): ?string
+    {
+        return $this->NeedsResearch;
+    }
+
+    public function setNeedsResearch(?string $NeedsResearch): self
+    {
+        $this->NeedsResearch = $NeedsResearch;
 
         return $this;
     }

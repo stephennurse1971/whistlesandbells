@@ -36,6 +36,7 @@ class Photos
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $uploadedBy;
 

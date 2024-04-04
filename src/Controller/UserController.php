@@ -284,23 +284,31 @@ class UserController extends AbstractController
      */
     public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
-        $allPersonalUser = $userRepository->findByCompany('Personal');
-        foreach ($allPersonalUser as $PersonalUser)
-            if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) &&
-                !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
-                $userIsHouseGuest->userExist($PersonalUser) == false)
-            {
 
-                try{
+        $allPersonalUser = $userRepository->findByCompany('Personal');
+        echo count($allPersonalUser);
+        echo "<br>";
+       $count = 0;
+        foreach ($allPersonalUser as $PersonalUser) {
+            $count++;
+//            if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) &&
+//                !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
+//                $userIsHouseGuest->userExist($PersonalUser) == false) {
+
+                try {
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->remove($PersonalUser);
                     $entityManager->flush();
-                }
-                catch (\mysqli_sql_exception $exception){
+                } catch (\Exception $exception) {
+                    echo $PersonalUser->getId();
+                    echo "<br>";
                     continue;
                 }
 
-            }
+           }
+       // }
+        echo $count;
+        exit;
         return $this->redirectToRoute('user_index');
     }
 
@@ -963,7 +971,6 @@ class UserController extends AbstractController
     }
 
 
-
     /**
      * @Route("/reset_user_password/{userId}", name="reset_user_password", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
@@ -971,8 +978,8 @@ class UserController extends AbstractController
     public function resetUserPasswords(Request $request, user $user, UserRepository $userRepository): Response
     {
 
-        if ($userId=!All){
-            $user=$userRepository->findOneBy($userId);
+        if ($userId = !All) {
+            $user = $userRepository->findOneBy($userId);
             $user->setPlainPassword('password');
         }
 
@@ -982,8 +989,6 @@ class UserController extends AbstractController
             'role_title' => $role
         ]);
     }
-
-
 
 
 }

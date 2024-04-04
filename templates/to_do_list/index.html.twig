@@ -101,6 +101,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -125,6 +126,7 @@
                                                 <div class="ml-2"> {{ to_do_lists_item.task|raw }}</div>
                                             </div>
                                         </td>
+                                        <td>{{ to_do_lists_item.needsResearch }}</td>
                                         <td>{{ to_do_lists_item.hoursAllocated }}</td>
                                         <td>
                                             {% if to_do_lists_item.status=="Complete" %}

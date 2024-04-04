@@ -41,7 +41,15 @@ class ToDoListItemsType extends AbstractType
                     'Pending' => 'Pending',
                     'Blocked' => 'Blocked',
                 ],])
-        ->add('hoursAllocated');
+        ->add('hoursAllocated')
+        ->add('NeedsResearch',ChoiceType::class,[
+            'label'=>'Needs Research',
+            'choices'=>[
+                'No - beyond current skillset'=>'No',
+                'Yes - Mirror Research'=>'Yes'
+
+            ]
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
