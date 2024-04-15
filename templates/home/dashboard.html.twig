@@ -17,12 +17,14 @@
                 <ul>
                     <a target="_blank" href="{{ path('user_index_edited_since_download') }}">Users - Edited</a>
                 </ul>
+
                 {% if is_granted('ROLE_ADMIN') %}
                     <ul>
                         <a target="_blank" href="{{ path('reset_user_password', {userId: 'All'}) }}">Reset All User
                             Passwords</a>
                     </ul>
                 {% endif %}
+
                 <ul>
                     <a target="_blank" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
                 </ul>

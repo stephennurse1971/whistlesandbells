@@ -53,6 +53,7 @@
                             {% endif %}
                         {% endfor %}
                     </td>
+
                     <td style="width: 1700px;">
                         <a target="_blank" class="btn btn-outline-primary btn-sm"
                            href="{{ path('to_do_list_items_new', {'project': to_do_list.project} ) }}">+</a>
@@ -66,6 +67,8 @@
                                 <th></th>
                                 <th style="width: 15px"></th>
                                 <th style="width: 15px"></th>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -93,6 +96,8 @@
                                                 <div class="ml-2"> {{ to_do_lists_item.task|raw }}</div>
                                             </div>
                                         </td>
+                                        <td>{{ to_do_lists_item.needsResearch }}</td>
+                                        <td>{{ to_do_lists_item.hoursAllocated }}</td>
                                         <td>
                                             {% if to_do_lists_item.status=="Complete" %}
                                                 <span style="color: green"> {{ to_do_lists_item.status }}</span>

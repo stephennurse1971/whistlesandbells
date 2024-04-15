@@ -284,22 +284,7 @@ class UserController extends AbstractController
      */
     public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
     {
-        $allPersonalUser = $userRepository->findByCompany('Personal');
-        foreach ($allPersonalUser as $PersonalUser)
-            if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) &&
-                !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
-                $userIsHouseGuest->userExist($PersonalUser) == false) {
-
-                try {
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->remove($PersonalUser);
-                    $entityManager->flush();
-                } catch (\mysqli_sql_exception $exception) {
-                    continue;
-                }
-
-            }
-        return $this->redirectToRoute('user_index');
+       return new Response(null);
     }
 
     /**
@@ -967,11 +952,14 @@ class UserController extends AbstractController
      */
     public function resetUserPasswords(Request $request, int $userId, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
     {
+
         if ($userId != 'All') {
             $user = $userRepository->findOneBy($userId);
             $user->setPlainPassword('password123');
             $user->setPassword($passwordEncoder->encodePassword($user, 'password'));
+
         }
+
         if ($userId == 'All') {
             $users = $userRepository->findAll();
             foreach ($users as $user) {
@@ -985,8 +973,10 @@ class UserController extends AbstractController
 
         $entityManager->flush();
 
+
         return $this->redirectToRoute('user_index');
     }
+
 
 
 }
