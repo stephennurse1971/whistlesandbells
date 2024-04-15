@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\RecruiterEmailsType;
 use App\Form\UserType;
 use App\Repository\CmsCopyRepository;
+use App\Repository\HealthRepository;
 use App\Repository\IntroductionRepository;
 use App\Repository\IntroductionSegmentRepository;
 use App\Repository\ProspectEmployerRepository;
@@ -282,9 +283,28 @@ class UserController extends AbstractController
      * @Route("/delete_all_Personal", name="user_delete_all_Personal")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
+    public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest,HealthRepository $healthRepository)
     {
-       return new Response(null);
+
+
+        $allPersonalUser = $userRepository->findByCompany('Personal');
+        foreach ($allPersonalUser as $PersonalUser) {
+
+            if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) &&
+                !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
+                $userIsHouseGuest->userExist($PersonalUser) == false) {
+
+                   $health_by_user = $healthRepository->findBy(['user'=>$PersonalUser]);
+                   if(!$health_by_user){
+                       $entityManager = $this->getDoctrine()->getManager();
+                       $entityManager->remove($PersonalUser);
+                       $entityManager->flush();
+                   }
+           }
+        }
+
+        return $this->redirectToRoute('user_index');
+
     }
 
     /**
