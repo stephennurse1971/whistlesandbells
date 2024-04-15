@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Airports{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">Airports</h1>
+
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>City</th>
+                <th>AirportCode</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for airport in airports %}
+            <tr>
+                <td>{{ airport.id }}</td>
+                <td>{{ airport.city }}</td>
+                <td>{{ airport.airportCode }}</td>
+                <td>
+                    <a href="{{ path('airports_edit', {'id': airport.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('airports_new') }}">New</a>
+{% endblock %}

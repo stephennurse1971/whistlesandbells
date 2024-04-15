@@ -283,17 +283,13 @@ class UserController extends AbstractController
      * @Route("/delete_all_Personal", name="user_delete_all_Personal")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest,HealthRepository $healthRepository)
+    public function deleteAllPersonalUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest, HealthRepository $healthRepository)
     {
-
-
         $allPersonalUser = $userRepository->findByCompany('Personal');
         foreach ($allPersonalUser as $PersonalUser) {
-
             if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) &&
                 !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
                 $userIsHouseGuest->userExist($PersonalUser) == false) {
-
                    $health_by_user = $healthRepository->findBy(['user'=>$PersonalUser]);
                    if(!$health_by_user){
                        $entityManager = $this->getDoctrine()->getManager();
@@ -311,15 +307,19 @@ class UserController extends AbstractController
      * @Route("/delete_all_non_admin", name="user_delete_all_non_admin")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function deleteAllNonAdminUsers(UserRepository $userRepository, UserIsHouseGuest $userIsHouseGuest)
+    public function deleteAllNonAdminUsers(UserRepository $userRepository, HealthRepository $healthRepository, UserIsHouseGuest $userIsHouseGuest)
     {
         $users = $userRepository->findAll();
         foreach ($users as $user) {
-            $roles = $user->getRoles();
-            if (!in_array('ROLE_ADMIN', $roles) && !in_array('ROLE_SUPER_ADMIN', $roles) && $userIsHouseGuest->userExist($user) == false) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($user);
-                $entityManager->flush();
+            if (!in_array('ROLE_ADMIN', $user->getRoles()) &&
+                !in_array('ROLE_SUPER_ADMIN', $user->getRoles()) &&
+                $userIsHouseGuest->userExist($user) == false) {
+                $health_by_user = $healthRepository->findBy(['user'=>$user]);
+                if(!$health_by_user){
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->remove($user);
+                    $entityManager->flush();
+                }
             }
         }
         return $this->redirectToRoute('user_index');

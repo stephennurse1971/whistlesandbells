@@ -13,6 +13,7 @@ class FlightPrice
 {
     public function getPrice($id)
     {
+
         $today = new \DateTime('now');
         $today = $today->format('Y-m-d');
         $start_date_input = new \DateTime($this->settingsRepository->find('1')->getFlightStatsStartDate()->format('Y-m-d'));
@@ -46,8 +47,8 @@ class FlightPrice
                     $day_count = 1 + $day_count_by_destination->days;
                 }
             }
-            $departure_code = $destination->getDepartureCode();
-            $arrival_code = $destination->getArrivalCode();
+            $departure_code = $destination->getDepartureCity()->getAirportCode();
+            $arrival_code = $destination->getArrivalCity()->getAirportCode();
 
             while ($day_increment <= $day_count) {
                 $date = $start_date->format('Y-m-d');
@@ -74,8 +75,7 @@ class FlightPrice
                             $flightStats->setDate(new \DateTime($date))
                                 ->setFlightFrom($departure_code)
                                 ->setFlightTo($arrival_code)
-                                ->setLowestPrice($price)
-                                ->setScrapeDate(new \DateTime('now'));
+                                ->setLowestPrice($price);
                             $this->manager->persist($flightStats);
                             $this->manager->flush();
                         }

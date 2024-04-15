@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Flight Route: {{ flight_destination.departureCode }} - {{ flight_destination.arrivalCode }}{% endblock %}
+{% block title %}Flight Route: {{ flight_destination.departureCity.airportCode }} - {{ flight_destination.arrivalCity.airportCode }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Flight Route: {{ flight_destination.departureCode }} - {{ flight_destination.arrivalCode }}</h1>
+    <h1 style="color: red">Flight Route: {{ flight_destination.departureCity.airportCode }} - {{ flight_destination.arrivalCity.airportCode }}</h1>
 
     {{ include('flight_destinations/_form.html.twig', {'button_label': 'Update'}) }}
 

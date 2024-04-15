@@ -17,25 +17,9 @@ class FlightDestinations
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $departureCity;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $departureCode;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $arrivalCity;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $arrivalCode;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -62,58 +46,26 @@ class FlightDestinations
      */
     private $lastScraped;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Airports::class)
+     */
+    private $departureCity;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Airports::class)
+     */
+    private $arrivalCity;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $returnLeg;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDepartureCity(): ?string
-    {
-        return $this->departureCity;
-    }
-
-    public function setDepartureCity(?string $departureCity): self
-    {
-        $this->departureCity = $departureCity;
-
-        return $this;
-    }
-
-    public function getDepartureCode(): ?string
-    {
-        return $this->departureCode;
-    }
-
-    public function setDepartureCode(?string $departureCode): self
-    {
-        $this->departureCode = $departureCode;
-
-        return $this;
-    }
-
-    public function getArrivalCity(): ?string
-    {
-        return $this->arrivalCity;
-    }
-
-    public function setArrivalCity(string $arrivalCity): self
-    {
-        $this->arrivalCity = $arrivalCity;
-
-        return $this;
-    }
-
-    public function getArrivalCode(): ?string
-    {
-        return $this->arrivalCode;
-    }
-
-    public function setArrivalCode(string $arrivalCode): self
-    {
-        $this->arrivalCode = $arrivalCode;
-
-        return $this;
-    }
 
     public function getAdminOnly(): ?bool
     {
@@ -171,6 +123,42 @@ class FlightDestinations
     public function setLastScraped(?\DateTimeInterface $lastScraped): self
     {
         $this->lastScraped = $lastScraped;
+
+        return $this;
+    }
+
+    public function getDepartureCity(): ?Airports
+    {
+        return $this->departureCity;
+    }
+
+    public function setDepartureCity(?Airports $departureCity): self
+    {
+        $this->departureCity = $departureCity;
+
+        return $this;
+    }
+
+    public function getArrivalCity(): ?Airports
+    {
+        return $this->arrivalCity;
+    }
+
+    public function setArrivalCity(?Airports $arrivalCity): self
+    {
+        $this->arrivalCity = $arrivalCity;
+
+        return $this;
+    }
+
+    public function getReturnLeg(): ?string
+    {
+        return $this->returnLeg;
+    }
+
+    public function setReturnLeg(?string $returnLeg): self
+    {
+        $this->returnLeg = $returnLeg;
 
         return $this;
     }

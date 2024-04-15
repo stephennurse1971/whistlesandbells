@@ -9,14 +9,14 @@
 
         {% if is_granted('ROLE_ADMIN') %}
             <a target="_blank" href="{{ path('flight_destinations_edit', {id:flight_destination.id}) }}">
-                <span title={{ flight_destination.departureCity }}>{{ flight_destination.departureCode }}</span>
+                <span title={{ flight_destination.departureCity.city }}>{{ flight_destination.departureCity.airportCode }}</span>
                 - <br>
-                <span title={{ flight_destination.arrivalCity }}>{{ flight_destination.arrivalCode }}</span>
+                <span title={{ flight_destination.arrivalCity.city }}>{{ flight_destination.arrivalCity.airportCode }}</span>
             </a>
         {% else %}
-            <span title={{ flight_destination.departureCity }}>{{ flight_destination.departureCode }}</span>
+            <span title={{ flight_destination.departureCity.city }}>{{ flight_destination.departureCity.airportCode }}</span>
             - <br>
-            <span title={{ flight_destination.arrivalCity }}>{{ flight_destination.arrivalCode }}</span>
+            <span title={{ flight_destination.arrivalCity.city }}>{{ flight_destination.arrivalCity.airportCode }}</span>
 
         {% endif %}
 

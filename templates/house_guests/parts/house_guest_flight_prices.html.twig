@@ -27,7 +27,7 @@
         {% endif %}
 
         {% for flight in flights %}
-            {% if flight.date == date and flight.flightFrom==flight_destination.departureCode and flight.flightTo ==flight_destination.arrivalCode %}
+            {% if flight.date == date and flight.flightFrom==flight_destination.departureCity.airportCode and flight.flightTo ==flight_destination.arrivalCity.airportCode %}
                 {% set URL = "https://www.kayak.co.uk/flights/"~flight.flightFrom~"-"~ flight.flightTo ~"/"~ date|date('Y-m-d')  ~ "?sort=price_a&fs=stops=0" %}
                 <a target="_blank" href="{{ URL }}">£{{ flight.lowestPrice|number_format('0') }}</a>
             {% endif %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FlightDestinations;
 use App\Form\FlightDestinationsType;
+use App\Repository\AirportsRepository;
 use App\Repository\FlightDestinationsRepository;
 use App\Repository\SettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +32,7 @@ class FlightDestinationsController extends AbstractController
         }
         return $this->render('flight_destinations/index.html.twig', [
             'flight_destinations' => $flightDestinationsRepository->findAll(),
-            'settings'=>$settings
+            'settings' => $settings
         ]);
     }
 
@@ -45,6 +46,42 @@ class FlightDestinationsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $flightDestinationsRepository->add($flightDestination);
+            return $this->redirectToRoute('flight_destinations_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('flight_destinations/new.html.twig', [
+            'flight_destination' => $flightDestination,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/newReturn/{id}", name="flight_destinations_new_return", methods={"GET", "POST"})
+     */
+    public function newReturn(Request $request, int $id, AirportsRepository $airportsRepository, FlightDestinationsRepository $flightDestinationsRepository): Response
+    {
+        $selected_flight_destination = $flightDestinationsRepository->find($id);
+        $selected_flight_destination->setReturnLeg($selected_flight_destination->getID());
+        $originalDepartureCity = $selected_flight_destination->getDepartureCity();
+        $originalArrivalCity = $selected_flight_destination->getArrivalCity();
+        $originalDateStart = $selected_flight_destination->getDateStart();
+        $originalDateEnd = $selected_flight_destination->getDateEnd();
+        $originalID = $selected_flight_destination->getID();
+
+
+        $flightDestination = new FlightDestinations();
+        $flightDestination->setReturnLeg($originalID);
+        $form = $this->createForm(FlightDestinationsType::class, $flightDestination, [
+            'odc'=>$originalDepartureCity,'oac'=>$originalArrivalCity,
+            'ods'=>$originalDateStart,'ode'=>$originalDateEnd,
+            //'rt'=>'Return leg'
+            ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
             $flightDestinationsRepository->add($flightDestination);
             return $this->redirectToRoute('flight_destinations_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -116,13 +153,13 @@ class FlightDestinationsController extends AbstractController
     public function resetDates(Request $request, $id, FlightDestinationsRepository $flightDestinationsRepository, SettingsRepository $settingsRepository, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
-        $settings= $settingsRepository->find('1');
+        $settings = $settingsRepository->find('1');
         $startDate = $settings->getFlightStatsStartDate();
         $daysCount = $settings->getFlightStatsDays();
         $flightDestination = $flightDestinationsRepository->find($id);
         $flightDestination->setDateStart($startDate);
         $manager->flush();
-        $endDate = date_modify($startDate, +$daysCount. ' days');
+        $endDate = date_modify($startDate, +$daysCount . ' days');
         $flightDestination->setDateEnd($endDate);
         $manager->flush();
 

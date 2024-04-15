@@ -42,9 +42,9 @@ class ToDoListItemsType extends AbstractType
         ->add('NeedsResearch',ChoiceType::class,[
             'label'=>'Needs Research',
             'choices'=>[
-                'No - beyond current skillset'=>'No',
-                'Yes - Mirror Research'=>'Yes'
-
+                'No'=>'No',
+                'Yes - Minor Research Required'=>'Yes - Minor',
+                'Yes - Significant Research Required'=>'Yes - Significant'
             ]
         ]);
     }

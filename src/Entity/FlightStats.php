@@ -37,10 +37,8 @@ class FlightStats
      */
     private $lowestPrice;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $scrapeDate;
+
+
 
     public function getId(): ?int
     {
@@ -95,15 +93,4 @@ class FlightStats
         return $this;
     }
 
-    public function getScrapeDate(): ?\DateTimeInterface
-    {
-        return $this->scrapeDate;
-    }
-
-    public function setScrapeDate(?\DateTimeInterface $scrapeDate): self
-    {
-        $this->scrapeDate = $scrapeDate;
-
-        return $this;
-    }
 }

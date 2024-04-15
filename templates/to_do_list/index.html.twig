@@ -96,7 +96,17 @@
                                                 <div class="ml-2"> {{ to_do_lists_item.task|raw }}</div>
                                             </div>
                                         </td>
-                                        <td>{{ to_do_lists_item.needsResearch }}</td>
+                                        <td>
+                                            {% if to_do_lists_item.needsResearch == "No" %}
+                                                <i title="{{ to_do_lists_item.needsResearch }}" style="color: green" class="fa fa-dot-circle-o"></i>
+                                            {% endif %}
+                                            {% if to_do_lists_item.needsResearch == "Yes - Minor" %}
+                                                <i title="{{ to_do_lists_item.needsResearch }}" style="color: orange" class="fa fa-dot-circle-o"></i>
+                                            {% endif %}
+                                            {% if to_do_lists_item.needsResearch == "Yes - Significant" %}
+                                                <i title="{{ to_do_lists_item.needsResearch }}" style="color: red" class="fa fa-dot-circle-o"></i>
+                                            {% endif %}
+                                        </td>
                                         <td>{{ to_do_lists_item.hoursAllocated }}</td>
                                         <td>
                                             {% if to_do_lists_item.status=="Complete" %}

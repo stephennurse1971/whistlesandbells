@@ -14,16 +14,15 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Departure City</th>
-            <th>Departure Code</th>
-            <th>Arrival City</th>
-            <th>Arrival Code</th>
+            <th>Departure</th>
+            <th>Arrival</th>
             <th>Start</th>
             <th>End</th>
             <th>Admin Only</th>
             <th>Active</th>
             <th>Last Scraped</th>
             <th>Scrape</th>
+            <th>Add</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -31,12 +30,14 @@
         {% for flight_destination in flight_destinations %}
             <tr>
                 <td>
-                    <a href="{{ path('flight_destinations_edit', {'id': flight_destination.id}) }}">{{ flight_destination.id }}</a>
+
+                    <a href="{{ path('flight_destinations_edit', {'id': flight_destination.id}) }}">{{ flight_destination.returnLeg }}</a>
                 </td>
-                <td>{{ flight_destination.departureCity }}</td>
-                <td>{{ flight_destination.departureCode }}</td>
-                <td>{{ flight_destination.arrivalCity }}</td>
-                <td>{{ flight_destination.arrivalCode }}</td>
+                <td>
+                    {{ flight_destination.departureCity.city }} ({{ flight_destination.departureCity.airportCode }})
+                </td>
+                <td>{{ flight_destination.arrivalCity.city }} ({{ flight_destination.arrivalCity.airportCode }})
+                </td>
                 <td data-sort="{{ flight_destination.dateStart|date('Y-m-d') }}">{{ flight_destination.dateStart ? flight_destination.dateStart|date('d-M-y') : '' }}</td>
                 <td data-sort="{{ flight_destination.dateEnd|date('Y-m-d') }}">{{ flight_destination.dateStart ? flight_destination.dateEnd|date('d-M-y') : '' }}
                     {% if flight_destination.dateStart|date('Y-m-d') == settings.flightStatsStartDate|date('Y-m-d')
@@ -76,7 +77,18 @@
                     </a>
                 </td>
                 <td>
-                    <form method="post" action="{{ path('flight_destinations_delete', {'id': flight_destination.id}) }}">
+
+                    {% if flight_destination.returnLeg is null %}
+                        <a class="btn btn-outline-primary btn-sm" title="Copy as a return leg"
+                           href="{{ path('flight_destinations_new_return', {id:flight_destination.id}) }}">
+                            <i class="fa fa-copy"></i>
+                            <i class="fa fa-repeat"></i>
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="post"
+                          action="{{ path('flight_destinations_delete', {'id': flight_destination.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ flight_destination.id) }}">
                         <button class="btn btn-danger btn-sm">Delete</button>
                     </form>
@@ -88,3 +100,17 @@
 
     <a class="btn btn-success btn-sm" href="{{ path('flight_destinations_new') }}">New</a>
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

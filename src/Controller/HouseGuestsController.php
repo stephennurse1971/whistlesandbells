@@ -232,11 +232,7 @@ class HouseGuestsController extends AbstractController
      */
     public function getPriceOne(Request $request, $id, FlightPrice $flightPrice, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
-        $today = new \DateTime('now');
-        $flightPriceS = $flightDestinationsRepository->find($id);
-        $flightPriceS->setLastScraped($today);
         $flightPrice->getPrice($id);
-
         return $this->redirectToRoute('house_guests_index');
     }
 }
