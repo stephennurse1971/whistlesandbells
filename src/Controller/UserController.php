@@ -288,15 +288,13 @@ class UserController extends AbstractController
         foreach ($allPersonalUser as $PersonalUser)
             if (!in_array('ROLE_ADMIN', $PersonalUser->getRoles()) &&
                 !in_array('ROLE_SUPER_ADMIN', $PersonalUser->getRoles()) &&
-                $userIsHouseGuest->userExist($PersonalUser) == false)
-            {
+                $userIsHouseGuest->userExist($PersonalUser) == false) {
 
-                try{
+                try {
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->remove($PersonalUser);
                     $entityManager->flush();
-                }
-                catch (\mysqli_sql_exception $exception){
+                } catch (\mysqli_sql_exception $exception) {
                     continue;
                 }
 
@@ -963,27 +961,32 @@ class UserController extends AbstractController
     }
 
 
-
     /**
      * @Route("/reset_user_password/{userId}", name="reset_user_password", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function resetUserPasswords(Request $request, user $user, UserRepository $userRepository): Response
+    public function resetUserPasswords(Request $request, int $userId, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
     {
+        if ($userId != 'All') {
+            $user = $userRepository->findOneBy($userId);
+            $user->setPlainPassword('password123');
+            $user->setPassword($passwordEncoder->encodePassword($user, 'password'));
+        }
+        if ($userId == 'All') {
+            $users = $userRepository->findAll();
+            foreach ($users as $user) {
+                if (!in_array('ROLE_ADMIN', $user->getRoles())) {
+                    $user->setPlainPassword('password');
+                    $user->setPassword($passwordEncoder->encodePassword($user, 'password'));
+                }
+            }
 
-        if ($userId=!All){
-            $user=$userRepository->findOneBy($userId);
-            $user->setPlainPassword('password');
         }
 
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findByRole($role),
-            'role' => $role,
-            'role_title' => $role
-        ]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('user_index');
     }
-
-
 
 
 }

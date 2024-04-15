@@ -4,6 +4,7 @@ twig:
     globals:
         BankBalanceOnAsOfDate: '@App\Services\BankBalanceOnAsOfDate'
         CountPhotos: '@App\Services\CountPhotos'
+        CountPendingItems: '@App\Services\CountPendingItems'
         FindUser: '@App\Services\FindUser'
         FXRatesOnAsOfDate: '@App\Services\FXRatesOnAsOfDate'
         Investment: '@App\Services\Investment'

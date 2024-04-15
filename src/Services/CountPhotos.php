@@ -3,11 +3,6 @@
 
 namespace App\Services;
 
-
-use App\Entity\BankAccounts;
-use App\Entity\BankBalances;
-use App\Repository\BankAccountsRepository;
-use App\Repository\BankBalancesRepository;
 use App\Repository\PhotosRepository;
 
 class CountPhotos

@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/todolist_items")
@@ -30,11 +31,21 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/new/{project}", name="to_do_list_items_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, $project, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $doListRepository): Response
+    public function new(Request $request, Security $security, $project, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $doListRepository ): Response
     {
-        $todolist = $doListRepository->findOneBy(['project' => $project]);
+       $all_projects =  $doListRepository->findAll();
+       $access_projects = [];
+       foreach($all_projects as $project){
+           if(in_array($security->getUser(),$project->getAccessTo()->toArray())){
+               $access_projects[] = $project;
+           }
+       }
+        usort($access_projects, function ($first, $second) {
+            return strcmp($first->getProject(), $second->getProject());
+        });
+        $toDoList = $doListRepository->findOneBy(['project' => $project]);
         $toDoListItem = new ToDoListItems();
-        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $todolist]);
+        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $toDoList,'access_projects'=>$access_projects]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -61,9 +72,20 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="to_do_list_items_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository): Response
+    public function edit(Security $security,Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $toDoListRepository): Response
     {
-        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $toDoListItem->getProject()]);
+        $all_projects =  $toDoListRepository->findAll();
+        $access_projects = [];
+        foreach($all_projects as $project){
+            if(in_array($security->getUser(),$project->getAccessTo()->toArray())){
+                $access_projects[] = $project;
+            }
+        }
+        usort($access_projects, function ($first, $second) {
+            return strcmp($first->getProject(), $second->getProject());
+        });
+
+        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $toDoListItem->getProject(),'access_projects'=>$access_projects]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

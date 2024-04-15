@@ -17,9 +17,12 @@
                 <ul>
                     <a target="_blank" href="{{ path('user_index_edited_since_download') }}">Users - Edited</a>
                 </ul>
-                <ul>
-                    <a target="_blank" href="{{ path('reset_user_password', {user: 'All'}) }}">Reset All User Passwords</a>
-                </ul>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <ul>
+                        <a target="_blank" href="{{ path('reset_user_password', {userId: 'All'}) }}">Reset All User
+                            Passwords</a>
+                    </ul>
+                {% endif %}
                 <ul>
                     <a target="_blank" href="{{ path('user_index_addresses') }}">Users - Addresses</a>
                 </ul>
@@ -84,7 +87,8 @@
                     <a target="_blank" href="{{ path('house_guests_index', {subset: 'All'}) }}">House Guest</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
+                    <a target="_blank" href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To
+                        Bring</a>
                 </ul>
                 <ul>
                     <a target="_blank" href="{{ path('tourist_attraction_index', { type:'All'}) }}">Tourist

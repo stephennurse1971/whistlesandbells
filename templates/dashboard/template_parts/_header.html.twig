@@ -63,7 +63,7 @@
 
 
                     <!-- Nav Item #3 - photos -->
-                    {% if is_granted('ROLE_FAMILY') or is_granted('ROLE_GUEST') or is_granted('ROLE_USER')%}
+                    {% if is_granted('ROLE_GUEST') %}
                         <li class="nav-item dropdown">
                             <a class="dropdown-item" href="{{ path('photos_index') }}">Photos</a>
                         </li>

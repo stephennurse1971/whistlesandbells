@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-3">
+        <a class="btn btn-outline-success btn-sm"
+           href="{{ path('to_do_list_index', {status: "Complete", project: project_title}) }}">Complete</a>
+        <a class="btn btn-outline-primary btn-sm"
+           href="{{ path('to_do_list_index', {status: "Pending", project: project_title}) }}">Pending</a>
+        <a class="btn btn-outline-danger btn-sm"
+           href="{{ path('to_do_list_index', {status: "Blocked", project: project_title}) }}">Blocked</a>
+        <a class="btn btn-outline-secondary btn-sm"
+           href="{{ path('to_do_list_index', {status: "All", project: project_title}) }}">All</a>
+    </div>
+    <div class="col-3">
+
+    </div>
+    <div class="col-3">
+        <a class="btn btn-success btn-sm" href="{{ path('update_priority_with_rank') }}">Re-number</a>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-12">
+        {% if project_title != 'All' %}
+            <a class="btn btn-info btn-sm"
+               href="{{ path('to_do_list_index', {status: status, project: "All"}) }}">All</a>
+        {% endif %}
+        {% if project_title == 'All' %}
+            {% for to_do_list in to_do_lists %}
+                {% if app.user in to_do_list.accessTo %}
+                    <a class="btn btn-outline-info btn-sm"
+                    href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">{{ to_do_list.project }}
+                    (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }})
+                {% endif %}
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<br>

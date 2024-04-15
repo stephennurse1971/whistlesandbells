@@ -7,42 +7,12 @@
         {% if status!="All" %}
             ({{ status }})
         {% endif %}
-        <a href="{{ path('to_do_list_new') }}">+</a></h1>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('to_do_list_new') }}">+</a>
+        {% endif %}
+    </h1>
 
-    <div class="row">
-        <div class="col-3">
-            <a class="btn btn-outline-success btn-sm"
-               href="{{ path('to_do_list_index', {status: "Complete", project: project_title}) }}">Complete</a>
-            <a class="btn btn-outline-primary btn-sm"
-               href="{{ path('to_do_list_index', {status: "Pending", project: project_title}) }}">Pending</a>
-            <a class="btn btn-outline-danger btn-sm"
-               href="{{ path('to_do_list_index', {status: "Blocked", project: project_title}) }}">Blocked</a>
-            <a class="btn btn-outline-secondary btn-sm"
-               href="{{ path('to_do_list_index', {status: "All", project: project_title}) }}">All</a>
-        </div>
-        <div class="col-3">
-
-        </div>
-        <div class="col-3">
-            <a class="btn btn-success btn-sm" href="{{ path('update_priority_with_rank') }}">Re-number</a>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-12">
-            {% if project_title != 'All' %}
-                <a class="btn btn-info btn-sm"
-                   href="{{ path('to_do_list_index', {status: status, project: "All"}) }}">All</a>
-            {% endif %}
-            {% if project_title == 'All' %}
-                {% for to_do_list in to_do_lists %}
-                    <a class="btn btn-outline-info btn-sm"
-                       href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">{{ to_do_list.project }}</a>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-    <br>
+    {% include 'to_do_list/parts/buttons.html.twig' %}
 
     <table class="table table-responsive maintable">
         <thead>
@@ -162,7 +132,7 @@
         $(document).ready(function () {
             $('.innertable').DataTable({
                 'pageLength': 10,
-                "order": [[4, 'desc'],[0, 'asc']],
+                "order": [[4, 'desc'], [0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false,

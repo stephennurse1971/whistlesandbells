@@ -2,7 +2,14 @@
 
 {% block title %}Edit: {{ to_do_list.project }}{% endblock %}
 
+
+
 {% block body %}
+    <style>
+        #to_do_list_accessTo {
+            height: 700px;
+        }
+    </style>
     <h1 style="color: red;">Project: {{ to_do_list.project }}</h1>
 
     {{ include('to_do_list/_form.html.twig', {'button_label': 'Save'}) }}

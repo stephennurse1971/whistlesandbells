@@ -22,10 +22,7 @@ class ToDoListItemsType extends AbstractType
                 'class' => ToDoList::class,
                 'choice_label' => 'project',
                 'data' => $options['project'],
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('m')
-                        ->orderBy('m.project', 'ASC');
-                }
+                'choices'=>$options['access_projects']
             ])
             ->add('task', TextareaType::class, [
                 'required' => false
@@ -47,7 +44,8 @@ class ToDoListItemsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ToDoListItems::class,
-            'project' => null
+            'project' => null,
+            'access_projects'=>null
         ]);
     }
 }

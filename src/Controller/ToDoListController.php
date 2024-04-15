@@ -6,6 +6,7 @@ use App\Entity\ToDoList;
 use App\Form\ToDoListType;
 use App\Repository\ToDoListItemsRepository;
 use App\Repository\ToDoListRepository;
+use App\Services\CountPendingItems;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -26,7 +27,7 @@ class ToDoListController extends AbstractController
     /**
      * @Route("/index/{status}/{project}", name="to_do_list_index", methods={"GET"},defaults={"status"="Pending", "project"="All"})
      */
-    public function index(ToDoListRepository $toDoListRepository, $status, $project, ToDoListItemsRepository $toDoListItemsRepository): Response
+    public function index(ToDoListRepository $toDoListRepository, $status, $project, ToDoListItemsRepository $toDoListItemsRepository, CountPendingItems $countPendingItems): Response
     {
         $projects = $toDoListRepository->findAll();
         $project_title = 'All';
