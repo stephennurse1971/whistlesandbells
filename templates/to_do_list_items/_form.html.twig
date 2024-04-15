@@ -1,6 +1,6 @@
 <style>
     .ck-content{
-        height: 640px;
+        height: 520px;
     }
 </style>
 {{ form_start(form) }}
@@ -12,11 +12,13 @@
     <div class="col-md-1">
         {{ form_row(form.priority) }}
     </div>
-    <div class="col-md-2">
+    <div class="col-md-1">
         {{ form_row(form.status) }}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-1">
         {{ form_row(form.hoursAllocated) }}
+    </div>
+    <div class="col-md-1">
         {{ form_row(form.NeedsResearch) }}
     </div>
 
