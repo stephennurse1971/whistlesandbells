@@ -271,13 +271,17 @@ class PhotosController extends AbstractController
     /**
      * @Route("/delete/All/files/public/photos", name="photos_delete_all_files_in_public_photos",)
      */
-    public
-    function deleteAllFilesInPublicPhotos(Request $request): Response
+    public function deleteAllFilesInPublicPhotos(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
     {
         $referer = $request->server->get('HTTP_REFERER');
         $files = glob($this->getParameter('photos_upload_default_directory') . "/*");
         foreach ($files as $file) {
             unlink($file);
+        }
+        $photos = $photosRepository->findAll();
+        foreach ($photos as $photo){
+            $entityManager->remove($photo);
+            $entityManager->flush();
         }
         return $this->redirect($referer);
     }
