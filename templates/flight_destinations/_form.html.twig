@@ -1,8 +1,21 @@
 {{ form_start(form) }}
 <div class="row">
     <div class="col-3">
-        {{ form_widget(form) }}
+        {{ form_row(form.departureCity) }}
+        {{ form_row(form.arrivalCity) }}
+        {{ form_row(form.dateStart) }}
+        {{ form_row(form.dateEnd) }}
+    </div>
+    <div class="col-3">
+        {{ form_row(form.adminOnly) }}
+        {{ form_row(form.isActive) }}
+        {{ form_row(form.grouping) }}
+        {{ form_row(form.returnLeg) }}
+        {{ form_row(form.lastScraped) }}
+    </div>
+    <div class="col-3">
+        <a target="_blank" class="btn btn-outline-info btn-sm" href="{{ path('airports_new') }}">Add Airport</a>
     </div>
 </div>
-    <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

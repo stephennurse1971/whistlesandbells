@@ -78,4 +78,14 @@
         width: 300px;
         object-fit:cover;
     }
+    .videoByLocationThumbnail{
+        height: 100px;
+        width: 100px;
+
+    }
+    .videoByLocationFull{
+        height: 300px;
+        width: 300px;
+
+    }
 }

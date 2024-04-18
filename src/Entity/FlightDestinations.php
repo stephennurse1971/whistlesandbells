@@ -61,6 +61,11 @@ class FlightDestinations
      */
     private $returnLeg;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $grouping;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -159,6 +164,18 @@ class FlightDestinations
     public function setReturnLeg(?string $returnLeg): self
     {
         $this->returnLeg = $returnLeg;
+
+        return $this;
+    }
+
+    public function getGrouping(): ?int
+    {
+        return $this->grouping;
+    }
+
+    public function setGrouping(?int $grouping): self
+    {
+        $this->grouping = $grouping;
 
         return $this;
     }

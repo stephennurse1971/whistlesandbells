@@ -62,26 +62,28 @@ class FlightDestinationsController extends AbstractController
     public function newReturn(Request $request, int $id, AirportsRepository $airportsRepository, FlightDestinationsRepository $flightDestinationsRepository): Response
     {
         $selected_flight_destination = $flightDestinationsRepository->find($id);
-        $selected_flight_destination->setReturnLeg($selected_flight_destination->getID());
+        $selected_flight_destination->setReturnLeg('Outbound');
         $originalDepartureCity = $selected_flight_destination->getDepartureCity();
         $originalArrivalCity = $selected_flight_destination->getArrivalCity();
         $originalDateStart = $selected_flight_destination->getDateStart();
         $originalDateEnd = $selected_flight_destination->getDateEnd();
+        $originalAdminOnly = $selected_flight_destination->getAdminOnly();
+        $originalisActive = $selected_flight_destination->getIsActive();
+        $originalGrouping = $selected_flight_destination->getGrouping();
         $originalID = $selected_flight_destination->getID();
-
 
         $flightDestination = new FlightDestinations();
         $flightDestination->setReturnLeg($originalID);
         $form = $this->createForm(FlightDestinationsType::class, $flightDestination, [
             'odc'=>$originalDepartureCity,'oac'=>$originalArrivalCity,
-            'ods'=>$originalDateStart,'ode'=>$originalDateEnd,
-            //'rt'=>'Return leg'
+            'ods'=>$originalDateStart, 'oadmin'=>$originalAdminOnly, 'oisactive'=>$originalisActive,
+            'ode'=>$originalDateEnd,'ogrouping'=>$originalGrouping,
+            'mode'=>'new',
+            'rt'=>'Return'
             ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             $flightDestinationsRepository->add($flightDestination);
             return $this->redirectToRoute('flight_destinations_index', [], Response::HTTP_SEE_OTHER);
         }

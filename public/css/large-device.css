@@ -34,4 +34,12 @@
         width: 500px;
         object-fit:cover;
     }
+    .videoByLocationFull{
+        width:500px;
+        height:500px
+    }
+    .videoByLocationThumbnail{
+        width:100px;
+        height:100px
+    }
 }

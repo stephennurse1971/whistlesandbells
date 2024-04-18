@@ -10,19 +10,18 @@
             <tr>
                 <th>Id</th>
                 <th>City</th>
-                <th>AirportCode</th>
-                <th>actions</th>
+                <th>Airport Code</th>
             </tr>
         </thead>
         <tbody>
         {% for airport in airports %}
             <tr>
                 <td>{{ airport.id }}</td>
-                <td>{{ airport.city }}</td>
-                <td>{{ airport.airportCode }}</td>
                 <td>
-                    <a href="{{ path('airports_edit', {'id': airport.id}) }}">edit</a>
+                    <a href="{{ path('airports_edit', {'id': airport.id}) }}">{{ airport.city }}</a>
+
                 </td>
+                <td>{{ airport.airportCode }}</td>
             </tr>
         {% endfor %}
         </tbody>
