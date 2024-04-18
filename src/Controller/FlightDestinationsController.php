@@ -69,7 +69,7 @@ class FlightDestinationsController extends AbstractController
         $originalDateEnd = $selected_flight_destination->getDateEnd();
         $originalAdminOnly = $selected_flight_destination->getAdminOnly();
         $originalisActive = $selected_flight_destination->getIsActive();
-        $originalGrouping = $selected_flight_destination->getGrouping();
+        $originalGrouping = $selected_flight_destination->getGroupingX();
         $originalID = $selected_flight_destination->getID();
 
         $flightDestination = new FlightDestinations();

@@ -44,7 +44,7 @@ class FlightDestinationsType extends AbstractType
                     'required' => false,
                     'data' => $options['ode']
                 ])
-                ->add('grouping', TextType::class, [
+                ->add('groupingX', TextType::class, [
                         'label' => 'grouping',
                         'data' => $options['ogrouping'],
                         'required' => false,
@@ -101,7 +101,7 @@ class FlightDestinationsType extends AbstractType
                     'widget' => 'single_text',
                     'required' => false,
                 ])
-                ->add('grouping')
+                ->add('groupingX')
                 ->add('adminOnly')
                 ->add('isActive')
                 ->add('returnLeg', ChoiceType::class, [

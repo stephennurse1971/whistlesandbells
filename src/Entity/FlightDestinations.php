@@ -64,7 +64,7 @@ class FlightDestinations
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $grouping;
+    private $groupingX;
 
     public function getId(): ?int
     {
@@ -168,14 +168,14 @@ class FlightDestinations
         return $this;
     }
 
-    public function getGrouping(): ?int
+    public function getGroupingX(): ?int
     {
-        return $this->grouping;
+        return $this->groupingX;
     }
 
-    public function setGrouping(?int $grouping): self
+    public function setGroupingX(?int $groupingX): self
     {
-        $this->grouping = $grouping;
+        $this->groupingX = $groupingX;
 
         return $this;
     }

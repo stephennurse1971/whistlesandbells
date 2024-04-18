@@ -84,7 +84,7 @@ class HouseGuestsController extends AbstractController
             $current_date = new \DateTime($current_date->modify("+1 day")->format('d-m-Y'));
         }
         usort($flightDestinations,function($first,$second){
-            return $first->getGrouping() > $second->getGrouping();
+            return $first->getGroupingX() > $second->getGroupingX();
         });
         return $this->render('house_guests/calendarindex.html.twig', [
             'flight_destinations' => $flightDestinations,

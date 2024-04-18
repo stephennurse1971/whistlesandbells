@@ -31,13 +31,13 @@
         </thead>
         <tbody>
         {% for flight_destination in flight_destinations %}
-            {% if flight_destination.grouping is even %}
+            {% if flight_destination.groupingX is even %}
                 <tr style="background-color: whitesmoke">
             {% else %}
                 <tr>
             {% endif %}
             <td style="text-align: center">
-                <b> {{ flight_destination.grouping }}</b>
+                <b> {{ flight_destination.groupingX }}</b>
             </td>
             <td>
                 {{ flight_destination.departureCity.city }} ({{ flight_destination.departureCity.airportCode }})
