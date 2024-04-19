@@ -2,17 +2,31 @@
 {% block body %}
     <div class="row">
         {% for photo in photos %}
+            {% set image = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
+            {% set fileType =  photo.photo|split('.')|last %}
+
+
+
             <div class="col-lg-3 col-md-4 m-4 p-4">
                 <div class="justify-content-center d-flex">
                     <div class="homepage-gallery-image-container">
                         {% if photo.photo is not null %}
-                            {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
-                            {% if photo.link is not null %}
-                                <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
-                                    <img class="homepage-image" src="{{ loc }}">
-                                </a>
+
+                            {% if fileType == 'mp4' or fileType == 'mov' %}
+                                <video class="videoByLocationFull" controls="controls">
+                                    <source src="{{ image }}" type="video/mp4"/>
+                                </video>
                             {% else %}
-                                <img title="{{ photo.title }}" class="homepage-image" src="{{ loc }}">
+
+
+
+                                {% if photo.link is not null %}
+                                    <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
+                                        <img class="homepage-image" src="{{ image }}">
+                                    </a>
+                                {% else %}
+                                    <img title="{{ photo.title }}" class="homepage-image" src="{{ image }}">
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     </div>
