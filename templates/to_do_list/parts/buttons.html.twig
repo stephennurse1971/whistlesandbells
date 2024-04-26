@@ -26,7 +26,7 @@
         {% endif %}
         {% if project_title == 'All' %}
             {% for to_do_list in to_do_lists %}
-                {% if app.user in to_do_list.accessTo %}
+                {% if app.user in to_do_list.accessTo or is_granted('ROLE_ADMIN') %}
                     <a class="btn btn-outline-info btn-sm"
                     href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">{{ to_do_list.project }}
                     (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }})

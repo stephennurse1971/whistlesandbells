@@ -36,7 +36,10 @@ class ToDoListItemsController extends AbstractController
        $all_projects =  $doListRepository->findAll();
        $access_projects = [];
        foreach($all_projects as $project){
-           if(in_array($security->getUser(),$project->getAccessTo()->toArray())){
+           if(
+               in_array('ROLE_ADMIN', $security->getUser()->getRoles())
+               ||
+               in_array($security->getUser(),$project->getAccessTo()->toArray())){
                $access_projects[] = $project;
            }
        }

@@ -82,10 +82,10 @@
                                     Guest</a>
                                 <a class="dropdown-item"
                                    href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
-                                    <hr>
-                                    <a class="dropdown-item"
-                                       href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
-                                        attractions</a>
+                                <hr>
+                                <a class="dropdown-item"
+                                   href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
+                                    attractions</a>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files
                                         <span style="color: red">*</span></a>
@@ -147,7 +147,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 {% if is_granted('ROLE_IT') %}
-                                    <a class="dropdown-item" href="{{ path('to_do_list_index', {status:'Pending',project:'All'}) }}">
+                                    <a class="dropdown-item"
+                                       href="{{ path('to_do_list_index', {status:'Pending',project:'All'}) }}">
                                         To Do List</a>
                                 {% endif %}
                                 <hr>
@@ -211,52 +212,50 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ app.user.fullName }}
-
-                                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                    <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
-                                {% endif %}
-
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
-                                {% endif %}
-
-
-                                {% if is_granted('ROLE_ADMIN') %}{% else %}
-                                    {% if is_granted('ROLE_TENNIS_PLAYER') %}
-                                        <i title="Tennis PLayer" style="color: green" class="fa fa-table-tennis"></i>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_JOB_APPLICANT') %}
-                                        <i title="Job Applicant" style="color: red" class="fa fa-user-graduate"></i>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_RECRUITER') %}
-                                        <i title="Recruiter" style="color: red" class="fa fa-city"></i>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_ACCOUNTANT') %}
-                                        <i title="Acountant" style="color: blue" class="fa fa-dollar-sign"></i>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_FAMILY') %}
-                                        <i title="Family" style="color: blue" class="fa fa-baby"></i>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_GUEST') %}
-                                        <i title="Guest" style="color: green" class="fa fa-user-beer"></i>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_IT') %}
-                                        <i title="IT" style="color: red" class="fa fa-laptop"></i>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_USER') %}
-                                        <i title="USer" style="color: grey" class="fa fa-user"></i>
-                                    {% endif %}
-                                {% endif %}
-
-
                             </a>
+
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
+                            {% endif %}
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
+                            {% endif %}
+
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {% if is_granted('ROLE_TENNIS_PLAYER') %}
+                                    <i title="Tennis PLayer" style="color: green" class="fa fa-table-tennis"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_JOB_APPLICANT') %}
+                                    <i title="Job Applicant" style="color: red" class="fa fa-user-graduate"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_RECRUITER') %}
+                                    <i title="Recruiter" style="color: red" class="fa fa-city"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_ACCOUNTANT') %}
+                                    <i title="Accountant" style="color: blue" class="fa fa-dollar-sign"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_FAMILY') %}
+                                    <i title="Family" style="color: blue" class="fa fa-baby"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_GUEST') %}
+                                    <i title="Guest" style="color: green" class="fa fa-user-beer"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_IT') %}
+                                    <i title="IT" style="color: red" class="fa fa-laptop"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_USER') %}
+                                    <i title="User" style="color: grey" class="fa fa-user"></i>
+                                {% endif %}
+                            {% endif %}
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">Profile</a>
