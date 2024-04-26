@@ -22,17 +22,17 @@
 
     {% include 'house_guests/parts/house_guest_buttons.html.twig' %}
 <div class="table-container">
-    <table class="table" style="width: 100%">
+    <table class="table table-responsive" style="width: 100%">
         <thead>
         <tr>
-            <th style="width: 150px; border-right: 1px dotted grey">Date</th>
-            <th style="width: 150px; border-right: 1px dotted grey; text-align: left">Book</th>
-            <th style="width: 200px; border-right: 1px dotted grey; text-align: left">Travel Notes</th>
-            <th style="width: 200px; border-right: 1px dotted grey; border-right: 1px solid grey; text-align: left">
+            <th style="border-right: 1px dotted grey">Date</th>
+            <th style="border-right: 1px dotted grey; text-align: left">Book</th>
+            <th style="border-right: 1px dotted grey; text-align: left">Travel Notes</th>
+            <th style="border-right: 1px dotted grey; border-right: 1px solid grey; text-align: left">
                 Notes
             </th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th style="width:75px;border-right: 1px solid grey; text-align: left">
+                <th style="border-right: 1px solid grey; text-align: left">
                     Delete
                 </th>
             {% endif %}
@@ -40,9 +40,9 @@
         </tr>
 
         <tr>
-            <th style="width: 150px; border-right: 1px dotted grey" class="desktop"></th>
-            <th style="width: 150px; border-right: 1px dotted grey" class="desktop"></th>
-            <th style="width: 200px; border-right: 1px dotted grey" class="desktop"></th>
+            <th style="border-right: 1px dotted grey" class="desktop"></th>
+            <th style="border-right: 1px dotted grey" class="desktop"></th>
+            <th style="border-right: 1px dotted grey" class="desktop"></th>
             <th class="desktop" style="width: 200px;border-right: 1px solid grey"></th>
             {% if is_granted('ROLE_ADMIN') %}
                 <th style="border-right: 1px solid grey"> </th>
@@ -57,16 +57,16 @@
             {% set id = '' %}
             <tr>
                 {% if date|date('D') == "Sat" or date|date('D') == "Sun" %}
-                    <td style="width: 150px; border-right: 1px dotted grey; background-color: lightblue; text-align: right" data-sort="{{ date| date('Y-m-d') }}">
+                    <td style="border-right: 1px dotted grey; background-color: lightblue; text-align: right" data-sort="{{ date| date('Y-m-d') }}">
                         {{ date | date('D d-M-y') }}
                     </td>
                 {% else %}
-                    <td style="width: 150px; border-right: 1px dotted grey;text-align: right" data-sort="{{ date| date('Y-m-d') }}">
+                    <td style="border-right: 1px dotted grey;text-align: right" data-sort="{{ date| date('Y-m-d') }}">
                         {{ date | date('D d-M-y') }}
                     </td>
                 {% endif %}
 
-                <td style="width: 150px; border-right: 1px dotted grey; background-color: white">
+                <td style="border-right: 1px dotted grey; background-color: white">
                     {% set flag = 0 %}
                     {% for house_guest in house_guests %}
                         {% if house_guest['date'] == date|date('d-m-y') %}
@@ -106,7 +106,7 @@
                     {% endif %}
                 </td>
 
-                <td style="width: 200px; border-right: 1px dotted grey; background-color: white">
+                <td style="border-right: 1px dotted grey; background-color: white">
                     {% for house_guest in house_guests %}
                         {% if house_guest['referenceInformation'] == "Guest Booking" %}
                             {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
@@ -121,7 +121,7 @@
                     {% endfor %}
                 </td>
 
-                <td style="width:200px; border-right: 1px solid grey; background-color: white">
+                <td style="border-right: 1px solid grey; background-color: white">
                     {% for house_guest in house_guests %}
                         {% if house_guest['referenceInformation'] == "Guest Booking" %}
                             {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
@@ -138,7 +138,7 @@
                 </td>
 
                 {% if is_granted('ROLE_ADMIN') %}
-                    <td style="width:75px;border-right: 1px solid grey; background-color: white">
+                    <td style="border-right: 1px solid grey; background-color: white">
                         {% if id != '' %}
                             <form method="post" action="{{ path('house_guests_delete', {'id':id }) }}"
                                   onsubmit="return confirm('Are you sure you want to delete this item?');">
