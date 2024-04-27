@@ -13,12 +13,14 @@ class SettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('flightStatsDays')
             ->add('flightStatsStartDate', DateType::class, [
                 'label' => 'Date',
                 'required' => false,
                 'widget' => 'single_text',
             ])
+            ->add('flightStatsDays')
+            ->add('flightStatsReturnLegOffset')
+
             ->add('investmentDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
                 'label' => 'Investment "As of" Date',
                 'required' => false,

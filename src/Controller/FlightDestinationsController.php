@@ -59,14 +59,18 @@ class FlightDestinationsController extends AbstractController
     /**
      * @Route("/newReturn/{id}", name="flight_destinations_new_return", methods={"GET", "POST"})
      */
-    public function newReturn(Request $request, int $id, AirportsRepository $airportsRepository, FlightDestinationsRepository $flightDestinationsRepository): Response
+    public function newReturn(Request $request, int $id, AirportsRepository $airportsRepository, FlightDestinationsRepository $flightDestinationsRepository, SettingsRepository $settingsRepository): Response
     {
+        $settings=$settingsRepository->find('1');
+        $flightStatsReturnLegOffset=$settings->getFlightStatsReturnLegOffset();
         $selected_flight_destination = $flightDestinationsRepository->find($id);
         $selected_flight_destination->setReturnLeg('Outbound');
         $originalDepartureCity = $selected_flight_destination->getDepartureCity();
         $originalArrivalCity = $selected_flight_destination->getArrivalCity();
         $originalDateStart = $selected_flight_destination->getDateStart();
+        $originalDateStartAdjusted = date_modify($originalDateStart, +$flightStatsReturnLegOffset . ' days');
         $originalDateEnd = $selected_flight_destination->getDateEnd();
+        $originalDateEndAdjusted = date_modify($originalDateEnd, +$flightStatsReturnLegOffset . ' days');
         $originalAdminOnly = $selected_flight_destination->getAdminOnly();
         $originalisActive = $selected_flight_destination->getIsActive();
         $originalGrouping = $selected_flight_destination->getGroupingX();
@@ -76,8 +80,8 @@ class FlightDestinationsController extends AbstractController
         $flightDestination->setReturnLeg($originalID);
         $form = $this->createForm(FlightDestinationsType::class, $flightDestination, [
             'odc'=>$originalDepartureCity,'oac'=>$originalArrivalCity,
-            'ods'=>$originalDateStart, 'oadmin'=>$originalAdminOnly, 'oisactive'=>$originalisActive,
-            'ode'=>$originalDateEnd,'ogrouping'=>$originalGrouping,
+            'ods'=>$originalDateStartAdjusted, 'oadmin'=>$originalAdminOnly, 'oisactive'=>$originalisActive,
+            'ode'=>$originalDateEndAdjusted,'ogrouping'=>$originalGrouping,
             'mode'=>'new',
             'rt'=>'Return'
             ]);

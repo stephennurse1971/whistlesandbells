@@ -32,6 +32,11 @@ class Settings
      */
     private $investmentDate;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $flightStatsReturnLegOffset;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Settings
     public function setInvestmentDate(?\DateTimeInterface $investmentDate): self
     {
         $this->investmentDate = $investmentDate;
+
+        return $this;
+    }
+
+    public function getFlightStatsReturnLegOffset(): ?int
+    {
+        return $this->flightStatsReturnLegOffset;
+    }
+
+    public function setFlightStatsReturnLegOffset(?int $flightStatsReturnLegOffset): self
+    {
+        $this->flightStatsReturnLegOffset = $flightStatsReturnLegOffset;
 
         return $this;
     }

@@ -71,7 +71,7 @@ class FlightDestinationsType extends AbstractType
                 ->add('returnLeg', ChoiceType::class, [
                     'label' => 'Outbound or Return',
                     'required' => false,
-                    'data'=>'Return',
+                    'data' => 'Return',
                     'choices' => [
                         'Outbound' => 'Outbound',
                         'Return' => 'Return'
@@ -111,11 +111,9 @@ class FlightDestinationsType extends AbstractType
                         'Outbound' => 'Outbound',
                         'Return' => 'Return'
                     ]
-                ])
-            ;
+                ]);
         }
         $builder
-
             ->add('lastScraped', DateType::class, [
                 'label' => 'Last Scraped',
                 'widget' => 'single_text',
