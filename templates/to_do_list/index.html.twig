@@ -25,7 +25,6 @@
         </thead>
         <tbody>
         {% for to_do_list in to_do_lists %}
-
             {% set hasAccess = 0 %}
             {% if is_granted('ROLE_ADMIN') %}
                 {% set hasAccess = 1 %}

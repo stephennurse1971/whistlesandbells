@@ -27,12 +27,24 @@
         {% if project_title == 'All' %}
             {% for to_do_list in to_do_lists %}
                 {% if app.user in to_do_list.accessTo or is_granted('ROLE_ADMIN') %}
-                    <a class="btn btn-outline-info btn-sm"
-                    href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">{{ to_do_list.project }}
-                    (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }})
+                    {% if CountPendingItems.calculatePendingItems(to_do_list.id) > 0 %}
+                        <a class="btn btn-outline-info btn-sm"
+                        href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">{{ to_do_list.project }}
+                        (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }})  </a>
+                    {% endif %}
                 {% endif %}
-                </a>
             {% endfor %}
+
+            {% for to_do_list in to_do_lists %}
+                {% if app.user in to_do_list.accessTo or is_granted('ROLE_ADMIN') %}
+                    {% if CountPendingItems.calculatePendingItems(to_do_list.id) ==0 %}
+                        <a class="btn btn-outline-danger btn-sm"
+                           href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">{{ to_do_list.project }}
+                            (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }})  </a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
         {% endif %}
     </div>
 </div>
