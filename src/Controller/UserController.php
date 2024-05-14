@@ -103,7 +103,6 @@ class UserController extends AbstractController
      */
     public function indexRole(string $role, UserRepository $userRepository): Response
     {
-
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findByRole($role),
             'role' => $role,
@@ -392,8 +391,7 @@ class UserController extends AbstractController
      */
     public function edit(string $fullName, MailerInterface $mailer, Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder, CmsCopyRepository $cmsCopyRepository): Response
     {
-        // $referer = $request->server->get('HTTP_REFERER');
-
+        $referer = $request->server->get('HTTP_REFERER');
         $cmsContact = $cmsCopyRepository->findOneBy([
             'name' => 'Introduction Email - Contact']);
         $cmsFamily = $cmsCopyRepository->findOneBy([
