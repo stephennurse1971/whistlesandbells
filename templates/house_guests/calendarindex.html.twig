@@ -94,7 +94,10 @@
                                     {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
                                         {% if house_guest['guest'] is not null %}
                                             <a target="_blank"
-                                               href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">{{ house_guest['guest'].fullName }}..</a>
+                                               href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">{{ house_guest['guest'].fullName }}</a>
+                                        {% else %}
+                                            <a target="_blank"
+                                               href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">TBC</a>
                                         {% endif %}
                                     {% else %}
                                         Booked
