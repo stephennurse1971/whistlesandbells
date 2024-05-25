@@ -24,7 +24,7 @@ parameters:
     tourist_attraction_photos_directory: '%kernel.project_dir%/public/administration/attachments/TouristAttractionPhotos'
     photos_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Photos/'
     user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
-    website_photos_directory: '%kernel.project_dir%/public/administration/attachments/websitePhotos'
+    website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
     winelist_directory: '%kernel.project_dir%/public/administration/img/winelist'
 
 services:

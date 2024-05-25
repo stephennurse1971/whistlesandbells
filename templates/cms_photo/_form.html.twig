@@ -19,7 +19,7 @@
     <div class="col-md-2">
         {% if cms_photo.photo is not empty %}
             {{ cms_photo.photo }}<br>
-            {% set loc = asset('administration/attachments/websitephotos/')~cms_photo.photo %}
+            {% set loc = asset('administration/attachments/Websitephotos/')~cms_photo.photo %}
             <a class="btn btn-outline-danger btn-sm" target="_blank"
                href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">
                 <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
