@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Security;
 
 
 /**
- * @Route("/photos")
+ * @Route("/Photos")
  * @IsGranted("ROLE_GUEST")
  */
 class PhotosController extends AbstractController
@@ -46,7 +46,7 @@ class PhotosController extends AbstractController
             'publicPrivate' => 'Private'
         ]);
         return $this->render('photos/index.html.twig', [
-            'photos' => $photos,
+            'Photos' => $photos,
             'locations_public' => $photolocations_public,
             'locations_private' => $photolocations_private
         ]);
@@ -93,7 +93,7 @@ class PhotosController extends AbstractController
         $photos = array_merge($favourite_photos, $unfavourite_photos);
 
         return $this->render('photos/showByLocation.html.twig', [
-            'photos' => $photos,
+            'Photos' => $photos,
             'location' => $locationsRepository->findOneBy(['location' => $location]),
             'photo_date' => $locationsRepository->findOneBy(['location' => $location])->getDate(),
             'format' => $format,
@@ -132,7 +132,7 @@ class PhotosController extends AbstractController
         $form = $this->createForm(PhotosType::class, $photo, ['location' => $locationsRepository->findOneBy(['location' => $location]), 'mode' => 'new']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $photos = $form->get('photos')->getData();
+            $photos = $form->get('Photos')->getData();
             foreach ($photos as $single_photo) {
                 $photo_single = new Photos();
                 $originalFilename = pathinfo($single_photo->getClientOriginalName(), PATHINFO_FILENAME);
@@ -178,7 +178,7 @@ class PhotosController extends AbstractController
     function edit(Request $request, Photos $photo, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(PhotosType::class, $photo);
-        $form->remove('photos');
+        $form->remove('Photos');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($photo->getPerson() as $person) {
@@ -231,7 +231,7 @@ class PhotosController extends AbstractController
 
 
     /**
-     * @Route("/deleteAll/photos", name="photos_delete_all",)
+     * @Route("/deleteAll/Photos", name="photos_delete_all",)
      */
     public
     function deleteAll(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
@@ -247,7 +247,7 @@ class PhotosController extends AbstractController
     }
 
     /**
-     * @Route("/deleteAllByLocation/photos/{location}", name="photos_delete_all_by_location",)
+     * @Route("/deleteAllByLocation/Photos/{location}", name="photos_delete_all_by_location",)
      */
     public
     function deleteAllByLocation(Request $request, string $location, PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository, EntityManagerInterface $entityManager): Response
@@ -269,7 +269,7 @@ class PhotosController extends AbstractController
 
 
     /**
-     * @Route("/delete/All/files/public/photos", name="photos_delete_all_files_in_public_photos",)
+     * @Route("/delete/All/files/public/Photos", name="photos_delete_all_files_in_public_photos",)
      */
     public function deleteAllFilesInPublicPhotos(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
     {

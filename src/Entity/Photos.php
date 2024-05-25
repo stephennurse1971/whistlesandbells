@@ -25,7 +25,7 @@ class Photos
     private $photoFile;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PhotoLocations::class, inversedBy="photos")
+     * @ORM\ManyToOne(targetEntity=PhotoLocations::class, inversedBy="Photos")
      */
     private $location;
 

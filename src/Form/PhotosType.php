@@ -27,7 +27,7 @@ class PhotosType extends AbstractType
                 'empty_data' => null,
                 'data' => $options['location']
             ])
-            ->add('photos', FileType::class, [
+            ->add('Photos', FileType::class, [
                 'multiple' => true,
                 'mapped' => false
             ])

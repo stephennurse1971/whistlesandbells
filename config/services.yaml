@@ -4,27 +4,28 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    files_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Files'
-    recruiter_introductions_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Recruiter_Introductions_Attachments'
     file_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FileAttachments'
     files_cv_directory: '%kernel.project_dir%/public/administration/attachments/CV'
+    files_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Files'
+    fx_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FXRates/'
+    garmin_attachments_directory: '%kernel.project_dir%/public/administration/attachments/GarminGPXFiles'
     import_user_directory: '%kernel.project_dir%/public/administration/import/'
     import_photo_directory: '%kernel.project_dir%/public/administration/img/photogallery/'
     investments_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments'
     investments_future_comms_attachment_directory: '%kernel.project_dir%/public/administration/attachments/Investments/InvestmentsFutureComms'
-    garmin_attachments_directory: '%kernel.project_dir%/public/administration/attachments/GarminGPXFiles'
     jpm_ic_history_directory: '%kernel.project_dir%/public/administration/attachments/JPMICHistory'
-    photos_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/photos/'
-    winelist_directory: '%kernel.project_dir%/public/administration/img/winelist'
+    recruiter_introductions_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Recruiter_Introductions_Attachments'
+    todolist_items_attachments_directory: '%kernel.project_dir%/public/administration/attachments/ToDoListItems'
+    security_prices_attachments_directory: '%kernel.project_dir%/public/administration/attachments/SecurityPrices/'
+    scraper: '%kernel.project_dir%/public/scrape/'
     tax_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments'
     tax_supporting_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments/TaxSupportingDocuments'
-    tourist_attraction_photos_directory: '%kernel.project_dir%/public/administration/attachments/TouristAttractionPhotos'
     temporary_attachment_directory: '%kernel.project_dir%/public/temporary/'
+    tourist_attraction_photos_directory: '%kernel.project_dir%/public/administration/attachments/TouristAttractionPhotos'
+    photos_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Photos/'
     user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
-    fx_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FXRates/'
-    security_prices_attachments_directory: '%kernel.project_dir%/public/administration/attachments/SecurityPrices/'
     website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
-    scraper: '%kernel.project_dir%/public/scrape/'
+    winelist_directory: '%kernel.project_dir%/public/administration/img/winelist'
 
 services:
     # default configuration for services in *this* file

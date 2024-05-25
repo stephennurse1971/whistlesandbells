@@ -522,26 +522,26 @@ class User implements UserInterface
     }
 
 //    /**
-//     * @return Collection|photos[]
+//     * @return Collection|Photos[]
 //     */
 //    public function getPhotos(): Collection
 //    {
-//        return $this->photos;
+//        return $this->Photos;
 //    }
 //
-//    public function addPhoto(photos $photo): self
+//    public function addPhoto(Photos $photo): self
 //    {
-//        if (!$this->photos->contains($photo)) {
-//            $this->photos[] = $photo;
+//        if (!$this->Photos->contains($photo)) {
+//            $this->Photos[] = $photo;
 //            $photo->addPerson($this);
 //        }
 //
 //        return $this;
 //    }
 //
-//    public function removePhoto(photos $photo): self
+//    public function removePhoto(Photos $photo): self
 //    {
-//        if ($this->photos->removeElement($photo)) {
+//        if ($this->Photos->removeElement($photo)) {
 //            $photo->removePerson($this);
 //        }
 //

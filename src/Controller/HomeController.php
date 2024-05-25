@@ -61,7 +61,7 @@ class HomeController extends AbstractController
             'Hyperlink' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageHyperlink'
             ]),
-            'photos' => $cmsPhotoRepository->findBy([
+            'Photos' => $cmsPhotoRepository->findBy([
                 'name' => 'HomePage'
             ])
         ]);
@@ -155,7 +155,7 @@ class HomeController extends AbstractController
     public function homeAddress(StaticTextRepository $staticTextRepository, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {
         return $this->render('home/homeaddress.html.twig', [
-            'photos' => $cmsPhotoRepository->findAll(),
+            'Photos' => $cmsPhotoRepository->findAll(),
             'HomePage1Photo' => $cmsPhotoRepository->findOneBy([
                 'name' => 'HomePage1'
             ]),

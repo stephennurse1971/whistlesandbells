@@ -6,7 +6,7 @@
 {{ form_start(form) }}
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
         {{ form_row(form.project) }}
     </div>
     <div class="col-md-1">
@@ -19,13 +19,19 @@
         {{ form_row(form.hoursAllocated) }}
     </div>
     <div class="col-md-1">
-        {{ form_row(form.NeedsResearch) }}
+        {{ form_row(form.needsResearch) }}
+    </div>
+    <div class="col-md-2">
+        {{ form_row(form.immediatePriority) }}
+    </div>
+    <div class="col-md-2">
+        {{ form_row(form.attachment) }}
     </div>
 
 </div>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-10">
         {{ form_row(form.task) }}
     </div>
 </div>

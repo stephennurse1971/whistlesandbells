@@ -3,13 +3,26 @@
 {% block title %}To Do List{% endblock %}
 
 {% block body %}
-    <h1 style="color: red;">To Do List: {{ project_title }}
-        {% if status!="All" %}
-            ({{ status }})
-        {% endif %}
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('to_do_list_new') }}">+</a>
-        {% endif %}
+    <div class="row">
+        <div class="col-8">
+            <h1 style="color: red">
+                To Do List: {{ project_title }}
+                {% if status!="All" %}
+                    ({{ status }})
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('to_do_list_new') }}">+</a>
+                {% endif %}
+            </h1>
+        </div>
+        <div class="col-3">
+            <a class="btn btn-info btn-sm"
+               href="{{ path('to_do_list_index', {status: 'Pending', project: "Top Priority"}) }}">Top Priority</a>
+        </div>
+    </div>
+
+
     </h1>
 
     {% include 'to_do_list/parts/buttons.html.twig' %}
@@ -25,6 +38,7 @@
         </thead>
         <tbody>
         {% for to_do_list in to_do_lists %}
+
             {% set hasAccess = 0 %}
             {% if is_granted('ROLE_ADMIN') %}
                 {% set hasAccess = 1 %}
@@ -41,6 +55,7 @@
                     <td style="width: 170px; font-size: large">
                         <b> <a target="_blank"
                                href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.project }}</a></b>
+                        {#                            ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id)}} #}
                     </td>
                     <td style="width: 600px;font-size: small">
                         {% for user in to_do_list.getAccessTo %}
@@ -66,6 +81,7 @@
                                 <th></th>
                                 <th style="width: 15px"></th>
                                 <th style="width: 15px"></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -99,7 +115,8 @@
                                                    class="fa fa-dot-circle-o"></i>
                                             {% endif %}
                                             {% if to_do_lists_item.needsResearch == "Yes - Minor" %}
-                                                <i title="{{ to_do_lists_item.needsResearch }}" style="color: orange"
+                                                <i title="{{ to_do_lists_item.needsResearch }}"
+                                                   style="color: orange"
                                                    class="fa fa-dot-circle-o"></i>
                                             {% endif %}
                                             {% if to_do_lists_item.needsResearch == "Yes - Significant" %}
@@ -108,6 +125,17 @@
                                             {% endif %}
                                         </td>
                                         <td>{{ to_do_lists_item.hoursAllocated }}</td>
+                                        <td>
+                                            {% if to_do_lists_item.immediatePriority ==1 %}
+                                                <i style="color: red" class="fa fa-star"></i>
+                                            {% endif %}
+                                            {% if to_do_lists_item.attachment is not null %}
+                                                <a href="{{ path('app_home') }}">
+                                                    <i title="{{ to_do_lists_item.attachment }}" style="color: grey" class="fa fa-paperclip"></i>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
                                         <td>
                                             {% if to_do_lists_item.status=="Complete" %}
                                                 <span style="color: green"> {{ to_do_lists_item.status }}</span>
@@ -131,8 +159,6 @@
                             </tbody>
                         </table>
                     </td>
-
-
                 </tr>
             {% endif %}
         {% endfor %}

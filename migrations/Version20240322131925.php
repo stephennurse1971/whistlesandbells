@@ -21,13 +21,13 @@ final class Version20240322131925 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE facebook_reviews');
-        $this->addSql('ALTER TABLE photos DROP email, DROP priority');
+        $this->addSql('ALTER TABLE Photos DROP email, DROP priority');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE facebook_reviews (id INT AUTO_INCREMENT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
-        $this->addSql('ALTER TABLE photos ADD email TINYINT(1) DEFAULT NULL, ADD priority TINYINT(1) DEFAULT NULL');
+        $this->addSql('ALTER TABLE Photos ADD email TINYINT(1) DEFAULT NULL, ADD priority TINYINT(1) DEFAULT NULL');
     }
 }

@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-md-3">
         <h2>
-            {% set loc = asset('photos')~"/"~photo.photoFile %}
+            {% set loc = asset('Photos')~"/"~photo.photoFile %}
 
                 {% if photo.rotate==1 %}
                 <img height="200" width="200" src="{{ loc }}" class="rounded-circle rotate-90">

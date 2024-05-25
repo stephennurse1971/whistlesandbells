@@ -18,9 +18,20 @@ class CountPendingItems
             return count($items);
         }
         return 0;
-
     }
 
+    public function calculatePendingTopPriorityItems($project)
+    {
+        $items = $this->toDoListItemsRepository->findBy([
+            'project' => $project,
+            'status'=>'Pending',
+            'immediatePriority'=>1
+        ]);
+        if ($items) {
+            return count($items);
+        }
+        return 0;
+    }
 
     public function __construct(ToDoListItemsRepository $toDoListItemsRepository)
     {

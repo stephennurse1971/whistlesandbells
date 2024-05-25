@@ -21,7 +21,7 @@ final class Version20240322115813 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE photos_user (photos_id INT NOT NULL, user_id INT NOT NULL, INDEX IDX_1A8964A8301EC62 (photos_id), INDEX IDX_1A8964A8A76ED395 (user_id), PRIMARY KEY(photos_id, user_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE photos_user ADD CONSTRAINT FK_1A8964A8301EC62 FOREIGN KEY (photos_id) REFERENCES photos (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE photos_user ADD CONSTRAINT FK_1A8964A8301EC62 FOREIGN KEY (photos_id) REFERENCES Photos (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE photos_user ADD CONSTRAINT FK_1A8964A8A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
         $this->addSql('DROP TABLE facebook_reviews');
     }

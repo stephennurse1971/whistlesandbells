@@ -32,12 +32,38 @@ class ToDoListController extends AbstractController
         $projects = $toDoListRepository->findAll();
         $project_title = 'All';
 
-        if ($project != "All") {
+        if ($project == "Top Priority") {
+            $to_do_lists_items = $toDoListItemsRepository->findBy([
+                'immediatePriority' => 1
+            ]);
+            $project_title = "Top Priorities";
+
+            $projects = $toDoListRepository->findAll();
+//            $all_projects = $toDoListRepository->findAll();
+//            $projects = [];
+//            foreach ($all_projects as $project) {
+//                if (CountPendingItems . calculatePendingTopPriorityItems($project) > 0) {
+//                    $project = $project;
+//                }
+//            }
+
+        }
+
+
+        if ($project != "All" and $project != "Top Priority") {
             $projects = $toDoListRepository->findBy([
                 'project' => $project
             ]);
-            $project_title=$project;
+            $to_do_lists_items = $toDoListItemsRepository->findAll();
+            $project_title = $project;
         }
+        if ($project == "All") {
+            $projects = $toDoListRepository->findAll();
+            $to_do_lists_items = $toDoListItemsRepository->findAll();
+            $project_title = $project;
+        }
+
+
         usort($projects, function ($first, $second) {
             return strcmp($first->getProject(), $second->getProject());
         });
@@ -45,7 +71,7 @@ class ToDoListController extends AbstractController
             'status' => $status,
             'project_title' => $project_title,
             'to_do_lists' => $projects,
-            'to_do_lists_items' => $toDoListItemsRepository->findAll(),
+            'to_do_lists_items' => $to_do_lists_items,
         ]);
     }
 

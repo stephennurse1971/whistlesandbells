@@ -44,10 +44,22 @@ class ToDoListItems
      */
     private $hoursAllocated;
 
+
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $immediatePriority;
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $NeedsResearch;
+    private $needsResearch;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $attachment;
 
     public function getId(): ?int
     {
@@ -115,14 +127,41 @@ class ToDoListItems
         return $this;
     }
 
-    public function getNeedsResearch(): ?string
+
+
+
+    public function getImmediatePriority(): ?bool
     {
-        return $this->NeedsResearch;
+        return $this->immediatePriority;
     }
 
-    public function setNeedsResearch(?string $NeedsResearch): self
+    public function setImmediatePriority(?bool $immediatePriority): self
     {
-        $this->NeedsResearch = $NeedsResearch;
+        $this->immediatePriority = $immediatePriority;
+
+        return $this;
+    }
+
+    public function getNeedsResearch(): ?string
+    {
+        return $this->needsResearch;
+    }
+
+    public function setNeedsResearch(?string $needsResearch): self
+    {
+        $this->needsResearch = $needsResearch;
+
+        return $this;
+    }
+
+    public function getAttachment(): ?string
+    {
+        return $this->attachment;
+    }
+
+    public function setAttachment(?string $attachment): self
+    {
+        $this->attachment = $attachment;
 
         return $this;
     }

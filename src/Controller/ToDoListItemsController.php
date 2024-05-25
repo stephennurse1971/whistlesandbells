@@ -92,6 +92,22 @@ class ToDoListItemsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('attachment')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+//                $safeFilename = $slugger->slug($originalFilename);
+//                $newFilename = $safeFilename . '.' . $importFile->guessExtension();
+                try {
+                    $importFile->move(
+                        $this->getParameter('todolist_items_attachments_directory'),
+                        $originalFilename
+                    );
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+                return $this->redirectToRoute('to_do_list_index');
+            }
+
             $toDoListItemsRepository->add($toDoListItem);
             return $this->redirectToRoute('to_do_list_index', ['project'=>'All', 'status'=>'All'], Response::HTTP_SEE_OTHER);
         }

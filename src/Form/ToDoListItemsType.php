@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,14 +40,27 @@ class ToDoListItemsType extends AbstractType
                     'Blocked' => 'Blocked',
                 ],])
         ->add('hoursAllocated')
-        ->add('NeedsResearch',ChoiceType::class,[
+        ->add('attachment', FileType::class, [
+            'label' => 'Attachments',
+            'mapped' => false,
+            'required' => false,
+        ])
+        ->add('needsResearch',ChoiceType::class,[
             'label'=>'Needs Research',
             'choices'=>[
                 'No'=>'No',
                 'Yes - Minor Research Required'=>'Yes - Minor',
                 'Yes - Significant Research Required'=>'Yes - Significant'
             ]
-        ]);
+        ])
+            ->add('immediatePriority',ChoiceType::class,[
+                'label'=>'Immediate Priority',
+                'choices'=>[
+                    'Other'=>'Other',
+                    'Top Priority'=>'Top Priority',
+                ]
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
