@@ -58,11 +58,11 @@
                             {% if Photo1.photo is not null %}
                                 {% if Photo1.photoOrVideo == "Video" %}
                                     <video class="other-page-image" controls>
-                                        <source src="{{ asset('administration/attachments/WebsitePhotos/') }}{{ Photo1.photo }}"
+                                        <source src="{{ asset('administration/attachments/websitePhotos/') }}{{ Photo1.photo }}"
                                                 type="video/mp4">
                                     </video>
                                 {% else %}
-                                    {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo1.photo %}
+                                    {% set loc = asset('administration/attachments/websitePhotos')~"/"~Photo1.photo %}
                                     {% if Photo1.link is not null %}
                                         <a target="_blank" href="{{ Photo1.link }}">
                                             <img title="{{ Photo1.title }}" class="other-page-image" src="{{ loc }}"></a>
@@ -116,11 +116,11 @@
                             {% if Photo2.photo is not null %}
                                 {% if Photo2.photoOrVideo == "Video" %}
                                     <video class="other-page-image" controls>
-                                        <source src="{{ asset('administration/attachments/WebsitePhotos/') }}{{ Photo2.photo }}"
+                                        <source src="{{ asset('administration/attachments/websitePhotos/') }}{{ Photo2.photo }}"
                                                 type="video/mp4">
                                     </video>
                                 {% else %}
-                                    {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo2.photo %}
+                                    {% set loc = asset('administration/attachments/websitePhotos')~"/"~Photo2.photo %}
                                     {% if Photo2.link is not null %}
                                         <a target="_blank" href="{{ Photo2.link }}">
                                             <img title="{{ Photo2.title }}" class="other-page-image" src="{{ loc }}"></a>
@@ -176,11 +176,11 @@
                             {% if Photo3.photo is not null %}
                                 {% if Photo3.photoOrVideo == "Video" %}
                                     <video class="other-page-image" controls>
-                                        <source src="{{ asset('administration/attachments/WebsitePhotos/') }}{{ Photo3.photo }}"
+                                        <source src="{{ asset('administration/attachments/websitePhotos/') }}{{ Photo3.photo }}"
                                                 type="video/mp4">
                                     </video>
                                 {% else %}
-                                    {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~Photo3.photo %}
+                                    {% set loc = asset('administration/attachments/websitePhotos')~"/"~Photo3.photo %}
                                     {% if Photo2.link is not null %}
                                         <a target="_blank" href="{{ Photo3.link }}">
                                             <img title="{{ Photo3.title }}" class="other-page-image" src="{{ loc }}"></a>

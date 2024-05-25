@@ -24,7 +24,7 @@
             <tr>
                 <td>
                     {% if cms_photo.photo is not empty %}
-                        {% set loc = asset('administration/attachments/WebsitePhotos')~"/"~cms_photo.photo %}
+                        {% set loc = asset('administration/attachments/websitePhotos')~"/"~cms_photo.photo %}
                         <a class="btn btn-outline-danger btn-sm" target="_blank"
                            href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">
                             <img height="50" width="50" src="{{ loc }}" class="rounded-circle test">
