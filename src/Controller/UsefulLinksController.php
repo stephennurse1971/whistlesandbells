@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\UsefulLinks;
 use App\Form\UsefulLinksType;
 use App\Repository\UsefulLinksRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,12 +19,17 @@ class UsefulLinksController extends AbstractController
     /**
      * @Route("/index/{category}", name="useful_links_index", methods={"GET"})
      */
-    public function index(Request $request, string $category, UsefulLinksRepository $usefulLinksRepository): Response
+    public function index(Request $request, string $category, UsefulLinksRepository $usefulLinksRepository, UserRepository $userRepository): Response
     {
+        $sn = $userRepository->findOneBy([
+            'email' => 'nurse_stephen@hotmail.com'
+        ]);
         $categories = ['ATS', 'Finance', 'Health', 'Cyprus Estate Agent', 'Other Estate Agent',
             'Shopping', 'Gwenny', 'AX', 'IT', 'Recruitment', 'RT'];
         $useful_links = $usefulLinksRepository->findAll();
+
         return $this->render('useful_links/index.html.twig', [
+            'sn' => $sn,
             'useful_links' => $useful_links,
             'categories' => $categories,
             'category_chosen' => $category
@@ -41,7 +47,7 @@ class UsefulLinksController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $usefulLinksRepository->add($usefulLink);
-            return $this->redirectToRoute('useful_links_index', ['category'=>'All'], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('useful_links_index', ['category' => 'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('useful_links/new.html.twig', [
@@ -70,7 +76,7 @@ class UsefulLinksController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $usefulLinksRepository->add($usefulLink);
-            return $this->redirectToRoute('useful_links_index', ['category'=>'All'], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('useful_links_index', ['category' => 'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('useful_links/edit.html.twig', [
@@ -90,7 +96,7 @@ class UsefulLinksController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('useful_links_index', ['category'=>'All'], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('useful_links_index', ['category' => 'All'], Response::HTTP_SEE_OTHER);
     }
 }
 

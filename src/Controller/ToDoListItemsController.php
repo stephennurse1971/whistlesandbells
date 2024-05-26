@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\FileAttachments;
 use App\Entity\ToDoListItems;
 use App\Form\ToDoListItemsType;
 use App\Repository\FileAttachmentsRepository;
@@ -283,5 +284,15 @@ class ToDoListItemsController extends AbstractController
         }
     }
 
-
+    /**
+     * @Route("/{id}/to_do_list_item/delete_attachment", name="to_do_list_item_delete_attachment")
+     */
+    public function deleteToDoListItemAttachment(Request $request, $id, ToDoListItemsRepository $toDoListItemsRepository, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $to_do_list_item = $toDoListItemsRepository->find($id);
+        $to_do_list_item->setAttachment(null);
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
 }

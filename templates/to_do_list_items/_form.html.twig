@@ -1,5 +1,5 @@
 <style>
-    .ck-content{
+    .ck-content {
         height: 520px;
     }
 </style>
@@ -25,7 +25,17 @@
         {{ form_row(form.immediatePriority) }}
     </div>
     <div class="col-md-2">
-        {{ form_row(form.attachment) }}
+
+        {% if to_do_list_item.attachment is not empty %}
+            <b>File:</b>  {{ to_do_list_item.attachment }}<br>
+            <a class="btn btn-danger btn-sm"
+               href="{{ path('to_do_list_item_delete_attachment', {'id': to_do_list_item.id }) }} ">Delete
+                attachments</a>
+        {% endif %}
+        {% if to_do_list_item.attachment is null %}
+            {{ form_row(form.attachment) }}
+        {% endif %}
+
     </div>
 
 </div>

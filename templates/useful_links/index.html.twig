@@ -55,7 +55,7 @@
             {% if useful_link.category == category_chosen or category_chosen == "All" %}
                 {% if useful_link.category !="RT" %}
                     {% include 'useful_links/parts/table_body.html.twig' %}
-                {% elseif useful_link.category == 'RT' and app.user.id ==2 %}
+                {% elseif useful_link.category == 'RT' and app.user == sn %}
                     {% include 'useful_links/parts/table_body.html.twig' %}
                 {% endif %}
             {% endif %}
