@@ -49,7 +49,7 @@
                     <td style="width: 170px; font-size: large">
                         <b> <a target="_blank"
                                href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.project }}</a></b>
-                                                    ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id)}}
+                        ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id) }}
                     </td>
                     <td style="width: 600px;font-size: small">
                         {% for user in to_do_list.getAccessTo %}
@@ -123,12 +123,13 @@
                                             {% if to_do_lists_item.immediatePriority =="Top Priority" %}
                                                 <i style="color: red" class="fa fa-star"></i>
                                             {% endif %}
+
                                             {% if to_do_lists_item.attachment is not null %}
-                                                <a href="{{ path('app_home') }}">
-                                                    <i title="{{ to_do_lists_item.attachment }}" style="color: grey" class="fa fa-paperclip"></i>
+                                                <a title="{{ to_do_lists_item.attachment|raw }}" target="_blank"
+                                                   href="{{ path('show_attachment_to_do_list',{id : to_do_lists_item.id}) }}">
+                                                    <i class="fa fa-paperclip"></i>
                                                 </a>
                                             {% endif %}
-
                                         </td>
                                         <td>
                                             {% if to_do_lists_item.status=="Complete" %}

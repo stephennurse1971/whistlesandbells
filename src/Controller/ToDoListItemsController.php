@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\ToDoListItems;
 use App\Form\ToDoListItemsType;
+use App\Repository\FileAttachmentsRepository;
+use App\Repository\StaticTextRepository;
 use App\Repository\ToDoListItemsRepository;
 use App\Repository\ToDoListRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
@@ -31,7 +35,7 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/new/{project}", name="to_do_list_items_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, Security $security, $project, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $doListRepository): Response
+    public function new(Request $request, Security $security, $project, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $doListRepository, EntityManagerInterface $entityManager): Response
     {
         $all_projects = $doListRepository->findAll();
         $access_projects = [];
@@ -53,6 +57,18 @@ class ToDoListItemsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $toDoListItemsRepository->add($toDoListItem);
+            $attachment = $form['attachment']->getData();
+            if ($attachment) {
+                $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename;
+                $attachment->move(
+                    $this->getParameter('todolist_items_attachments_directory'),
+                    $newFilename
+                );
+                $toDoListItem->setAttachment($newFilename);
+                $entityManager->persist($toDoListItem);
+                $entityManager->flush();
+            }
             return $this->redirectToRoute('to_do_list_index', ['status' => 'Pending', 'project' => 'All'], Response::HTTP_SEE_OTHER);
         }
 
@@ -93,8 +109,8 @@ class ToDoListItemsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $toDoListItemsRepository->add($toDoListItem);
-            $attachment = $form['attachment']->getData();
 
+            $attachment = $form['attachment']->getData();
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $originalFilename;
@@ -246,4 +262,26 @@ class ToDoListItemsController extends AbstractController
         }
         return $this->redirectToRoute('to_do_list_index', ['status' => 'Pending', 'project' => 'All'], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/show_attachment/{id}", name="show_attachment_to_do_list")
+     */
+    public function showAttachment(Request $request, $id, ToDoListItemsRepository $toDoListItemsRepository)
+    {
+        $filename =$toDoListItemsRepository->find($id)->getAttachment();
+        $filepath = $this->getParameter('todolist_items_attachments_directory') . "/" . $filename;
+        if (file_exists($filepath)) {
+            $response = new BinaryFileResponse($filepath);
+            //  $response->headers->set('Content-Type');
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_INLINE, //use ResponseHeaderBag::DISPOSITION_ATTACHMENT to save as an attachment
+                $filename
+            );
+            return $response;
+        } else {
+            return new Response("file does not exist");
+        }
+    }
+
+
 }
