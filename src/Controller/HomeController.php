@@ -61,7 +61,7 @@ class HomeController extends AbstractController
             'Hyperlink' => $cmsCopyRepository->findOneBy([
                 'name' => 'HomePageHyperlink'
             ]),
-            'Photos' => $cmsPhotoRepository->findBy([
+            'photos' => $cmsPhotoRepository->findBy([
                 'name' => 'HomePage'
             ])
         ]);
