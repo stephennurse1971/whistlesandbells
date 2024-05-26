@@ -49,7 +49,7 @@
                     <td style="width: 170px; font-size: large">
                         <b> <a target="_blank"
                                href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.project }}</a></b>
-                        ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id) }}
+{#                        ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id) }}#}
                     </td>
                     <td style="width: 600px;font-size: small">
                         {% for user in to_do_list.getAccessTo %}
