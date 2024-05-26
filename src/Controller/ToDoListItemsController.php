@@ -31,29 +31,29 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/new/{project}", name="to_do_list_items_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, Security $security, $project, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $doListRepository ): Response
+    public function new(Request $request, Security $security, $project, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $doListRepository): Response
     {
-       $all_projects =  $doListRepository->findAll();
-       $access_projects = [];
-       foreach($all_projects as $project){
-           if(
-               in_array('ROLE_ADMIN', $security->getUser()->getRoles())
-               ||
-               in_array($security->getUser(),$project->getAccessTo()->toArray())){
-               $access_projects[] = $project;
-           }
-       }
+        $all_projects = $doListRepository->findAll();
+        $access_projects = [];
+        foreach ($all_projects as $project) {
+            if (
+                in_array('ROLE_ADMIN', $security->getUser()->getRoles())
+                ||
+                in_array($security->getUser(), $project->getAccessTo()->toArray())) {
+                $access_projects[] = $project;
+            }
+        }
         usort($access_projects, function ($first, $second) {
             return strcmp($first->getProject(), $second->getProject());
         });
         $toDoList = $doListRepository->findOneBy(['project' => $project]);
         $toDoListItem = new ToDoListItems();
-        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $toDoList,'access_projects'=>$access_projects]);
+        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $toDoList, 'access_projects' => $access_projects]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $toDoListItemsRepository->add($toDoListItem);
-            return $this->redirectToRoute('to_do_list_index', ['status'=>'Pending', 'project'=>'All'], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('to_do_list_index', ['status' => 'Pending', 'project' => 'All'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('to_do_list_items/new.html.twig', [
@@ -75,12 +75,12 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/{id}/edit", name="to_do_list_items_edit", methods={"GET", "POST"})
      */
-    public function edit(Security $security,Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $toDoListRepository): Response
+    public function edit(Security $security, Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $toDoListRepository, EntityManagerInterface $entityManager): Response
     {
-        $all_projects =  $toDoListRepository->findAll();
+        $all_projects = $toDoListRepository->findAll();
         $access_projects = [];
-        foreach($all_projects as $project){
-            if(in_array($security->getUser(),$project->getAccessTo()->toArray())){
+        foreach ($all_projects as $project) {
+            if (in_array($security->getUser(), $project->getAccessTo()->toArray())) {
                 $access_projects[] = $project;
             }
         }
@@ -88,43 +88,39 @@ class ToDoListItemsController extends AbstractController
             return strcmp($first->getProject(), $second->getProject());
         });
 
-        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $toDoListItem->getProject(),'access_projects'=>$access_projects]);
+        $form = $this->createForm(ToDoListItemsType::class, $toDoListItem, ['project' => $toDoListItem->getProject(), 'access_projects' => $access_projects]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $importFile = $form->get('attachment')->getData();
-            if ($importFile) {
-                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
-//                $safeFilename = $slugger->slug($originalFilename);
-//                $newFilename = $safeFilename . '.' . $importFile->guessExtension();
-                try {
-                    $importFile->move(
-                        $this->getParameter('todolist_items_attachments_directory'),
-                        $originalFilename
-                    );
-                } catch (FileException $e) {
-                    die('Import failed');
-                }
-                return $this->redirectToRoute('to_do_list_index');
+            $toDoListItemsRepository->add($toDoListItem);
+            $attachment = $form['attachment']->getData();
+
+            if ($attachment) {
+                $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename;
+                $attachment->move(
+                    $this->getParameter('todolist_items_attachments_directory'),
+                    $newFilename
+                );
+                $toDoListItem->setAttachment($newFilename);
+                $entityManager->persist($toDoListItem);
+                $entityManager->flush();
             }
 
-            $toDoListItemsRepository->add($toDoListItem);
-            return $this->redirectToRoute('to_do_list_index', ['project'=>'All', 'status'=>'All'], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('to_do_list_index', ['project' => 'All', 'status' => 'All'], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('to_do_list_items/edit.html.twig', [
-            'to_do_list_item' => $toDoListItem,
-            'form' => $form->createView(),
-        ]);
+        return $this->render('to_do_list_items/edit.html.twig', ['to_do_list_item' => $toDoListItem,
+            'form' => $form->createView(),]);
     }
 
     /**
      * @Route("/update/priority/with/rank", name="update_priority_with_rank", methods={"GET", "POST"})
      */
-    public function updatePriorityWithRank(ToDoListRepository $toDoListRepository, ToDoListItemsRepository $toDoListItemsRepository, Request $request, EntityManagerInterface $manager): Response
+    public
+    function updatePriorityWithRank(ToDoListRepository $toDoListRepository, ToDoListItemsRepository $toDoListItemsRepository, Request $request, EntityManagerInterface $manager): Response
     {
         foreach ($toDoListRepository->findAll() as $toDoList) {
-            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status'=>'Complete']);
+            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status' => 'Complete']);
             if ($toDoListByProject) {
                 $rankingContainer = [];
                 foreach ($toDoListByProject as $item) {
@@ -141,7 +137,7 @@ class ToDoListItemsController extends AbstractController
                 }
             }
 
-            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status'=>'Pending']);
+            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status' => 'Pending']);
             if ($toDoListByProject) {
                 $rankingContainer = [];
                 foreach ($toDoListByProject as $item) {
@@ -158,7 +154,7 @@ class ToDoListItemsController extends AbstractController
                 }
             }
 
-            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status'=>'Blocked']);
+            $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status' => 'Blocked']);
             if ($toDoListByProject) {
                 $rankingContainer = [];
                 foreach ($toDoListByProject as $item) {
@@ -183,7 +179,8 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/change_status/{id}/{status}", name="to_do_list_items_change_status", methods={"GET", "POST"})
      */
-    public function changeStatus(Request $request, $status, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
+    public
+    function changeStatus(Request $request, $status, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
         $toDoListItem->setStatus($status);
@@ -198,7 +195,8 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/copy/{id}/", name="to_do_list_items_copy", methods={"GET", "POST"})
      */
-    public function copy(Request $request, $id, ToDoListItemsRepository $toDoListItemsRepository, EntityManagerInterface $manager): Response
+    public
+    function copy(Request $request, $id, ToDoListItemsRepository $toDoListItemsRepository, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
         $itemToCopy = $toDoListItemsRepository->find($id);
@@ -221,7 +219,8 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/change_priority/{id}/{change}", name="to_do_list_items_change_priority", methods={"GET", "POST"})
      */
-    public function changePriority(Request $request, $change, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
+    public
+    function changePriority(Request $request, $change, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
         $currentPriority = $toDoListItem->getPriority();
@@ -239,11 +238,12 @@ class ToDoListItemsController extends AbstractController
     /**
      * @Route("/{id}", name="to_do_list_items_delete", methods={"POST"})
      */
-    public function delete(Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository): Response
+    public
+    function delete(Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $toDoListItem->getId(), $request->request->get('_token'))) {
             $toDoListItemsRepository->remove($toDoListItem);
         }
-        return $this->redirectToRoute('to_do_list_index', ['status'=>'Pending', 'project'=>'All'], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('to_do_list_index', ['status' => 'Pending', 'project' => 'All'], Response::HTTP_SEE_OTHER);
     }
 }

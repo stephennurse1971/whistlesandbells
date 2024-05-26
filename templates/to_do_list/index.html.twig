@@ -16,14 +16,8 @@
                 {% endif %}
             </h1>
         </div>
-        <div class="col-3">
-            <a class="btn btn-info btn-sm"
-               href="{{ path('to_do_list_index', {status: 'Pending', project: "Top Priority"}) }}">Top Priority</a>
-        </div>
+
     </div>
-
-
-    </h1>
 
     {% include 'to_do_list/parts/buttons.html.twig' %}
 
@@ -55,7 +49,7 @@
                     <td style="width: 170px; font-size: large">
                         <b> <a target="_blank"
                                href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.project }}</a></b>
-                        {#                            ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id)}} #}
+                                                    ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id)}}
                     </td>
                     <td style="width: 600px;font-size: small">
                         {% for user in to_do_list.getAccessTo %}
@@ -126,7 +120,7 @@
                                         </td>
                                         <td>{{ to_do_lists_item.hoursAllocated }}</td>
                                         <td>
-                                            {% if to_do_lists_item.immediatePriority ==1 %}
+                                            {% if to_do_lists_item.immediatePriority =="Top Priority" %}
                                                 <i style="color: red" class="fa fa-star"></i>
                                             {% endif %}
                                             {% if to_do_lists_item.attachment is not null %}

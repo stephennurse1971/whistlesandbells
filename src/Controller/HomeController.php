@@ -86,7 +86,7 @@ class HomeController extends AbstractController
                 ->setLastName('Nurse HMX2')
                 ->setFullName('Stephen Nurse HMX')
                 ->setEmail('nurse_stephen2@hotmail.com')
-                ->setMobile('12345')
+                ->setMobile('+44 7588 717515')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
                 ->setPassword(
                     $passwordEncoder->encodePassword(

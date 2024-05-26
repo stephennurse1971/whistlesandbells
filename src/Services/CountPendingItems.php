@@ -25,7 +25,7 @@ class CountPendingItems
         $items = $this->toDoListItemsRepository->findBy([
             'project' => $project,
             'status'=>'Pending',
-            'immediatePriority'=>1
+            'immediatePriority'=>'Top Priority'
         ]);
         if ($items) {
             return count($items);

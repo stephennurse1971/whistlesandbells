@@ -30,37 +30,37 @@ class ToDoListController extends AbstractController
     public function index(ToDoListRepository $toDoListRepository, $status, $project, ToDoListItemsRepository $toDoListItemsRepository, CountPendingItems $countPendingItems): Response
     {
         $projects = $toDoListRepository->findAll();
+        $all_projects = $toDoListRepository->findAll();
         $project_title = 'All';
 
         if ($project == "Top Priority") {
-            $to_do_lists_items = $toDoListItemsRepository->findBy([
-                'immediatePriority' => 1
-            ]);
             $project_title = "Top Priorities";
+            $projects = [];
+            foreach ($all_projects as $single_project) {
+                if ($countPendingItems->calculatePendingTopPriorityItems($single_project) > 0) {
+                    $projects[] = $single_project;
+                }
+            }
 
-            $projects = $toDoListRepository->findAll();
-//            $all_projects = $toDoListRepository->findAll();
-//            $projects = [];
-//            foreach ($all_projects as $project) {
-//                if (CountPendingItems . calculatePendingTopPriorityItems($project) > 0) {
-//                    $project = $project;
-//                }
-//            }
+            $to_do_lists_items = $toDoListItemsRepository->findBy([
+                'immediatePriority' => 'Top Priority'
+            ]);
+
 
         }
 
-
         if ($project != "All" and $project != "Top Priority") {
+            $project_title = $project;
             $projects = $toDoListRepository->findBy([
                 'project' => $project
             ]);
             $to_do_lists_items = $toDoListItemsRepository->findAll();
-            $project_title = $project;
         }
+
         if ($project == "All") {
-            $projects = $toDoListRepository->findAll();
-            $to_do_lists_items = $toDoListItemsRepository->findAll();
             $project_title = $project;
+            $projects = $all_projects;
+            $to_do_lists_items = $toDoListItemsRepository->findAll();
         }
 
 

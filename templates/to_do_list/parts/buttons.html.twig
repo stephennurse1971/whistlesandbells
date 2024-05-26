@@ -1,5 +1,7 @@
 <div class="row">
     <div class="col-3">
+        <a class="btn btn-info btn-sm"
+           href="{{ path('to_do_list_index', {status: 'Pending', project: "Top Priority"}) }}">Top Priority</a>
         <a class="btn btn-outline-success btn-sm"
            href="{{ path('to_do_list_index', {status: "Complete", project: project_title}) }}">Complete</a>
         <a class="btn btn-outline-primary btn-sm"
@@ -29,8 +31,9 @@
                 {% if app.user in to_do_list.accessTo or is_granted('ROLE_ADMIN') %}
                     {% if CountPendingItems.calculatePendingItems(to_do_list.id) > 0 %}
                         <a class="btn btn-outline-info btn-sm"
-                           href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">{{ to_do_list.project }}
-                            (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }}) </a>
+                           href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">
+                            {{ to_do_list.project }}
+                            (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }})</a>
                     {% endif %}
                 {% endif %}
             {% endfor %}
@@ -40,7 +43,7 @@
                     {% if CountPendingItems.calculatePendingItems(to_do_list.id) ==0 %}
                         <a class="btn btn-outline-danger btn-sm"
                            href="{{ path('to_do_list_index', {status: status, project: to_do_list.project}) }}">{{ to_do_list.project }}
-                            (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }}) </a>
+                            (#{{ CountPendingItems.calculatePendingItems(to_do_list.id) }})</a>
                     {% endif %}
                 {% endif %}
             {% endfor %}

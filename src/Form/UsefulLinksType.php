@@ -26,7 +26,8 @@ class UsefulLinksType extends AbstractType
                     'Gwenny' => 'Gwenny',
                     'AX' => 'AX',
                     'IT' => 'IT',
-                    'Recruitment' => 'Recruitment'
+                    'Recruitment' => 'Recruitment',
+                    'RT'=>'RT'
                 ],])
             ->add('name')
             ->add('link')

@@ -47,7 +47,7 @@ class ToDoListItems
 
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $immediatePriority;
 
@@ -132,12 +132,12 @@ class ToDoListItems
 
 
 
-    public function getImmediatePriority(): ?bool
+    public function getImmediatePriority(): ?string
     {
         return $this->immediatePriority;
     }
 
-    public function setImmediatePriority(?bool $immediatePriority): self
+    public function setImmediatePriority(?string $immediatePriority): self
     {
         $this->immediatePriority = $immediatePriority;
 
