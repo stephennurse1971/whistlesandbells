@@ -79,6 +79,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('house_guests_index', {subset:'Active'}) }}">Flights</a>
+                                <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful
+                                    links</a>
                                 {% if is_granted('ROLE_GUEST') %}
                                 <a class="dropdown-item"
                                    href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
@@ -153,8 +155,8 @@
                                         To Do List</a>
                                 {% endif %}
                                 <hr>
-                                <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful
-                                    links</a>
+{#                                <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful#}
+{#                                    links</a>#}
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">Helpful
                                         files</a>
