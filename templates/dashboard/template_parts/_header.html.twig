@@ -71,22 +71,23 @@
 
 
                     <!-- Nav Item #4 - Come Visit -->
-                    {% if is_granted('ROLE_GUEST') %}
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Cyprus
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ path('house_guests_index', {subset:'Active'}) }}">House
-                                    Guest</a>
+                                <a class="dropdown-item" href="{{ path('house_guests_index', {subset:'Active'}) }}">Flights</a>
+                                {% if is_granted('ROLE_GUEST') %}
                                 <a class="dropdown-item"
                                    href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To Bring</a>
+
                                 <hr>
                                 <a class="dropdown-item"
                                    href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
                                     attractions</a>
-                                {% if is_granted('ROLE_ADMIN') %}
+
                                     <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files
                                         <span style="color: red">*</span></a>
                                     <hr>
@@ -95,7 +96,7 @@
                                 {% endif %}
                             </div>
                         </li>
-                    {% endif %}
+
 
 
                     <!-- Nav Item #5 - Contact -->

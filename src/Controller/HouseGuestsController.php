@@ -26,7 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/houseguests")
- * @IsGranted("ROLE_GUEST")
+ *
  */
 class HouseGuestsController extends AbstractController
 {

@@ -30,10 +30,12 @@
             <tr>
                 <th style="border-right: 1px dotted grey">Date</th>
                 <th style="border-right: 1px dotted grey; text-align: left">Book</th>
-                <th style="border-right: 1px dotted grey; text-align: left">Travel Notes</th>
-                <th style="border-right: 1px dotted grey; border-right: 1px solid grey; text-align: left">
-                    Notes
-                </th>
+                {% if is_granted('ROLE_GUEST') %}
+                    <th style="border-right: 1px dotted grey; text-align: left">Travel Notes</th>
+                    <th style="border-right: 1px dotted grey; border-right: 1px solid grey; text-align: left">
+                        Notes
+                    </th>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <th style="border-right: 1px solid grey; text-align: left"></th>
                 {% endif %}
@@ -42,9 +44,11 @@
 
             <tr>
                 <th style="border-right: 1px dotted grey" class="desktop"></th>
-                <th style="border-right: 1px dotted grey" class="desktop"></th>
-                <th style="border-right: 1px dotted grey" class="desktop"></th>
-                <th class="desktop" style="width: 200px;border-right: 1px solid grey"></th>
+                <th style="border-right: 1px dotted grey" class="desktop">Book</th>
+                {% if is_granted('ROLE_GUEST') %}
+                    <th style="border-right: 1px dotted grey" class="desktop"></th>
+                    <th class="desktop" style="width: 200px;border-right: 1px solid grey"></th>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <th style="border-right: 1px solid grey"></th>
                 {% endif %}
@@ -69,7 +73,10 @@
                         </td>
                     {% endif %}
 
+
                     <td style="border-right: 1px dotted grey; background-color: white">
+
+
                         {% set flag = 0 %}
                         {% for house_guest in house_guests %}
                             {% if house_guest['date'] == date|date('d-m-y') %}
@@ -89,16 +96,18 @@
                                         N/A
                                     {% endif %}
                                 {% else %}
-                                    {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                                        {% if house_guest['guest'] is not null %}
-                                            <a target="_blank"
-                                               href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">{{ house_guest['guest'].fullName }}</a>
+                                    {% if is_granted('ROLE_GUEST') %}
+                                        {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                                            {% if house_guest['guest'] is not null %}
+                                                <a target="_blank"
+                                                   href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">{{ house_guest['guest'].fullName }}</a>
+                                            {% else %}
+                                                <a target="_blank"
+                                                   href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">TBC</a>
+                                            {% endif %}
                                         {% else %}
-                                            <a target="_blank"
-                                               href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">TBC</a>
+                                            Booked
                                         {% endif %}
-                                    {% else %}
-                                        Booked
                                     {% endif %}
                                     {% set flag = 1 %}
                                     {% set id = house_guest['id'] %}
@@ -107,55 +116,65 @@
                         {% endfor %}
 
                         {% if flag==0 %}
-                            <a target="_blank" class="btn btn-success btn-sm"
-                               href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
+                            {% if is_granted('ROLE_GUEST') %}
+                                <a target="_blank" class="btn btn-success btn-sm"
+                                   href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
+                            {% else %}
+                                Available
+
+                            {% endif %}
                         {% endif %}
+
+
                     </td>
 
-                    <td style="border-right: 1px dotted grey; background-color: white">
-                        {% for house_guest in house_guests %}
-                            {% if house_guest['referenceInformation'] == "Guest Booking" %}
-                                {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                                    {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
-                                        {% if house_guest['arrivalNotes']|length >15 %}
-                                            <i style="color: blue" title="{{ house_guest['arrivalNotes'] |raw }}"
-                                               class="fa fa-info-circle"></i>
-                                        {% endif %}
-                                        {{ house_guest['arrivalNotes'] |slice(0,15) }}
-                                    {% endif %}
+                    {% if is_granted('ROLE_GUEST') %}
+                        <td style="border-right: 1px dotted grey; background-color: white">
 
-                                    {% if house_guest['departureDate'] == date|date('d-m-y') %}
-                                        {% if house_guest['departureDate']|length >15 %}
-                                            <i style="color: blue" title="{{ house_guest['departureDate'] |raw }}"
-                                               class="fa fa-info-circle"></i>
-                                        {% endif %}
-                                        {{ house_guest['departureNotes'] |slice(0,15) }}
-                                    {% endif %}
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-
-                    <td style="border-right: 1px solid grey; background-color: white">
-                        {% for house_guest in house_guests %}
-                            {% if house_guest['referenceInformation'] == "Guest Booking" %}
-                                {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
-                                    {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
-
-                                        {% if house_guest['notes']|length >15 %}
-                                            <i style="color: green" title="{{ house_guest['arrivalDate'] |raw }}"
-                                               class="fa fa-info-circle"></i>
-                                            {{ house_guest['notes']|slice(0,15) }}...
-                                        {% else %}
-                                             {{ house_guest['notes']|raw }}
+                            {% for house_guest in house_guests %}
+                                {% if house_guest['referenceInformation'] == "Guest Booking" %}
+                                    {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                                        {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
+                                            {% if house_guest['arrivalNotes']|length >15 %}
+                                                <i style="color: blue" title="{{ house_guest['arrivalNotes'] |raw }}"
+                                                   class="fa fa-info-circle"></i>
+                                            {% endif %}
+                                            {{ house_guest['arrivalNotes'] |slice(0,15) }}
                                         {% endif %}
 
-
+                                        {% if house_guest['departureDate'] == date|date('d-m-y') %}
+                                            {% if house_guest['departureDate']|length >15 %}
+                                                <i style="color: blue" title="{{ house_guest['departureDate'] |raw }}"
+                                                   class="fa fa-info-circle"></i>
+                                            {% endif %}
+                                            {{ house_guest['departureNotes'] |slice(0,15) }}
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </td>
+                            {% endfor %}
+                        </td>
+
+                        <td style="border-right: 1px solid grey; background-color: white">
+                            {% for house_guest in house_guests %}
+                                {% if house_guest['referenceInformation'] == "Guest Booking" %}
+                                    {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
+                                        {% if house_guest['arrivalDate'] == date|date('d-m-y') %}
+
+                                            {% if house_guest['notes']|length >15 %}
+                                                <i style="color: green" title="{{ house_guest['arrivalDate'] |raw }}"
+                                                   class="fa fa-info-circle"></i>
+                                                {{ house_guest['notes']|slice(0,15) }}...
+                                            {% else %}
+                                                {{ house_guest['notes']|raw }}
+                                            {% endif %}
+
+
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endif %}
 
                     {% if is_granted('ROLE_ADMIN') %}
                         <td style="border-right: 1px solid grey; background-color: white">
