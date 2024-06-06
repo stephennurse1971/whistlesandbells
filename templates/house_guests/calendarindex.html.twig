@@ -9,6 +9,7 @@
             max-height: 800px;
             overflow-y: auto;
         }
+
         thead, tbody tr {
             display: table;
             width: 100%;
@@ -93,6 +94,7 @@
                                            href="{{ path('house_guests_edit', {'id':house_guest['id'] }) }}">Block-Out</a>
                                     {% else %}
                                         N/A
+{#                                        <i title="Sorry - Busy!"eg style="color: red" class="fa fa-thumbs-down"> </i>#}
                                     {% endif %}
                                 {% else %}
                                     {% if is_granted('ROLE_GUEST') %}
@@ -119,7 +121,8 @@
                                 <a target="_blank" class="btn btn-success btn-sm"
                                    href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
                             {% else %}
-                                Free
+                                <i title="Available - Please come" style="color: green"
+                                   class="fa fa-thumbs-up"></i> Free
                             {% endif %}
                         {% endif %}
 
