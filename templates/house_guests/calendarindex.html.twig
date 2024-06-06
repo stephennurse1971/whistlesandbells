@@ -9,7 +9,6 @@
             max-height: 800px;
             overflow-y: auto;
         }
-
         thead, tbody tr {
             display: table;
             width: 100%;
@@ -25,7 +24,7 @@
     {% include 'house_guests/parts/house_guest_buttons.html.twig' %}
     <div class="table-container">
 
-        <table class="table">
+        <table class="table table-responsive-sm">
             <thead>
             <tr>
                 <th style="border-right: 1px dotted grey">Date</th>
@@ -120,7 +119,7 @@
                                 <a target="_blank" class="btn btn-success btn-sm"
                                    href="{{ path('house_guests_new', {'startdate': date|date('d-m-Y')}) }}">Book</a>
                             {% else %}
-                                Available
+                                Free
                             {% endif %}
                         {% endif %}
 
@@ -129,7 +128,6 @@
 
                     {% if is_granted('ROLE_GUEST') %}
                         <td style="border-right: 1px dotted grey; background-color: white">
-
                             {% for house_guest in house_guests %}
                                 {% if house_guest['referenceInformation'] == "Guest Booking" %}
                                     {% if is_granted('ROLE_ADMIN') or app.user.id ==house_guest['guest'].id %}
