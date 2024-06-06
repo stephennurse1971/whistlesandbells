@@ -5,6 +5,7 @@ twig:
         BankBalanceOnAsOfDate: '@App\Services\BankBalanceOnAsOfDate'
         CountPhotos: '@App\Services\CountPhotos'
         CountPendingItems: '@App\Services\CountPendingItems'
+        CountAllocatedWebsites: '@App\Services\CountAllocatedWebsites'
         FindUser: '@App\Services\FindUser'
         FXRatesOnAsOfDate: '@App\Services\FXRatesOnAsOfDate'
         Investment: '@App\Services\Investment'

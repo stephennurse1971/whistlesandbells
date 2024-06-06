@@ -8,15 +8,21 @@
         <div class="col-9">
             <a class="btn btn-outline-primary btn-sm"
                href="{{ path('useful_links_index', {category:'All'}) }}">All</a>
+
+
             {% for category in categories %}
-
-                {% if category == category_chosen %}
-
-                    <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('useful_links_index', {category:category}) }}">{{ category }}</a>
-                {% else %}
-                    <a class="btn btn-outline-secondary btn-sm"
-                       href="{{ path('useful_links_index', {category:category}) }}">{{ category }}</a>
+                {% if CountAllocatedWebsites.countAllocatedWebsites(category) >0 %}
+                    {% if category == category_chosen %}
+                        <a class="btn btn-outline-danger btn-sm"
+                           href="{{ path('useful_links_index', {category:category}) }}">{{ category }}
+                            (#{{ CountAllocatedWebsites.countAllocatedWebsites(category) }})
+                        </a>
+                    {% else %}
+                        <a class="btn btn-outline-secondary btn-sm"
+                           href="{{ path('useful_links_index', {category:category}) }}">{{ category }}
+                            (#{{ CountAllocatedWebsites.countAllocatedWebsites(category) }})
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </div>

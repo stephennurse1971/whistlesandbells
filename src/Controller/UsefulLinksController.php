@@ -6,6 +6,7 @@ use App\Entity\UsefulLinks;
 use App\Form\UsefulLinksType;
 use App\Repository\UsefulLinksRepository;
 use App\Repository\UserRepository;
+use App\Services\CountAllocatedWebsites;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ class UsefulLinksController extends AbstractController
     /**
      * @Route("/index/{category}", name="useful_links_index", methods={"GET"})
      */
-    public function index(Request $request, string $category, UsefulLinksRepository $usefulLinksRepository, UserRepository $userRepository): Response
+    public function index(Request $request, string $category, UsefulLinksRepository $usefulLinksRepository, UserRepository $userRepository, CountAllocatedWebsites $countAllocatedWebsites): Response
     {
         $sn = $userRepository->findOneBy([
             'email' => 'nurse_stephen@hotmail.com'
