@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CMS: Photo Index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CMS: Photos Index</h1>
+    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_photo_new') }}">New</a>
+    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_copy_index') }}">CMS Copy</a>
+
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Photo</th>
+            <th>Tag</th>
+            <th>Photo/<br>Video</th>
+            <th>Title</th>
+            <th>Hyperlink</th>
+            <th>Photo</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cms_photo in cms_photos %}
+            <tr>
+                <td>
+                    {% if cms_photo.photo is not empty %}
+                        {% set photo = asset('administration/img/website_pictures/')~cms_photo.photo %}
+                        <a class="btn btn-outline-danger btn-sm" target="_blank"
+                           href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}">
+                            <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a target="_blank"
+                       href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">{{ cms_photo.product.product }}</a>
+                </td>
+                <td>
+                    <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo|slice(0,1) }}</span>
+                </td>
+
+
+                <td>{{ cms_photo.title }}</td>
+                <td>
+                    {% if  cms_photo.link is not empty %}
+                        {% if  cms_photo.link starts with 'http' %}
+                            {% set web =  cms_photo.link %}
+                        {% else %}
+                            {% set web = 'https://'~ cms_photo.link %}
+                        {% endif %}
+                        <a target="_blank" title="{{ cms_photo.link }}" href="{{ web }}">
+                            {{ web }}
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if cms_photo.photo is not empty %}
+                        <a style="text-align: center" title="{{ cms_photo.photo }}" target="_blank"
+                           href="{{ path('cms_view_photo', {'id': cms_photo.id}) }}"><i
+                                    class="fas fa-paperclip"></i></a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a>
+                    <a class="btn btn-danger btn-sm"
+                       href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete Photo</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[1, 'asc'], [3, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

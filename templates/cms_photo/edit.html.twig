@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} CMS Photo: {{ cms_photo.product.product }}{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: {{ cms_photo.product.product }}</h1>
+
+    {{ include('cms_photo/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('cms_photo_index') }}">Return to list</a>
+
+    {{ include('cms_photo/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block additionaljs %}
+    <script>
+        var category = $("#cms_photo_category").val();
+        if(category==='Static'){
+            $(".static-container").show();
+            $(".product-container").hide();
+        }
+        else{
+            $(".static-container").hide();
+            $(".product-container").show();
+        }
+        $("#cms_photo_category").change(function (){
+            var category = $(this).val();
+            if(category==='Static'){
+                $(".static-container").show();
+                $(".product-container").hide();
+            }
+            else{
+                $(".static-container").hide();
+                $(".product-container").show();
+            }
+        })
+    </script>
+{% endblock %}

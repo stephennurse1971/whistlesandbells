@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CMS Copy{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CMS Copy</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cms_copy.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ cms_copy.name }}</td>
+            </tr>
+            <tr>
+                <th>ContentText</th>
+                <td>{{ cms_copy.contentText }}</td>
+            </tr>
+            <tr>
+                <th>Hyperlinks</th>
+                <td>{{ cms_copy.hyperlinks }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-danger btn-sm" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">Edit</a>
+
+    {{ include('cms_copy/_delete_form.html.twig') }}
+{% endblock %}

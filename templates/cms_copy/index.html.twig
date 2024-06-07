@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CMS: Copy Index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CMS: Copy</h1>
+    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_copy_new') }}">New</a>
+    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_photo_index') }}">Photos</a>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th style="width: 150px">Product</th>
+            <th style="width: 50px">Category</th>
+            <th style="width: 50px">Static Page Name</th>
+            <th style="width: 50px">Tab title</th>
+            <th style="width: 250px">Heading<br>(Content title)</th>
+            <th style="width: 650px">Content</th>
+            <th style="width: 20px">Hyperlink</th>
+            <th style="width: 100px">#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cms_copy in cms_copies %}
+            <tr>
+                <td>
+                    {% if cms_copy.product is not null %}
+                    <a target="_blank"
+                       href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
+                        {{ cms_copy.product.ranking }}.
+                        {{ cms_copy.product.product }}</a>
+                        {% else %}
+                        Static Page
+                    {% endif %}
+                </td>
+                <td>{{ cms_copy.category }}</td>
+                <td>{{ cms_copy.staticPageName }}</td>
+                <td>{{ cms_copy.tabTitle }}</td>
+                <td title="{{ cms_copy.contentTitle }}">{{ (cms_copy.contentTitle |slice (0, 50)) }}...</td>
+                <td>
+                     {{ (cms_copy.contentText |slice (0, 250))|raw }}...
+                </td>
+                <td>
+                    {% if  cms_copy.hyperlinks is not empty %}
+                        {% if  cms_copy.hyperlinks starts with 'http' %}
+                            {% set web =  cms_copy.hyperlinks %}
+                        {% else %}
+                            {% set web = 'https://'~ cms_copy.hyperlinks %}
+                        {% endif %}
+                        <a target="_blank" title="{{ cms_copy.hyperlinks }}" href="{{ web }}">
+                            {{ web }}
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">Edit</a>
+                    <form class="d-inline" method="post"
+                          action="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                    <a class="d-inline btn btn-success btn-sm" target="_blank"
+                       href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">Copy</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[1, 'desc'],[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}
