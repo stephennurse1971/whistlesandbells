@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    favicon_directory: '%kernel.project_dir%/public/administration/img/favicons/'
     file_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FileAttachments'
     files_cv_directory: '%kernel.project_dir%/public/administration/attachments/CV'
     files_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Files'
@@ -26,6 +27,9 @@ parameters:
     user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
     website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
     winelist_directory: '%kernel.project_dir%/public/administration/img/winelist'
+    website_pictures_directory: '%kernel.project_dir%/public/administration/img/website_pictures/'
+
+
 
 services:
     # default configuration for services in *this* file

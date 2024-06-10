@@ -11,19 +11,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LogType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('createdAt')
             ->add('eventKey')
+            ->add('additionalInfo')
             ->add('user',EntityType::class,[
-                'class' => User::class,
-                'choice_label'=> 'fullName'
+                'class'=>User::class,
+                'choice_label'=>'fullName'
             ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Log::class,

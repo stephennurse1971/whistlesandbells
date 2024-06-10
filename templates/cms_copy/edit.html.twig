@@ -1,13 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CMS: {{ cms_copy.name }}{% endblock %}
+{% block title %}
+    {% if cms_copy.category == "Product" %}
+    CMS: {{ cms_copy.product.product }}
+    {% endif %}
+    {% if cms_copy.category == "Static" %}
+        CMS: {{ cms_copy.staticPageName }}
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: {{ cms_copy.name }}</h1>
-
+    <h1 style="color: red">Edit:
+        {% if cms_copy.category == "Product" %}
+            CMS: {{ cms_copy.product.product }}
+        {% endif %}
+        {% if cms_copy.category == "Static" %}
+            CMS: {{ cms_copy.staticPageName }}
+        {% endif %}
+    </h1>
     {{ include('cms_copy/_form.html.twig', {'button_label': 'Update'}) }}
-
-
-
     {{ include('cms_copy/_delete_form.html.twig') }}
+{% endblock %}
+
+
+{% block additionaljs %}
+    <script>
+        var category = $("#cms_copy_category").val();
+        if(category==='Static'){
+            $(".static-container").show();
+            $(".product-container").hide();
+        }
+        else{
+            $(".static-container").hide();
+            $(".product-container").show();
+        }
+        $("#cms_copy_category").change(function (){
+            var category = $(this).val();
+            if(category==='Static'){
+                $(".static-container").show();
+                $(".product-container").hide();
+            }
+            else{
+                $(".static-container").hide();
+                $(".product-container").show();
+            }
+        })
+    </script>
 {% endblock %}

@@ -29,6 +29,7 @@ class Log
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="logs")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 

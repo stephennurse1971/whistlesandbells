@@ -17,10 +17,7 @@ class CmsPhoto
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $name;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -45,22 +42,27 @@ class CmsPhoto
      */
     private $photoOrVideo;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Product::class)
+     */
+    private $product;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $category;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $staticPageName;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     public function getPhoto(): ?string
     {
@@ -108,6 +110,42 @@ class CmsPhoto
     public function setPhotoOrVideo(?string $photoOrVideo): self
     {
         $this->photoOrVideo = $photoOrVideo;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getStaticPageName(): ?string
+    {
+        return $this->staticPageName;
+    }
+
+    public function setStaticPageName(?string $staticPageName): self
+    {
+        $this->staticPageName = $staticPageName;
 
         return $this;
     }

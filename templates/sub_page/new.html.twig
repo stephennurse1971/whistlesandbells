@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Sub_Page{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Sub-Page</h1>
+
+    {{ include('sub_page/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('sub_page_index') }}">Return to list</a>
+
+{% endblock %}

@@ -21,10 +21,10 @@ class CmsCopyController extends AbstractController
      */
     public function index(CmsCopyRepository $cmsCopyRepository): Response
     {
-        $site_pages = ['Emails', 'HomePage','AboutSN','Cyprus','Flying','Tennis','WebDesign','PrivateEquity','Risk & Capital Consulting' ];
+        $site_pages = ['Emails', 'HomePage', 'AboutSN', 'Cyprus', 'Flying', 'Tennis', 'WebDesign', 'PrivateEquity', 'Risk & Capital Consulting'];
         return $this->render('cms_copy/index.html.twig', [
             'cms_copies' => $cmsCopyRepository->findAll(),
-            'site_pages'=>$site_pages
+            'site_pages' => $site_pages
         ]);
     }
 
@@ -84,21 +84,18 @@ class CmsCopyController extends AbstractController
     /**
      * @Route("/{id}/copy_and_edit", name="cms_copy_copy_and_edit", methods={"GET","POST"})
      */
-    public function copyAndEdit(Request $request, CmsCopy $cmsCopy,EntityManagerInterface $manager): Response
+    public function copyAndEdit(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $manager): Response
     {
-        $sitePage = $cmsCopy->getSitePage();
-        $name = $cmsCopy->getName();
+        $product = $cmsCopy->getProduct();
+        $sitePage = 'Test';
         $cmsCopy = new CmsCopy();
-        $cmsCopy->setSitePage($sitePage)
-            ->setName($name)
-            ->setContentText($sitePage. ' - Content text')
-            ->setContentTitle($sitePage. ' - Title text')
-            ->setContentTextFR($sitePage. ' - Content text (FR)')
-            ->setContentTitleFR($sitePage. ' - Title text (FR)')
-            ->setContentTextDE($sitePage. ' - Content text (DE)')
-            ->setContentTitleDE($sitePage. ' - Title text (DE)')
-
-             ;
+        $cmsCopy->setProduct($product)
+            ->setContentText($sitePage . ' - Content text')
+            ->setContentTitle($sitePage . ' - Title text')
+            ->setContentTextFR($sitePage . ' - Content text (FR)')
+            ->setContentTitleFR($sitePage . ' - Title text (FR)')
+            ->setContentTextDE($sitePage . ' - Content text (DE)')
+            ->setContentTitleDE($sitePage . ' - Title text (DE)');
         $form = $this->createForm(CmsCopyType::class, $cmsCopy);
         $form->handleRequest($request);
 
@@ -117,13 +114,12 @@ class CmsCopyController extends AbstractController
     }
 
 
-
     /**
      * @Route("/{id}", name="cms_copy_delete", methods={"POST"})
      */
     public function delete(Request $request, CmsCopy $cmsCopy): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$cmsCopy->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $cmsCopy->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($cmsCopy);
             $entityManager->flush();

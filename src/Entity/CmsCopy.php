@@ -17,10 +17,7 @@ class CmsCopy
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -62,24 +59,30 @@ class CmsCopy
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $pageTitle;
+    private $tabTitle;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Product::class)
+     */
+    private $product;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $staticPageName;
+
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     public function getContentText(): ?string
     {
@@ -167,15 +170,53 @@ class CmsCopy
 
 
 
-    public function getPageTitle(): ?string
+    public function getTabTitle(): ?string
     {
-        return $this->pageTitle;
+        return $this->tabTitle;
     }
 
-    public function setPageTitle(?string $pageTitle): self
+    public function setTabTitle(?string $tabTitle): self
     {
-        $this->pageTitle = $pageTitle;
+        $this->tabTitle = $tabTitle;
 
         return $this;
     }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    public function getStaticPageName(): ?string
+    {
+        return $this->staticPageName;
+    }
+
+    public function setStaticPageName(?string $staticPageName): self
+    {
+        $this->staticPageName = $staticPageName;
+
+        return $this;
+    }
+
+
 }

@@ -43,11 +43,11 @@ class CmsPhotoController extends AbstractController
             $photo = $form->get('photo')->getData();
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $cmsPhoto->getName();
+                $safeFilename = $cmsPhoto->getProduct()->getProduct();
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {
                     $photo->move(
-                        $this->getParameter('website_photos_directory'),
+                        $this->getParameter('website_pictures_directory'),
                         $newFilename
                     );
                     $cmsPhoto->setPhoto($newFilename);
@@ -91,13 +91,13 @@ class CmsPhotoController extends AbstractController
             if ($photo) {
 
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $cmsPhoto->getName();
+                $safeFilename = $cmsPhoto->getProduct()->getProduct();
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
 
 
                 try {
                     $photo->move(
-                        $this->getParameter('website_photos_directory'),
+                        $this->getParameter('website_pictures_directory'),
                         $newFilename
                     );
                     $cmsPhoto->setPhoto($newFilename);

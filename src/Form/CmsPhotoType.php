@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\CmsPhoto;
+use App\Entity\Product;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -15,7 +17,19 @@ class CmsPhotoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('category', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    'Static' => 'Static',
+                    'Product' => 'Product',
+                ]
+            ])
+            ->add('staticPageName')
+            ->add('product', EntityType::class, [
+                'class' => Product::class,
+                'required' => true,
+                'choice_label' => 'product'
+            ])
             ->add('photoOrVideo', ChoiceType::class, [
                 'multiple' => false,
                 'expanded' => true,
@@ -23,8 +37,6 @@ class CmsPhotoType extends AbstractType
                     'Photo' => 'Photo',
                     'Video' => 'Video',
                 ],])
-
-
             ->add('photo', FileType::class, [
                 'label' => false,
                 'mapped' => false,
@@ -34,7 +46,6 @@ class CmsPhotoType extends AbstractType
                 'required' => false,
                 'label' => 'Title (English)'
             ])
-
             ->add('link');
     }
 

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if cms_copy is defined %}
+        {% if cms_copy.tabTitle is defined %}
+            {{ cms_copy.tabTitle }}
+        {% else %}
+
+            {% if CompanyDetails.getCompanyDetails is not null %}
+                {{ CompanyDetails.getCompanyDetails.companyName }}
+            {% else %}
+                TBD
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+
+{% block body %}
+    <!-- My Service section -->
+    <section id="my-service-section" class="default-bg-white">
+        <!--  Default space  -->
+        <div class="default-space"></div>
+        <!--  Default space  -->
+        {% if cms_copy is not null %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="defult-title">
+                            {% include 'home/parts/products_page/title.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+                <!------------------ FIRST GROUP OF PHOTOS --------------->
+                <div class="row">
+                    {% if cms_photo is not null %}
+                        <div class="col-6">
+                            <p>{{ cms_copy.contentText|raw }}</p>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="justify-content-center d-flex py-1 product-image-container ">
+                                {% include 'home/parts/products_page/photo_or_video.html.twig' %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12">
+                            <p>{{ cms_copy.contentText|raw }}</p>
+                        </div>
+                    {% endif %}
+                    <!------------------ END FIRST GROUP OF PHOTOS --------------->
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-12">
+                        {% for sub_page in sub_pages %}
+
+                            <ul>
+                                <a target="_blank" href="{{ path('sub_page_show', {id: sub_page.id} ) }}">{{ sub_page.title }}</a>
+                            </ul>
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+
+
+        {% endif %}
+    </section>
+
+
+{% endblock %}

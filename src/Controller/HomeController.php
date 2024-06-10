@@ -7,6 +7,7 @@ use App\Entity\TaxInputs;
 use App\Entity\User;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
+use App\Repository\CompanyDetailsRepository;
 use App\Repository\InterestsRepository;
 use App\Repository\IntroductionRepository;
 use App\Repository\RecruiterEmailsRepository;
@@ -14,6 +15,7 @@ use App\Repository\StaticTextRepository;
 use App\Repository\TaxInputsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JeroenDesloovere\VCard\VCard;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -221,5 +223,53 @@ class HomeController extends AbstractController
         }
         return $this->render('error/file_not_found.html.twig');
     }
+
+    /**
+     * @Route("/office_address", name="office_address", methods={"GET"})
+     */
+    public function officeAddress(CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        return $this->render('home/officeAddress.html.twig', [
+            'company_details' => $companyDetailsRepository->find('1')
+        ]);
+    }
+
+
+    /**
+     * @Route("/create/VcardUser/company", name="create_vcard_company")
+     */
+    public function createVcardVenue(CompanyDetailsRepository $companyDetailsRepository)
+    {
+        $company_details = $companyDetailsRepository->find('1');
+        $vcard = new VCard();
+        $firstName = $company_details->getCompanyName();
+        $lastName = '';
+        $company = $company_details->getCompanyName();
+        $addressStreet = $company_details->getCompanyAddressStreet();
+        $addressTown = $company_details->getCompanyAddressTown();
+        $addressCity = $company_details->getCompanyAddressCity();
+        $addressPostalCode = $company_details->getCompanyAddressPostalCode();
+        $addressCountry = $company_details->getCompanyAddressCountry();
+        $facebook = $company_details->getFacebook();
+        $instagram = $company_details->getInstagram();
+        $linkedIn = $company_details->getLinkedIn();
+        $url = $_SERVER['SERVER_NAME'];
+        $notes_all = "Facebook: " . $facebook . "    Instagram: " . $instagram . "   LinkedIn: " . $linkedIn . "   URL: " . $url;
+        $email = $company_details->getCompanyEmail();
+        $mobile = $company_details->getCompanyMobile();
+        $tel = $company_details->getCompanyTel();
+        $vcard->addName($lastName, $firstName);
+        $vcard->addEmail($email)
+            ->addPhoneNumber($mobile, 'home')
+            ->addPhoneNumber($tel, 'work')
+            ->addCompany($company)
+            ->addAddress($name = '', $extended = '', $street = $addressStreet, $city = $addressTown, $region = $addressCity, $zip = $addressPostalCode, $country = $addressCountry, $type = 'WORK POSTAL')
+            ->addURL($url)
+            ->addNote(strip_tags($notes_all));
+        $vcard->download();
+        return new Response(null);
+    }
+
+
 
 }

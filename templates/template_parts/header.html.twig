@@ -1,0 +1,82 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top " style="background: #eb7f55;">
+
+        <a class="navbar-brand" href={{ path('app_home') }}>
+            <img alt="Tech Arete" src="{{ asset('administration/img/favicons/lightbulb.png') }}"
+                 height="50px" width="50px">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto" style="margin-right: 50px;">
+
+
+                {% if app.user %}
+                    <li class="nav-item active">
+                        <a class="nav-link" target="_blank" href="{{ path('dashboard') }}"><i
+                                    class="fa fa-chalkboard"></i>Dashboard</a>
+                    </li>
+
+
+                    {% if CountPendingWebsiteInquiries.countContacts >0 %}
+                        <li class="nav-item active">
+                            <a style="color: red" class="nav-link" target="_blank"
+                               href="{{ path('website_contacts_index') }}">
+                                <i title="Website inquiries awaiting a response" style="color: yellow"
+                                   class="fa fa-user-secret"></i>
+                                ({{ CountPendingWebsiteInquiries.countContacts }})
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Products
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% set products = Product.getProductFooter %}
+                        {% for product in products %}
+                            <a class="dropdown-item"
+                               href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+
+                {% if app.user %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> {{ app.user.fullName }}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}<span title="Super-Admin" style="color: red">
+                                <i class="fa fa-chess-king"></i></span>
+                            {% endif %}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a target="_blank" class="dropdown-item"
+                               href="{{ path('user_edit', {'fullName': app.user.fullName}) }}">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                My profile
+                            </a>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                        </div>
+                    </li>
+
+                {% else %}
+                    {#                    <li class="nav-item"> #}
+                    {#                        <a class="nav-link" href="{{ path('log_index') }}">Login</a> #}
+                    {#                    </li> #}
+                {% endif %}
+
+            </ul>
+        </div>
+
+    </nav>
+
+</header>

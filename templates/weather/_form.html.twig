@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        {{ form_row(form.location) }}
+        {{ form_row(form.date) }}
+        {{ form_row(form.time) }}
+        {{ form_row(form.weather) }}
+        {{ form_row(form.rain) }}
+    </div>
+
+</div>
+<button class="btn btn-success bt-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Company Details{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Company Details</h1>
+
+    {{ include('company_details/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('company_details_index') }}">Return to list</a>
+{% endblock %}

@@ -3,9 +3,9 @@
 {% block title %}New Log{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">New Log</h1>
+    <h1>Create new Log</h1>
 
     {{ include('log/_form.html.twig') }}
 
-    <a class="btn btn-primary btn-sm" href="{{ path('log_index') }}">Return to list</a>
+    <a href="{{ path('app_log_index') }}">back to list</a>
 {% endblock %}

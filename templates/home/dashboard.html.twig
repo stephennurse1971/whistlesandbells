@@ -199,6 +199,70 @@
     </div>
 
 
+    <div class="row">
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">Services/Products</h2>
+                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
+                                                                      href="{{ path('company_details_index') }}">Company
+                        Details</a></li>
+                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
+                                                                      href="{{ path('product_index') }}">Product</a>
+                </li>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">Website CMS</h2>
+                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
+                                                                      href="{{ path('cms_copy_index') }}">Main Page
+                        Copy</a></li>
+                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
+                                                                      href="{{ path('sub_page_index') }}">Sub Pages</a>
+                </li>
+                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
+                                                                      href="{{ path('cms_photo_index') }}">Photos</a>
+                </li>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">Users</h2>
+                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
+                                                                      href="{{ path('website_contacts_index') }}">In-Bound
+                        Requests/contacts</a></li>
+                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank" href="{{ path('user_index') }}">Users</a>
+                </li>
+                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank" href="{{ path('log_index') }}">User
+                        log</a></li>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">E-mails</h2>
+                <ul><a target="_blank" href="{{ path('emails_import_index') }}">Emails Received: Pending</a></ul>
+                <ul><a target="_blank" href="{{ path('emails_import_index') }}">Emails Received: Processed</a></ul>
+                <ul><a target="_blank" href="">Emails Sent</a></ul>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <div class="border py-4">
+                <h3 style="color: red">Weather</h3>
+                <ul><a target="_blank" href="{{ path('weather_index') }}">Weather</a></ul>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="border py-4">
+                <h3 style="color: red">Technology</h3>
+                <ul><a class="btn btn-outline-success btn-sm" target="_blank" href="">Import Live Data</a></ul>
+            </div>
+        </div>
+
+
+    </div>
+
 {% endblock %}
     {% block javascripts %}
         {{ parent() }}

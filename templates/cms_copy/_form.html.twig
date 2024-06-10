@@ -5,24 +5,48 @@
     }
 </style>
 {{ form_start(form) }}
-
+<div class="col-md-3">
+    <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+    <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
+</div>
 <div class="row">
     <div class="col-md-3">
-        <h2>Names</h2>
-        {{ form_row(form.name) }}
-        {{ form_row(form.pageTitle) }}
-        {{ form_row(form.hyperlinks) }}
-    </div>
-    <div class="col-md-3">
-        <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
-        <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
+        <h2>Category</h2>
+        {{ form_row(form.category) }}
+
     </div>
 </div>
 
-
-<h2>Titles</h2>
 <div class="row">
     <div class="col-md-3">
+
+        <div class="static-container">
+            <h2>Static</h2>
+            {{ form_row(form.staticPageName) }}
+        </div>
+
+
+        <div class="product-container">
+            <h2>Product</h2>
+            {{ form_row(form.product) }}
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>Tab Title</h2>
+        {{ form_row(form.tabTitle) }}
+        {{ form_row(form.hyperlinks) }}
+    </div>
+</div>
+
+<h2>Headings</h2>
+<div class="row">
+    <div class="col-md-3">
+
         {{ form_row(form.contentTitle) }}
     </div>
     <div class="col-md-3">

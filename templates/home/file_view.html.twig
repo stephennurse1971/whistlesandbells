@@ -10,7 +10,7 @@
     </style>
     <div class="row justify-content-center">
         <div class="col-10 text-center" >
-            {% if ext == 'pdf' or ext=='docx' or ext == 'doc' or ext == 'xls' or ext == 'xlsx'  %}
+            {% if ext == 'pdf' %}
                 <embed class="file_viewer" src="{{ filepath }}" width="1000px">
             {% else %}
                 <img src="{{ filepath }}" height="1000px">
