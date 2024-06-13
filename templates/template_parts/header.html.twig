@@ -163,11 +163,9 @@
                                         To Do List</a>
                                 {% endif %}
                                 <hr>
-                                {#                                <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful #}
-                                {#                                    links</a> #}
+                                <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful links</a>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">Helpful
-                                        files</a>
+                                    <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">Helpful files</a>
                                 {% endif %}
                             </div>
                         </li>

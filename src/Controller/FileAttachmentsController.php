@@ -6,7 +6,6 @@ use App\Entity\FileAttachments;
 use App\Entity\GarminFiles;
 use App\Form\FileAttachmentsType;
 use App\Repository\FileAttachmentsRepository;
-use App\Repository\StaticTextRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +26,7 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/", name="/admin/fileattachments/index", methods={"GET"})
      */
-    public function index(FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository): Response
+    public function index(FileAttachmentsRepository $fileAttachmentsRepository): Response
     {
         return $this->render('file_attachments/index.html.twig', [
             'file_attachments' => $fileAttachmentsRepository->findAll(),
@@ -37,7 +36,7 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/show/attachment/{id}/{filename}", name="show_attachment")
      */
-    public function showAttachment(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository)
+    public function showAttachment(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository)
     {
         $filepath = $this->getParameter('garmin_attachments_directory') . "/" . $filename;
         if (file_exists($filepath)) {
@@ -50,7 +49,7 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/show/attachment/file-upload-directory/{id}/{filename}", name="show_attachment_file_upload_directory")
      */
-    public function showAttachmentFileUploadDirectory(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository, StaticTextRepository $staticTextRepository)
+    public function showAttachmentFileUploadDirectory(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository)
     {
         $filepath = $this->getParameter('file_attachments_directory') . "/" . $filename;
         if (file_exists($filepath)) {

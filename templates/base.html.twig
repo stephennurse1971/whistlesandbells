@@ -32,10 +32,14 @@
     <!--Modernizr Js-->
     <script src="{{ asset('user-templates/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
 
-    {% if app.environment=='dev' %}
-        <link rel="icon" href="{{ asset('administration/img/negative-dynamic.png') }}">
-    {% else %}
-        <link rel="icon" href="{{ asset('administration/img/positive-dynamic.png') }}">
+    {% if CompanyDetails.companyDetails is not null %}
+        {% if app.environment=='dev' %}
+            <link rel="icon"
+                  href="{{ asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconDev) }}">
+        {% else %}
+            <link rel="icon"
+                  href="{{ asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconLive) }}">
+        {% endif %}
     {% endif %}
 
 

@@ -6,11 +6,13 @@
             {{ form_row(form.category) }}
             {{ form_row(form.description) }}
             {{ form_row(form.date) }}
+            {{ form_row(form.attachments) }}
         {% else %}
             {{ form_row(form.category,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.description,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.notes,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.date,{'attr':{'readonly':'true'}}) }}
+            {{ form_row(form.attachments,{'attr':{'readonly':'true'}}) }}
             {{ form_row(form.attachments,{'attr':{'readonly':'true'}}) }}
         {% endif %}
     </div>
