@@ -81,44 +81,52 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/display/{product}", name="product_display")
+     * @Route("/interests/{product}", name="product_display")
      */
     public function articles(string $product, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, ProductRepository $productRepository): Response
     {
         $productEntity = $productRepository->findOneBy([
-            'product'=>$product
-        ]);
-        $cms_copy = $cmsCopyRepository->findBy([
-            'product' => $productEntity
+            'product' => $product
         ]);
 
+
+        if ($productEntity) {
+            $cms_copy = $cmsCopyRepository->findBy([
+                'product' => $productEntity
+            ]);
+        }
+        else {
+            $cms_copy = $cmsCopyRepository->findBy([
+                'staticPageName' => $product
+            ]);
+        }
         $cms_photo = $cmsPhotoRepository->findBy([
             'product' => $productEntity
         ]);
 
-//        $sub_pages = [];
-//        if ($cms_copy) {
-//            $sub_pages = $subPageRepository->findBy([
-//                'product' => $cms_copy->getProduct()
-//            ]);
-//        }
+        $sub_pages = [];
+        if ($cms_copy) {
+            $sub_pages = $subPageRepository->findBy([
+                'product' => $productEntity
+            ]);
+        }
 
         return $this->render('home/products.html.twig', [
             'product' => $product,
             'cms_copy_array' => $cms_copy,
             'cms_photo_array' => $cms_photo,
-//            'sub_pages' => $sub_pages,
+            'sub_pages' => $sub_pages,
             'include_contact' => 'No'
         ]);
     }
 
 
     /**
-     * @Route("/homeaddress", name="/homeaddress", methods={"GET"})
+     * @Route("/office_address", name="office_address", methods={"GET"})
      */
-    public function homeAddress(): Response
+    public function officeAddress(CompanyDetailsRepository $companyDetailsRepository): Response
     {
-        return $this->render('home/homeaddress.html.twig');
+        return $this->render('home/officeAddress.html.twig');
     }
 
     /**
@@ -164,16 +172,6 @@ class HomeController extends AbstractController
             ]);
         }
         return $this->render('error/file_not_found.html.twig');
-    }
-
-    /**
-     * @Route("/office_address", name="office_address", methods={"GET"})
-     */
-    public function officeAddress(CompanyDetailsRepository $companyDetailsRepository): Response
-    {
-        return $this->render('home/officeAddress.html.twig', [
-            'company_details' => $companyDetailsRepository->find('1')
-        ]);
     }
 
 

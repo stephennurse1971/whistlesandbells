@@ -34,6 +34,8 @@ class CompanyDetailsType extends AbstractType
             ->add('companyEmailImportProcessedDirectory')
             ->add('companyTel')
             ->add('companyMobile')
+            ->add('companySkype')
+            ->add('companyQrCode')
             ->add('companyAddressStreet')
             ->add('companyAddressTown')
             ->add('companyAddressCity')

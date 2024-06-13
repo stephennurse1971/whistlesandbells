@@ -36,7 +36,6 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $productRepository->add($product, true);
-
             return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
         }
 

@@ -182,10 +182,19 @@
 <script>
 
     ClassicEditor
+        .create(document.querySelector('#company_details_companyAddressInstructions'))
+        .catch(error => {
+            console.error(error);
+        });
+
+ ClassicEditor
         .create(document.querySelector('#file_attachments_notes'))
         .catch(error => {
             console.error(error);
         });
+
+
+
 
     ClassicEditor
         .create(document.querySelector('#to_do_list_items_task'))

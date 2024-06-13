@@ -1,35 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Product Index{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Product index</h1>
+    <h1 style="color: red">Product Index</h1>
 
     <table class="table table-responsive">
         <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Product</th>
-                <th>IsActive</th>
-                <th>Comments</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Rank</th>
+            <th>Product</th>
+            <th>Active</th>
+            <th>Comments</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
         {% for product in products %}
             <tr>
                 <td>{{ product.ranking }}</td>
                 <td>{{ product.product }}</td>
-                <td>{{ product.isActive ? 'Yes' : 'No' }}</td>
+                <td style="text-align: center">
+                    {% if product.isActive =="Yes" %}
+                        <i style="color: green" class="fa fa-dot-circle"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-dot-circle"></i>
+                    {% endif %}
+                    {#                    {{ product.isActive ? 'Yes' : 'No' }} #}
+                </td>
                 <td>{{ product.comments }}</td>
                 <td>
-                    <a class="btn btn-outline-danger" href="{{ path('product_edit', {'id': product.id}) }}">Edit</a>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('product_edit', {'id': product.id}) }}">Edit</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+    <br>
     <a class="btn btn-success btn-sm" href="{{ path('product_new') }}">New</a>
 {% endblock %}
 

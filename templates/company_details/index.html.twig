@@ -15,11 +15,13 @@
             <th style="text-align: left">Email</th>
             <th>Tel</th>
             <th>Mobile</th>
+            <th>Skype</th>
             <th>Address</th>
             <th>Time<br>Zone</th>
             <th>Ccy</th>
             <th>Weather<br>Location</th>
             <th>Directions</th>
+            <th>QR</th>
             <th>Facebook</th>
             <th>LinkedIn</th>
             <th>Instagram</th>
@@ -65,6 +67,7 @@
                 </td>
                 <td>{{ company_detail.companyTel }}</td>
                 <td>{{ company_detail.companyMobile }}</td>
+                <td>{{ company_detail.companySkype }}</td>
                 <td>
                     {{ company_detail.companyAddressStreet }}, <br>
                     {{ company_detail.companyAddressTown }},
@@ -86,6 +89,14 @@
                     {{ company_detail.companyAddressInstructions |raw }}
                 </td>
 
+                <td style="text-align: center">
+                    {% if company_detail.companyQrCode is not empty %}
+                        <a target="_blank" title="{{ company_detail.companyQrCode }}"
+                           href="{{ path('app_home') }}">
+                            <i class="fab fa-qrcode"></i>
+                        </a>
+                    {% endif %}
+                </td>
                 <td style="text-align: center">
                     {% if company_detail.facebook is not empty %}
                         <a target="_blank" title="{{ company_detail.facebook }}"

@@ -39,9 +39,9 @@ class SubPageController extends AbstractController
 
             return $this->redirectToRoute('sub_page_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('sub_page/new.html.twig', [
+        return $this->render('sub_page/new.html.twig', [
             'sub_page' => $sub_page,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -67,9 +67,9 @@ class SubPageController extends AbstractController
 
             return $this->redirectToRoute('sub_page_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('sub_page/edit.html.twig', [
+        return $this->render('sub_page/edit.html.twig', [
             'sub_page' => $subPage,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
