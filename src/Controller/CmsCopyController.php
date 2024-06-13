@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CmsCopy;
 use App\Form\CmsCopyType;
 use App\Repository\CmsCopyRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,19 +13,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/cmscopy")
+ * @Route("/cmscopy")
  */
 class CmsCopyController extends AbstractController
 {
     /**
      * @Route("/", name="cms_copy_index", methods={"GET"})
      */
-    public function index(CmsCopyRepository $cmsCopyRepository): Response
+    public function index(CmsCopyRepository $cmsCopyRepository, ProductRepository $productRepository): Response
     {
-        $site_pages = ['Emails', 'HomePage', 'AboutSN', 'Cyprus', 'Flying', 'Tennis', 'WebDesign', 'PrivateEquity', 'Risk & Capital Consulting'];
+        $products = $productRepository->findAll();
         return $this->render('cms_copy/index.html.twig', [
             'cms_copies' => $cmsCopyRepository->findAll(),
-            'site_pages' => $site_pages
+            'products' => $products
         ]);
     }
 

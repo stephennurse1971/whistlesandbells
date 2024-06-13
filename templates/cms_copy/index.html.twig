@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CMS: Copy Index{% endblock %}
+{% block title %}
+    CMS: Copy Index
+{% endblock %}
 
 {% block body %}
     <h1 style="color: red">CMS: Copy</h1>
@@ -10,35 +12,39 @@
     <table class="table table-responsive">
         <thead>
         <tr>
-            <th style="width: 150px">Product</th>
             <th style="width: 50px">Category</th>
-            <th style="width: 50px">Static Page Name</th>
+            <th style="width: 150px">Product or <br>Static Page Name</th>
+            <th style="width: 20px">Order</th>
             <th style="width: 50px">Tab title</th>
             <th style="width: 250px">Heading<br>(Content title)</th>
             <th style="width: 650px">Content</th>
             <th style="width: 20px">Hyperlink</th>
-            <th style="width: 100px">#</th>
+            <th style="width: 20px">Attachment</th>
+            <th style="width: 20px">#</th>
+            <th style="width: 20px">#</th>
+            <th style="width: 20px">#</th>
         </tr>
         </thead>
         <tbody>
         {% for cms_copy in cms_copies %}
             <tr>
+                <td>{{ cms_copy.category }}</td>
                 <td>
                     {% if cms_copy.product is not null %}
-                    <a target="_blank"
-                       href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
-                        {{ cms_copy.product.ranking }}.
-                        {{ cms_copy.product.product }}</a>
-                        {% else %}
-                        Static Page
+                        <a target="_blank"
+                           href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
+                            {{ cms_copy.product.ranking }}.
+                            {{ cms_copy.product.product }}</a>
+                    {% else %}
+                        {{ cms_copy.staticPageName }}
                     {% endif %}
                 </td>
-                <td>{{ cms_copy.category }}</td>
-                <td>{{ cms_copy.staticPageName }}</td>
+                <td>{{ cms_copy.ranking }}</td>
+
                 <td>{{ cms_copy.tabTitle }}</td>
                 <td title="{{ cms_copy.contentTitle }}">{{ (cms_copy.contentTitle |slice (0, 50)) }}...</td>
                 <td>
-                     {{ (cms_copy.contentText |slice (0, 250))|raw }}...
+                    {{ (cms_copy.contentText |slice (0, 250))|raw }}...
                 </td>
                 <td>
                     {% if  cms_copy.hyperlinks is not empty %}
@@ -53,13 +59,20 @@
                     {% endif %}
                 </td>
                 <td>
+                    {{ cms_copy.attachment }}
+                </td>
+                <td style="d-inline">
                     <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
                        href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">Edit</a>
+                </td>
+                <td>
                     <form class="d-inline" method="post"
                           action="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy.id) }}">
                         <button class="btn btn-danger btn-sm">Delete</button>
                     </form>
+                </td>
+                <td>
                     <a class="d-inline btn btn-success btn-sm" target="_blank"
                        href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">Copy</a>
                 </td>
@@ -75,7 +88,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[1, 'desc'],[0, 'asc']],
+                "order": [[1, 'asc'], [0, 'desc'], [3, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

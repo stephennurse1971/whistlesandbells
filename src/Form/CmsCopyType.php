@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\TextData\Text;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -64,7 +65,13 @@ class CmsCopyType extends AbstractType
                 'label' => 'Main Content (German)'
             ])
 
-            ->add('hyperlinks');
+            ->add('hyperlinks')
+            ->add('attachment', FileType::class, [
+                'label' => 'Attachment',
+                'mapped' => false,
+                'required' => false
+            ])
+            ->add('ranking');
     }
 
     public function configureOptions(OptionsResolver $resolver)

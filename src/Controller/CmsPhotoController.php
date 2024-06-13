@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\CmsPhoto;
-use App\Entity\StaticText;
 use App\Form\CmsPhotoType;
 use App\Repository\CmsPhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,12 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * @Route("/admin/cmsphoto")
+ * @Route("/cmsphoto")
  */
 class CmsPhotoController extends AbstractController
 {
     /**
-     * @Route("/", name="cms_photo_index", methods={"GET"})
+     * @Route("/index", name="cms_photo_index", methods={"GET"})
      */
     public function index(CmsPhotoRepository $cmsPhotoRepository): Response
     {

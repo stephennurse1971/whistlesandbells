@@ -24,42 +24,42 @@
                         <hr class="w-100 clearfix d-md-none"/>
 
                         <!-- Grid column -->
-                        <div style="text-align: left" class=" col-md-12 col-lg-4 mx-auto  mt-3 ">
-                            <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
-                            <div class="row">
-                                {% set products = Product.getProductFooter %}
-                                {% for i in 1..2 %}
-                                    {% if i == 1 %}
-                                        <div class="col-md-4">
-                                            {% for product in products %}
-                                                {% if loop.index < 6 %}
-                                                    <div>
-                                                        <li>
-                                                            <a target="_blank" class="text-white mb-1"
-                                                               href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}</a>
-                                                        </li>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <div class="col-md-6">
-                                            {% for product in products %}
-                                                {% if loop.index > 5 %}
-                                                    <div>
-                                                        <li>
-                                                            <a target="_blank" class="text-white mb-1"
-                                                               href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}</a>
-                                                        </li>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
+{#                        <div style="text-align: left" class=" col-md-12 col-lg-4 mx-auto  mt-3 ">#}
+{#                            <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>#}
+{#                            <div class="row">#}
+{#                                {% set products = Product.getProductFooter %}#}
+{#                                {% for i in 1..2 %}#}
+{#                                    {% if i == 1 %}#}
+{#                                        <div class="col-md-4">#}
+{#                                            {% for product in products %}#}
+{#                                                {% if loop.index < 6 %}#}
+{#                                                    <div>#}
+{#                                                        <li>#}
+{#                                                            <a target="_blank" class="text-white mb-1"#}
+{#                                                               href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}</a>#}
+{#                                                        </li>#}
+{#                                                    </div>#}
+{#                                                {% endif %}#}
+{#                                            {% endfor %}#}
+{#                                        </div>#}
+{#                                    {% else %}#}
+{#                                        <div class="col-md-6">#}
+{#                                            {% for product in products %}#}
+{#                                                {% if loop.index > 5 %}#}
+{#                                                    <div>#}
+{#                                                        <li>#}
+{#                                                            <a target="_blank" class="text-white mb-1"#}
+{#                                                               href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}</a>#}
+{#                                                        </li>#}
+{#                                                    </div>#}
+{#                                                {% endif %}#}
+{#                                            {% endfor %}#}
+{#                                        </div>#}
 
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                        </div>#}
                         <!-- Grid column -->
 
                         <hr class="w-100 clearfix d-md-none"/>
@@ -117,7 +117,7 @@
 
                             <div style="text-align: left" class="col-md-6 mt-3 col-lg-2 mx-auto  ">
                                 <h6 class="text-uppercase mb-4 font-weight-bold">
-                                    <a target="_blank" href="{{ path('/aboutUs') }}">Follow us</a>
+                                    Follow us
                                 </h6>
 
 

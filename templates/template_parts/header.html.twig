@@ -1,82 +1,285 @@
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top " style="background: #eb7f55;">
+<!--Start Header Section -->
+<header id="top-header" class="clearfix">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container-fluid">
+            <div class="logo">
+                <a class="navbar-brand" href="{{ path('app_home') }}">Stephen Nurse</a>
+            </div>
 
-        <a class="navbar-brand" href={{ path('app_home') }}>
-            <img alt="Tech Arete" src="{{ asset('administration/img/favicons/lightbulb.png') }}"
-                 height="50px" width="50px">
-        </a>
+            <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <div class="collapse  main-menu navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto" style="margin-right: 50px;">
-
-
-                {% if app.user %}
+                    <!-- Nav Item #1 - Home -->
                     <li class="nav-item active">
-                        <a class="nav-link" target="_blank" href="{{ path('dashboard') }}"><i
-                                    class="fa fa-chalkboard"></i>Dashboard</a>
+                        <a class="nav-link" href="{{ path('app_home') }}">
+                            <i class="fa fa-home"></i>
+                        </a>
                     </li>
 
-
-                    {% if CountPendingWebsiteInquiries.countContacts >0 %}
-                        <li class="nav-item active">
-                            <a style="color: red" class="nav-link" target="_blank"
-                               href="{{ path('website_contacts_index') }}">
-                                <i title="Website inquiries awaiting a response" style="color: yellow"
-                                   class="fa fa-user-secret"></i>
-                                ({{ CountPendingWebsiteInquiries.countContacts }})
-                            </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" target="_blank" href="{{ path('dashboard') }}"><i
+                                        class="fa fa-chalkboard"></i></a>
                         </li>
+
+                        {% if CountPendingWebsiteInquiries.countContacts >0 %}
+                            <li class="nav-item active">
+                                <a style="color: red" class="nav-link" target="_blank"
+                                   href="{{ path('website_contacts_index') }}">
+                                    <i title="Website inquiries awaiting a response" style="color: yellow"
+                                       class="fa fa-user-secret"></i>
+                                    ({{ CountPendingWebsiteInquiries.countContacts }})
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Products
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% set products = Product.getProductFooter %}
-                        {% for product in products %}
-                            <a class="dropdown-item"
-                               href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}</a>
-                        {% endfor %}
-                    </div>
-                </li>
-
-                {% if app.user %}
+                    <!-- Nav Item #2 - Interests -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-user"></i> {{ app.user.fullName }}
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}<span title="Super-Admin" style="color: red">
-                                <i class="fa fa-chess-king"></i></span>
-                            {% endif %}
+                            Interests
+                        </a>
+                        {% if app.user %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set products = Product.getProductFooter %}
+                                {% for product in products %}
+                                    <a target="_blank" class="text-white mb-1"
+                                       href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                        {#                                        {% if product.isPublic == 0 and is_granted('ROLE_ADMIN') %} #}
+                                        {#                                            <span style="color: red">*</span> #}
+                                        {#                                        {% endif %} #}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set products = Product.getProductFooter %}
+                                {% for product in products %}
+                                    <a class="dropdown-item" target="_blank"
+                                       href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </li>
+
+
+                    <!-- Nav Item #3 - Photos -->
+                    {% if is_granted('ROLE_GUEST') %}
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-item" href="{{ path('photos_index') }}">Photos</a>
+                        </li>
+                    {% endif %}
+
+
+                    <!-- Nav Item #4 - Come Visit -->
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Cyprus
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a target="_blank" class="dropdown-item"
-                               href="{{ path('user_edit', {'fullName': app.user.fullName}) }}">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                My profile
-                            </a>
-                            <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                            <a class="dropdown-item"
+                               href="{{ path('house_guests_index', {subset:'Active'}) }}">Flights</a>
+                            <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful
+                                links</a>
+                            {% if is_granted('ROLE_GUEST') %}
+                                <a class="dropdown-item" href="">About Cyprus</a>
+                                <a class="dropdown-item" href="">What To Bring</a>
+                                <hr>
+                                <a class="dropdown-item"
+                                   href="{{ path('tourist_attraction_index', {type:'All'}) }}">Tourist
+                                    attractions</a>
+
+                                <a class="dropdown-item" href="{{ path('garmin_files_index') }}">Garmin Files
+                                    <span style="color: red">*</span></a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('wine_list_index') }}">Wine List
+                                    <span style="color: red">*</span></a>
+                            {% endif %}
                         </div>
                     </li>
 
-                {% else %}
-                    {#                    <li class="nav-item"> #}
-                    {#                        <a class="nav-link" href="{{ path('log_index') }}">Login</a> #}
-                    {#                    </li> #}
-                {% endif %}
 
-            </ul>
+                    <!-- Nav Item #5 - Contact -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Contact
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a title={{ CompanyDetails.companyDetails.companyEmail }} class="dropdown-item"
+                               href="mailto:{{ CompanyDetails.companyDetails.companyEmail }}">
+                                <span style="color: blue;">@</span> {{ CompanyDetails.companyDetails.companyEmail }}
+                            </a>
+                            <a class="dropdown-item" title="{{ CompanyDetails.companyDetails.companyMobile }}"
+                               href="https://wa.me/{{ CompanyDetails.companyDetails.companyMobile | replace({' ': ''}) }}">
+                                <i style="color: #0f6848"
+                                   class="fab fa-whatsapp"></i> {{ CompanyDetails.companyDetails.companyMobile }}</a>
+                            {#                            <a class="dropdown-item" title={{ CompanyDetails.companyDetails.companySkype}} #}
+                            {#                            href="skype:{{ CompanyDetails.companyDetails.companySkype }}?call"><i style="color: royalblue" #}
+                            {#                                                                                class="fab fa-skype"></i> {{ CompanyDetails.companyDetails.companySkype }} #}
+                            {#                            </a> #}
+                            {% if app.user %}
+                                <a target="_blank" title="{{ CompanyDetails.companyDetails.companyAddressStreet }} "
+                                   href="{{ path('/homeaddress') }}"> <i style="color: royalblue"
+                                                                         class="fa fa-car"></i> {{ CompanyDetails.companyDetails.companyAddressStreet }}
+                                </a>
+                            {% endif %}
+                            <a class="dropdown-item" title="Contact details"
+                               href="{{ path('create_vcard_SN') }}">
+                                <i class="fa fa-credit-card"></i> Business Card
+                            </a>
+
+                        </div>
+                    </li>
+
+                    <!-- Nav Item #6 - CV -->
+                    <li class="nav-item dropdown">
+                        <a href="{{ path('curriculum_vitae' ) }}">CV</a>
+                    </li>
+
+
+                    <!-- Nav Item #7 - SN Admin -->
+                    {% if is_granted('ROLE_IT') %}
+                        <li class="nav-item dropdown">
+                            <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
+                               id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% if is_granted('ROLE_IT') %}
+                                    <a class="dropdown-item"
+                                       href="{{ path('to_do_list_index', {status:'Pending',project:'All'}) }}">
+                                        To Do List</a>
+                                {% endif %}
+                                <hr>
+                                {#                                <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful #}
+                                {#                                    links</a> #}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="dropdown-item" href="{{ path('/admin/fileattachments/index') }}">Helpful
+                                        files</a>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endif %}
+
+
+                    <!-- Nav Item #8 - Investments -->
+                    {% if is_granted('ROLE_ACCOUNTANT') %}
+                        <li class="nav-item dropdown">
+                            <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
+                               id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Investments</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item"
+                                   href="{{ path('investments_economic_index', {'subset': 'Active'}) }}">Investments</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('tax_supporting_docs_index') }}">Supporting
+                                    Tax
+                                    Docs</a>
+                                <a class="dropdown-item" href="{{ path('investment_future_comms_index') }}">Investment
+                                    Docs</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('jpm_ic_history_index') }}">IC Record</a>
+                            </div>
+                        </li>
+                    {% endif %}
+
+                    <!-- Nav Item #9 - Tax -->
+                    {% if is_granted('ROLE_ACCOUNTANT') %}
+                        <li class="nav-item dropdown">
+                            <a style="color: red !important" class="nav-link dropdown-toggle" href="#"
+                               id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tax</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" target="_blank"
+                                   href="{{ path('investments_tax_consequences',{'show': 'TaxEffect'}) }}">Tax
+                                    summary -
+                                    Investments</a>
+                                <a class="dropdown-item" target="_blank"
+                                   href="{{ path('tax_inputs_overview_index') }}">Tax
+                                    summary - Self-Assessment</a>
+                                <hr>
+                                <a class="dropdown-item" href="{{ path('tax_inputs_index') }}">Employment Income</a>
+                            </div>
+                        </li>
+                    {% endif %}
+
+
+                    <!-- Nav Item #10 - Login -->
+                    {% if app.user %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ app.user.fullName }}
+                            </a>
+
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
+                            {% endif %}
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
+                            {% endif %}
+
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {% if is_granted('ROLE_TENNIS_PLAYER') %}
+                                    <i title="Tennis PLayer" style="color: green" class="fa fa-table-tennis"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_JOB_APPLICANT') %}
+                                    <i title="Job Applicant" style="color: red" class="fa fa-user-graduate"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_RECRUITER') %}
+                                    <i title="Recruiter" style="color: red" class="fa fa-city"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_ACCOUNTANT') %}
+                                    <i title="Accountant" style="color: blue" class="fa fa-dollar-sign"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_FAMILY') %}
+                                    <i title="Family" style="color: blue" class="fa fa-baby"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_GUEST') %}
+                                    <i title="Guest" style="color: green" class="fa fa-user-beer"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_IT') %}
+                                    <i title="IT" style="color: red" class="fa fa-laptop"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_USER') %}
+                                    <i title="User" style="color: grey" class="fa fa-user"></i>
+                                {% endif %}
+                            {% endif %}
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">Profile</a>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <a class=" btn btn-sm btn-outline-dark" href="{{ path('app_login') }}">Login</a>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-
     </nav>
-
+    <!-- Navigation -->
 </header>
+<!--End Header Section -->

@@ -26,7 +26,7 @@ parameters:
     photos_upload_default_directory: '%kernel.project_dir%/public/administration/attachments/Photos/'
     user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
     website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
-    winelist_directory: '%kernel.project_dir%/public/administration/img/winelist'
+    winelist_directory: '%kernel.project_dir%/public/administration/img/winelabels'
     website_pictures_directory: '%kernel.project_dir%/public/administration/img/website_pictures/'
 
 

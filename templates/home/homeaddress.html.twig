@@ -5,13 +5,13 @@
 {% block body %}
     <h3 style="color: red">Address</h3>
     <b>Home address is: </b>
-    {{ StaticText.content.address | raw }}
+    {{ CompanyDetails.companyDetails.companyAddress | raw }}
     <br>
     <br>
-    Google Maps:  <a target="_blank" href="{{ StaticText.content.gpsCoordinates }}">Link</a>
+    Google Maps:  <a target="_blank" href="{{ CompanyDetails.companyDetails.companyAddress  }}">Link</a>
     <br>
     <br>
-    <iframe src="{{ StaticText.content.gpsImage }}"
+    <iframe src="{{ CompanyDetails.companyDetails.mapLink }}"
             width="900" height="850" style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
 
@@ -20,7 +20,7 @@
     <br>
     <b>Getting here:</b> <br>
     <li>
-        The nearest airport is Paphos (PFO), which is 20mins drive.
+        {{ CompanyDetails.companyDetails.directions }}
     </li>
 
 {% endblock %}

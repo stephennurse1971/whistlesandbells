@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\RecruiterEmails;
-use App\Entity\TaxInputs;
+
 use App\Entity\User;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\CompanyDetailsRepository;
-use App\Repository\InterestsRepository;
 use App\Repository\IntroductionRepository;
+use App\Repository\ProductRepository;
 use App\Repository\RecruiterEmailsRepository;
-use App\Repository\StaticTextRepository;
+use App\Repository\SubPageRepository;
 use App\Repository\TaxInputsRepository;
 use App\Repository\UserRepository;
+use App\Services\CompanyDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,43 +28,11 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function index(CompanyDetails $companyDetails, CmsPhotoRepository $cmsPhotoRepository): Response
     {
         return $this->render('home/home.html.twig', [
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePage1'
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePage2'
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePage3'
-            ]),
-
-            'Text1FR' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePageFR1'
-            ]),
-            'Text2FR' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePageFR2'
-            ]),
-            'Text3FR' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePageFR3'
-            ]),
-
-            'Text1DE' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePageDE1'
-            ]),
-            'Text2DE' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePageDE2'
-            ]),
-            'Text3DE' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePageDE3'
-            ]),
-            'Hyperlink' => $cmsCopyRepository->findOneBy([
-                'name' => 'HomePageHyperlink'
-            ]),
             'photos' => $cmsPhotoRepository->findBy([
-                'name' => 'HomePage'
+                'staticPageName' => 'HomePage'
             ])
         ]);
     }
@@ -112,41 +80,35 @@ class HomeController extends AbstractController
         return $this->render('home/dashboard.html.twig', []);
     }
 
-
     /**
-     * @Route("/interest/{interest}", name="interests_pages", methods={"GET"})
+     * @Route("/display/{product}", name="product_display")
      */
-    public function dynamicInterests(Request $request, string $interest, InterestsRepository $interestsRepository, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
+    public function articles(string $product, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, ProductRepository $productRepository): Response
     {
-        $interest = $interestsRepository->findOneBy([
-            'name' => $interest
+        $productEntity = $productRepository->findOneBy([
+            'product'=>$product
         ]);
-        $CmsText1 = $interest->getCmsText1();
-        $CmsText2 = $interest->getCmsText2();
-        $CmsText3 = $interest->getCmsText3();
-        $CmsPhoto1 = $interest->getCmsPhoto1();
-        $CmsPhoto2 = $interest->getCmsPhoto2();
-        $CmsPhoto3 = $interest->getCmsPhoto3();
+        $cms_copy = $cmsCopyRepository->findBy([
+            'product' => $productEntity
+        ]);
 
-        return $this->render('home/otherPages.twig', [
-            'Text1' => $cmsCopyRepository->findOneBy([
-                'name' => $CmsText1
-            ]),
-            'Text2' => $cmsCopyRepository->findOneBy([
-                'name' => $CmsText2
-            ]),
-            'Text3' => $cmsCopyRepository->findOneBy([
-                'name' => $CmsText3
-            ]),
-            'Photo1' => $cmsPhotoRepository->findOneBy([
-                'name' => $CmsPhoto1
-            ]),
-            'Photo2' => $cmsPhotoRepository->findOneBy([
-                'name' => $CmsPhoto2
-            ]),
-            'Photo3' => $cmsPhotoRepository->findOneBy([
-                'name' => $CmsPhoto3
-            ]),
+        $cms_photo = $cmsPhotoRepository->findBy([
+            'product' => $productEntity
+        ]);
+
+//        $sub_pages = [];
+//        if ($cms_copy) {
+//            $sub_pages = $subPageRepository->findBy([
+//                'product' => $cms_copy->getProduct()
+//            ]);
+//        }
+
+        return $this->render('home/products.html.twig', [
+            'product' => $product,
+            'cms_copy_array' => $cms_copy,
+            'cms_photo_array' => $cms_photo,
+//            'sub_pages' => $sub_pages,
+            'include_contact' => 'No'
         ]);
     }
 
@@ -154,29 +116,9 @@ class HomeController extends AbstractController
     /**
      * @Route("/homeaddress", name="/homeaddress", methods={"GET"})
      */
-    public function homeAddress(StaticTextRepository $staticTextRepository, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
+    public function homeAddress(): Response
     {
-        return $this->render('home/homeaddress.html.twig', [
-            'Photos' => $cmsPhotoRepository->findAll(),
-            'HomePage1Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage1'
-            ]),
-            'Specialising1Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising1'
-            ]),
-            'Specialising2Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising2'
-            ]),
-            'Specialising3Photo' => $cmsPhotoRepository->findOneBy([
-                'name' => 'Specialising3'
-            ]),
-            'WhyMePhoto' => $cmsPhotoRepository->findOneBy([
-                'name' => 'WhyMe'
-            ]),
-            'HomePage1Text' => $cmsPhotoRepository->findOneBy([
-                'name' => 'HomePage1'
-            ]),
-        ]);
+        return $this->render('home/homeaddress.html.twig');
     }
 
     /**
@@ -269,7 +211,6 @@ class HomeController extends AbstractController
         $vcard->download();
         return new Response(null);
     }
-
 
 
 }

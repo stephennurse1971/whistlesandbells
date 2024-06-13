@@ -3,10 +3,8 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         CompanyDetails: '@App\Services\CompanyDetails'
-        Product: '@App\Services\Product'
-        CountPendingWebsiteInquiries: '@App\Services\CountPendingWebsiteInquiries'
-
         BankBalanceOnAsOfDate: '@App\Services\BankBalanceOnAsOfDate'
+        CountPendingWebsiteInquiries: '@App\Services\CountPendingWebsiteInquiries'
         CountPhotos: '@App\Services\CountPhotos'
         CountPendingItems: '@App\Services\CountPendingItems'
         CountAllocatedWebsites: '@App\Services\CountAllocatedWebsites'
@@ -15,11 +13,11 @@ twig:
         Investment: '@App\Services\Investment'
         MarketDataPrice: '@App\Services\MarketDataPrice'
         PhotoAuthorsByLocation: '@App\Services\PhotoAuthorsByLocation'
-        StaticText: '@App\Services\StaticText'
+        Product: '@App\Services\Product'
         TaxYear: '@App\Services\TaxYear'
         TaxYearCalcs: '@App\Services\TaxYearCalcs'
         UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
-        WebPages: '@App\Services\WebPages'
+#        WebPages: '@App\Services\WebPages'
 
 
 

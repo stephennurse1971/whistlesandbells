@@ -46,7 +46,8 @@ class CmsPhotoType extends AbstractType
                 'required' => false,
                 'label' => 'Title (English)'
             ])
-            ->add('link');
+            ->add('link')
+            ->add('ranking');
     }
 
     public function configureOptions(OptionsResolver $resolver)

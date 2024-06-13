@@ -89,7 +89,7 @@
                     <a target="_blank" href="{{ path('house_guests_index', {subset: 'All'}) }}">House Guest</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('interests_pages', {interest: 'What To Bring'}) }}">What To
+                    <a target="_blank" href="">What To
                         Bring</a>
                 </ul>
                 <ul>
@@ -187,8 +187,7 @@
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h3 style="color: red">System settings</h3>
-                <ul><a target="_blank" href="{{ path('interests_index') }}">CMS: Interests</a></ul>
-                <ul><a target="_blank" href="{{ path('static_text_index') }}">CMS: Static Text</a></ul>
+                <ul><a target="_blank" href="{{ path('product_index') }}">CMS: Interests</a></ul>
                 <ul><a target="_blank" href="{{ path('cms_copy_index') }}">CMS: Copy</a></ul>
                 <ul><a target="_blank" href="{{ path('cms_photo_index') }}">CMS: Photos</a></ul>
                 <ul><a target="_blank" href="{{ path('settings_index') }}">Settings</a></ul>
@@ -203,38 +202,38 @@
         <div class="col-2">
             <div class="border py-4">
                 <h2 style="color: red">Services/Products</h2>
-                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
-                                                                      href="{{ path('company_details_index') }}">Company
-                        Details</a></li>
-                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
-                                                                      href="{{ path('product_index') }}">Product</a>
+                <li style="margin-left: 20px; margin-bottom: 10px">
+                    <a target="_blank" href="{{ path('company_details_index') }}">Company Details</a>
+                </li>
+                <li style="margin-left: 20px; margin-bottom: 10px">
+                    <a target="_blank" href="{{ path('product_index') }}">Product</a>
                 </li>
             </div>
         </div>
         <div class="col-2">
             <div class="border py-4">
                 <h2 style="color: red">Website CMS</h2>
-                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
-                                                                      href="{{ path('cms_copy_index') }}">Main Page
-                        Copy</a></li>
-                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
-                                                                      href="{{ path('sub_page_index') }}">Sub Pages</a>
+                <li style="margin-left: 20px; margin-bottom: 10px">
+                    <a target="_blank" href="{{ path('cms_copy_index') }}">Main Page Copy</a>
                 </li>
-                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
-                                                                      href="{{ path('cms_photo_index') }}">Photos</a>
+                <li style="margin-left: 20px; margin-bottom: 10px">
+                    <a target="_blank" href="{{ path('sub_page_index') }}">Sub Pages</a>
+                </li>
+                <li style="margin-left: 20px; margin-bottom: 10px">
+                    <a target="_blank" href="{{ path('cms_photo_index') }}">Photos</a>
                 </li>
             </div>
         </div>
         <div class="col-2">
             <div class="border py-4">
                 <h2 style="color: red">Users</h2>
-                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank"
-                                                                      href="{{ path('website_contacts_index') }}">In-Bound
-                        Requests/contacts</a></li>
-                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank" href="{{ path('user_index') }}">Users</a>
+                <li style="margin-left: 20px; margin-bottom: 10px">
+                    <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests/contacts</a></li>
+                <li style="margin-left: 20px; margin-bottom: 10px">
+                    <a target="_blank" href="{{ path('user_index') }}">Users</a>
                 </li>
-                <li style="margin-left: 20px; margin-bottom: 10px"><a target="_blank" href="{{ path('log_index') }}">User
-                        log</a></li>
+                <li style="margin-left: 20px; margin-bottom: 10px">
+                    <a target="_blank" href="{{ path('log_index') }}">User log</a></li>
             </div>
         </div>
 
