@@ -1,3 +1,5 @@
+{% for cms_copy in cms_copy_array %}
+    {% if cms_copy.ranking == 1 %}
 <h4>
     {% if cms_copy.hyperlinks is empty %}
         {{ cms_copy.contentTitle|raw }}
@@ -11,5 +13,5 @@
         <i style="color: red" class="fa fa-pen"></i>
     </a>
 {% endif %}
-
-
+    {% endif %}
+{% endfor %}

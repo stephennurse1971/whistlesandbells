@@ -79,7 +79,7 @@ class SubPageController extends AbstractController
     public function delete(Request $request, SubPage $subPage, SubPageRepository $subPageRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$subPage->getId(), $request->request->get('_token'))) {
-            $subPageRepository->remove($sub_page, true);
+            $subPageRepository->remove($subPage, true);
         }
         return $this->redirectToRoute('sub_page_index', [], Response::HTTP_SEE_OTHER);
     }

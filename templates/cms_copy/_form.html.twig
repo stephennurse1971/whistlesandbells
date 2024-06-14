@@ -68,18 +68,7 @@
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 
-{% block additionaljs %}
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#cms_copy_contentText'));
 
-        ClassicEditor
-            .create(document.querySelector('#cms_copy_contentTextFR'));
-
-        ClassicEditor
-            .create(document.querySelector('#cms_copy_contentTextDE'));
-    </script>
-{% endblock %}
 
 
 

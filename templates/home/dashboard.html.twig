@@ -89,10 +89,12 @@
                     <a target="_blank" href="{{ path('house_guests_index', {subset: 'All'}) }}">House Guest</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('product_display', { product: 'Coming to Cyprus'}) }}">Coming To Cyprus</a>
+                    <a target="_blank" href="{{ path('product_display', { product: 'Coming to Cyprus'}) }}">Coming To
+                        Cyprus</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('product_display', { product: 'What To Bring'}) }}">What To Bring</a>
+                    <a target="_blank" href="{{ path('product_display', { product: 'What To Bring'}) }}">What To
+                        Bring</a>
                 </ul>
                 <ul>
                     <a target="_blank" href="{{ path('tourist_attraction_index', { type:'All'}) }}">Tourist
@@ -179,7 +181,7 @@
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">SetUp</h2>
-                              <ul>
+                <ul>
                     <a href="{{ path('asset_classes_index') }}">Asset Classes</a>
                 </ul>
                 <ul>
@@ -197,9 +199,14 @@
             <div class="border py-4">
                 <h2 style="color: red">SetUp</h2>
                 <ul>
+                    <a target="_blank" href="{{ path('weather_index') }}">Weather</a>
+                </ul>
+                <ul>
                     <a target="_blank" href="{{ path('settings_index') }}">Settings</a>
                 </ul>
-
+                <ul>
+                    <a class="btn btn-outline-success btn-sm" target="_blank" href="">Import Live Data</a>
+                </ul>
             </div>
         </div>
     </div>
@@ -260,19 +267,6 @@
                 <ul>
                     <a target="_blank" href="">Emails Sent</a>
                 </ul>
-            </div>
-        </div>
-
-        <div class="col-2">
-            <div class="border py-4">
-                <h3 style="color: red">Weather</h3>
-                <ul><a target="_blank" href="{{ path('weather_index') }}">Weather</a></ul>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="border py-4">
-                <h3 style="color: red">Technology</h3>
-                <ul><a class="btn btn-outline-success btn-sm" target="_blank" href="">Import Live Data</a></ul>
             </div>
         </div>
 
