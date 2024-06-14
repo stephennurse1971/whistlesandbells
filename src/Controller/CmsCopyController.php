@@ -39,6 +39,12 @@ class CmsCopyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if($cmsCopy->getCategory()=="Product"){
+                $cmsCopy->setStaticPageName(null);
+            }
+            if($cmsCopy->getCategory()=="Static"){
+                $cmsCopy->setProduct(null);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
@@ -70,6 +76,12 @@ class CmsCopyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if($cmsCopy->getCategory()=="Product"){
+                $cmsCopy->setStaticPageName(null);
+            }
+            if($cmsCopy->getCategory()=="Static"){
+                $cmsCopy->setProduct(null);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsCopy);
             $entityManager->flush();

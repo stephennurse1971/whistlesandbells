@@ -54,6 +54,12 @@ class CmsPhotoController extends AbstractController
                     die('Import failed');
                 }
             }
+            if($cmsPhoto->getCategory()=="Product"){
+                $cmsPhoto->setStaticPageName(null);
+            }
+            if($cmsPhoto->getCategory()=="Static"){
+                $cmsPhoto->setProduct(null);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsPhoto);
             $entityManager->flush();
@@ -88,7 +94,6 @@ class CmsPhotoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $photo = $form->get('photo')->getData();
             if ($photo) {
-
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $cmsPhoto->getProduct()->getProduct();
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
@@ -104,7 +109,12 @@ class CmsPhotoController extends AbstractController
                     die('Import failed');
                 }
             }
-
+            if($cmsPhoto->getCategory()=="Product"){
+                $cmsPhoto->setStaticPageName(null);
+            }
+            if($cmsPhoto->getCategory()=="Static"){
+                $cmsPhoto->setProduct(null);
+            }
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('cms_photo_index');
         }

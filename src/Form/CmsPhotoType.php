@@ -27,7 +27,7 @@ class CmsPhotoType extends AbstractType
             ->add('staticPageName')
             ->add('product', EntityType::class, [
                 'class' => Product::class,
-                'required' => true,
+                'required' => false,
                 'choice_label' => 'product'
             ])
             ->add('photoOrVideo', ChoiceType::class, [
