@@ -100,9 +100,21 @@ class HomeController extends AbstractController
                 'staticPageName' => $product
             ]);
         }
-        $cms_photo = $cmsPhotoRepository->findBy([
-            'product' => $productEntity
-        ]);
+
+
+        if ($productEntity) {
+            $cms_photo = $cmsPhotoRepository->findBy([
+                'product' => $productEntity
+            ]);
+        }
+        else {
+            $cms_photo = $cmsPhotoRepository->findBy([
+                'staticPageName' => $product
+            ]);
+        }
+
+
+
 
         $sub_pages = [];
         if ($cms_copy) {
