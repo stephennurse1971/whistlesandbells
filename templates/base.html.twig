@@ -32,7 +32,7 @@
     <!--Modernizr Js-->
     <script src="{{ asset('user-templates/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
 
-    {% if CompanyDetails.companyDetails is defined  %}
+    {% if CompanyDetails.getCompanyDetails is not null  %}
         {% if app.environment=='dev' %}
             <link rel="icon"
                   href="{{ asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconDev) }}">
