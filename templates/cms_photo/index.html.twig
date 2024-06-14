@@ -14,8 +14,8 @@
             <th>Category</th>
             <th style="width: 150px">Product or <br>Static Page Name</th>
             <th>Photo</th>
-            <th>Photo/<br>Video</th>
             <th>Order</th>
+            <th>Photo/<br>Video</th>
             <th>Title</th>
             <th>Hyperlink</th>
             <th>#</th>
@@ -44,11 +44,12 @@
                         </a>
                     {% endif %}
                 </td>
+                <td>{{ cms_photo.ranking }}</td>
                 <td>
                     <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo|slice(0,1) }}</span>
                 </td>
 
-                <td>{{ cms_photo.ranking }}</td>
+
 
 
                 <td>{{ cms_photo.title }}</td>
