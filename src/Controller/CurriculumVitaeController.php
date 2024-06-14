@@ -3,11 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\CurriculumVitae;
-use App\Entity\JpmIcHistory;
 use App\Form\CurriculumVitaeType;
-use App\Form\JpmIcHistoryType;
 use App\Repository\CurriculumVitaeRepository;
-use App\Repository\StaticTextRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,16 +40,13 @@ class CurriculumVitaeController extends AbstractController
     /**
      * @Route("/stephen_nurse", name="curriculum_vitae", methods={"GET"})
      */
-    public function indexIndividual(CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository, StaticTextRepository $staticTextRepository)
+    public function indexIndividual(CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository)
     {
-
-
         $user = $userRepository->findOneBy([
             'fullName' => "Stephen Nurse"]);
         return $this->render('curriculum_vitae/cv.html.twig', [
             'curriculum_vitaes' => $curriculumVitaeRepository->findByCandidate($user),
             'candidate' => $user,
-            'static_text' => $staticTextRepository->findAll()
         ]);
     }
 
@@ -132,10 +126,10 @@ class CurriculumVitaeController extends AbstractController
     {
         if (isset($_FILES['file'])) {
             $newFilename = 'CV - Stephen Nurse.docx';
-             $files = $this->getParameter('files_cv_directory') . "/" . $newFilename;
-             if(file_exists($files)){
-                 unlink($files);
-             }
+            $files = $this->getParameter('files_cv_directory') . "/" . $newFilename;
+            if (file_exists($files)) {
+                unlink($files);
+            }
             $file_name = $_FILES['file']['name'];
             $file_tmp = $_FILES['file']['tmp_name'];
             $file_type = $_FILES['file']['type'];
