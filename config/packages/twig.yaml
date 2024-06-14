@@ -17,7 +17,6 @@ twig:
         TaxYear: '@App\Services\TaxYear'
         TaxYearCalcs: '@App\Services\TaxYearCalcs'
         UserIsHouseGuest: '@App\Services\UserIsHouseGuest'
-#        WebPages: '@App\Services\WebPages'
 
 
 
