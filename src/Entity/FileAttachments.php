@@ -38,9 +38,11 @@ class FileAttachments
     private $category;
 
     /**
-     * @ORM\Column(type="text", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $notes;
+
+
 
 
     public function getId(): ?int
@@ -109,4 +111,6 @@ class FileAttachments
 
         return $this;
     }
+
+
 }

@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\CmsPhoto;
 use App\Entity\CompanyDetails;
 
 use App\Form\CompanyDetailsType;
 use App\Repository\CompanyDetailsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,6 +72,7 @@ class CompanyDetailsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $faviconDev = $form['faviconDev']->getData();
             $faviconLive = $form['faviconLive']->getData();
+            $qrCode = $form['companyQrCode']->getData();
 
             if ($faviconDev) {
                 $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
@@ -88,6 +91,15 @@ class CompanyDetailsController extends AbstractController
                     $newFilenameLive
                 );
                 $companyDetails->setFaviconLive($newFilenameLive);
+            }
+            if ($qrCode) {
+                $originalFilenameQR = pathinfo($qrCode->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilenameQR = $companyDetails->getCompanyName() . '_qr_code.' . $qrCode->guessExtension();
+                $qrCode->move(
+                    $this->getParameter('favicon_directory'),
+                    $newFilenameQR
+                );
+                $companyDetails->setCompanyQrCode($newFilenameQR);
             }
             $companyDetailsRepository->add($companyDetails, true);
 
@@ -120,4 +132,51 @@ class CompanyDetailsController extends AbstractController
     {
         return $this->render('home/officeAddress.html.twig');
     }
+
+
+    /**
+     * @Route("/delete_favicon/{live_or_dev}/{id}", name="company_details_delete_favicon", methods={"POST", "GET"})
+     */
+    public function deleteLiveFavicon(Request $request, int $id, string $live_or_dev, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        if ($live_or_dev == 'live') {
+            $companyDetails->setFaviconLive(null);
+            $entityManager->flush();
+            $files = glob($this->getParameter('favicon_directory') . "/*live*");
+            foreach ($files as $file) {
+                unlink($file);
+            }
+        }
+        if ($live_or_dev == 'dev') {
+            $companyDetails->setFaviconDev(null);
+            $entityManager->flush();
+            $files = glob($this->getParameter('favicon_directory') . "/*dev*");
+            foreach ($files as $file) {
+                unlink($file);
+            }
+        }
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+
+    /**
+     * @Route("/delete_qr_code}/{id}", name="company_details_delete_qr_code", methods={"POST", "GET"})
+     */
+    public function deleteQRCodeLiveFavicon(Request $request, int $id, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+
+        $companyDetails->setCompanyQrCode(null);
+        $entityManager->flush();
+        $files = glob($this->getParameter('favicon_directory') . "/*qr*");
+        foreach ($files as $file) {
+            unlink($file);
+        }
+
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
 }

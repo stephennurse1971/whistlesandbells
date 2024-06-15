@@ -35,7 +35,11 @@ class CompanyDetailsType extends AbstractType
             ->add('companyTel')
             ->add('companyMobile')
             ->add('companySkype')
-            ->add('companyQrCode')
+            ->add('companyQrCode', FileType::class,[
+                'label' => 'QR',
+                'mapped' => false,
+                'required' => false
+            ])
             ->add('companyAddressStreet')
             ->add('companyAddressTown')
             ->add('companyAddressCity')
