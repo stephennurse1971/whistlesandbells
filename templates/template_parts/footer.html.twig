@@ -77,7 +77,7 @@
                             <p>
                                 <a target="_blank" href="{{ path('office_address') }}">
                                     <i style="color: red" class="fa fa-map-marker mr-3"></i></a>
-                                {% if CompanyDetails.getCompanyDetails is not null %}
+                                {% if CompanyDetails.getCompanyDetails.companyAddressStreet is not null %}
                                     {{ CompanyDetails.getCompanyDetails.companyAddressStreet }},
                                     {{ CompanyDetails.getCompanyDetails.companyAddressTown }},
                                     {{ CompanyDetails.getCompanyDetails.companyAddressCity }}
@@ -86,7 +86,7 @@
                             </p>
                             <p>
                             <p>
-                                {% if CompanyDetails.getCompanyDetails is not null %}
+                                {% if CompanyDetails.getCompanyDetails.companyEmail is not null %}
                                     <a href="mailto:{{ CompanyDetails.getCompanyDetails.companyEmail }}">
                                         <i class="fas fa-envelope mr-3"> </i></a>
                                     {{ CompanyDetails.getCompanyDetails.companyEmail }}
@@ -94,14 +94,14 @@
                             </p>
 
                             <p>
-                                {% if CompanyDetails.getCompanyDetails is not null %}
+                                {% if CompanyDetails.getCompanyDetails.companyTel is not null %}
                                     <a href="tel:{{ CompanyDetails.getCompanyDetails.companyTel|replace({' ': ''}) }}"><i
                                                 class="fas fa-phone mr-3"></i></a>
                                     {{ CompanyDetails.getCompanyDetails.companyTel }}
                                 {% endif %}
                             </p>
                             <p>
-                                {% if CompanyDetails.getCompanyDetails is not null %}
+                                {% if CompanyDetails.getCompanyDetails.companyMobile is not null %}
                                     <a target="_blank"
                                        href="https://wa.me/{{ CompanyDetails.getCompanyDetails.companyMobile|replace({' ': ''}) }}">
                                         <i class="fab fa-whatsapp mr-3" style="color:green; text-align: center"></i></a>
