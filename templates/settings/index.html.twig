@@ -15,6 +15,7 @@
             <th> .. </th>
             <th> </th>
             <th>Investment:<br> As of Date</th>
+            <th>Outlook:<br> As of Date</th>
             <th>#</th>
         </tr>
         </thead>
@@ -28,6 +29,7 @@
                 <td>..</td>
                 <td></td>
                 <td style="text-align: center">{{ setting.investmentDate|date('d-M-Y') }}</td>
+                <td style="text-align: center">{{ setting.lastOutlookDownload|date('d-M-Y') }}</td>
                 <td><a class="btn btn-outline-danger btn-sm" href="{{ path('settings_edit', {'id': setting.id}) }}">Edit</a></td>
             </tr>
         {% endfor %}

@@ -3,8 +3,7 @@
         {% if app.user %}
             {% if is_granted('ROLE_ADMIN') or app.user.id in location.enabledUsers %}
                 <a class="btn btn-success btn-sm mt-2"
-                   href="{{ path('photos_new', {location: location.location }) }}">Add
-                    photos</a>
+                   href="{{ path('photos_new', {location: location.location }) }}">Add photos</a>
             {% endif %}
         {% endif %}
         <a class="btn btn-primary btn-sm mt-2" href="{{ path('photos_index') }}">Back to List</a>

@@ -8,7 +8,7 @@ async function scrapeData() {
 
 
     // launch a browser instance with the
-    // --proxy-server flag enabled
+    // --proxy-server Flag enabled
 
     const browser = await puppeteer.launch({
         headless:false,

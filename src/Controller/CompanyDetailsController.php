@@ -24,14 +24,14 @@ class CompanyDetailsController extends AbstractController
     public function index(CompanyDetailsRepository $companyDetailsRepository): Response
     {
         return $this->render('company_details/index.html.twig', [
-            'company_details'=>$companyDetailsRepository->findAll()
+            'company_details' => $companyDetailsRepository->findAll()
         ]);
     }
 
     /**
      * @Route("/new", name="company_details_new", methods={"GET", "POST"})
      */
-    public function new(Request $request,CompanyDetailsRepository $companyDetailsRepository): Response
+    public function new(Request $request, CompanyDetailsRepository $companyDetailsRepository): Response
     {
         $companyDetails = new CompanyDetails();
         $form = $this->createForm(CompanyDetailsType::class, $companyDetails);
@@ -68,12 +68,12 @@ class CompanyDetailsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $faviconDev=$form['faviconDev']->getData();
-            $faviconLive=$form['faviconLive']->getData();
+            $faviconDev = $form['faviconDev']->getData();
+            $faviconLive = $form['faviconLive']->getData();
 
             if ($faviconDev) {
                 $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $companyDetails->getCompanyName() .'_dev.'. $faviconDev->guessExtension();
+                $newFilename = $companyDetails->getCompanyName() . '_dev.' . $faviconDev->guessExtension();
                 $faviconDev->move(
                     $this->getParameter('favicon_directory'),
                     $newFilename
@@ -82,7 +82,7 @@ class CompanyDetailsController extends AbstractController
             }
             if ($faviconLive) {
                 $originalFilenameLive = pathinfo($faviconLive->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilenameLive = $companyDetails->getCompanyName() .'_live.'. $faviconLive->guessExtension();
+                $newFilenameLive = $companyDetails->getCompanyName() . '_live.' . $faviconLive->guessExtension();
                 $faviconLive->move(
                     $this->getParameter('favicon_directory'),
                     $newFilenameLive
@@ -105,10 +105,19 @@ class CompanyDetailsController extends AbstractController
      */
     public function delete(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$companyDetails->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $companyDetails->getId(), $request->request->get('_token'))) {
             $companyDetailsRepository->remove($companyDetails, true);
         }
 
         return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/map_gps", name="company_details_map_gps", methods={"POST"})
+     */
+
+    public function officeAddressGPS(CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        return $this->render('home/officeAddress.html.twig');
     }
 }

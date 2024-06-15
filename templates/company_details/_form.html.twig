@@ -10,18 +10,26 @@
         {{ form_row(form.companyWebsite) }}
         {{ form_row(form.companyTel) }}
         {{ form_row(form.companyMobile) }}
+        {{ form_row(form.companySkype) }}
 
-        {{ form_row(form.faviconLive) }}
         {% if company_details.faviconLive is not null %}
-            <img height="50" width="50" src="{{asset('administration/img/favicons/'~ company_details.faviconLive) }}" class="rounded-circle test">
+            <img height="50" width="50" src="{{asset('administration/attachments/Favicons/'~ company_details.faviconLive) }}" class="rounded-circle test">
             {{ company_details.faviconLive }}
+            <br>
+            <a href="" >
+                <i style="color: red" class="fa fa-trash"></i>
+            </a>
         {% endif %}
+        {{ form_row(form.faviconLive) }}
+        <hr>
 
-        {{ form_row(form.faviconDev) }}
         {% if company_details.faviconDev is not null %}
-            <img height="50" width="50" src="{{asset('administration/img/favicons/'~ company_details.faviconDev) }}" class="rounded-circle test">
+            <img height="50" width="50" src="{{asset('administration/attachments/Favicons/'~ company_details.faviconDev) }}" class="rounded-circle test">
             {{ company_details.faviconDev }}
+            <br>
+            <a class="btn btn-outline-danger btn-sm">Delete Favicon</a>
         {% endif %}
+        {{ form_row(form.faviconDev) }}
 
     </div>
 
@@ -47,13 +55,12 @@
         {{ form_row(form.companyAddressLatitude) }}
         {{ form_row(form.companyAddressInstructions) }}
     </div>
-    <div class="col-2">
-        {{ form_row(form.companySkype) }}
-        {{ form_row(form.companyQrCode) }}
+    <div class="col-1">
         {{ form_row(form.linkedIn) }}
         {{ form_row(form.facebook) }}
         {{ form_row(form.instagram) }}
         {{ form_row(form.twitter) }}
+        {{ form_row(form.companyQrCode) }}
     </div>
 </div>
 

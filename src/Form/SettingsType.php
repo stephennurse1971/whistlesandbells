@@ -19,6 +19,7 @@ class SettingsType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('flightStatsDays')
+
             ->add('flightStatsReturnLegOffset')
 
             ->add('investmentDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
@@ -26,6 +27,7 @@ class SettingsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
             ])
+            ->add('lastOutlookDownload')
         ;
     }
 

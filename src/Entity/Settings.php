@@ -37,6 +37,11 @@ class Settings
      */
     private $flightStatsReturnLegOffset;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $lastOutlookDownload;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Settings
     public function setFlightStatsReturnLegOffset(?int $flightStatsReturnLegOffset): self
     {
         $this->flightStatsReturnLegOffset = $flightStatsReturnLegOffset;
+
+        return $this;
+    }
+
+    public function getLastOutlookDownload(): ?\DateTimeInterface
+    {
+        return $this->lastOutlookDownload;
+    }
+
+    public function setLastOutlookDownload(?\DateTimeInterface $lastOutlookDownload): self
+    {
+        $this->lastOutlookDownload = $lastOutlookDownload;
 
         return $this;
     }

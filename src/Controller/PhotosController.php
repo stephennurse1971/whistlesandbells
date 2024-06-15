@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Photos;
 use App\Entity\User;
 use App\Form\PhotosType;
-use App\Repository\FileAttachmentsRepository;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\PhotosRepository;
 use App\Repository\UserRepository;
@@ -33,7 +32,7 @@ use Symfony\Component\Security\Core\Security;
 class PhotosController extends AbstractController
 {
     /**
-     * @Route("/", name="photos_index", methods={"GET"})
+     * @Route("/index", name="photos_index", methods={"GET"})
      * @IsGranted("ROLE_GUEST")
      */
     public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository, CountPhotos $countPhotos): Response
@@ -93,7 +92,7 @@ class PhotosController extends AbstractController
         $photos = array_merge($favourite_photos, $unfavourite_photos);
 
         return $this->render('photos/showByLocation.html.twig', [
-            'Photos' => $photos,
+            'photos' => $photos,
             'location' => $locationsRepository->findOneBy(['location' => $location]),
             'photo_date' => $locationsRepository->findOneBy(['location' => $location])->getDate(),
             'format' => $format,
@@ -132,14 +131,14 @@ class PhotosController extends AbstractController
         $form = $this->createForm(PhotosType::class, $photo, ['location' => $locationsRepository->findOneBy(['location' => $location]), 'mode' => 'new']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $photos = $form->get('Photos')->getData();
+            $photos = $form->get('photoFile')->getData();
             foreach ($photos as $single_photo) {
                 $photo_single = new Photos();
                 $originalFilename = pathinfo($single_photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $originalFilename . '.' . $single_photo->guessExtension();
-                if (!file_exists($this->getParameter('photos_upload_default_directory') . $newFilename)) {
+                if (!file_exists($this->getParameter('photos_directory') . $newFilename)) {
                     $single_photo->move(
-                        $this->getParameter('photos_upload_default_directory'),
+                        $this->getParameter('photos_directory'),
                         $newFilename
                     );
                     $photo_single->setLocation($photo->getLocation());
@@ -163,8 +162,7 @@ class PhotosController extends AbstractController
     /**
      * @Route("/{id}", name="photos_show", methods={"GET"})
      */
-    public
-    function show(Photos $photo): Response
+    public function show(Photos $photo): Response
     {
         return $this->render('photos/show.html.twig', [
             'photo' => $photo,
@@ -197,8 +195,7 @@ class PhotosController extends AbstractController
     /**
      * @Route("/{id}/switchPublicPrivate", name="photos_public_private", methods={"GET","POST"})
      */
-    public
-    function switchPublicPrivate(Request $request, Photos $photo, EntityManagerInterface $manager): Response
+    public function switchPublicPrivate(Request $request, Photos $photo, EntityManagerInterface $manager): Response
     {
         $publicPrivate = $request->query->get('action');
         if ($publicPrivate == '1') {
@@ -220,7 +217,7 @@ class PhotosController extends AbstractController
     {
         $referer = $request->server->get('HTTP_REFERER');
         if ($this->isCsrfTokenValid('delete' . $photo->getId(), $request->request->get('_token'))) {
-            $get_photo_file = $this->getParameter('photos_upload_default_directory') . $photo->getPhotoFile();
+            $get_photo_file = $this->getParameter('photos_directory') . $photo->getPhotoFile();
             unlink($get_photo_file);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($photo);
@@ -233,18 +230,24 @@ class PhotosController extends AbstractController
     /**
      * @Route("/deleteAll/Photos", name="photos_delete_all",)
      */
-    public
-    function deleteAll(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
+    public function deleteAll(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
     {
         $referer = $request->server->get('HTTP_REFERER');
-        foreach ($photosRepository->findAll() as $photo) {
-            $get_photo_file = $this->getParameter('photos_upload_default_directory') . $photo->getPhotoFile();
+        $photos = $photosRepository->findAll();
+        foreach ($photos as $photo) {
+            $get_photo_file = $this->getParameter('photos_directory') . $photo->getPhotoFile();
             unlink($get_photo_file);
             $entityManager->remove($photo);
+        }
+        $files = glob($this->getParameter('photos_directory') . "/*");
+        foreach ($files as $file) {
+            unlink($file);
         }
         $entityManager->flush();
         return $this->redirect($referer);
     }
+
+
 
     /**
      * @Route("/deleteAllByLocation/Photos/{location}", name="photos_delete_all_by_location",)
@@ -259,7 +262,7 @@ class PhotosController extends AbstractController
                 ])
             ]
         ) as $photo) {
-            $get_photo_file = $this->getParameter('photos_upload_default_directory') . $photo->getPhotoFile();
+            $get_photo_file = $this->getParameter('photos_directory') . $photo->getPhotoFile();
             unlink($get_photo_file);
             $entityManager->remove($photo);
         }
@@ -268,23 +271,7 @@ class PhotosController extends AbstractController
     }
 
 
-    /**
-     * @Route("/delete/All/files/public/Photos", name="photos_delete_all_files_in_public_photos",)
-     */
-    public function deleteAllFilesInPublicPhotos(Request $request, PhotosRepository $photosRepository, EntityManagerInterface $entityManager): Response
-    {
-        $referer = $request->server->get('HTTP_REFERER');
-        $files = glob($this->getParameter('photos_upload_default_directory') . "/*");
-        foreach ($files as $file) {
-            unlink($file);
-        }
-        $photos = $photosRepository->findAll();
-        foreach ($photos as $photo){
-            $entityManager->remove($photo);
-            $entityManager->flush();
-        }
-        return $this->redirect($referer);
-    }
+
 
     /**
      * @Route("/{photo}/{user}/{favoured}/photo_favourite", name="photo_edit_favourite_status", methods={"GET","POST"})
@@ -313,6 +300,10 @@ class PhotosController extends AbstractController
         return $this->render('photos/view_photo.html.twig', ['photo' => $photo]);
     }
 
+
+
+
+
     /**
      * @Route("/{photoId}/email_photo", name="email_photo")
      */
@@ -337,7 +328,7 @@ class PhotosController extends AbstractController
             ->html($html);
         if ($attachments) {
             foreach ($attachments as $attachment) {
-                $attachment_path = $this->getParameter('photos_upload_default_directory') . $attachment;
+                $attachment_path = $this->getParameter('photos_directory') . $attachment;
                 $email->attachFromPath($attachment_path);
             }
         }
@@ -353,7 +344,7 @@ class PhotosController extends AbstractController
     {
         $referer = $request->headers->get('referer');
         $photo = $photosRepository->find($photoId);
-        $file = $this->getParameter('photos_upload_default_directory') . $photo->getPhotoFile();
+        $file = $this->getParameter('photos_directory') . $photo->getPhotoFile();
         $response = new BinaryFileResponse($file);
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
         return $response;
@@ -375,13 +366,11 @@ class PhotosController extends AbstractController
                 'location' => $location
             ]),
         ]);
-
-
         $zipname = 'file.zip';
         $zip = new \ZipArchive();
         $zip->open($zipname, \ZipArchive::CREATE);
         foreach ($photos as $photo) {
-            $file = $this->getParameter('photos_upload_default_directory') . $photo->getPhotoFile();
+            $file = $this->getParameter('photos_directory') . $photo->getPhotoFile();
             $zip->addFromString(basename($file),  file_get_contents($file));
         }
         $zip->close();
@@ -392,7 +381,5 @@ class PhotosController extends AbstractController
         if(file_exists($zipname)){
             unlink($zipname);
         }
-
-
     }
 }

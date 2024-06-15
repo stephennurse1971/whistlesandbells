@@ -49,7 +49,7 @@
                     <td style="width: 170px; font-size: large">
                         <b> <a target="_blank"
                                href="{{ path('to_do_list_edit', {'id': to_do_list.id}) }}">{{ to_do_list.project }}</a></b>
-{#                        ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id) }}#}
+                        {#                        ##: {{ CountPendingItems.calculatePendingTopPriorityItems(to_do_list.id) }} #}
                     </td>
                     <td style="width: 600px;font-size: small">
                         {% for user in to_do_list.getAccessTo %}
@@ -85,70 +85,71 @@
                             </thead>
                             <tbody>
                             {% for to_do_lists_item in to_do_lists_items %}
-
-                                {% if to_do_list.project == to_do_lists_item.project.project and (to_do_lists_item.status == status  or status =="All") %}
-                                    <tr>
-                                        <td style="width: 35px">
-                                            {{ (to_do_list.priority  + 0.0000000001 +(to_do_lists_item.priority/100) )|number_format(2, '.', ',') }}
-                                        </td>
-                                        {% include 'to_do_list/changePriorityButtons.html.twig' %}
-                                        <td style="width: 1800px;">
-                                            <div class="d-flex">
-                                                <div>
-                                                    <a class="d-inline" target="_blank"
-                                                       href="{{ path('to_do_list_items_edit', {'id':to_do_lists_item.id}) }}">
-                                                        <i style="color: red" class="fa fa-pen"></i>
-                                                    </a>
+                                {% if to_do_list.project is not null %}
+                                    {% if to_do_list.project == to_do_lists_item.project.project and (to_do_lists_item.status == status  or status =="All") %}
+                                        <tr>
+                                            <td style="width: 35px">
+                                                {{ (to_do_list.priority  + 0.0000000001 +(to_do_lists_item.priority/100) )|number_format(2, '.', ',') }}
+                                            </td>
+                                            {% include 'to_do_list/changePriorityButtons.html.twig' %}
+                                            <td style="width: 1800px;">
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <a class="d-inline" target="_blank"
+                                                           href="{{ path('to_do_list_items_edit', {'id':to_do_lists_item.id}) }}">
+                                                            <i style="color: red" class="fa fa-pen"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="ml-2"> {{ to_do_lists_item.task|raw }}</div>
                                                 </div>
-                                                <div class="ml-2"> {{ to_do_lists_item.task|raw }}</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {% if to_do_lists_item.needsResearch == "No" %}
-                                                <i title="{{ to_do_lists_item.needsResearch }}" style="color: green"
-                                                   class="fa fa-dot-circle-o"></i>
-                                            {% endif %}
-                                            {% if to_do_lists_item.needsResearch == "Yes - Minor" %}
-                                                <i title="{{ to_do_lists_item.needsResearch }}"
-                                                   style="color: orange"
-                                                   class="fa fa-dot-circle-o"></i>
-                                            {% endif %}
-                                            {% if to_do_lists_item.needsResearch == "Yes - Significant" %}
-                                                <i title="{{ to_do_lists_item.needsResearch }}" style="color: red"
-                                                   class="fa fa-dot-circle-o"></i>
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ to_do_lists_item.hoursAllocated }}</td>
-                                        <td>
-                                            {% if to_do_lists_item.immediatePriority =="Top Priority" %}
-                                                <i style="color: red" class="fa fa-star"></i>
-                                            {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if to_do_lists_item.needsResearch == "No" %}
+                                                    <i title="{{ to_do_lists_item.needsResearch }}" style="color: green"
+                                                       class="fa fa-dot-circle-o"></i>
+                                                {% endif %}
+                                                {% if to_do_lists_item.needsResearch == "Yes - Minor" %}
+                                                    <i title="{{ to_do_lists_item.needsResearch }}"
+                                                       style="color: orange"
+                                                       class="fa fa-dot-circle-o"></i>
+                                                {% endif %}
+                                                {% if to_do_lists_item.needsResearch == "Yes - Significant" %}
+                                                    <i title="{{ to_do_lists_item.needsResearch }}" style="color: red"
+                                                       class="fa fa-dot-circle-o"></i>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ to_do_lists_item.hoursAllocated }}</td>
+                                            <td>
+                                                {% if to_do_lists_item.immediatePriority =="Top Priority" %}
+                                                    <i style="color: red" class="fa fa-star"></i>
+                                                {% endif %}
 
-                                            {% if to_do_lists_item.attachment is not null %}
-                                                <a title="{{ to_do_lists_item.attachment|raw }}" target="_blank"
-                                                   href="{{ path('show_attachment_to_do_list',{id : to_do_lists_item.id}) }}">
-                                                    <i class="fa fa-paperclip"></i>
-                                                </a>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if to_do_lists_item.status=="Complete" %}
-                                                <span style="color: green"> {{ to_do_lists_item.status }}</span>
-                                            {% endif %}
-                                            {% if to_do_lists_item.status=="Blocked" %}
-                                                <span style="color: red"> {{ to_do_lists_item.status }}</span>
-                                            {% endif %}
-                                            {% if to_do_lists_item.status=="Pending" %}
-                                                <span style="color: grey"> {{ to_do_lists_item.status }}</span>
-                                            {% endif %}
-                                        </td>
+                                                {% if to_do_lists_item.attachment is not null %}
+                                                    <a title="{{ to_do_lists_item.attachment|raw }}" target="_blank"
+                                                       href="{{ path('show_attachment_to_do_list',{id : to_do_lists_item.id}) }}">
+                                                        <i class="fa fa-paperclip"></i>
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if to_do_lists_item.status=="Complete" %}
+                                                    <span style="color: green"> {{ to_do_lists_item.status }}</span>
+                                                {% endif %}
+                                                {% if to_do_lists_item.status=="Blocked" %}
+                                                    <span style="color: red"> {{ to_do_lists_item.status }}</span>
+                                                {% endif %}
+                                                {% if to_do_lists_item.status=="Pending" %}
+                                                    <span style="color: grey"> {{ to_do_lists_item.status }}</span>
+                                                {% endif %}
+                                            </td>
 
-                                        <td style="width: 125px">
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                {% include 'to_do_list/pendingCompleteBlockedButtons.html.twig' %}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                            <td style="width: 125px">
+                                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                    {% include 'to_do_list/pendingCompleteBlockedButtons.html.twig' %}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                             </tbody>

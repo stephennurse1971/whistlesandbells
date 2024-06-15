@@ -393,15 +393,15 @@ class UserController extends AbstractController
     {
         $referer = $request->server->get('HTTP_REFERER');
         $cmsContact = $cmsCopyRepository->findOneBy([
-            'name' => 'Introduction Email - Contact']);
+            'staticPageName' => 'Introduction Email - Contact']);
         $cmsFamily = $cmsCopyRepository->findOneBy([
-            'name' => 'Introduction Email - Family']);
+            'staticPageName' => 'Introduction Email - Family']);
         $cmsGuest = $cmsCopyRepository->findOneBy([
-            'name' => 'Introduction Email - Guest']);
+            'staticPageName' => 'Introduction Email - Guest']);
         $cmsRecruiter = $cmsCopyRepository->findOneBy([
-            'name' => 'Introduction Email - Recruiter']);
+            'staticPageName' => 'Introduction Email - Recruiter']);
         $cmsJobApplicant = $cmsCopyRepository->findOneBy([
-            'name' => 'Introduction Email - Job Applicant']);
+            'staticPageName' => 'Introduction Email - Job Applicant']);
 
         $hasAccess = in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles());
         if ($this->getUser()->getFullName() == $fullName || $hasAccess) {

@@ -89,7 +89,6 @@ class HomeController extends AbstractController
             'product' => $product
         ]);
 
-
         if ($productEntity) {
             $cms_copy = $cmsCopyRepository->findBy([
                 'product' => $productEntity
@@ -101,7 +100,6 @@ class HomeController extends AbstractController
             ]);
         }
 
-
         if ($productEntity) {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'product' => $productEntity
@@ -112,9 +110,6 @@ class HomeController extends AbstractController
                 'staticPageName' => $product
             ]);
         }
-
-
-
 
         $sub_pages = [];
         if ($cms_copy) {

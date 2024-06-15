@@ -35,10 +35,10 @@
     {% if CompanyDetails.getCompanyDetails is not null  %}
         {% if app.environment=='dev' %}
             <link rel="icon"
-                  href="{{ asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconDev) }}">
+                  href="{{ asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconDev) }}">
         {% else %}
             <link rel="icon"
-                  href="{{ asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconLive) }}">
+                  href="{{ asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconLive) }}">
         {% endif %}
     {% endif %}
 

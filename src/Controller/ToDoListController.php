@@ -32,7 +32,6 @@ class ToDoListController extends AbstractController
         $projects = $toDoListRepository->findAll();
         $all_projects = $toDoListRepository->findAll();
         $project_title = 'All';
-
         if ($project == "Top Priority") {
             $project_title = "Top Priorities";
             $projects = [];
@@ -41,14 +40,10 @@ class ToDoListController extends AbstractController
                     $projects[] = $single_project;
                 }
             }
-
             $to_do_lists_items = $toDoListItemsRepository->findBy([
                 'immediatePriority' => 'Top Priority'
             ]);
-
-
         }
-
         if ($project != "All" and $project != "Top Priority") {
             $project_title = $project;
             $projects = $toDoListRepository->findBy([
@@ -56,14 +51,11 @@ class ToDoListController extends AbstractController
             ]);
             $to_do_lists_items = $toDoListItemsRepository->findAll();
         }
-
         if ($project == "All") {
             $project_title = $project;
             $projects = $all_projects;
             $to_do_lists_items = $toDoListItemsRepository->findAll();
         }
-
-
         usort($projects, function ($first, $second) {
             return strcmp($first->getProject(), $second->getProject());
         });

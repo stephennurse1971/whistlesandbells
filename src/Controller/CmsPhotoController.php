@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CmsPhoto;
 use App\Form\CmsPhotoType;
 use App\Repository\CmsPhotoRepository;
+use App\Repository\PhotosRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,10 +23,10 @@ class CmsPhotoController extends AbstractController
      */
     public function index(CmsPhotoRepository $cmsPhotoRepository): Response
     {
-        $site_pages = ['HomePage','AboutSN','Cyprus','Flying','Tennis','WebDesign','PrivateEquity','Risk & Capital Consulting'];
+        $site_pages = ['HomePage', 'AboutSN', 'Cyprus', 'Flying', 'Tennis', 'WebDesign', 'PrivateEquity', 'Risk & Capital Consulting'];
         return $this->render('cms_photo/index.html.twig', [
             'cms_photos' => $cmsPhotoRepository->findAll(),
-            'site_pages'=>$site_pages
+            'site_pages' => $site_pages
         ]);
     }
 
@@ -42,17 +43,17 @@ class CmsPhotoController extends AbstractController
             $photo = $form->get('photo')->getData();
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                if($cmsPhoto->getProduct()){
-                    $safeFilename = $cmsPhoto->getProduct()->getProduct().uniqid();
+                if ($cmsPhoto->getProduct()) {
+                    $safeFilename = $cmsPhoto->getProduct()->getProduct() . uniqid();
                 }
-                if($cmsPhoto->getStaticPageName()){
-                    $safeFilename = $cmsPhoto->getStaticPageName().uniqid();
+                if ($cmsPhoto->getStaticPageName()) {
+                    $safeFilename = $cmsPhoto->getStaticPageName() . uniqid();
                 }
 
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {
                     $photo->move(
-                        $this->getParameter('website_pictures_directory'),
+                        $this->getParameter('website_photos_directory'),
                         $newFilename
                     );
                     $cmsPhoto->setPhoto($newFilename);
@@ -60,10 +61,10 @@ class CmsPhotoController extends AbstractController
                     die('Import failed');
                 }
             }
-            if($cmsPhoto->getCategory()=="Product"){
+            if ($cmsPhoto->getCategory() == "Product") {
                 $cmsPhoto->setStaticPageName(null);
             }
-            if($cmsPhoto->getCategory()=="Static"){
+            if ($cmsPhoto->getCategory() == "Static") {
                 $cmsPhoto->setProduct(null);
             }
             $entityManager = $this->getDoctrine()->getManager();
@@ -92,7 +93,7 @@ class CmsPhotoController extends AbstractController
     /**
      * @Route("/{id}/edit", name="cms_photo_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, CmsPhoto $cmsPhoto,SluggerInterface $slugger): Response
+    public function edit(Request $request, CmsPhoto $cmsPhoto, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(CmsPhotoType::class, $cmsPhoto);
         $form->handleRequest($request);
@@ -102,11 +103,11 @@ class CmsPhotoController extends AbstractController
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
 
-                if($cmsPhoto->getProduct()){
-                    $safeFilename = $cmsPhoto->getProduct()->getProduct().uniqid();
+                if ($cmsPhoto->getProduct()) {
+                    $safeFilename = $cmsPhoto->getProduct()->getProduct() . uniqid();
                 }
-                if($cmsPhoto->getStaticPageName()){
-                    $safeFilename = $cmsPhoto->getStaticPageName().uniqid();
+                if ($cmsPhoto->getStaticPageName()) {
+                    $safeFilename = $cmsPhoto->getStaticPageName() . uniqid();
                 }
 
 
@@ -115,7 +116,7 @@ class CmsPhotoController extends AbstractController
 
                 try {
                     $photo->move(
-                        $this->getParameter('website_pictures_directory'),
+                        $this->getParameter('website_photos_directory'),
                         $newFilename
                     );
                     $cmsPhoto->setPhoto($newFilename);
@@ -123,10 +124,10 @@ class CmsPhotoController extends AbstractController
                     die('Import failed');
                 }
             }
-            if($cmsPhoto->getCategory()=="Product"){
+            if ($cmsPhoto->getCategory() == "Product") {
                 $cmsPhoto->setStaticPageName(null);
             }
-            if($cmsPhoto->getCategory()=="Static"){
+            if ($cmsPhoto->getCategory() == "Static") {
                 $cmsPhoto->setProduct(null);
             }
             $this->getDoctrine()->getManager()->flush();
@@ -155,7 +156,7 @@ class CmsPhotoController extends AbstractController
     /**
      * @Route("/delete_photo_file/{id}", name="cms_photo_file_delete", methods={"POST", "GET"})
      */
-    public function deleteCMSPhotoFile(int $id,Request $request, CmsPhoto $cmsPhoto, EntityManagerInterface $entityManager)
+    public function deleteCMSPhotoFile(int $id, Request $request, CmsPhoto $cmsPhoto, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
         $cmsPhoto->setPhoto('');
@@ -164,13 +165,38 @@ class CmsPhotoController extends AbstractController
     }
 
 
+
+
     /**
-     * @Route("/{id}/viewphoto", name="cms_view_photo")
+     * @Route ("/view/photo/{id}", name="cms_photo_view")
      */
-    public function viewCMSPhotoFile(int $id, CmsPhoto $cmsPhoto, EntityManagerInterface $entityManager)
+    public function viewCMSPhoto(int $id, CmsPhotoRepository $cmsPhotoRepository)
     {
-        $imagename = $cmsPhoto->getPhoto();
-        return $this->render('static_text/image_view.html.twig', ['imagename' => $imagename]);
+        $cms_photo = $cmsPhotoRepository->find($id);
+        return $this->render('cms_photo/image_view.html.twig', ['imagename' => $cms_photo]);
     }
+
+
+    /**
+     * @Route("/deleteAll/cms_photos", name="cms_photos_delete_all",)
+     */
+    public function deleteAll(Request $request, CmsPhotoRepository $cmsPhotoRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $cms_photos = $cmsPhotoRepository->findAll();
+
+        $files = glob($this->getParameter('website_photos_directory') . "/*");
+        foreach ($files as $file) {
+            unlink($file);
+        }
+        $entityManager->flush();
+
+        foreach ($cms_photos as $cms_photo) {
+            $cms_photo->setPhoto(null);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
 
 }

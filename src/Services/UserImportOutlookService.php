@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Entity\Import;
 use App\Entity\User;
-use App\Repository\StaticTextRepository;
+use App\Repository\SettingsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -224,17 +224,17 @@ class UserImportOutlookService
         }
 
         $today = new \DateTime('now');
-        $outlookImportDate = $this->staticTextRepository->findOneBy(['id' => 1]);
+        $outlookImportDate = $this->settingsRepository->findOneBy(['id' => 1]);
         $outlookImportDate->setLastOutlookDownload($today);
         $this->manager->flush();
         return null;
     }
 
-    public function __construct(ContainerInterface $container, UserRepository $userRepository, StaticTextRepository $staticTextRepository, EntityManagerInterface $manager)
+    public function __construct(ContainerInterface $container, UserRepository $userRepository,SettingsRepository $settingsRepository,EntityManagerInterface $manager)
     {
         $this->container = $container;
         $this->manager = $manager;
         $this->userRepository = $userRepository;
-        $this->staticTextRepository = $staticTextRepository;
+        $this->settingsRepository = $settingsRepository;
     }
 }

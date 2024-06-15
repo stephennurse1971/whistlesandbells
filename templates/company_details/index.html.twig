@@ -10,8 +10,7 @@
         <tr>
             <th style="text-align: left">Name</th>
             <th style="text-align: left">Website</th>
-            <th style="text-align: left">Favicons<br>(Live)</th>
-            <th style="text-align: left">Favicons<br>(Dev)</th>
+            <th style="text-align: left">Favicons<br>Live/Dev</th>
             <th style="text-align: left">Email</th>
             <th>Tel</th>
             <th>Mobile</th>
@@ -42,13 +41,13 @@
                     {{ company_detail.companyWebsite }}
                 </td>
 
-                {% set faviconLive = asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconLive) %}
-                {% set faviconDev = asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconDev) %}
+                {% set faviconLive = asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconLive) %}
+                {% set faviconDev = asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconDev) %}
 
                 <td style="text-align: center">
                     <img height="50" width="50" src="{{ faviconLive }}" class="rounded-circle test">
-                </td>
-                <td style="text-align: center">
+                    <br>
+                    <br>
                     <img height="50" width="50" src="{{ faviconDev }}" class="rounded-circle test">
                 </td>
 
@@ -65,10 +64,27 @@
                         (Import: {{ company_detail.companyEmailImportDirectory }} /{{ company_detail.companyEmailImportProcessedDirectory }} )
                     {% endif %}
                 </td>
-                <td>{{ company_detail.companyTel }}</td>
-                <td>{{ company_detail.companyMobile }}</td>
                 <td style="text-align: center">
-                    <i style="color:cornflowerblue" class="fab fa-skype" title="{{ company_detail.companySkype }} "></i>
+                    <a title="{{ company_detail.companyTel }}"
+                       href="https://wa.me/{{ company_detail.companyTel | replace({' ': ''}) }}">
+                        <i style="color: green" class="fab fa-whatsapp"></i>
+                    </a>
+                    {#                    {{ company_detail.companyTel }} #}
+                </td>
+                <td style="text-align: center">
+                    <a title="{{ company_detail.companyMobile }}"
+                       href="https://wa.me/{{ company_detail.companyMobile | replace({' ': ''}) }}">
+                        <i style="color: green"
+                           class="fab fa-whatsapp"></i>
+                    </a>
+                    {#                    {{ company_detail.companyMobile }} #}
+                </td>
+                <td style="text-align: center">
+                    <a title="{{ company_detail.companySkype }}"
+                       href="skype:{{ company_detail.companySkype }}?call">
+                        <i style="color: royalblue"
+                           class="fab fa-skype"></i>
+                    </a>
                     {#                    {{ company_detail.companySkype }} #}
                 </td>
                 <td>
@@ -151,7 +167,10 @@
         </tbody>
     </table>
 
-    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('company_details_new') }}">New</a>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <br><br>
+        <a target="_blank" class="btn btn-success btn-sm" href="{{ path('company_details_new') }}">New</a>
+    {% endif %}
 {% endblock %}
 
 {% block datatable %}

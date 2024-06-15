@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\PhotoLocations;
+use App\Entity\Photos;
 use App\Form\PhotoLocationsType;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -111,4 +113,21 @@ class PhotoLocationsController extends AbstractController
 
         return $this->redirectToRoute('photo_locations_index');
     }
+
+    /**
+     * @Route("/{id}/locationSwitchPublicPrivate", name="photo_location_public_private", methods={"GET","POST"})
+     */
+    public function switchPublicPrivate(Request $request, PhotoLocations $photoLocations, EntityManagerInterface $manager): Response
+    {
+        $publicPrivate = $photoLocations->getPublicPrivate();
+        if ($publicPrivate == 'Public') {
+            $photoLocations->setPublicPrivate('Private');
+        } else {
+            $photoLocations->setPublicPrivate('Public');
+        }
+        $this->getDoctrine()->getManager()->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $this->redirect($referer);
+    }
+
 }

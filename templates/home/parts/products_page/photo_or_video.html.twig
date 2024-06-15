@@ -1,5 +1,5 @@
 
-{% set loc = asset('administration/img/WebsitePhotos/')~"/"~cms_photo.photo %}
+{% set loc = asset('administration/attachments/WebsitePhotos/')~cms_photo.photo %}
 
 {% if cms_photo.photoOrVideo == "Video" %}
     <video class="other-page-image" controls>

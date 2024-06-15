@@ -124,6 +124,11 @@
                                    href="mailto:{{ CompanyDetails.companyDetails.companyEmail }}">
                                     <span style="color: blue;">@</span> {{ CompanyDetails.companyDetails.companyEmail }}
                                 </a>
+                                <a class="dropdown-item" title="{{ CompanyDetails.companyDetails.companyTel }}"
+                                   href="https://wa.me/{{ CompanyDetails.companyDetails.companyTel | replace({' ': ''}) }}">
+                                    <i style="color: #0f6848"
+                                       class="fa fa-phone"></i> {{ CompanyDetails.companyDetails.companyTel }}
+                                </a>
                                 <a class="dropdown-item" title="{{ CompanyDetails.companyDetails.companyMobile }}"
                                    href="https://wa.me/{{ CompanyDetails.companyDetails.companyMobile | replace({' ': ''}) }}">
                                     <i style="color: #0f6848"

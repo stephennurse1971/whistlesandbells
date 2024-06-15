@@ -12,6 +12,10 @@
         <h2 style="color: blue">Investment Analysis</h2>
         {{ form_row(form.investmentDate) }}
     </div>
+    <div class="col-md-3">
+        <h2 style="color: blue">Outlook</h2>
+        {{ form_row(form.lastOutlookDownload) }}
+    </div>
 </div>
 
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
