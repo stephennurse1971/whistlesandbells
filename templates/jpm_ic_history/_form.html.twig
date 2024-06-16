@@ -1,6 +1,6 @@
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-4">
+    <div class="col-2">
         {{ form_row(form.year) }}
         {{ form_row(form.baseSalaryGBP) }}
         {{ form_row(form.totalCompUSD) }}
@@ -8,15 +8,12 @@
         {{ form_row(form.icCash) }}
         {{ form_row(form.icShares) }}
     </div>
-    <div class="col-4">
-
+    <div class="col-2">
         {{ form_row(form.icSharePrice) }}
         {{ form_row(form.icShares1) }}
         {{ form_row(form.icShares2) }}
         {{ form_row(form.vestingDate1) }}
         {{ form_row(form.vestingDate2) }}
-
-
         <strong style="color: blue">
             {{ jpm_ic_history.attachmentICFile }}
         </strong> <br>

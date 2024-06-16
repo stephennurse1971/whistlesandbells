@@ -4,11 +4,8 @@ namespace App\Controller;
 
 use App\Entity\JpmIcHistory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use App\Entity\StaticText;
 use App\Form\JpmIcHistoryType;
-use App\Repository\FileAttachmentsRepository;
 use App\Repository\JpmIcHistoryRepository;
-use App\Repository\StaticTextRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -147,7 +144,7 @@ class JpmIcHistoryController extends AbstractController
     /**
      * @Route("/show/attachment/{id}/{filename}", name="show_jpm_ic_attachment")
      */
-    public function showAttachment(string $filename, int $id, JpmIcHistoryRepository $jpmIcHistoryRepository, StaticTextRepository $staticTextRepository)
+    public function showAttachment(string $filename, int $id, JpmIcHistoryRepository $jpmIcHistoryRepository)
     {
         $filepath = $this->getParameter('jpm_ic_history_directory') . "/" . $filename;
         if (file_exists($filepath)) {

@@ -6,8 +6,16 @@
 
 {% block body %}
     <h1 style="color: red">CMS: Copy</h1>
-    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_copy_new') }}">New</a>
-    <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_photo_index') }}">Photos</a>
+    <div class="row">
+        <div class="col-9">
+            <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_copy_new') }}">New</a>
+            <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_photo_index') }}">Photos</a>
+        </div>
+        <div class="col-2">
+            <a target="_blank" class="btn btn-danger btn-sm" href="{{ path('cms_copy_delete_all_files') }}">Delete All
+                FIles</a>
+        </div>
+    </div>
 
     <table class="table table-responsive">
         <thead>
@@ -19,10 +27,11 @@
             <th style="width: 250px">Heading<br>(Content title)</th>
             <th style="width: 650px">Content</th>
             <th style="width: 20px">Hyperlink</th>
-            <th style="width: 20px">Attachment</th>
-            <th style="width: 20px">#</th>
-            <th style="width: 20px">#</th>
-            <th style="width: 20px">#</th>
+            <th style="width: 20px">File</th>
+            <th style="width: 20px"></th>
+            <th style="width: 20px"></th>
+            <th style="width: 20px"></th>
+            <th style="width: 20px"></th>
         </tr>
         </thead>
         <tbody>
@@ -58,24 +67,36 @@
                         </a>
                     {% endif %}
                 </td>
-                <td>
-                    {{ cms_copy.attachment }}
+                <td style="text-align: center">
+                    {% if cms_copy.attachment is not null %}
+                        <a title="{{ cms_copy.attachment }}" target="_blank"
+                           href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
+                            <i title="{{ cms_copy.attachment }}" class="fa fa-paperclip"></i>
+                        </a>
+                    {% endif %}
                 </td>
-                <td style="d-inline">
+                <td>
                     <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
                        href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">Edit</a>
+                </td>
+                <td>
+                    <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}">Delete File</a>
                 </td>
                 <td>
                     <form class="d-inline" method="post"
                           action="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy.id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button>
+                            <i style="color: red" class="fa fa-trash"></i>
+                        </button>
                     </form>
                 </td>
                 <td>
                     <a class="d-inline btn btn-success btn-sm" target="_blank"
                        href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">Copy</a>
                 </td>
+
             </tr>
         {% endfor %}
         </tbody>

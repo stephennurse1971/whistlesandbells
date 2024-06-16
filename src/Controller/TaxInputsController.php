@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Investments;
-use App\Entity\RecruiterEmails;
 use App\Entity\TaxDocuments;
 use App\Entity\TaxInputs;
 use App\Entity\TaxSchemes;

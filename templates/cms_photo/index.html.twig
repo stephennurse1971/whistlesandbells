@@ -11,7 +11,7 @@
         </div>
         <div class="col-2">
             {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <a class="btn btn-danger btn-sm" href="{{ path('cms_photos_delete_all') }}">Delete All Photos (but keep record)</a>
+            <a class="btn btn-danger btn-sm" href="{{ path('cms_photos_delete_all_files') }}">Delete All Photos (but keep record)</a>
             {% endif %}
         </div>
     </div>

@@ -36,7 +36,7 @@ class CompanyDetailsType extends AbstractType
             ->add('companyMobile')
             ->add('companySkype')
             ->add('companyQrCode', FileType::class,[
-                'label' => 'QR',
+                'label' => 'QR Code',
                 'mapped' => false,
                 'required' => false
             ])

@@ -7,6 +7,7 @@ parameters:
     favicon_directory: '%kernel.project_dir%/public/administration/attachments/Favicons/'
     user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
     website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
+    website_attachments_directory: '%kernel.project_dir%/public/administration/attachments/WebsiteAttachments'
 
     file_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FileAttachments'
     files_cv_directory: '%kernel.project_dir%/public/administration/attachments/CV'

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\CmsPhoto;
 use App\Form\CmsPhotoType;
 use App\Repository\CmsPhotoRepository;
-use App\Repository\PhotosRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,7 +80,7 @@ class CmsPhotoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="cms_photo_show", methods={"GET"})
+     * @Route("/show/{id}", name="cms_photo_show", methods={"GET"})
      */
     public function show(CmsPhoto $cmsPhoto): Response
     {
@@ -91,7 +90,7 @@ class CmsPhotoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="cms_photo_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="cms_photo_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, CmsPhoto $cmsPhoto, SluggerInterface $slugger): Response
     {
@@ -109,11 +108,7 @@ class CmsPhotoController extends AbstractController
                 if ($cmsPhoto->getStaticPageName()) {
                     $safeFilename = $cmsPhoto->getStaticPageName() . uniqid();
                 }
-
-
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
-
-
                 try {
                     $photo->move(
                         $this->getParameter('website_photos_directory'),
@@ -159,16 +154,16 @@ class CmsPhotoController extends AbstractController
     public function deleteCMSPhotoFile(int $id, Request $request, CmsPhoto $cmsPhoto, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
+        $file = $cmsPhoto->getPhoto();
+        unlink($file);
         $cmsPhoto->setPhoto('');
         $entityManager->flush();
         return $this->redirect($referer);
     }
 
 
-
-
     /**
-     * @Route ("/view/photo/{id}", name="cms_photo_view")
+     * @Route ("/view_photo/{id}", name="cms_photo_view")
      */
     public function viewCMSPhoto(int $id, CmsPhotoRepository $cmsPhotoRepository)
     {
@@ -178,7 +173,7 @@ class CmsPhotoController extends AbstractController
 
 
     /**
-     * @Route("/deleteAll/cms_photos", name="cms_photos_delete_all",)
+     * @Route("/cms_photos_delete_all_files", name="cms_photos_delete_all_files",)
      */
     public function deleteAll(Request $request, CmsPhotoRepository $cmsPhotoRepository, EntityManagerInterface $entityManager): Response
     {

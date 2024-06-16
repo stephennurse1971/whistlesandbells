@@ -52,7 +52,7 @@ class CompanyDetailsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="company_details_show", methods={"GET"})
+     * @Route("/show/{id}", name="company_details_show", methods={"GET"})
      */
     public function show(CompanyDetails $companyDetails): Response
     {
@@ -62,7 +62,7 @@ class CompanyDetailsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="company_details_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="company_details_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -113,7 +113,7 @@ class CompanyDetailsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="company_details_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="company_details_delete", methods={"POST"})
      */
     public function delete(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -162,7 +162,7 @@ class CompanyDetailsController extends AbstractController
 
 
     /**
-     * @Route("/delete_qr_code}/{id}", name="company_details_delete_qr_code", methods={"POST", "GET"})
+     * @Route("/delete_qr_code/{id}", name="company_details_delete_qr_code", methods={"POST", "GET"})
      */
     public function deleteQRCodeLiveFavicon(Request $request, int $id, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
     {
