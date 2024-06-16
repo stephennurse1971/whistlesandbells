@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CountryController extends AbstractController
 {
     /**
-     * @Route("/", name="country_index", methods={"GET"})
+     * @Route("/index", name="country_index", methods={"GET"})
      */
     public function index(CountryRepository $countryRepository): Response
     {
@@ -49,7 +49,7 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="country_show", methods={"GET"})
+     * @Route("/show/{id}", name="country_show", methods={"GET"})
      */
     public function show(Country $country): Response
     {
@@ -59,7 +59,7 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="country_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="country_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Country $country): Response
     {
@@ -79,7 +79,7 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="country_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="country_delete", methods={"POST"})
      */
     public function delete(Request $request, Country $country): Response
     {

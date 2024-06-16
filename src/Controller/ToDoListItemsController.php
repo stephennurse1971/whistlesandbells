@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Security;
 class ToDoListItemsController extends AbstractController
 {
     /**
-     * @Route("/", name="to_do_list_items_index", methods={"GET"})
+     * @Route("/index", name="to_do_list_items_index", methods={"GET"})
      */
     public function index(ToDoListItemsRepository $toDoListItemsRepository): Response
     {
@@ -80,7 +80,7 @@ class ToDoListItemsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="to_do_list_items_show", methods={"GET"})
+     * @Route("/show/{id}", name="to_do_list_items_show", methods={"GET"})
      */
     public function show(ToDoListItems $toDoListItem): Response
     {
@@ -90,7 +90,7 @@ class ToDoListItemsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="to_do_list_items_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="to_do_list_items_edit", methods={"GET", "POST"})
      */
     public function edit(Security $security, Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository, ToDoListRepository $toDoListRepository, EntityManagerInterface $entityManager): Response
     {
@@ -131,10 +131,9 @@ class ToDoListItemsController extends AbstractController
     }
 
     /**
-     * @Route("/update/priority/with/rank", name="update_priority_with_rank", methods={"GET", "POST"})
+     * @Route("/update_priority_with_rank", name="update_priority_with_rank", methods={"GET", "POST"})
      */
-    public
-    function updatePriorityWithRank(ToDoListRepository $toDoListRepository, ToDoListItemsRepository $toDoListItemsRepository, Request $request, EntityManagerInterface $manager): Response
+    public function updatePriorityWithRank(ToDoListRepository $toDoListRepository, ToDoListItemsRepository $toDoListItemsRepository, Request $request, EntityManagerInterface $manager): Response
     {
         foreach ($toDoListRepository->findAll() as $toDoList) {
             $toDoListByProject = $toDoListItemsRepository->findBy(['project' => $toDoList, 'status' => 'Complete']);
@@ -194,7 +193,7 @@ class ToDoListItemsController extends AbstractController
 
 
     /**
-     * @Route("/change_status/{id}/{status}", name="to_do_list_items_change_status", methods={"GET", "POST"})
+     * @Route("/change_status/{status}/{id}", name="to_do_list_items_change_status", methods={"GET", "POST"})
      */
     public
     function changeStatus(Request $request, $status, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
@@ -234,7 +233,7 @@ class ToDoListItemsController extends AbstractController
 
 
     /**
-     * @Route("/change_priority/{id}/{change}", name="to_do_list_items_change_priority", methods={"GET", "POST"})
+     * @Route("/change_priority/{change}/{id}", name="to_do_list_items_change_priority", methods={"GET", "POST"})
      */
     public
     function changePriority(Request $request, $change, ToDoListItems $toDoListItem, EntityManagerInterface $manager): Response
@@ -253,7 +252,7 @@ class ToDoListItemsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="to_do_list_items_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="to_do_list_items_delete", methods={"POST"})
      */
     public
     function delete(Request $request, ToDoListItems $toDoListItem, ToDoListItemsRepository $toDoListItemsRepository): Response
@@ -285,7 +284,7 @@ class ToDoListItemsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/to_do_list_item/delete_attachment", name="to_do_list_item_delete_attachment")
+     * @Route("/to_do_list_item/delete_attachment/{id}", name="to_do_list_item_delete_attachment")
      */
     public function deleteToDoListItemAttachment(Request $request, $id, ToDoListItemsRepository $toDoListItemsRepository, EntityManagerInterface $entityManager)
     {

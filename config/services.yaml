@@ -26,6 +26,7 @@ parameters:
     tax_supporting_documents_attachments_directory: '%kernel.project_dir%/public/administration/attachments/TaxDocuments/TaxSupportingDocuments'
     tourist_attraction_photos_directory: '%kernel.project_dir%/public/administration/attachments/TouristAttractionPhotos'
     photos_directory: '%kernel.project_dir%/public/administration/attachments/Photos/'
+    uk_travel_days_directory: '%kernel.project_dir%/public/administration/attachments/UKTravelDays'
     winelist_directory: '%kernel.project_dir%/public/administration/attachments/WineLabels'
 
 

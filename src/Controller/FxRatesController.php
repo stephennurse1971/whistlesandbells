@@ -55,7 +55,7 @@ class FxRatesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="fx_rates_show", methods={"GET"})
+     * @Route("/show/{id}", name="fx_rates_show", methods={"GET"})
      */
     public function show(FxRates $fxRate): Response
     {
@@ -65,7 +65,7 @@ class FxRatesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="fx_rates_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="fx_rates_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, FxRates $fxRate): Response
     {
@@ -85,7 +85,7 @@ class FxRatesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="fx_rates_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="fx_rates_delete", methods={"POST"})
      */
     public function delete(Request $request, FxRates $fxRate): Response
     {

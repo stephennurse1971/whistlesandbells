@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="app_home")
+     * @Route("/index", name="app_home")
      */
     public function index(CompanyDetails $companyDetails, CmsPhotoRepository $cmsPhotoRepository): Response
     {

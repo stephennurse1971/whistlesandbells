@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BankAccountsController extends AbstractController
 {
     /**
-     * @Route("/", name="bank_accounts_index", methods={"GET"})
+     * @Route("/index", name="bank_accounts_index", methods={"GET"})
      */
     public function index(BankAccountsRepository $bankAccountsRepository): Response
     {
@@ -46,7 +46,7 @@ class BankAccountsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="bank_accounts_show", methods={"GET"})
+     * @Route("/show/{id}", name="bank_accounts_show", methods={"GET"})
      */
     public function show(BankAccounts $bankAccount): Response
     {
@@ -56,7 +56,7 @@ class BankAccountsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="bank_accounts_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="bank_accounts_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, BankAccounts $bankAccount, BankAccountsRepository $bankAccountsRepository): Response
     {
@@ -75,7 +75,7 @@ class BankAccountsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="bank_accounts_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="bank_accounts_delete", methods={"POST"})
      */
     public function delete(Request $request, BankAccounts $bankAccount, BankAccountsRepository $bankAccountsRepository): Response
     {

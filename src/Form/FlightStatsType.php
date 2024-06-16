@@ -20,6 +20,7 @@ class FlightStatsType extends AbstractType
             ->add('flightFrom')
             ->add('flightTo')
             ->add('lowestPrice')
+            ->add('scrapeDate')
         ;
     }
 

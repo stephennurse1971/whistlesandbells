@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\BankAccounts;
 use App\Entity\BankBalances;
 use App\Form\BankBalancesType;
 use App\Repository\BankAccountsRepository;
@@ -19,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BankBalancesController extends AbstractController
 {
     /**
-     * @Route("/", name="bank_balances_index", methods={"GET"})
+     * @Route("/index", name="bank_balances_index", methods={"GET"})
      */
     public function index(BankBalancesRepository $bankBalancesRepository, BankAccountsRepository $bankAccountsRepository, SettingsRepository $settingsRepository): Response
     {
@@ -52,7 +51,7 @@ class BankBalancesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="bank_balances_show", methods={"GET"})
+     * @Route("/show/{id}", name="bank_balances_show", methods={"GET"})
      */
     public function show(BankBalances $bankBalance): Response
     {
@@ -62,7 +61,7 @@ class BankBalancesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="bank_balances_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="bank_balances_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, BankBalances $bankBalance, BankBalancesRepository $bankBalancesRepository): Response
     {
@@ -81,7 +80,7 @@ class BankBalancesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="bank_balances_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="bank_balances_delete", methods={"POST"})
      */
     public function delete(Request $request, BankBalances $bankBalance, BankBalancesRepository $bankBalancesRepository): Response
     {

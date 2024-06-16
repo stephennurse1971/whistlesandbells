@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaxSupportingDocsController extends AbstractController
 {
     /**
-     * @Route("/", name="tax_supporting_docs_index", methods={"GET"})
+     * @Route("/index", name="tax_supporting_docs_index", methods={"GET"})
      */
     public function index(TaxSupportingDocsRepository $taxSupportingDocsRepository): Response
     {
@@ -70,7 +70,7 @@ class TaxSupportingDocsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tax_supporting_docs_show", methods={"GET"})
+     * @Route("/show/{id}", name="tax_supporting_docs_show", methods={"GET"})
      */
     public function show(TaxSupportingDocs $taxSupportingDoc): Response
     {
@@ -80,7 +80,7 @@ class TaxSupportingDocsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="tax_supporting_docs_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="tax_supporting_docs_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, TaxSupportingDocs $taxSupportingDoc): Response
     {
@@ -113,7 +113,7 @@ class TaxSupportingDocsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tax_supporting_docs_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="tax_supporting_docs_delete", methods={"POST"})
      */
     public function delete(Request $request, TaxSupportingDocs $taxSupportingDoc): Response
     {

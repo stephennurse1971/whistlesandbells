@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class WeatherController extends AbstractController
 {
     /**
-     * @Route("/", name="weather_index", methods={"GET"})
+     * @Route("/index", name="weather_index", methods={"GET"})
      */
     public function index(WeatherRepository $weatherRepository): Response
     {
@@ -53,7 +53,7 @@ class WeatherController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="weather_show", methods={"GET"})
+     * @Route("/show/{id}", name="weather_show", methods={"GET"})
      */
     public function show(Weather $weather): Response
     {
@@ -63,7 +63,7 @@ class WeatherController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="weather_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="weather_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Weather $weather): Response
     {
@@ -83,7 +83,7 @@ class WeatherController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="weather_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="weather_delete", methods={"POST"})
      */
     public function delete(Request $request, Weather $weather): Response
     {

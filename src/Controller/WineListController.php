@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CompanyDetails;
 use App\Entity\WineList;
 use App\Form\WineListType;
 use App\Repository\WineListRepository;
@@ -17,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class WineListController extends AbstractController
 {
     /**
-     * @Route("/", name="wine_list_index", methods={"GET"})
+     * @Route("/index", name="wine_list_index", methods={"GET"})
      */
     public function index(WineListRepository $wineListRepository): Response
     {
@@ -60,7 +61,7 @@ class WineListController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="wine_list_show", methods={"GET"})
+     * @Route("/show/{id}", name="wine_list_show", methods={"GET"})
      */
     public function show(WineList $wineList): Response
     {
@@ -70,7 +71,7 @@ class WineListController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="wine_list_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="wine_list_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, WineList $wineList): Response
     {
@@ -101,7 +102,7 @@ class WineListController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="wine_list_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="wine_list_delete", methods={"POST"})
      */
     public function delete(Request $request, WineList $wineList): Response
     {
@@ -115,9 +116,8 @@ class WineListController extends AbstractController
     }
 
 
-
     /**
-     * @Route("/{id}/viewphoto", name="winelist_viewlabel")
+     * @Route("/viewphoto/{id}", name="winelist_viewlabel")
      */
     public function viewUserPhoto(int $id, WineList $wineList, EntityManagerInterface $entityManager)
     {
@@ -125,5 +125,25 @@ class WineListController extends AbstractController
         return $this->render('wine_list/image_view.html.twig', ['imagename' => $imagename]);
     }
 
+    /**
+     * @Route("/delete_label/{id}", name="winelist_delete_label", methods={"POST", "GET"})
+     */
+    public function deleteWineLabel(Request $request, int $id, WineList $wineList, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $filename = $wineList->getLabelPicture();
+        $files = glob($this->getParameter('winelist_directory') . "/" . $filename);
+        foreach ($files as $file) {
+            unlink($file);
+        }
+        $entityManager->flush();
+        $wineList->setLabelPicture(null);
+        $entityManager->flush();
+
+
+
+
+        return $this->redirect($referer);
+    }
 
 }

@@ -90,7 +90,7 @@ class ToDoListController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="to_do_list_show", methods={"GET"})
+     * @Route("/show/{id}", name="to_do_list_show", methods={"GET"})
      */
     public function show(ToDoList $toDoList): Response
     {
@@ -100,7 +100,7 @@ class ToDoListController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="to_do_list_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="to_do_list_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, ToDoList $toDoList): Response
     {
@@ -132,7 +132,7 @@ class ToDoListController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="to_do_list_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="to_do_list_delete", methods={"POST"})
      */
     public function delete(Request $request, ToDoList $toDoList): Response
     {
@@ -143,16 +143,5 @@ class ToDoListController extends AbstractController
         }
         return $this->redirectToRoute('to_do_list_index');
     }
-
-
-    /**
-     * @Route("/{id}/delete/attachment", name="todolist_delete_attachment")
-     */
-    public function deleteAttachment(Request $request, ToDoList $toDoList, EntityManagerInterface $entityManager)
-    {
-        $referer = $request->headers->get('referer');
-        $toDoList->setFile([]);
-        $entityManager->flush();
-        return $this->redirect($referer);
-    }
+    
 }

@@ -31,7 +31,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class HouseGuestsController extends AbstractController
 {
     /**
-     * @Route("/{subset}", name="house_guests_index", methods={"GET"}, defaults={"subset"="All"})
+     * @Route("/index/{subset}", name="house_guests_index", methods={"GET"}, defaults={"subset"="All"})
      */
     public function index(Request $request, string $subset, HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList,
                           FlightStatsRepository        $flightStatsRepository, SettingsRepository $settingsRepository,
@@ -153,7 +153,7 @@ class HouseGuestsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="house_guests_show", methods={"GET"})
+     * @Route("/show/{id}", name="house_guests_show", methods={"GET"})
      */
     public function show(HouseGuests $houseGuest): Response
     {
@@ -163,7 +163,7 @@ class HouseGuestsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="house_guests_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="house_guests_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, HouseGuests $houseGuest, Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
     {
@@ -209,7 +209,7 @@ class HouseGuestsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="house_guests_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="house_guests_delete", methods={"POST"})
      */
     public function delete(Request $request, HouseGuests $houseGuest): Response
     {

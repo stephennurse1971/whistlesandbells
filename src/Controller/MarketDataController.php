@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class MarketDataController extends AbstractController
 {
     /**
-     * @Route("/", name="market_data_index", methods={"GET"})
+     * @Route("/index", name="market_data_index", methods={"GET"})
      * @IsGranted("ROLE_ACCOUNTANT")
      */
     public function index(MarketDataRepository $marketDataRepository, MarketDataPrice $marketDataPrice, AssetClassesRepository $assetClassesRepository, SettingsRepository $settingsRepository): Response

@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FlightDestinationsController extends AbstractController
 {
     /**
-     * @Route("/", name="flight_destinations_index", methods={"GET"})
+     * @Route("/index", name="flight_destinations_index", methods={"GET"})
      */
     public function index(FlightDestinationsRepository $flightDestinationsRepository, SettingsRepository $settingsRepository, EntityManagerInterface $entityManager): Response
     {
@@ -68,6 +68,7 @@ class FlightDestinationsController extends AbstractController
         $originalDepartureCity = $selected_flight_destination->getDepartureCity();
         $originalArrivalCity = $selected_flight_destination->getArrivalCity();
         $originalDateStart = $selected_flight_destination->getDateStart();
+
         $originalDateStartAdjusted = date_modify($originalDateStart, +$flightStatsReturnLegOffset . ' days');
         $originalDateEnd = $selected_flight_destination->getDateEnd();
         $originalDateEndAdjusted = date_modify($originalDateEnd, +$flightStatsReturnLegOffset . ' days');
@@ -99,7 +100,7 @@ class FlightDestinationsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="flight_destinations_show", methods={"GET"})
+     * @Route("/show/{id}", name="flight_destinations_show", methods={"GET"})
      */
     public function show(FlightDestinations $flightDestination): Response
     {
@@ -109,7 +110,7 @@ class FlightDestinationsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="flight_destinations_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="flight_destinations_edit", methods={"GET", "POST"})
      *
      */
     public function edit(Request $request, FlightDestinations $flightDestination, FlightDestinationsRepository $flightDestinationsRepository): Response
@@ -130,7 +131,7 @@ class FlightDestinationsController extends AbstractController
 
 
     /**
-     * @Route("/flight_destination_change_isactive_status/{id}/{active}", name="flight_destinations_change_isactive_status", methods={"GET", "POST"})
+     * @Route("/flight_destination_change_isactive_status/{active}/{id}", name="flight_destinations_change_isactive_status", methods={"GET", "POST"})
      */
     public function changeIsActiveStatus(Request $request, $id, $active, FlightDestinationsRepository $flightDestinationsRepository, EntityManagerInterface $manager): Response
     {
@@ -142,7 +143,7 @@ class FlightDestinationsController extends AbstractController
     }
 
     /**
-     * @Route("/flight_destination_change_admin_status/{id}/{admin}", name="flight_destinations_change_admin_status", methods={"GET", "POST"})
+     * @Route("/flight_destination_change_admin_status/{admin}/{id}", name="flight_destinations_change_admin_status", methods={"GET", "POST"})
      */
     public function changeAdminStatus(Request $request, $id, $admin, FlightDestinationsRepository $flightDestinationsRepository, EntityManagerInterface $manager): Response
     {
@@ -174,7 +175,7 @@ class FlightDestinationsController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="flight_destinations_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="flight_destinations_delete", methods={"POST"})
      */
     public function delete(Request $request, FlightDestinations $flightDestination, FlightDestinationsRepository $flightDestinationsRepository): Response
     {

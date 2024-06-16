@@ -27,7 +27,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class TaxInputsController extends AbstractController
 {
     /**
-     * @Route("/", name="tax_inputs_index", methods={"GET"})
+     * @Route("/index", name="tax_inputs_index", methods={"GET"})
      */
     public function index(TaxInputsRepository $taxInputsRepository): Response
     {
@@ -73,7 +73,7 @@ class TaxInputsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tax_inputs_show", methods={"GET"})
+     * @Route("/show/{id}", name="tax_inputs_show", methods={"GET"})
      */
     public function show(TaxInputs $taxInput): Response
     {
@@ -83,7 +83,7 @@ class TaxInputsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="tax_inputs_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="tax_inputs_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, TaxInputs $taxInput): Response
     {
@@ -160,7 +160,7 @@ class TaxInputsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tax_inputs_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="tax_inputs_delete", methods={"POST"})
      */
     public function delete(Request $request, TaxInputs $taxInput): Response
     {
@@ -174,7 +174,7 @@ class TaxInputsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete/{type}", name="tax_input_delete_attachment")
+     * @Route("/delete/{type}/{id}", name="tax_input_delete_attachment")
      */
     public function deleteAttachment(string $type, int $id, Request $request, TaxInputs $taxInputs, EntityManagerInterface $entityManager)
     {

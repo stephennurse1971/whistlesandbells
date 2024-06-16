@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UkDaysController extends AbstractController
 {
     /**
-     * @Route("/", name="uk_days_index", methods={"GET"})
+     * @Route("/index", name="uk_days_index", methods={"GET"})
      */
     public function index(UkDaysRepository $ukDaysRepository, CountryRepository $countryRepository, TaxYearRepository $taxYearRepository): Response
     {
@@ -40,53 +40,24 @@ class UkDaysController extends AbstractController
         $ukDay = new UkDays();
         $form = $this->createForm(UkDaysType::class, $ukDay);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
 
-            if (date_diff($ukDay->getStartDate(), $ukDay->getEndDate())->format("%r%a") < 0) {
-                return $this->render('uk_days/new.html.twig', [
-                    'uk_day' => $ukDay,
-                    'form' => $form->createView(),
-                    'error' => 'End Date Cannot be less then Start Date.'
-                ]);
-            }
-        }
+
         if ($form->isSubmitted() && $form->isValid()) {
-
-            if ($form->get('travelDocs')->getData()) {
-                $days = $ukDay->getEndDate()->diff($ukDay->getStartDate())->days;
-                $ukDay->setDayCount($days);
-                $files = $form->get('travelDocs')->getData();
-                $file_names = [];
-                foreach ($files as $file) {
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . "." . $file->guessExtension();
-                    $file->move(
-                        $this->getParameter('files_upload_default_directory'),
-                        $newFilename
-                    );
-                    $file_names[] = $newFilename;
-                }
-                $ukDay->setTravelDocs($file_names);
-            }
-            if ($form->get('travelDocs2')->getData()) {
-
-                $files = $form->get('travelDocs2')->getData();
-                $file_names = [];
-                foreach ($files as $file) {
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . "." . $file->guessExtension();
-                    $file->move(
-                        $this->getParameter('files_upload_default_directory'),
-                        $newFilename
-                    );
-                    $file_names[] = $newFilename;
-                }
-                $ukDay->setTravelDocs2($file_names);
-            }
+//            $attachments = $form['travelDocs']->getData();
+//            if ($attachments) {
+//                $files_name = [];
+//                $attachment_directory = $this->getParameter('uk_travel_days_directory');
+//                foreach ($attachments as $attachment) {
+//                    $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+//                    $file_extension = $attachment->guessExtension();
+//                    $newFileName = $fileName . "." . $file_extension;
+//                    $attachment->move($attachment_directory, $newFileName);
+//                    $files_name[] = $newFileName;
+//                }
+//                $ukDay->setTravelDocs($files_name);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ukDay);
             $entityManager->flush();
-
             return $this->redirectToRoute('uk_days_index');
         }
 
@@ -97,7 +68,7 @@ class UkDaysController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="uk_days_show", methods={"GET"})
+     * @Route("/show/{id}", name="uk_days_show", methods={"GET"})
      */
     public function show(UkDays $ukDay): Response
     {
@@ -107,57 +78,32 @@ class UkDaysController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="uk_days_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="uk_days_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, UkDays $ukDay): Response
     {
         $form = $this->createForm(UkDaysType::class, $ukDay);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
 
-            if (date_diff($ukDay->getStartDate(), $ukDay->getEndDate())->format("%r%a") < 0) {
-                return $this->render('uk_days/edit.html.twig', [
-                    'uk_day' => $ukDay,
-                    'form' => $form->createView(),
-                    'error' => 'End Date Cannot be less then Start Date.'
-                ]);
-            }
-        }
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if ($form->get('travelDocs')->getData()) {
+//            if ($form->get('travelDocs')->getData()) {
+//
+//                $files = $form->get('travelDocs')->getData();
+//                $file_names = [];
+//                foreach ($files as $file) {
+//                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+//                    $newFilename = $originalFilename . "." . $file->guessExtension();
+//                    $file->move(
+//                        $this->getParameter('files_upload_default_directory'),
+//                        $newFilename
+//                    );
+//                    $file_names[] = $newFilename;
+//                }
+//                $ukDay->setTravelDocs($file_names);
+//            }
 
-                $files = $form->get('travelDocs')->getData();
-                $file_names = [];
-                foreach ($files as $file) {
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . "." . $file->guessExtension();
-                    $file->move(
-                        $this->getParameter('files_upload_default_directory'),
-                        $newFilename
-                    );
-                    $file_names[] = $newFilename;
-                }
-                $ukDay->setTravelDocs($file_names);
-            }
-            if ($form->get('travelDocs2')->getData()) {
-
-                $files = $form->get('travelDocs2')->getData();
-                $file_names = [];
-                foreach ($files as $file) {
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename . "." . $file->guessExtension();
-                    $file->move(
-                        $this->getParameter('files_upload_default_directory'),
-                        $newFilename
-                    );
-                    $file_names[] = $newFilename;
-                }
-                $ukDay->setTravelDocs2($file_names);
-            }
-            $days = $ukDay->getEndDate()->diff($ukDay->getStartDate())->days;
-            $ukDay->setDayCount($days);
-            $this->getDoctrine()->getManager()->flush();
+             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('uk_days_index');
         }
@@ -169,7 +115,7 @@ class UkDaysController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="uk_days_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="uk_days_delete", methods={"POST"})
      */
     public function delete(Request $request, UkDays $ukDay): Response
     {
@@ -182,7 +128,7 @@ class UkDaysController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete/attachment1", name="ukdays_delete_attachment1")
+     * @Route("/delete/attachment1/{id}", name="ukdays_delete_attachment1")
      */
     public function deleteAttachment1(Request $request, UkDays $ukDays, EntityManagerInterface $entityManager)
     {
@@ -193,7 +139,7 @@ class UkDaysController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete/attachment2", name="ukdays_delete_attachment2")
+     * @Route("/delete/attachment2/{id}", name="ukdays_delete_attachment2")
      */
     public function deleteAttachment2(Request $request, UkDays $ukDays, EntityManagerInterface $entityManager)
     {

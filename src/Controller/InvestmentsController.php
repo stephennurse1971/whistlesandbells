@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Investments;
-use App\Entity\TaxYear;
-use App\Entity\UkDays;
 use App\Repository\BankAccountsRepository;
 use App\Repository\BankBalancesRepository;
 use App\Repository\LoansBondsRepository;
@@ -17,7 +15,6 @@ use App\Repository\FxRatesRepository;
 use App\Repository\InvestmentFutureCommsRepository;
 use App\Repository\InvestmentsRepository;
 use App\Repository\TaxInputsRepository;
-use App\Repository\TaxSchemesRepository;
 use App\Repository\TaxYearRepository;
 use App\Services\Investment;
 use Doctrine\ORM\EntityManagerInterface;
@@ -169,7 +166,7 @@ class InvestmentsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="investments_show", methods={"GET"})
+     * @Route("/show/{id}", name="investments_show", methods={"GET"})
      */
     public function show(Investments $investment): Response
     {
@@ -179,7 +176,7 @@ class InvestmentsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="investments_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="investments_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Investments $investment): Response
     {
@@ -247,7 +244,7 @@ class InvestmentsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="investments_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="investments_delete", methods={"POST"})
      */
     public function delete(Request $request, Investments $investment): Response
     {
@@ -262,7 +259,7 @@ class InvestmentsController extends AbstractController
 
 
     /**
-     * @Route("/{id}/delete/attachment1", name="investments_delete_attachment1")
+     * @Route("/delete/attachment1/{id}", name="investments_delete_attachment1")
      */
     public function deleteAttachment1(Request $request, Investments $investments, EntityManagerInterface $entityManager)
     {
@@ -273,7 +270,7 @@ class InvestmentsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete/attachment2", name="investments_delete_attachment2")
+     * @Route("/delete/attachment2/{id}", name="investments_delete_attachment2")
      */
     public function deleteAttachment2(Request $request, Investments $investments, EntityManagerInterface $entityManager)
     {
@@ -284,7 +281,7 @@ class InvestmentsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete/attachment3", name="investments_delete_attachment3")
+     * @Route("/delete/attachment3/{id}", name="investments_delete_attachment3")
      */
     public function deleteAttachment3(Request $request, Investments $investments, EntityManagerInterface $entityManager)
     {

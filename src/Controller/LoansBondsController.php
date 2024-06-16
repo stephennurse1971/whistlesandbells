@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LoansBondsController extends AbstractController
 {
     /**
-     * @Route("/", name="loans_bonds_index", methods={"GET"})
+     * @Route("/index", name="loans_bonds_index", methods={"GET"})
      */
     public function index(LoansBondsRepository $loansBondsRepository, SettingsRepository $settingsRepository): Response
     {
@@ -49,7 +49,7 @@ class LoansBondsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="loans_bonds_show", methods={"GET"})
+     * @Route("/show/{id}", name="loans_bonds_show", methods={"GET"})
      */
     public function show(LoansBonds $loansBond): Response
     {
@@ -59,7 +59,7 @@ class LoansBondsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="loans_bonds_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="loans_bonds_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, LoansBonds $loansBond, LoansBondsRepository $loansBondsRepository): Response
     {
@@ -78,7 +78,7 @@ class LoansBondsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="loans_bonds_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="loans_bonds_delete", methods={"POST"})
      */
     public function delete(Request $request, LoansBonds $loansBond, LoansBondsRepository $loansBondsRepository): Response
     {

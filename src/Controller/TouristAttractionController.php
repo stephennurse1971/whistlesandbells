@@ -84,7 +84,7 @@ class TouristAttractionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tourist_attraction_show", methods={"GET"})
+     * @Route("/show/{id}", name="tourist_attraction_show", methods={"GET"})
      */
     public function show(TouristAttraction $touristAttraction): Response
     {
@@ -94,7 +94,7 @@ class TouristAttractionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="tourist_attraction_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="tourist_attraction_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, TouristAttraction $touristAttraction): Response
     {
@@ -127,7 +127,7 @@ class TouristAttractionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tourist_attraction_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="tourist_attraction_delete", methods={"POST"})
      */
     public function delete(Request $request, TouristAttraction $touristAttraction): Response
     {
@@ -195,7 +195,7 @@ class TouristAttractionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete/attachment", name="tourist_attraction_delete_photo")
+     * @Route("/delete/attachment/{id}", name="tourist_attraction_delete_photo")
      */
     public function deletePhoto(Request $request, TouristAttraction $touristAttraction, EntityManagerInterface $entityManager)
     {
@@ -206,7 +206,7 @@ class TouristAttractionController extends AbstractController
     }
 
     /**
-     * @Route("/touristattraction/importCyprusAHContacts", name="cyprusTouristAttractionImport")
+     * @Route("/touristattraction/importCyprusContacts", name="cyprusTouristAttractionImport")
      */
     public function userImportTouristAttraction(Request $request, SluggerInterface $slugger, TouristAttractionImportOutlookService $touristAttractionImportOutlookService): Response
     {
@@ -237,7 +237,7 @@ class TouristAttractionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/viewphoto", name="touristattraction_view_photo")
+     * @Route("/viewphoto/{id}", name="touristattraction_view_photo")
      */
     public function viewTouristAttractionPhotoFile(int $id, TouristAttraction $touristAttraction, EntityManagerInterface $entityManager)
     {

@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\MarketData;
+
 use App\Entity\MarketDataHistory;
 use App\Form\MarketDataHistoryType;
-use App\Repository\FxRatesHistoryRepository;
 use App\Repository\MarketDataHistoryRepository;
 use App\Repository\MarketDataRepository;
 use App\Services\MarketDataPrice;
@@ -145,7 +144,7 @@ class MarketDataHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="market_data_history_show", methods={"GET"})
+     * @Route("/show/{id}", name="market_data_history_show", methods={"GET"})
      */
     public function show(MarketDataHistory $marketDataHistory): Response
     {
@@ -155,7 +154,7 @@ class MarketDataHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="market_data_history_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="market_data_history_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, MarketDataHistory $marketDataHistory, MarketDataHistoryRepository $marketDataHistoryRepository): Response
     {
@@ -174,7 +173,7 @@ class MarketDataHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="market_data_history_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="market_data_history_delete", methods={"POST"})
      */
     public function delete(Request $request, MarketDataHistory $marketDataHistory, MarketDataHistoryRepository $marketDataHistoryRepository): Response
     {

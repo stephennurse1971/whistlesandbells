@@ -20,7 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class SettingsController extends AbstractController
 {
     /**
-     * @Route("/", name="settings_index", methods={"GET"})
+     * @Route("/index", name="settings_index", methods={"GET"})
      */
     public function index(SettingsRepository $settingsRepository): Response
     {
@@ -53,7 +53,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="settings_show", methods={"GET"})
+     * @Route("/show/{id}", name="settings_show", methods={"GET"})
      */
     public function show(Settings $setting): Response
     {
@@ -63,7 +63,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="settings_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="settings_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Settings $setting): Response
     {
@@ -91,13 +91,12 @@ class SettingsController extends AbstractController
         $now = new \DateTime('now');
         $settings = $settingsRepository->find('1');
         $settings->setInvestmentDate($now);
-
         $entityManager->flush();
         return $this->redirect($referer);
     }
 
     /**
-     * @Route("/{id}", name="settings_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="settings_delete", methods={"POST"})
      */
     public function delete(Request $request, Settings $setting): Response
     {
@@ -106,7 +105,6 @@ class SettingsController extends AbstractController
             $entityManager->remove($setting);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('settings_index');
     }
 }

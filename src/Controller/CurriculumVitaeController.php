@@ -18,7 +18,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class CurriculumVitaeController extends AbstractController
 {
     /**
-     * @Route("/", name="curriculum_vitae_index", methods={"GET"})
+     * @Route("/index", name="curriculum_vitae_index", methods={"GET"})
      */
     public function index(CurriculumVitaeRepository $curriculumVitaeRepository, UserRepository $userRepository): Response
     {
@@ -75,7 +75,7 @@ class CurriculumVitaeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="curriculum_vitae_show", methods={"GET"})
+     * @Route("/show/{id}", name="curriculum_vitae_show", methods={"GET"})
      */
     public function show(CurriculumVitae $curriculumVitae): Response
     {
@@ -85,7 +85,7 @@ class CurriculumVitaeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="curriculum_vitae_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="curriculum_vitae_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, CurriculumVitae $curriculumVitae): Response
     {
@@ -105,7 +105,7 @@ class CurriculumVitaeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="curriculum_vitae_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="curriculum_vitae_delete", methods={"POST"})
      */
     public function delete(Request $request, CurriculumVitae $curriculumVitae): Response
     {

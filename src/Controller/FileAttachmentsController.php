@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Security;
 class FileAttachmentsController extends AbstractController
 {
     /**
-     * @Route("/", name="/admin/fileattachments/index", methods={"GET"})
+     * @Route("/index", name="/admin/fileattachments/index", methods={"GET"})
      */
     public function index(FileAttachmentsRepository $fileAttachmentsRepository): Response
     {
@@ -104,7 +104,7 @@ class FileAttachmentsController extends AbstractController
 
 
     /**
-     * @Route("/{id}/edit", name="file_attachments_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="file_attachments_edit", methods={"GET","POST"})
      */
     public function edit(int $id, Request $request, FileAttachments $fileAttachments): Response
     {
@@ -168,7 +168,7 @@ class FileAttachmentsController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="file_attachments_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="file_attachments_delete", methods={"POST"})
      */
     public function delete(Request $request, FileAttachments $fileAttachments): Response
     {
@@ -182,7 +182,7 @@ class FileAttachmentsController extends AbstractController
 
 
     /**
-     * @Route("/{fileid}/{recipientid}/email_fileattachments", name="file_attachments_email")
+     * @Route("/email_fileattachments/{fileid}/{recipientid}", name="file_attachments_email")
      */
     public function emailFileAttachments(Security $security,int $fileid, int $recipientid, Request $request,UserRepository $userRepository,
                                          FileAttachmentsRepository $fileAttachmentsRepository,MailerInterface $mailer)
@@ -213,7 +213,7 @@ class FileAttachmentsController extends AbstractController
 
 
     /**
-     * @Route("/{id}/delete/attachment", name="file_attachments_delete_attachment")
+     * @Route("/delete/attachment/{id}", name="file_attachments_delete_attachment")
      */
     public function deleteAttachment(Request $request, FileAttachments $fileAttachments, EntityManagerInterface $entityManager)
     {

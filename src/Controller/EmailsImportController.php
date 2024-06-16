@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EmailsImportController extends AbstractController
 {
     /**
-     * @Route("/", name="emails_import_index", methods={"GET"})
+     * @Route("/index", name="emails_import_index", methods={"GET"})
      */
     public function index(EmailsImportRepository $emailsImportRepository): Response
     {
@@ -46,7 +46,7 @@ class EmailsImportController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="emails_import_show", methods={"GET"})
+     * @Route("/show/{id}", name="emails_import_show", methods={"GET"})
      */
     public function show(EmailsImport $emailsImport): Response
     {
@@ -56,7 +56,7 @@ class EmailsImportController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="emails_import_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="emails_import_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, EmailsImport $emailsImport, EmailsImportRepository $emailsImportRepository): Response
     {
@@ -75,7 +75,7 @@ class EmailsImportController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="emails_import_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="emails_import_delete", methods={"POST"})
      */
     public function delete(Request $request, EmailsImport $emailsImport, EmailsImportRepository $emailsImportRepository): Response
     {

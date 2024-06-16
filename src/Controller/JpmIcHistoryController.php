@@ -21,7 +21,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class JpmIcHistoryController extends AbstractController
 {
     /**
-     * @Route("/", name="jpm_ic_history_index", methods={"GET"})
+     * @Route("/index", name="jpm_ic_history_index", methods={"GET"})
      */
     public function index(JpmIcHistoryRepository $jpmIcHistoryRepository): Response
     {
@@ -69,7 +69,7 @@ class JpmIcHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="jpm_ic_history_show", methods={"GET"})
+     * @Route("/show/{id}", name="jpm_ic_history_show", methods={"GET"})
      */
     public function show(JpmIcHistory $jpmIcHistory): Response
     {
@@ -79,7 +79,7 @@ class JpmIcHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="jpm_ic_history_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="jpm_ic_history_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, JpmIcHistory $jpmIcHistory,SluggerInterface $slugger): Response
     {
@@ -116,7 +116,7 @@ class JpmIcHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="jpm_ic_history_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="jpm_ic_history_delete", methods={"POST"})
      */
     public function delete(Request $request, JpmIcHistory $jpmIcHistory): Response
     {
@@ -130,7 +130,7 @@ class JpmIcHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete/attachment", name="delete_ic_history_attachment")
+     * @Route("/delete/attachment/{id}", name="delete_ic_history_attachment")
      */
     public function deleteAttachment(Request $request,JpmIcHistory $jpmIcHistory , EntityManagerInterface $entityManager)
     {

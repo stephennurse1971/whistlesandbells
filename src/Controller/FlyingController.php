@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FlyingController extends AbstractController
 {
     /**
-     * @Route("/", name="flying_index", methods={"GET"})
+     * @Route("/index", name="flying_index", methods={"GET"})
      */
     public function index(FlyingRepository $flyingRepository): Response
     {
@@ -49,7 +49,7 @@ class FlyingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="flying_show", methods={"GET"})
+     * @Route("/show/{id}", name="flying_show", methods={"GET"})
      */
     public function show(Flying $flying): Response
     {
@@ -59,7 +59,7 @@ class FlyingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="flying_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="flying_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Flying $flying): Response
     {
@@ -79,7 +79,7 @@ class FlyingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="flying_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="flying_delete", methods={"POST"})
      */
     public function delete(Request $request, Flying $flying): Response
     {

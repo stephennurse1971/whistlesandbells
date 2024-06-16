@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Airports;
+use App\Entity\Country;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,6 +16,12 @@ class AirportsType extends AbstractType
         $builder
             ->add('city')
             ->add('airportCode')
+            ->add('country', EntityType::class, [
+                'class' => Country::class,
+                'choice_label' => 'country',
+                'required' => true,
+                'empty_data' => null
+            ])
         ;
     }
 

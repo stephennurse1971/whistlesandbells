@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class TaxSchemesController extends AbstractController
 {
     /**
-     * @Route("/", name="tax_schemes_index", methods={"GET"})
+     * @Route("/index", name="tax_schemes_index", methods={"GET"})
      */
     public function index(TaxSchemesRepository $taxSchemesRepository): Response
     {
@@ -50,7 +50,7 @@ class TaxSchemesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tax_schemes_show", methods={"GET"})
+     * @Route("/show/{id}", name="tax_schemes_show", methods={"GET"})
      */
     public function show(TaxSchemes $taxScheme): Response
     {
@@ -60,7 +60,7 @@ class TaxSchemesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="tax_schemes_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="tax_schemes_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, TaxSchemes $taxScheme): Response
     {
@@ -80,7 +80,7 @@ class TaxSchemesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tax_schemes_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="tax_schemes_delete", methods={"POST"})
      */
     public function delete(Request $request, TaxSchemes $taxScheme): Response
     {

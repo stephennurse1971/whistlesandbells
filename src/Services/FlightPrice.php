@@ -69,13 +69,15 @@ class FlightPrice
                         ]);
                         if ($old_price) {
                             $old_price->setLowestPrice($price);
+                            $old_price->setScrapeDate(new \datetime('now'));
                             $this->manager->flush();
                         } else {
                             $flightStats = new FlightStats();
                             $flightStats->setDate(new \DateTime($date))
                                 ->setFlightFrom($departure_code)
                                 ->setFlightTo($arrival_code)
-                                ->setLowestPrice($price);
+                                ->setLowestPrice($price)
+                                ->setScrapeDate(new \datetime('now'))                            ;
                             $this->manager->persist($flightStats);
                             $this->manager->flush();
                         }

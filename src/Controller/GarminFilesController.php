@@ -3,14 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\GarminFiles;
-use App\Entity\Introduction;
-use App\Entity\RecruiterEmails;
-use App\Entity\StaticText;
 use App\Form\GarminFilesType;
-use App\Form\RecruiterEmailsType;
 use App\Repository\GarminFilesRepository;
-use App\Repository\IntroductionRepository;
-use App\Repository\StaticTextRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +22,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class GarminFilesController extends AbstractController
 {
     /**
-     * @Route("/", name="garmin_files_index", methods={"GET"})
+     * @Route("/index", name="garmin_files_index", methods={"GET"})
      */
     public function index(GarminFilesRepository $garminFilesRepository): Response
     {
@@ -75,7 +69,7 @@ class GarminFilesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="garmin_files_show", methods={"GET"})
+     * @Route("/show/{id}", name="garmin_files_show", methods={"GET"})
      */
     public function show(GarminFiles $garminFile): Response
     {
@@ -85,7 +79,7 @@ class GarminFilesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="garmin_files_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="garmin_files_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, GarminFiles $garminFile, SluggerInterface $slugger): Response
     {
@@ -121,7 +115,7 @@ class GarminFilesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="garmin_files_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="garmin_files_delete", methods={"POST"})
      */
     public function delete(Request $request, GarminFiles $garminFile): Response
     {
@@ -135,7 +129,7 @@ class GarminFilesController extends AbstractController
 
 
     /**
-     * @Route("/{id}/delete/attachment", name="garmin_files_delete_attachment")
+     * @Route("/delete/attachment/{id}", name="garmin_files_delete_attachment")
      */
     public function deleteAttachment(Request $request, GarminFiles $garminFiles, EntityManagerInterface $entityManager)
     {
@@ -147,10 +141,9 @@ class GarminFilesController extends AbstractController
 
 
     /**
-     * @Route("/{garminid}/{recipientid}/email_gpxfile", name="garmin_file_email")
+     * @Route("/email_gpxfile/{garminid}/{recipientid}", name="garmin_file_email")
      */
-    public function emailGPXFile(Security $security,int $garminid, int $recipientid, Request $request,
-                                 StaticTextRepository $staticTextRepository, UserRepository $userRepository, GarminFilesRepository $garminFilesRepository, MailerInterface $mailer)
+    public function emailGPXFile(Security $security,int $garminid, int $recipientid, Request $request, UserRepository $userRepository, GarminFilesRepository $garminFilesRepository, MailerInterface $mailer)
     {
         $garminFile = $garminFilesRepository->find($garminid);
         $senderEmail = $security->getUser()->getEmail();

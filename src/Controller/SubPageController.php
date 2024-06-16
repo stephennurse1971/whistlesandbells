@@ -85,7 +85,7 @@ class SubPageController extends AbstractController
     }
 
     /**
-     * @Route("/copy/{id}/", name="sub_page_copy", methods={"GET", "POST"})
+     * @Route("/copy/{id}", name="sub_page_copy", methods={"GET", "POST"})
      */
     public function copy(Request $request, $id, SubPageRepository $subPageRepository, EntityManagerInterface $manager): Response
     {

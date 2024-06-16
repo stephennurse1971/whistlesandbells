@@ -6,7 +6,7 @@
     <h1 style="color: red">Flight Prices</h1>
 
     <a class="btn btn-danger btn-sm" href="{{ path('flight_stats_delete_all') }}">Delete All</a>
-    <a class="btn btn-outline-secondary btn-sm" href="{{ path('house_guests_flight_price_scrape_london_pfo') }}">Scrape
+    <a class="btn btn-outline-secondary btn-sm" href="{{ path('house_guests_flight_price_scrape_all') }}">Scrape
         flights</a>
     <br>
     <br>
@@ -14,10 +14,10 @@
         <thead>
         <tr>
             <th>Date</th>
-            <th>Flight From</th>
-            <th>Flight To</th>
-            <th>Lowest Price</th>
-            <th>Date scraped</th>
+            <th>Flight<br>From</th>
+            <th>Flight<br>To</th>
+            <th>Lowest<br>Price</th>
+            <th>Updated</th>
             <th>#</th>
         </tr>
         </thead>
@@ -33,8 +33,11 @@
             <td style="text-align: center">{{ flight_stat.flightFrom }}</td>
             <td style="text-align: center">{{ flight_stat.flightTo }}</td>
             <td style="text-align: right">{{ flight_stat.lowestPrice|number_format(2, '.', ',') }}</td>
-            <td style="text-align: right"
-                data-sort={{ flight_stat.scrapeDate| date('Y-m-d') }}>{{ flight_stat.scrapeDate | date('d-M-y') }}</td>
+            <td data-sort="{{ flight_stat.scrapeDate|date('Y-m-d') }}" style="text-align: right">
+                {% if flight_stat.scrapeDate is not null %}
+                    {{ flight_stat.scrapeDate | date('d-M-y') }}
+                {% endif %}
+            </td>
             <td style="width: 250px">
                 <a class="btn btn-outline-danger btn-sm"
                    href="{{ path('flight_stats_edit', {'id': flight_stat.id}) }}">Edit</a>

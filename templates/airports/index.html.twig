@@ -7,19 +7,22 @@
 
     <table class="table table-responsive">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>City</th>
-                <th>Airport Code</th>
-            </tr>
+        <tr>
+            <th>Country</th>
+            <th>City</th>
+            <th>Airport Code</th>
+        </tr>
         </thead>
         <tbody>
         {% for airport in airports %}
             <tr>
-                <td>{{ airport.id }}</td>
+                <td>
+                    {% if airport.country is not null %}
+                        {{ airport.country.country }}
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{{ path('airports_edit', {'id': airport.id}) }}">{{ airport.city }}</a>
-
                 </td>
                 <td>{{ airport.airportCode }}</td>
             </tr>
@@ -29,3 +32,17 @@
 
     <a class="btn btn-success btn-sm" href="{{ path('airports_new') }}">New</a>
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

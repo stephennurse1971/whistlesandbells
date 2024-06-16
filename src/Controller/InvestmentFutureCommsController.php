@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class InvestmentFutureCommsController extends AbstractController
 {
     /**
-     * @Route("/", name="investment_future_comms_index", methods={"GET"})
+     * @Route("/index", name="investment_future_comms_index", methods={"GET"})
      */
     public function index(InvestmentFutureCommsRepository $investmentFutureCommsRepository): Response
     {
@@ -65,7 +65,7 @@ class InvestmentFutureCommsController extends AbstractController
             $entityManager->persist($investmentFutureComm);
             $entityManager->flush();
 
-            return $this->redirectToRoute('investments_index');
+            return $this->redirectToRoute('investment_future_comms_index');
         }
 
         return $this->render('investment_future_comms/new.html.twig', [
@@ -78,7 +78,7 @@ class InvestmentFutureCommsController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="investment_future_comms_show", methods={"GET"})
+     * @Route("/show/{id}", name="investment_future_comms_show", methods={"GET"})
      */
     public function show(InvestmentFutureComms $investmentFutureComm): Response
     {
@@ -88,7 +88,7 @@ class InvestmentFutureCommsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="investment_future_comms_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="investment_future_comms_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, InvestmentFutureComms $investmentFutureComm): Response
     {
@@ -124,7 +124,7 @@ class InvestmentFutureCommsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="investment_future_comms_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="investment_future_comms_delete", methods={"POST"})
      */
     public function delete(Request $request, InvestmentFutureComms $investmentFutureComm): Response
     {

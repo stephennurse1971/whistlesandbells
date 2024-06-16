@@ -32,7 +32,6 @@ class FileUploadController extends AbstractController
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-
                 return $this->redirectToRoute('file_upload');
             }
         }

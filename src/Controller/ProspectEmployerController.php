@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class ProspectEmployerController extends AbstractController
 {
     /**
-     * @Route("/", name="prospect_employer_index", methods={"GET"})
+     * @Route("/index", name="prospect_employer_index", methods={"GET"})
      */
     public function index(ProspectEmployerRepository $prospectEmployerRepository): Response
     {
@@ -31,7 +31,7 @@ class ProspectEmployerController extends AbstractController
     /**
      * @Route("/new/{recruiterid}/{applicantid}", name="prospect_employer_new", methods={"GET","POST"})
      */
-    public function new(Request $request,int $recruiterid,int $applicantid,UserRepository $userRepository): Response
+    public function new(Request $request, int $recruiterid, int $applicantid, UserRepository $userRepository): Response
     {
         $recruiter = $userRepository->find($recruiterid);
         $applicant = $userRepository->find($applicantid);
@@ -58,7 +58,7 @@ class ProspectEmployerController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="prospect_employer_show", methods={"GET"})
+     * @Route("/show/{id}", name="prospect_employer_show", methods={"GET"})
      */
     public function show(ProspectEmployer $prospectEmployer): Response
     {
@@ -68,12 +68,12 @@ class ProspectEmployerController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="prospect_employer_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="prospect_employer_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, ProspectEmployer $prospectEmployer): Response
     {
-       $employer = $prospectEmployer->getEmployer();
-        $form = $this->createForm(ProspectEmployerType::class, $prospectEmployer,['employer'=>$employer]);
+        $employer = $prospectEmployer->getEmployer();
+        $form = $this->createForm(ProspectEmployerType::class, $prospectEmployer, ['employer' => $employer]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -89,11 +89,11 @@ class ProspectEmployerController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="prospect_employer_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="prospect_employer_delete", methods={"POST"})
      */
     public function delete(Request $request, ProspectEmployer $prospectEmployer): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$prospectEmployer->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $prospectEmployer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($prospectEmployer);
             $entityManager->flush();

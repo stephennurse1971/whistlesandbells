@@ -11,6 +11,7 @@
             <th>Rank</th>
             <th>Product</th>
             <th>Active</th>
+            <th>Include<br>In Footer</th>
             <th>Comments</th>
             <th></th>
         </tr>
@@ -27,6 +28,14 @@
                         <i style="color: red" class="fa fa-dot-circle"></i>
                     {% endif %}
                     {#                    {{ product.isActive ? 'Yes' : 'No' }} #}
+                </td>
+                <td style="text-align: center">
+                    {% if product.includeInFooter =="Yes" %}
+                        <i style="color: green" class="fa fa-dot-circle"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-dot-circle"></i>
+                    {% endif %}
+{#                                        {{ product.includeInFooter ? 'Yes' : 'No' }} #}
                 </td>
                 <td>{{ product.comments }}</td>
                 <td>

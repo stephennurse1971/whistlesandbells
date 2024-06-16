@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class IntroductionSegmentController extends AbstractController
 {
     /**
-     * @Route("/", name="introduction_segment_index", methods={"GET"})
+     * @Route("/index", name="introduction_segment_index", methods={"GET"})
      */
     public function index(IntroductionSegmentRepository $introductionSegmentRepository): Response
     {
@@ -52,7 +52,7 @@ class IntroductionSegmentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="introduction_segment_show", methods={"GET"})
+     * @Route("/show/{id}", name="introduction_segment_show", methods={"GET"})
      */
     public function show(IntroductionSegment $introductionSegment): Response
     {
@@ -62,7 +62,7 @@ class IntroductionSegmentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="introduction_segment_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="introduction_segment_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, IntroductionSegment $introductionSegment): Response
     {
@@ -82,7 +82,7 @@ class IntroductionSegmentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="introduction_segment_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="introduction_segment_delete", methods={"POST"})
      */
     public function delete(Request $request, IntroductionSegment $introductionSegment): Response
     {

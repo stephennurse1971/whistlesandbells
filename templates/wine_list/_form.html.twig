@@ -10,7 +10,7 @@
         {{ form_row(form.labelPicture) }}
 
         {% if wine_list.labelPicture %}
-            {% set loc = asset('administration/img/winelist')~"/"~wine_list.labelPicture %}
+            {% set loc = asset('administration/attachments/WineLabels/')~wine_list.labelPicture %}
             <a class="btn btn-outline-danger btn-sm" target="_blank"
                href="{{ path('winelist_viewlabel', {'id': wine_list.id}) }}">
                 <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>

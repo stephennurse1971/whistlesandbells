@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HealthController extends AbstractController
 {
     /**
-     * @Route("/", name="health_index", methods={"GET"})
+     * @Route("/index", name="health_index", methods={"GET"})
      */
     public function index(HealthRepository $healthRepository): Response
     {
@@ -49,7 +49,7 @@ class HealthController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="health_show", methods={"GET"})
+     * @Route("/show/{id}", name="health_show", methods={"GET"})
      */
     public function show(Health $health): Response
     {
@@ -59,7 +59,7 @@ class HealthController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="health_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="health_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Health $health): Response
     {
@@ -79,7 +79,7 @@ class HealthController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="health_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="health_delete", methods={"POST"})
      */
     public function delete(Request $request, Health $health): Response
     {

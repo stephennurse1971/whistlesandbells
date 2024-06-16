@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class RecruiterEmailsController extends AbstractController
 {
     /**
-     * @Route("/", name="recruiter_emails_index", methods={"GET"})
+     * @Route("/index", name="recruiter_emails_index", methods={"GET"})
      */
     public function index(RecruiterEmailsRepository $recruiterEmailsRepository): Response
     {
@@ -50,7 +50,7 @@ class RecruiterEmailsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="recruiter_emails_show", methods={"GET"})
+     * @Route("/show/{id}", name="recruiter_emails_show", methods={"GET"})
      */
     public function show(RecruiterEmails $recruiterEmail): Response
     {
@@ -60,7 +60,7 @@ class RecruiterEmailsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="recruiter_emails_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="recruiter_emails_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, RecruiterEmails $recruiterEmail): Response
     {
@@ -79,7 +79,7 @@ class RecruiterEmailsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="recruiter_emails_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="recruiter_emails_delete", methods={"POST"})
      */
     public function delete(Request $request, RecruiterEmails $recruiterEmail): Response
     {

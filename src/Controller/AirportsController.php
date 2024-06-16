@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AirportsController extends AbstractController
 {
     /**
-     * @Route("/", name="airports_index", methods={"GET"})
+     * @Route("/index", name="airports_index", methods={"GET"})
      */
     public function index(AirportsRepository $airportsRepository): Response
     {
@@ -46,7 +46,7 @@ class AirportsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="airports_show", methods={"GET"})
+     * @Route("/show/{id}", name="airports_show", methods={"GET"})
      */
     public function show(Airports $airport): Response
     {
@@ -56,7 +56,7 @@ class AirportsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="airports_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="airports_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Airports $airport, AirportsRepository $airportsRepository): Response
     {
@@ -75,7 +75,7 @@ class AirportsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="airports_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="airports_delete", methods={"POST"})
      */
     public function delete(Request $request, Airports $airport, AirportsRepository $airportsRepository): Response
     {

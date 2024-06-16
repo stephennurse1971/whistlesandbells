@@ -29,7 +29,7 @@
             <thead>
             <tr>
                 <th style="border-right: 1px dotted grey">Date</th>
-                <th style="border-right: 1px dotted grey; text-align: left">Book</th>
+                <th style="border-right: 1px dotted grey; text-align: left">Available/<br>Book</th>
                 {% if is_granted('ROLE_GUEST') %}
                     <th style="border-right: 1px dotted grey; text-align: left">Travel Notes</th>
                     <th style="border-right: 1px dotted grey; border-right: 1px solid grey; text-align: left">
@@ -44,7 +44,7 @@
 
             <tr>
                 <th style="border-right: 1px dotted grey" class="desktop"></th>
-                <th style="border-right: 1px dotted grey" class="desktop">Book</th>
+                <th style="border-right: 1px dotted grey" class="desktop"></th>
                 {% if is_granted('ROLE_GUEST') %}
                     <th style="border-right: 1px dotted grey" class="desktop"></th>
                     <th class="desktop" style="width: 200px;border-right: 1px solid grey"></th>

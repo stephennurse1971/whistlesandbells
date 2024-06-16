@@ -48,14 +48,22 @@
                         </a>
                         {% if app.user %}
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {% set products = Product.getProductFooter %}
+                                {% set products = Product.getProductAll %}
                                 {% for product in products %}
-                                    <a target="_blank" class="text-white mb-1"
-                                       href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
-                                        {#                                        {% if product.isPublic == 0 and is_granted('ROLE_ADMIN') %} #}
-                                        {#                                            <span style="color: red">*</span> #}
-                                        {#                                        {% endif %} #}
-                                    </a>
+                                    {% if product.isActive==1 and product.includeInFooter==1 %}
+                                        <a target="_blank" class="text-white mb-1"
+                                           href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                        </a>
+                                    {% else %}
+                                        {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
+                                            <a target="_blank" class="text-white mb-1"
+                                               href="{{ path('product_display', { product: product.product}) }}">
+                                                <span style="color: red">{{ product.product }}*</span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+
+
                                 {% endfor %}
                             </div>
                         {% else %}
@@ -156,7 +164,8 @@
                                     {% if CompanyDetails.companyDetails.companyAddressStreet is not null %}
                                         <a target="_blank"
                                            title="{{ CompanyDetails.companyDetails.companyAddressStreet }} "
-                                           href="{{ path('office_address') }}"> <i style="color: royalblue" class="fa fa-car"></i> {{ CompanyDetails.companyDetails.companyAddressStreet }}
+                                           href="{{ path('office_address') }}"> <i style="color: royalblue"
+                                                                                   class="fa fa-car"></i> {{ CompanyDetails.companyDetails.companyAddressStreet }}
                                         </a>
                                     {% endif %}
                                 {% endif %}

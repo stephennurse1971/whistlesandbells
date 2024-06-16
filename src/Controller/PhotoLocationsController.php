@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\PhotoLocations;
-use App\Entity\Photos;
 use App\Form\PhotoLocationsType;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\UserRepository;
@@ -21,7 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class PhotoLocationsController extends AbstractController
 {
     /**
-     * @Route("/", name="photo_locations_index", methods={"GET"})
+     * @Route("/index", name="photo_locations_index", methods={"GET"})
      */
     public function index(PhotoLocationsRepository $photoLocationsRepository): Response
     {
@@ -45,7 +44,6 @@ class PhotoLocationsController extends AbstractController
             $enabledUsers = $form['enabledUsers']->getData();
             foreach ($enabledUsers as $user) {
                $usersID_container[] = $user->getID();
-
             }
             $photoLocation->setEnabledUsers($usersID_container);
             $entityManager = $this->getDoctrine()->getManager();
@@ -61,7 +59,7 @@ class PhotoLocationsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="photo_locations_show", methods={"GET"})
+     * @Route("/show/{id}", name="photo_locations_show", methods={"GET"})
      */
     public function show(PhotoLocations $photoLocation): Response
     {
@@ -71,7 +69,7 @@ class PhotoLocationsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="photo_locations_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="photo_locations_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, PhotoLocations $photoLocation,UserRepository $userRepository): Response
     {
@@ -101,7 +99,7 @@ class PhotoLocationsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="photo_locations_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="photo_locations_delete", methods={"POST"})
      */
     public function delete(Request $request, PhotoLocations $photoLocation): Response
     {
@@ -115,7 +113,7 @@ class PhotoLocationsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/locationSwitchPublicPrivate", name="photo_location_public_private", methods={"GET","POST"})
+     * @Route("/locationSwitchPublicPrivate/{id}", name="photo_location_public_private", methods={"GET","POST"})
      */
     public function switchPublicPrivate(Request $request, PhotoLocations $photoLocations, EntityManagerInterface $manager): Response
     {

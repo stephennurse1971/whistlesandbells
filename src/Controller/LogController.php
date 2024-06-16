@@ -49,7 +49,7 @@ class LogController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="log_show", methods={"GET"})
+     * @Route("/show/{id}", name="log_show", methods={"GET"})
      */
     public function show(Log $log): Response
     {
@@ -59,7 +59,7 @@ class LogController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="log_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="log_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Log $log): Response
     {
@@ -79,7 +79,7 @@ class LogController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="log_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="log_delete", methods={"POST"})
      */
     public function delete(Request $request, Log $log): Response
     {

@@ -20,32 +20,20 @@ class UkDays
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $startDate;
+    private $flightDate;
+
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\ManyToOne(targetEntity=Country::class)
      */
-    private $endDate;
+    private $departCountry;
+
 
     /**
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\ManyToOne(targetEntity=Country::class)
      */
-    private $travelDocs = [];
+    private $arrivalCountry;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $dayCount;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="ukDays")
-     */
-    private $country;
-
-    /**
-     * @ORM\Column(type="json",  nullable=true)
-     */
-    private $travelDocs2;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -55,12 +43,22 @@ class UkDays
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $travel1Description;
+    private $travelDocs;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Airports::class)
+     */
+    private $departureAirport;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Airports::class)
+     */
+    private $arrivalAirport;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $travel2Description;
+    private $airline;
 
 
 
@@ -69,78 +67,43 @@ class UkDays
         return $this->id;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+
+
+    public function getFlightDate(): ?\DateTimeInterface
     {
-        return $this->startDate;
+        return $this->flightDate;
     }
 
-    public function setStartDate(?\DateTimeInterface $startDate): self
+    public function setFlightDate(?\DateTimeInterface $flightDate): self
     {
-        $this->startDate = $startDate;
+        $this->flightDate = $flightDate;
 
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getDepartCountry(): ?Country
     {
-        return $this->endDate;
+        return $this->departCountry;
     }
 
-    public function setEndDate(?\DateTimeInterface $endDate): self
+    public function setDepartCountry(?Country $departCountry): self
     {
-        $this->endDate = $endDate;
+        $this->departCountry = $departCountry;
 
         return $this;
     }
 
-    public function getTravelDocs(): ?array
+    public function getArrivalCountry(): ?Country
     {
-        return $this->travelDocs;
+        return $this->arrivalCountry;
     }
 
-    public function setTravelDocs(?array $travelDocs): self
+    public function setArrivalCountry(?Country $arrivalCountry): self
     {
-        $this->travelDocs = $travelDocs;
+        $this->arrivalCountry = $arrivalCountry;
 
         return $this;
     }
-
-    public function getDayCount(): ?int
-    {
-        return $this->dayCount;
-    }
-
-    public function setDayCount(?int $dayCount): self
-    {
-        $this->dayCount = $dayCount;
-
-        return $this;
-    }
-
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getTravelDocs2(): ?array
-    {
-        return $this->travelDocs2;
-    }
-
-    public function setTravelDocs2(?array $travelDocs2): self
-    {
-        $this->travelDocs2 = $travelDocs2;
-
-        return $this;
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -153,29 +116,52 @@ class UkDays
         return $this;
     }
 
-    public function getTravel1Description(): ?string
+    public function getTravelDocs(): ?string
     {
-        return $this->travel1Description;
+        return $this->travelDocs;
     }
 
-    public function setTravel1Description(?string $travel1Description): self
+    public function setTravelDocs(?string $travelDocs): self
     {
-        $this->travel1Description = $travel1Description;
+        $this->travelDocs = $travelDocs;
 
         return $this;
     }
 
-    public function getTravel2Description(): ?string
+    public function getDepartureAirport(): ?Airports
     {
-        return $this->travel2Description;
+        return $this->departureAirport;
     }
 
-    public function setTravel2Description(?string $travel2Description): self
+    public function setDepartureAirport(?Airports $departureAirport): self
     {
-        $this->travel2Description = $travel2Description;
+        $this->departureAirport = $departureAirport;
 
         return $this;
     }
 
+    public function getArrivalAirport(): ?Airports
+    {
+        return $this->arrivalAirport;
+    }
+
+    public function setArrivalAirport(?Airports $arrivalAirport): self
+    {
+        $this->arrivalAirport = $arrivalAirport;
+
+        return $this;
+    }
+
+    public function getAirline(): ?string
+    {
+        return $this->airline;
+    }
+
+    public function setAirline(?string $airline): self
+    {
+        $this->airline = $airline;
+
+        return $this;
+    }
 
 }

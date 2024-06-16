@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CodingTimesheetsController extends AbstractController
 {
     /**
-     * @Route("/", name="coding_timesheets_index", methods={"GET"})
+     * @Route("/index", name="coding_timesheets_index", methods={"GET"})
      */
     public function index(CodingTimesheetsRepository $codingTimesheetsRepository): Response
     {
@@ -46,7 +46,7 @@ class CodingTimesheetsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="coding_timesheets_show", methods={"GET"})
+     * @Route("/show/{id}", name="coding_timesheets_show", methods={"GET"})
      */
     public function show(CodingTimesheets $codingTimesheet): Response
     {
@@ -56,7 +56,7 @@ class CodingTimesheetsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="coding_timesheets_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="coding_timesheets_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, CodingTimesheets $codingTimesheet, CodingTimesheetsRepository $codingTimesheetsRepository): Response
     {
@@ -75,7 +75,7 @@ class CodingTimesheetsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="coding_timesheets_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="coding_timesheets_delete", methods={"POST"})
      */
     public function delete(Request $request, CodingTimesheets $codingTimesheet, CodingTimesheetsRepository $codingTimesheetsRepository): Response
     {

@@ -22,7 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class IntroductionController extends AbstractController
 {
     /**
-     * @Route("/", name="introduction_index", methods={"GET"})
+     * @Route("/index", name="introduction_index", methods={"GET"})
      */
     public function index(IntroductionRepository $introductionRepository): Response
     {
@@ -72,7 +72,7 @@ class IntroductionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="introduction_show", methods={"GET"})
+     * @Route("/show/{id}", name="introduction_show", methods={"GET"})
      */
     public function show(Introduction $introduction): Response
     {
@@ -82,7 +82,7 @@ class IntroductionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="introduction_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="introduction_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Introduction $introduction, SluggerInterface $slugger): Response
     {
@@ -116,7 +116,7 @@ class IntroductionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="introduction_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="introduction_delete", methods={"POST"})
      */
     public function delete(Request $request, Introduction $introduction): Response
     {
@@ -129,7 +129,7 @@ class IntroductionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete/attachment", name="introduction_delete_attachment")
+     * @Route("/delete/attachment/{id}", name="introduction_delete_attachment")
      */
     public function deleteAttachment(Request $request, Introduction $introduction, EntityManagerInterface $entityManager)
     {

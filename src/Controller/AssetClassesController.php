@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\AssetClasses;
-use App\Entity\ToDoListItems;
 use App\Form\AssetClassesType;
 use App\Repository\AssetClassesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssetClassesController extends AbstractController
 {
     /**
-     * @Route("/", name="asset_classes_index", methods={"GET"})
+     * @Route("/index", name="asset_classes_index", methods={"GET"})
      */
     public function index(AssetClassesRepository $assetClassesRepository): Response
     {
@@ -51,7 +50,7 @@ class AssetClassesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="asset_classes_show", methods={"GET"})
+     * @Route("/show/{id}", name="asset_classes_show", methods={"GET"})
      */
     public function show(AssetClasses $assetClass): Response
     {
@@ -61,7 +60,7 @@ class AssetClassesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="asset_classes_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="asset_classes_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, AssetClasses $assetClass): Response
     {
@@ -121,7 +120,7 @@ class AssetClassesController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="asset_classes_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="asset_classes_delete", methods={"POST"})
      */
     public function delete(Request $request, AssetClasses $assetClass): Response
     {

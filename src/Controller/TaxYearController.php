@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaxYearController extends AbstractController
 {
     /**
-     * @Route("/", name="tax_year_index", methods={"GET"})
+     * @Route("/index", name="tax_year_index", methods={"GET"})
      */
     public function index(TaxYearRepository $taxYearRepository): Response
     {
@@ -49,7 +49,7 @@ class TaxYearController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tax_year_show", methods={"GET"})
+     * @Route("/show/{id}", name="tax_year_show", methods={"GET"})
      */
     public function show(TaxYear $taxYear): Response
     {
@@ -59,7 +59,7 @@ class TaxYearController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="tax_year_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="tax_year_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, TaxYear $taxYear): Response
     {
@@ -79,7 +79,7 @@ class TaxYearController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tax_year_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="tax_year_delete", methods={"POST"})
      */
     public function delete(Request $request, TaxYear $taxYear): Response
     {

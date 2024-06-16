@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class RecruitersController extends AbstractController
 {
     /**
-     * @Route("/", name="recruiters_index", methods={"GET"})
+     * @Route("/index", name="recruiters_index", methods={"GET"})
      */
     public function index(RecruitersRepository $recruitersRepository): Response
     {
@@ -50,7 +50,7 @@ class RecruitersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="recruiters_show", methods={"GET"})
+     * @Route("/show/{id}", name="recruiters_show", methods={"GET"})
      */
     public function show(Recruiters $recruiter): Response
     {
@@ -60,7 +60,7 @@ class RecruitersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="recruiters_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="recruiters_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Recruiters $recruiter): Response
     {
@@ -79,11 +79,11 @@ class RecruitersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="recruiters_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="recruiters_delete", methods={"POST"})
      */
     public function delete(Request $request, Recruiters $recruiter): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$recruiter->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $recruiter->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($recruiter);
             $entityManager->flush();

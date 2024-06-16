@@ -15,6 +15,7 @@ class ProductType extends AbstractType
             ->add('product')
             ->add('ranking')
             ->add('isActive')
+            ->add('includeInFooter')
             ->add('comments')
         ;
     }

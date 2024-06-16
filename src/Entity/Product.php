@@ -37,6 +37,11 @@ class Product
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $includeInFooter;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Product
     public function setComments(?string $comments): self
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    public function getIncludeInFooter(): ?bool
+    {
+        return $this->includeInFooter;
+    }
+
+    public function setIncludeInFooter(?bool $includeInFooter): self
+    {
+        $this->includeInFooter = $includeInFooter;
 
         return $this;
     }

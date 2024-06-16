@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Photos;
-use App\Entity\User;
 use App\Form\PhotosType;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\PhotosRepository;
@@ -160,7 +159,7 @@ class PhotosController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="photos_show", methods={"GET"})
+     * @Route("/show/{id}", name="photos_show", methods={"GET"})
      */
     public function show(Photos $photo): Response
     {
@@ -170,7 +169,7 @@ class PhotosController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="photos_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="photos_edit", methods={"GET","POST"})
      */
     public
     function edit(Request $request, Photos $photo, EntityManagerInterface $manager): Response
@@ -193,7 +192,7 @@ class PhotosController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/switchPublicPrivate", name="photos_public_private", methods={"GET","POST"})
+     * @Route("/switchPublicPrivate/{id}", name="photos_public_private", methods={"GET","POST"})
      */
     public function switchPublicPrivate(Request $request, Photos $photo, EntityManagerInterface $manager): Response
     {
@@ -210,7 +209,7 @@ class PhotosController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="photos_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="photos_delete", methods={"POST"})
      */
     public
     function delete(Request $request, Photos $photo): Response

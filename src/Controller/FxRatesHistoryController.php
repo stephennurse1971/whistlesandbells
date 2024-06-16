@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\FxRatesHistory;
 use App\Form\FxRatesHistoryType;
-use App\Repository\FlightDestinationsRepository;
-use App\Repository\FlightStatsRepository;
 use App\Repository\FxRatesHistoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FxRatesHistoryController extends AbstractController
 {
     /**
-     * @Route("/", name="fx_rates_history_index", methods={"GET"})
+     * @Route("/index", name="fx_rates_history_index", methods={"GET"})
      */
     public function index(FxRatesHistoryRepository $fxRatesHistoryRepository): Response
     {
@@ -46,7 +44,7 @@ class FxRatesHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="fx_rates_history_show", methods={"GET"})
+     * @Route("/show/{id}", name="fx_rates_history_show", methods={"GET"})
      */
     public function show(FxRatesHistory $fxRatesHistory): Response
     {
@@ -56,7 +54,7 @@ class FxRatesHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="fx_rates_history_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="fx_rates_history_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, FxRatesHistory $fxRatesHistory, FxRatesHistoryRepository $fxRatesHistoryRepository): Response
     {
@@ -75,7 +73,7 @@ class FxRatesHistoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="fx_rates_history_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="fx_rates_history_delete", methods={"POST"})
      */
     public function delete(Request $request, FxRatesHistory $fxRatesHistory, FxRatesHistoryRepository $fxRatesHistoryRepository): Response
     {
