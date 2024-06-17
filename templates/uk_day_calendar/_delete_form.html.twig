@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('uk_day_calendar_delete', {'id': uk_day_calendar.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ uk_day_calendar.id) }}">
+    <button class="btn btn-danger btn-sm">Delete</button>
+</form>

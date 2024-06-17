@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New UK Day Calendar{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New UK Day Calendar</h1>
+
+    {{ include('uk_day_calendar/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('uk_day_calendar_index') }}">Return to list</a>
+{% endblock %}

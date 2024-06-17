@@ -45,7 +45,7 @@ class Settings
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $ukDaysStarDate;
+    private $ukDaysStartDate;
 
     public function getId(): ?int
     {
@@ -112,14 +112,14 @@ class Settings
         return $this;
     }
 
-    public function getUkDaysStarDate(): ?\DateTimeInterface
+    public function getUkDaysStartDate(): ?\DateTimeInterface
     {
-        return $this->ukDaysStarDate;
+        return $this->ukDaysStartDate;
     }
 
-    public function setUkDaysStarDate(?\DateTimeInterface $ukDaysStarDate): self
+    public function setUkDaysStartDate(?\DateTimeInterface $ukDaysStartDate): self
     {
-        $this->ukDaysStarDate = $ukDaysStarDate;
+        $this->ukDaysStartDate = $ukDaysStartDate;
 
         return $this;
     }

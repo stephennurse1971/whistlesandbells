@@ -4,6 +4,7 @@ twig:
     globals:
         CompanyDetails: '@App\Services\CompanyDetails'
         BankBalanceOnAsOfDate: '@App\Services\BankBalanceOnAsOfDate'
+        CountDaysByCountry: '@App\Services\CountDaysByCountry'
         CountPendingWebsiteInquiries: '@App\Services\CountPendingWebsiteInquiries'
         CountPhotos: '@App\Services\CountPhotos'
         CountPendingItems: '@App\Services\CountPendingItems'
@@ -11,6 +12,7 @@ twig:
         FindUser: '@App\Services\FindUser'
         FXRatesOnAsOfDate: '@App\Services\FXRatesOnAsOfDate'
         Investment: '@App\Services\Investment'
+        LocationByDate: '@App\Services\LocationByDate'
         MarketDataPrice: '@App\Services\MarketDataPrice'
         PhotoAuthorsByLocation: '@App\Services\PhotoAuthorsByLocation'
         Product: '@App\Services\Product'

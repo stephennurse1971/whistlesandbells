@@ -45,10 +45,14 @@
                 {% set faviconDev = asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconDev) %}
 
                 <td style="text-align: center">
-                    <img height="50" width="50" src="{{ faviconLive }}" class="rounded-circle test">
-                    <br>
-                    <br>
-                    <img height="50" width="50" src="{{ faviconDev }}" class="rounded-circle test">
+                    {% if company_detail.faviconLive is not null %}
+                        <img height="50" width="50" src="{{ faviconLive }}" class="rounded-circle test">
+                        <br>
+                        <br>
+                    {% endif %}
+                    {% if company_detail.faviconDev is not null %}
+                        <img height="50" width="50" src="{{ faviconDev }}" class="rounded-circle test">
+                    {% endif %}
                 </td>
 
                 <td style="text-align: left">

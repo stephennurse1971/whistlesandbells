@@ -25,7 +25,7 @@ class SettingsType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
             ])
-            ->add('ukDaysStarDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
+            ->add('ukDaysStartDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
                 'label' => 'Start Date of UK Days Analysis',
                 'required' => false,
                 'widget' => 'single_text',

@@ -6,13 +6,19 @@
     <h1 style="color: red">Days in UK <a target="_blank" href="{{ path('uk_days_new') }}">+</a></h1>
     <br>
 
+    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('uk_day_calendar_create') }}">Create calendar</a>
+    <a target="_blank" class="btn btn-outline-success btn-sm" href="{{ path('uk_day_calendar_index') }}">Calendar</a>
     <table class="table table-responsive">
         <thead>
         <tr>
             <th style="width: 50px">Tax year <a target="_blank" class="btn-outline-secondary btn-sm"
                                                 href="{{ path('tax_year_new') }}">+</a>
-            <th>From</th>
-            <th>To</th>
+            <th style="width:100px; text-align: right">
+                From
+            </th>
+            <th style="width:100px; text-align: right">
+                To
+            </th>
             {% for country in countries %}
                 <th style="width: 50px; text-align: right">{{ country.country }}</th>
             {% endfor %}
@@ -26,16 +32,15 @@
                     <td>
                         <b>{{ taxyear.taxYearRange }}</b>
                     </td>
-                    <td>
+                    <td style="width:100px; text-align: right">
                         {{ taxyear.startDate|date('d-M-y') }}
                     </td>
-                    <td>
+                    <td style="width:100px; text-align: right">
                         {{ taxyear.endDate|date('d-M-y') }}
                     </td>
                     {% for country in countries %}
                         <td style="text-align: right">
-                            xx
-                            {#                            {{ TaxYear.daysInTaxYear(taxyear.taxYearRange, country.country )|number_format() }} #}
+                            {{ CountDaysByCountry.calculateDays(country, taxyear.startDate, taxyear.endDate )|number_format() }}
                         </td>
                     {% endfor %}
                     <td></td>
@@ -75,22 +80,30 @@
                     <a href="{{ path('uk_days_edit', {'id': uk_day.id}) }}">{{ uk_day.flightDate ? uk_day.flightDate|date('d-M-Y') : '' }}  </a>
                 </td>
 
-                <td style="text-align: right">
+                <td style="text-align: left; width:100px">
                     {% if uk_day.departCountry is not null %}
-                        {{ uk_day.departCountry.country }}
+                        {% if uk_day.departCountry.country !=  LocationByDate.priorDayLocation(uk_day.flightDate) %}
+                            <i title="Last trip arrived at:  {{ LocationByDate.priorDayLocation(uk_day.flightDate) }}"
+                               style="color: red; background-color: yellow" class="fa fa-warning"></i>
+                            <span style="background-color: yellow">{{ uk_day.departCountry.country }}</span>
+                        {% else %}
+                            {{ uk_day.departCountry.country }}
+                        {% endif %}
                     {% endif %}
                 </td>
-                <td style="text-align: right; border-right: dotted">
+
+                <td style="text-align: left; width:150px; border-right: dotted">
                     {% if uk_day.departureAirport is not null %}
                         {{ uk_day.departureAirport.city }}
                     {% endif %}
                 </td>
-                <td style="text-align: right">
+
+                <td style="text-align: left; width:100px">
                     {% if uk_day.arrivalCountry is not null %}
                         {{ uk_day.arrivalCountry.country }}
                     {% endif %}
                 </td>
-                <td style="text-align: right; border-right: dotted">
+                <td style="text-align: left; width:150px; border-right: dotted">
                     {% if uk_day.arrivalAirport is not null %}
                         {{ uk_day.arrivalAirport.city }}
                     {% endif %}
@@ -102,7 +115,7 @@
                            href="{{ path('travel_docs_view_file',{ fileName:  uk_day.travelDocs}) }}">
                             <i class="fas fa-paperclip"></i>
                         </a>
-{#                        {{ uk_day.travelDocs }}#}
+                        {#                        {{ uk_day.travelDocs }} #}
                     {% endif %}
                 </td>
 

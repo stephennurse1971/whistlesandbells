@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Country;
-use App\Entity\ToDoList;
 use App\Entity\UkDays;
 use App\Form\UkDaysType;
 use App\Repository\AirportsRepository;
 use App\Repository\CountryRepository;
 use App\Repository\TaxYearRepository;
+use App\Repository\UkDayCalendarRepository;
 use App\Repository\UkDaysRepository;
+use App\Services\CountDaysByCountry;
+use App\Services\LocationByDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -25,12 +26,13 @@ class UkDaysController extends AbstractController
     /**
      * @Route("/index", name="uk_days_index", methods={"GET"})
      */
-    public function index(UkDaysRepository $ukDaysRepository, CountryRepository $countryRepository, TaxYearRepository $taxYearRepository): Response
+    public function index(UkDaysRepository $ukDaysRepository, UkDayCalendarRepository $ukDayCalendarRepository, CountryRepository $countryRepository, TaxYearRepository $taxYearRepository, CountDaysByCountry $countDaysByCountry, LocationByDate $locationByDate): Response
     {
         return $this->render('uk_days/index.html.twig', [
             'uk_days' => $ukDaysRepository->findAll(),
+            'uk_calendar'=>$ukDayCalendarRepository->findAll(),
             'countries' => $countryRepository->findAll(),
-            'taxyears' => $taxYearRepository->findAll()
+            'taxyears' => $taxYearRepository->findAll(),
         ]);
     }
 
@@ -42,8 +44,6 @@ class UkDaysController extends AbstractController
         $ukDay = new UkDays();
         $form = $this->createForm(UkDaysType::class, $ukDay);
         $form->handleRequest($request);
-
-
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('travelDocs')->getData()) {
                 $file = $form->get('travelDocs')->getData();

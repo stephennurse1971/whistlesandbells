@@ -22,9 +22,11 @@
             <img height="50" width="50"
                  src="{{ asset('administration/attachments/Favicons/'~ company_details.faviconLive) }}"
                  class="rounded-circle test">
-        {% else %}
-            {{ form_row(form.faviconLive) }}
         {% endif %}
+        <div class="favicon-upload-live-container">
+            {{ form_row(form.faviconLive) }}
+        </div>
+
 
         <hr>
 
@@ -39,9 +41,11 @@
                  src="{{ asset('administration/attachments/Favicons/'~ company_details.faviconDev) }}"
                  class="rounded-circle test">
             <br>
-        {% else %}
-            {{ form_row(form.faviconDev) }}
         {% endif %}
+        <div class="favicon-upload-dev-container">
+            {{ form_row(form.faviconDev) }}
+        </div>
+
 
     </div>
 
@@ -87,9 +91,11 @@
                  src="{{ asset('administration/attachments/Favicons/'~ company_details.companyQrCode) }}"
                  class="rounded-circle test">
             <br>
-        {% else %}
-            {{ form_row(form.companyQrCode) }}
         {% endif %}
+
+        <div class="qr_code-upload-container">
+            {{ form_row(form.companyQrCode) }}
+        </div>
     </div>
 </div>
 
