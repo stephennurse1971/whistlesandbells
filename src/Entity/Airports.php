@@ -32,6 +32,11 @@ class Airports
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $includeInFlightPrices;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Airports
     public function setCountry(?Country $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getIncludeInFlightPrices(): ?bool
+    {
+        return $this->includeInFlightPrices;
+    }
+
+    public function setIncludeInFlightPrices(?bool $includeInFlightPrices): self
+    {
+        $this->includeInFlightPrices = $includeInFlightPrices;
 
         return $this;
     }

@@ -14,6 +14,7 @@ class AirportsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('includeInFlightPrices')
             ->add('city')
             ->add('airportCode')
             ->add('country', EntityType::class, [
@@ -21,8 +22,7 @@ class AirportsType extends AbstractType
                 'choice_label' => 'country',
                 'required' => true,
                 'empty_data' => null
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

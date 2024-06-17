@@ -19,16 +19,22 @@ class SettingsType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('flightStatsDays')
-
             ->add('flightStatsReturnLegOffset')
-
             ->add('investmentDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
                 'label' => 'Investment "As of" Date',
                 'required' => false,
                 'widget' => 'single_text',
             ])
-            ->add('lastOutlookDownload')
-        ;
+            ->add('ukDaysStarDate', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
+                'label' => 'Start Date of UK Days Analysis',
+                'required' => false,
+                'widget' => 'single_text',
+            ])
+            ->add('lastOutlookDownload', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
+                'label' => 'Start Date of UK Days Analysis',
+                'required' => false,
+                'widget' => 'single_text',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

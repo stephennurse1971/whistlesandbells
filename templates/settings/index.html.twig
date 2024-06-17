@@ -11,32 +11,49 @@
             <th title="Minimum of 'Today'">Scrape: <br>Start Date</th>
             <th>Scrape:<br> # days</th>
             <th>Return Leg<br>Delay Offset</th>
-            <th> </th>
-            <th> .. </th>
-            <th> </th>
             <th>Investment:<br> As of Date</th>
             <th>Outlook:<br> As of Date</th>
+            <th>UK Days:<br> Start Date</th>
             <th>#</th>
         </tr>
         </thead>
         <tbody>
         {% for setting in settings %}
             <tr>
-                <td style="text-align: center">{{ setting.flightStatsStartDate ? setting.flightStatsStartDate|date('d-M-y') : '' }}</td>
-                <td style="text-align: center">{{ setting.flightStatsDays }}</td>
-                <td style="text-align: center">{{ setting.flightStatsReturnLegOffset }}</td>
-                <td></td>
-                <td>..</td>
-                <td></td>
-                <td style="text-align: center">{{ setting.investmentDate|date('d-M-Y') }}</td>
-                <td style="text-align: center">{{ setting.lastOutlookDownload|date('d-M-Y') }}</td>
-                <td><a class="btn btn-outline-danger btn-sm" href="{{ path('settings_edit', {'id': setting.id}) }}">Edit</a></td>
+                <td style="text-align: center">
+                    {% if setting.flightStatsStartDate is not null %}
+                        {{ setting.flightStatsStartDate ? setting.flightStatsStartDate|date('d-M-y') : '' }}
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {{ setting.flightStatsDays }}
+                </td>
+                <td style="text-align: center">
+                    {{ setting.flightStatsReturnLegOffset }}
+                </td>
+                <td style="text-align: center">
+                    {% if setting.investmentDate is not null %}
+                        {{ setting.investmentDate|date('d-M-Y') }}
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if setting.lastOutlookDownload is not null %}
+                        {{ setting.lastOutlookDownload|date('d-M-Y') }}
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if setting.ukDaysStarDate is not null %}
+                        {{ setting.ukDaysStarDate|date('d-M-Y') }}
+                    {% endif %}
+                </td>
+                <td><a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('settings_edit', {'id': setting.id}) }}">Edit</a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-{#    <a class="btn btn-success btn-sm" href="{{ path('settings_new') }}">New</a>#}
+    {# <a class="btn btn-success btn-sm" href="{{ path('settings_new') }}">New</a> #}
 {% endblock %}
 
 {% block datatable %}

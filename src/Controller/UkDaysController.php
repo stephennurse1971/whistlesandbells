@@ -6,11 +6,13 @@ use App\Entity\Country;
 use App\Entity\ToDoList;
 use App\Entity\UkDays;
 use App\Form\UkDaysType;
+use App\Repository\AirportsRepository;
 use App\Repository\CountryRepository;
 use App\Repository\TaxYearRepository;
 use App\Repository\UkDaysRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,18 +45,16 @@ class UkDaysController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $attachments = $form['travelDocs']->getData();
-//            if ($attachments) {
-//                $files_name = [];
-//                $attachment_directory = $this->getParameter('uk_travel_days_directory');
-//                foreach ($attachments as $attachment) {
-//                    $fileName = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
-//                    $file_extension = $attachment->guessExtension();
-//                    $newFileName = $fileName . "." . $file_extension;
-//                    $attachment->move($attachment_directory, $newFileName);
-//                    $files_name[] = $newFileName;
-//                }
-//                $ukDay->setTravelDocs($files_name);
+            if ($form->get('travelDocs')->getData()) {
+                $file = $form->get('travelDocs')->getData();
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . "." . $file->guessExtension();
+                $file->move(
+                    $this->getParameter('uk_travel_days_directory'),
+                    $newFilename
+                );
+                $ukDay->setTravelDocs($newFilename);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ukDay);
             $entityManager->flush();
@@ -86,24 +86,18 @@ class UkDaysController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('travelDocs')->getData()) {
+                $file = $form->get('travelDocs')->getData();
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . "." . $file->guessExtension();
+                $file->move(
+                    $this->getParameter('uk_travel_days_directory'),
+                    $newFilename
+                );
+                $ukDay->setTravelDocs($newFilename);
+            }
 
-//            if ($form->get('travelDocs')->getData()) {
-//
-//                $files = $form->get('travelDocs')->getData();
-//                $file_names = [];
-//                foreach ($files as $file) {
-//                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-//                    $newFilename = $originalFilename . "." . $file->guessExtension();
-//                    $file->move(
-//                        $this->getParameter('files_upload_default_directory'),
-//                        $newFilename
-//                    );
-//                    $file_names[] = $newFilename;
-//                }
-//                $ukDay->setTravelDocs($file_names);
-//            }
-
-             $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('uk_days_index');
         }
@@ -139,13 +133,29 @@ class UkDaysController extends AbstractController
     }
 
     /**
-     * @Route("/delete/attachment2/{id}", name="ukdays_delete_attachment2")
+     * @Route("/ajax/{countryId}")
      */
-    public function deleteAttachment2(Request $request, UkDays $ukDays, EntityManagerInterface $entityManager)
+    public function getAirports($countryId, AirportsRepository $airportsRepository, CountryRepository $countryRepository)
     {
-        $referer = $request->headers->get('referer');
-        $ukDays->setTravelDocs2('');
-        $entityManager->flush();
-        return $this->redirect($referer);
+        $airports_by_country = $airportsRepository->findBy([
+            'country' => $countryRepository->find($countryId)
+
+        ]);
+        foreach ($airports_by_country as $airport) {
+            echo '<option value="' . $airport->getId() . '">' . $airport->getCity() . '</option>';
+        }
+        //$airports_by_country = json_encode($airports_by_country);
+        return new Response(null);
+
     }
+
+    /**
+     * @Route("/view_file/{fileName}", name="travel_docs_view_file", methods={"GET"})
+     */
+    public function viewTravelDocs(string $fileName): Response
+    {
+        $publicResourcesFolderPath = $this->getParameter('uk_travel_days_directory');
+        return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
+    }
+
 }

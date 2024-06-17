@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Airports;
 use App\Entity\FlightDestinations;
+use App\Repository\AirportsRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,11 +17,15 @@ class FlightDestinationsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $airports = $this->airportsRepository->findBy([
+            'includeInFlightPrices'=>1
+        ]);
         if ($options['mode'] == 'new') {
             $builder
                 ->add('departureCity', EntityType::class, [
                     'class' => Airports::class,
                     'choice_label' => 'city',
+                    'choices'=>$airports,
                     'required' => true,
                     'empty_data' => null,
                     'data' => $options['oac']
@@ -28,6 +33,7 @@ class FlightDestinationsType extends AbstractType
                 ->add('arrivalCity', EntityType::class, [
                     'class' => Airports::class,
                     'choice_label' => 'city',
+                    'choices'=>$airports,
                     'required' => true,
                     'empty_data' => null,
                     'data' => $options['odc']
@@ -82,12 +88,14 @@ class FlightDestinationsType extends AbstractType
                 ->add('departureCity', EntityType::class, [
                     'class' => Airports::class,
                     'choice_label' => 'city',
+                    'choices'=>$airports,
                     'required' => true,
                     'empty_data' => null,
                 ])
                 ->add('arrivalCity', EntityType::class, [
                     'class' => Airports::class,
                     'choice_label' => 'city',
+                    'choices'=>$airports,
                     'required' => true,
                     'empty_data' => null,
                 ])
@@ -135,5 +143,9 @@ class FlightDestinationsType extends AbstractType
             'rt' => null,
             'mode' => null
         ]);
+    }
+    public function __construct(AirportsRepository $airportsRepository)
+    {
+        $this->airportsRepository = $airportsRepository;
     }
 }

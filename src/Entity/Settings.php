@@ -42,6 +42,11 @@ class Settings
      */
     private $lastOutlookDownload;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $ukDaysStarDate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Settings
     public function setLastOutlookDownload(?\DateTimeInterface $lastOutlookDownload): self
     {
         $this->lastOutlookDownload = $lastOutlookDownload;
+
+        return $this;
+    }
+
+    public function getUkDaysStarDate(): ?\DateTimeInterface
+    {
+        return $this->ukDaysStarDate;
+    }
+
+    public function setUkDaysStarDate(?\DateTimeInterface $ukDaysStarDate): self
+    {
+        $this->ukDaysStarDate = $ukDaysStarDate;
 
         return $this;
     }

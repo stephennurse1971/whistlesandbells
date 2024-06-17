@@ -8,4 +8,29 @@
     {{ include('uk_days/_form.html.twig') }}
 
     <a class="btn btn-outline-info btn-sm " href="{{ path('uk_days_index') }}">Return to list</a>
+
+
+{% endblock %}
+{% block additionaljs %}
+    <script>
+        $("#uk_days_departCountry").change(function(){
+            var countryId = $(this).val();
+            var url = "/ukdays/ajax/"+countryId;
+            $.get(url,
+                function(data, status){
+                    $("#uk_days_departureAirport").html(data);
+                });
+        })
+    </script>
+
+    <script>
+        $("#uk_days_arrivalCountry").change(function(){
+            var countryId = $(this).val();
+            var url = "/ukdays/ajax/"+countryId;
+            $.get(url,
+                function(data, status){
+                    $("#uk_days_arrivalAirport").html(data);
+                });
+        })
+    </script>
 {% endblock %}

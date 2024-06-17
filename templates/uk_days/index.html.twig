@@ -63,7 +63,8 @@
             <th style="width: 50px">Airline</th>
             <th>Docs</th>
             <th style="width: 350px">Comments</th>
-            <th style="width: 50px">#</th>
+            <th style="width: 50px"></th>
+            <th style="width: 50px"></th>
         </tr>
         </thead>
         <tbody>
@@ -96,50 +97,26 @@
                 </td>
                 <td>{{ uk_day.airline }}</td>
                 <td style="text-align: center">
-                    {% for travelDocs in uk_day.travelDocs %}
-                        <strong>
-                            <a title="{{ travelDocs }}" target="_blank"
-                               href="{{ path('to_do_list_viewfile',{fileName:travelDocs}) }}"> <i
-                                        class="fas fa-paperclip"></i> </a>
-                        </strong>
-                        <br>
-                    {% endfor %}
+                    {% if uk_day.travelDocs is not null %}
+                        <a title="{{ uk_day.travelDocs }}" target="_blank"
+                           href="{{ path('travel_docs_view_file',{ fileName:  uk_day.travelDocs}) }}">
+                            <i class="fas fa-paperclip"></i>
+                        </a>
+{#                        {{ uk_day.travelDocs }}#}
+                    {% endif %}
                 </td>
 
                 <td style="text-align: left">{{ uk_day.comment }}</td>
-                {#                <td style="text-align: right"> #}
-
-                {#                    {% set taxyears = TaxYear.findTaxYearAndDays( uk_day.startDate,  uk_day.endDate) %} #}
-                {#                    {% if taxyears is not empty %} #}
-                {#                      {{ taxyears[0] }} #}
-                {#                    {% endif %} #}
-                {#                </td> #}
-                {#                <td style="text-align: right"> #}
-                {#                    {% set days = TaxYear.daysInPeriod( uk_day.startDate,  uk_day.endDate) %} #}
-                {#                    {% if days is not empty %} #}
-                {#                        {{ days[0] }} #}
-                {#                    {% endif %} #}
-                {#                </td> #}
-                {#                <td style="text-align: right"> #}
-                {#                    {% if taxyears|length > 1 %} #}
-                {#                        {{ taxyears[1] }} #}
-                {#                        {% else %} #}
-                {#                        - -#}
-                {#                    {% endif %} #}
-
-                {#                </td> #}
-                {#                <td style="text-align: right"> #}
-                {#                    {% if days|length > 1 %} #}
-                {#                        {{ days[1] }} #}
-                {#                    {% else %} #}
-                {#                        - -#}
-                {#                    {% endif %} #}
-                {#                </td> #}
-                <td style="text-align: right">
+                <td style="text-align: center">
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('uk_days_edit', {id:uk_day.id}) }}">Edit</a>
+                </td>
+                <td style="text-align: center">
                     <form method="post" action="{{ path('uk_days_delete', {'id': uk_day.id}) }}"
                           onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ uk_day.id) }}">
-                        <button class="btn btn-outline-danger btn-sm">Delete</button>
+                        <button>
+                            <i style="color: red" class="fa fa-trash"></i>
+                        </button>
                     </form>
                 </td>
             </tr>

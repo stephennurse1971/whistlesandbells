@@ -25,7 +25,8 @@ class UkDaysType extends AbstractType
             ])
             ->add('departCountry', EntityType::class, [
                 'class' => Country::class,
-                'choice_label' => 'country'
+                'choice_label' => 'country',
+                'required'=>false
             ])
             ->add('departureAirport', EntityType::class, [
                 'class' => Airports::class,
@@ -33,7 +34,8 @@ class UkDaysType extends AbstractType
             ])
             ->add('arrivalCountry', EntityType::class, [
                 'class' => Country::class,
-                'choice_label' => 'country'
+                'choice_label' => 'country',
+                'required'=>false
             ])
             ->add('arrivalAirport', EntityType::class, [
                 'class' => Airports::class,
@@ -42,7 +44,6 @@ class UkDaysType extends AbstractType
             ->add('airline')
             ->add('comment')
             ->add('travelDocs', FileType::class, [
-                'multiple' => true,
                 'mapped' => false,
                 'required' => false
             ])
