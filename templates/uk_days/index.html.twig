@@ -5,9 +5,18 @@
 {% block body %}
     <h1 style="color: red">Days in UK <a target="_blank" href="{{ path('uk_days_new') }}">+</a></h1>
     <br>
+<div class="row">
+    <div class="col-3">
+        <a target="_blank" class="btn btn-success btn-sm" href="{{ path('uk_day_calendar_create') }}">Create calendar</a>
+        <a target="_blank" class="btn btn-outline-success btn-sm" href="{{ path('uk_day_calendar_index') }}">Calendar</a>
+    </div>
+    <div class="col-3">
+        <a target="_blank" class="btn btn-outline-info btn-sm" href="{{ path('airports_new') }}">Add Airport</a>
+        <a target="_blank" class="btn btn-outline-info btn-sm" href="{{ path('country_new') }}">Add Country</a>
 
-    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('uk_day_calendar_create') }}">Create calendar</a>
-    <a target="_blank" class="btn btn-outline-success btn-sm" href="{{ path('uk_day_calendar_index') }}">Calendar</a>
+    </div>
+</div>
+
     <table class="table table-responsive">
         <thead>
         <tr>
@@ -66,6 +75,7 @@
                 <i class="fa fa-plane-arrival"></i>
             </th>
             <th style="width: 50px">Airline</th>
+            <th><i class="fa fa-paperclip"></i></th>
             <th>Docs</th>
             <th style="width: 350px">Comments</th>
             <th style="width: 50px"></th>
@@ -115,6 +125,10 @@
                            href="{{ path('travel_docs_view_file',{ fileName:  uk_day.travelDocs}) }}">
                             <i class="fas fa-paperclip"></i>
                         </a>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if uk_day.travelDocs is not null %}
                         {{ uk_day.travelDocs }}
                     {% endif %}
                 </td>
