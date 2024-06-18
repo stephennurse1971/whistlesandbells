@@ -44,6 +44,9 @@
                     <a target="_blank" href="{{ path('user_birthdays') }}">Birthdays</a>
                 </ul>
 
+                <ul>
+                    <a target="_blank" href="{{ path('log_index') }}">User log</a>
+                </ul>
             </div>
         </div>
 
@@ -243,22 +246,15 @@
                 </ul>
             </div>
         </div>
-        <div class="col-2">
-            <div class="border py-4">
-                <h2 style="color: red">Users</h2>
-                <ul>
-                    <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests/contacts</a></ul>
-                <ul>
-                    <a target="_blank" href="{{ path('user_index') }}">Users</a>
-                </ul>
-                <ul>
-                    <a target="_blank" href="{{ path('log_index') }}">User log</a></ul>
-            </div>
-        </div>
+
 
         <div class="col-2">
             <div class="border py-4">
                 <h2 style="color: red">E-mails</h2>
+                <ul>
+                    <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests/contacts</a>
+                </ul>
+                <hr>
                 <ul>
                     <a target="_blank" href="{{ path('emails_import_index') }}">Emails Received: Pending</a>
                 </ul>

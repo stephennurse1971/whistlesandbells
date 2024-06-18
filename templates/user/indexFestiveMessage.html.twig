@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '../../base.html.twig' %}
 {% block title %}Users: Festive Message {% endblock %}
 {% block body %}
     <h1><span class="text-danger">Festive Message</span></h1>
@@ -12,7 +12,7 @@
             <th>Name</th>
             <th>Company</th>
 
-            {% include 'user/parts/roles_headers.html.twig' %}
+            {% include 'parts/roles_headers.html.twig' %}
 
 
             <th title="Home/Business">Address</th>
@@ -55,7 +55,7 @@
 
                 <td>{{ user.company }}</td>
 
-                {% include 'user/parts/roles_body.html.twig' %}
+                {% include 'parts/roles_body.html.twig' %}
 
                 <td style="text-align: center">
                     {% if user.homeStreet is not empty %}

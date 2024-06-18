@@ -1,14 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends '../../base.html.twig' %}
 {% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
     <h1 style="color: red">Investments: {{ grouping }}</h1>
     <div class="row">
-        {% include 'investments/parts/investments_buttons.html.twig' %}
+        {% include 'parts/investments_buttons.html.twig' %}
     </div>
         <br><br><br>
         <table class="table table-responsive">
             <thead>
-                {% include 'investments/parts/tax/investments_incl_tax_headers.html.twig' %}
+                {% include 'parts/tax/investments_incl_tax_headers.html.twig' %}
             </thead>
             <tbody>
             {% set TaxSubsidyPurchase_Total = 0 %}
@@ -28,12 +28,12 @@
                         {% set FXEffect = InitialFXRate/CurrentFXRate %}
                     {% endif %}
                     {% set investmentChildID = 'investment'~investment.id %}
-                    {% include 'investments/parts/tax/investments_incl_tax_body.html.twig' %}
+                    {% include 'parts/tax/investments_incl_tax_body.html.twig' %}
                 {% endif %}
             {% endfor %}
             </tbody>
             <tfoot>
-                {% include 'investments/parts/tax/investments_incl_tax_footer.html.twig' %}
+                {% include 'parts/tax/investments_incl_tax_footer.html.twig' %}
             </tfoot>
         </table>
      <br>

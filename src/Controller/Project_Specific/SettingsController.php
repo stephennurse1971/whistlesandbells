@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Controller\Project_Specific;
+
+use App\Entity\Project_Specific\Settings;
+use App\Form\Project_Specific\SettingsType;
+use App\Repository\Project_Specific\SettingsRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/admin/settings")
+ * @IsGranted("ROLE_ADMIN")
+ */
+class SettingsController extends AbstractController
+{
+    /**
+     * @Route("/index", name="settings_index", methods={"GET"})
+     */
+    public function index(SettingsRepository $settingsRepository): Response
+    {
+        return $this->render('settings/index.html.twig', [
+            'settings' => $settingsRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="settings_new", methods={"GET","POST"})
+     */
+    public function new(Request $request): Response
+    {
+        $setting = new Settings();
+        $form = $this->createForm(SettingsType::class, $setting);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($setting);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('settings_index');
+        }
+
+        return $this->render('settings/new.html.twig', [
+            'setting' => $setting,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="settings_show", methods={"GET"})
+     */
+    public function show(Settings $setting): Response
+    {
+        return $this->render('settings/show.html.twig', [
+            'setting' => $setting,
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="settings_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Settings $setting): Response
+    {
+        $form = $this->createForm(SettingsType::class, $setting);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('settings_index');
+        }
+
+        return $this->render('settings/edit.html.twig', [
+            'setting' => $setting,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/asOfDate/set_to_today", name="asOfDate/set_to_today", methods={"GET","POST"})
+     */
+    public function setAsOfDateToday(Request $request, SettingsRepository $settingsRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->headers->get('referer');
+        $now = new \DateTime('now');
+        $settings = $settingsRepository->find('1');
+        $settings->setInvestmentDate($now);
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="settings_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Settings $setting): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $setting->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($setting);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('settings_index');
+    }
+}

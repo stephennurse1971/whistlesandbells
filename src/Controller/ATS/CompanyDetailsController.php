@@ -1,0 +1,179 @@
+<?php
+
+namespace App\Controller\ATS;
+
+use App\Entity\ATS\CompanyDetails;
+use App\Form\ATS\CompanyDetailsType;
+use App\Repository\ATS\CompanyDetailsRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/company_details")
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
+class CompanyDetailsController extends AbstractController
+{
+    /**
+     * @Route("/index", name="company_details_index", methods={"GET"})
+     */
+    public function index(CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        return $this->render('company_details/index.html.twig', [
+            'company_details' => $companyDetailsRepository->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="company_details_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        $companyDetails = new CompanyDetails();
+        $form = $this->createForm(CompanyDetailsType::class, $companyDetails);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $companyDetailsRepository->add($companyDetails, true);
+
+            return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('company_details/new.html.twig', [
+            'company_details' => $companyDetails,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="company_details_show", methods={"GET"})
+     */
+    public function show(CompanyDetails $companyDetails): Response
+    {
+        return $this->render('company_details/show.html.twig', [
+            'company_details' => $companyDetails,
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="company_details_edit", methods={"GET", "POST"})
+     */
+    public function edit(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        $form = $this->createForm(CompanyDetailsType::class, $companyDetails);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $faviconDev = $form['faviconDev']->getData();
+            $faviconLive = $form['faviconLive']->getData();
+            $qrCode = $form['companyQrCode']->getData();
+
+            if ($faviconDev) {
+                $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $companyDetails->getCompanyName() . '_dev.' . $faviconDev->guessExtension();
+                $faviconDev->move(
+                    $this->getParameter('favicon_directory'),
+                    $newFilename
+                );
+                $companyDetails->setFaviconDev($newFilename);
+            }
+            if ($faviconLive) {
+                $originalFilenameLive = pathinfo($faviconLive->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilenameLive = $companyDetails->getCompanyName() . '_live.' . $faviconLive->guessExtension();
+                $faviconLive->move(
+                    $this->getParameter('favicon_directory'),
+                    $newFilenameLive
+                );
+                $companyDetails->setFaviconLive($newFilenameLive);
+            }
+            if ($qrCode) {
+                $originalFilenameQR = pathinfo($qrCode->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilenameQR = $companyDetails->getCompanyName() . '_qr_code.' . $qrCode->guessExtension();
+                $qrCode->move(
+                    $this->getParameter('favicon_directory'),
+                    $newFilenameQR
+                );
+                $companyDetails->setCompanyQrCode($newFilenameQR);
+            }
+            $companyDetailsRepository->add($companyDetails, true);
+
+            return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('company_details/edit.html.twig', [
+            'company_details' => $companyDetails,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="company_details_delete", methods={"POST"})
+     */
+    public function delete(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $companyDetails->getId(), $request->request->get('_token'))) {
+            $companyDetailsRepository->remove($companyDetails, true);
+        }
+
+        return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/map_gps", name="company_details_map_gps", methods={"POST"})
+     */
+
+    public function officeAddressGPS(CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        return $this->render('home/officeAddress.html.twig');
+    }
+
+
+    /**
+     * @Route("/delete_favicon/{live_or_dev}/{id}", name="company_details_delete_favicon", methods={"POST", "GET"})
+     */
+    public function deleteLiveFavicon(Request $request, int $id, string $live_or_dev, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        if ($live_or_dev == 'live') {
+            $companyDetails->setFaviconLive(null);
+            $entityManager->flush();
+            $files = glob($this->getParameter('favicon_directory') . "/*live*");
+            foreach ($files as $file) {
+                unlink($file);
+            }
+        }
+        if ($live_or_dev == 'dev') {
+            $companyDetails->setFaviconDev(null);
+            $entityManager->flush();
+            $files = glob($this->getParameter('favicon_directory') . "/*dev*");
+            foreach ($files as $file) {
+                unlink($file);
+            }
+        }
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+
+    /**
+     * @Route("/delete_qr_code/{id}", name="company_details_delete_qr_code", methods={"POST", "GET"})
+     */
+    public function deleteQRCodeLiveFavicon(Request $request, int $id, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $companyDetails->setCompanyQrCode(null);
+        $entityManager->flush();
+        $files = glob($this->getParameter('favicon_directory') . "/*qr*");
+        foreach ($files as $file) {
+            unlink($file);
+        }
+
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+}

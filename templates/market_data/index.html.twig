@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '../../base.html.twig' %}
 {% block title %}Asset List{% endblock %}
 {% block body %}
 
@@ -13,7 +13,7 @@
             <a target="_blank" class="btn btn-success btn-sm" href="{{ path('market_data_new') }}">New</a>
         </div>
         <div class="col-3">
-            {% include 'market_data/parts/investmentAsOfDate.html.twig' %}
+            {% include 'parts/investmentAsOfDate.html.twig' %}
         </div>
         <div>
             <a target="_blank" class="btn btn-outline-info btn-sm" href="{{ path('loans_bonds_index') }}">Loan/Bond

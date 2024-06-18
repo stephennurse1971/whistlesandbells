@@ -1,27 +1,27 @@
-{% extends 'base.html.twig' %}
+{% extends '../../base.html.twig' %}
 {% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
     <h1 style="color: red">Investments: {{ grouping }}</h1>
     {% set AsOfDate = settings.investmentDate %}
 
 
-    {% include 'investments/parts/economic/economic_view_buttons.twig' %}
+    {% include 'parts/economic/economic_view_buttons.twig' %}
 
-    {% include 'investments/parts/economic/bank_accounts_buttons.twig' %}
-    {% include 'bank_balances/parts/summary_bank_acounts.html.twig' %}
+    {% include 'parts/economic/bank_accounts_buttons.twig' %}
+    {% include '../bank_balances/parts/summary_bank_acounts.html.twig' %}
 
-    {% include 'investments/parts/economic/loans_bonds_buttons.twig' %}
-    {% include 'loans_bonds/parts/loans_bonds_headers.html.twig' %}
-    {% include 'loans_bonds/parts/loans_bonds_body.html.twig' %}
-    {% include 'loans_bonds/parts/loans_bonds_headers.html.twig' %}
-    {% include 'loans_bonds/parts/loans_bonds_ebt_body.html.twig' %}
+    {% include 'parts/economic/loans_bonds_buttons.twig' %}
+    {% include '../loans_bonds/parts/loans_bonds_headers.html.twig' %}
+    {% include '../loans_bonds/parts/loans_bonds_body.html.twig' %}
+    {% include '../loans_bonds/parts/loans_bonds_headers.html.twig' %}
+    {% include '../loans_bonds/parts/loans_bonds_ebt_body.html.twig' %}
 
     <table class="table table-responsive economicSummary">
-        {% include 'investments/parts/economic/investments_economic_headers.html.twig' %}
-        {% include 'investments/parts/economic/investments_economic_body.html.twig' %}
+        {% include 'parts/economic/investments_economic_headers.html.twig' %}
+        {% include 'parts/economic/investments_economic_body.html.twig' %}
     </table>
     <br>
-    {% include 'investments/parts/economic/grandTotal.twig' %}
+    {% include 'parts/economic/grandTotal.twig' %}
 
 {% endblock %}
 

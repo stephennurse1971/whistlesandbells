@@ -2,8 +2,8 @@
 
 namespace App\Security;
 
-use App\Entity\User;
-use App\Services\LogService;
+use App\Entity\Project_Specific\User;
+use App\Services\Project_Specific\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
