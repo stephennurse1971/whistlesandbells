@@ -19,7 +19,7 @@
 
     </div>
 
-    {% include 'parts/buttons.html.twig' %}
+    {% include 'to_do_list/parts/buttons.html.twig' %}
 
     <table class="table table-responsive maintable">
         <thead>
@@ -91,7 +91,7 @@
                                             <td style="width: 35px">
                                                 {{ (to_do_list.priority  + 0.0000000001 +(to_do_lists_item.priority/100) )|number_format(2, '.', ',') }}
                                             </td>
-                                            {% include 'changePriorityButtons.html.twig' %}
+                                            {% include 'to_do_list/changePriorityButtons.html.twig' %}
                                             <td style="width: 1800px;">
                                                 <div class="d-flex">
                                                     <div>
@@ -145,7 +145,7 @@
 
                                             <td style="width: 125px">
                                                 {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                    {% include 'pendingCompleteBlockedButtons.html.twig' %}
+                                                    {% include 'to_do_list/pendingCompleteBlockedButtons.html.twig' %}
                                                 {% endif %}
                                             </td>
                                         </tr>

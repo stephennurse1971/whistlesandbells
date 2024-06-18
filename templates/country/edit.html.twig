@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Country{% endblock %}
+{% block title %}Edit : {{ country.country }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit Country</h1>
+    <h1 style="color: red">Edit: {{ country.country}} </h1>
 
     {{ include('country/_form.html.twig', {'button_label': 'Update'}) }}
 

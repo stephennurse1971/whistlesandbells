@@ -6,7 +6,6 @@ namespace App\Services\ATS;
 
 use App\Entity\Import;
 use App\Entity\Project_Specific\User;
-use App\Repository\CountriesRepository;
 use App\Repository\Project_Specific\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,7 +41,7 @@ class UserImportService
             $landline = trim($oneLineFromCsv[3]);
             $mobile1 = trim($oneLineFromCsv[4]);
             $mobile2 = trim($oneLineFromCsv[5]);
-            $gender = trim($oneLineFromCsv[6]);
+
             $dateOfBirth = trim($oneLineFromCsv[7]);
             $homeAddressStreet = trim($oneLineFromCsv[8]);
             $homeAddressCity = trim($oneLineFromCsv[9]);
@@ -73,15 +72,14 @@ class UserImportService
                 $user->setFirstName($firstName)
                     ->setLastName($lastName)
                     ->setEmail($email)
-                    ->setLandline($landline)
+                    ->setBusinessPhone($landline)
                     ->setMobile($mobile1)
                     ->setMobile2($mobile2)
-                    ->setGender($gender)
-                    ->setDateOfBirth(new \DateTime($dateOfBirth))
-                    ->setAddressStreet($homeAddressStreet)
-                    ->setAddressCity($homeAddressCity)
-                    ->setAddressPostCode($homeAddressPostCode)
-                    ->setAddressCountry($country)
+                    ->setBirthday(new \DateTime($dateOfBirth))
+                    ->setHomeStreet($homeAddressStreet)
+                    ->setHomeCity($homeAddressCity)
+                    ->setHomePostalCode($homeAddressPostCode)
+                    ->setHomeCountry($country)
                     ->setRoles(['ROLE_CLIENT'])
                 ;
                 $this->manager->persist($user);
