@@ -1,4 +1,4 @@
-{% extends '../../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Loans/Bonds{% endblock %}
 
@@ -11,14 +11,14 @@
         </div>
 
         <div class="col-3">
-            {% include '../../market_data/parts/investmentAsOfDate.html.twig' %}
+            {% include 'market_data/parts/investmentAsOfDate.html.twig' %}
         </div>
     </div>
 
     {% set AsOfDate = settings.investmentDate|date('Y-m-d') %}
     <br>
-    {% include 'parts/loans_bonds_headers.html.twig' %}
-    {% include 'parts/loans_bonds_body.html.twig' %}
+    {% include 'loans_bonds/parts/loans_bonds_headers.html.twig' %}
+    {% include 'loans_bonds/parts/loans_bonds_body.html.twig' %}
 
 {% endblock %}
 

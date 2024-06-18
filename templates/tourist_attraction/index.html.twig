@@ -1,10 +1,10 @@
-{% extends '../../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Tourist Attractions{% endblock %}
 
 {% block body %}
     <h1 style="color: red">Tourist Attractions</h1>
-    {% include 'parts/buttons.html.twig' %}
+    {% include 'tourist_attraction/parts/buttons.html.twig' %}
 
     {% if type == 'All' %}
         {% for type in types %}
@@ -12,14 +12,14 @@
             <table class="table table-responsive">
                 <thead>
                 <tr>
-                    {% include 'parts/table_headers.html.twig' %}
+                    {% include 'tourist_attraction/parts/table_headers.html.twig' %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for tourist_attraction in tourist_attractions %}
                     {% if type == tourist_attraction.type %}
                         <tr>
-                            {% include 'parts/table_body.html.twig' %}
+                            {% include 'tourist_attraction/parts/table_body.html.twig' %}
                         </tr>
                     {% endif %}
                 {% endfor %}
@@ -34,14 +34,14 @@
         <table class="table table-responsive">
             <thead>
             <tr>
-                {% include 'parts/table_headers.html.twig' %}
+                {% include 'tourist_attraction/parts/table_headers.html.twig' %}
             </tr>
             </thead>
             <tbody>
             {% for tourist_attraction in tourist_attractions %}
                 {% if type == tourist_attraction.type %}
                     <tr>
-                        {% include 'parts/table_body.html.twig' %}
+                        {% include 'tourist_attraction/parts/table_body.html.twig' %}
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -55,14 +55,14 @@
 <table class="table table-responsive">
     <thead>
     <tr>
-        {% include 'parts/table_headers.html.twig' %}
+        {% include 'tourist_attraction/parts/table_headers.html.twig' %}
     </tr>
     </thead>
     <tbody>
     {% for tourist_attraction in tourist_attractions %}
         {% if tourist_attraction.type not in types %}
             <tr>
-                {% include 'parts/table_body.html.twig' %}
+                {% include 'tourist_attraction/parts/table_body.html.twig' %}
             </tr>
         {% endif %}
     {% endfor %}

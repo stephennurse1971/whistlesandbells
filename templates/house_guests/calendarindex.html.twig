@@ -1,4 +1,4 @@
-{% extends '../../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}House Guests Calendar{% endblock %}
 
@@ -22,7 +22,7 @@
     </style>
     <h1 style="color: red">House Guests Calendar</h1>
 
-    {% include 'parts/house_guest_buttons.html.twig' %}
+    {% include 'house_guests/parts/house_guest_buttons.html.twig' %}
     <div class="table-container">
 
         <table class="table table-responsive-sm">
@@ -39,7 +39,7 @@
                 {% if is_granted('ROLE_ADMIN') %}
                     <th style="border-right: 1px solid grey; text-align: left"></th>
                 {% endif %}
-                {% include 'parts/house_guest_flight_prices_headers.html.twig' %}
+                {% include 'house_guests/parts/house_guest_flight_prices_headers.html.twig' %}
             </tr>
 
             <tr>
@@ -52,7 +52,7 @@
                 {% if is_granted('ROLE_ADMIN') %}
                     <th style="border-right: 1px solid grey"></th>
                 {% endif %}
-                {% include 'parts/house_guest_flight_prices_headers2.html.twig' %}
+                {% include 'house_guests/parts/house_guest_flight_prices_headers2.html.twig' %}
             </tr>
 
             </thead>
@@ -189,7 +189,7 @@
                             {% endif %}
                         </td>
                     {% endif %}
-                    {% include 'parts/house_guest_flight_prices.html.twig' %}
+                    {% include 'house_guests/parts/house_guest_flight_prices.html.twig' %}
                 </tr>
             {% endfor %}
 

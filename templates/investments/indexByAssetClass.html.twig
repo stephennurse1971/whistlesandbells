@@ -1,9 +1,9 @@
-{% extends '../../base.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block title %}Investments: {{ grouping }}{% endblock %}
 {% block body %}
     <h1 style="color: red">Investments: {{ grouping }}</h1>
     <div class="row">
-    {% include 'parts/investments_buttons.html.twig' %}
+    {% include 'investments/parts/investments_buttons.html.twig' %}
     </div>
     {% for asset_class in asset_classes|sort((a,b)=>a.assetClass<=>b.assetClass)  %}
         {% if asset_class.taxScheme.includeTaxSummary == 1 %}
@@ -14,7 +14,7 @@
             </h2>
             <table class="table table-responsive">
                 <thead>
-                {% include 'parts/tax/investments_incl_tax_headers.html.twig' %}
+                {% include 'investments/parts/tax/investments_incl_tax_headers.html.twig' %}
                 </thead>
                 <tbody>
                 {% set TaxSubsidyPurchase_Total = 0 %}
@@ -34,12 +34,12 @@
                             {% set FXEffect = InitialFXRate/CurrentFXRate %}
                         {% endif %}
                         {% set investmentChildID = 'investment'~investment.id %}
-                        {% include 'parts/tax/investments_incl_tax_body.html.twig' %}
+                        {% include 'investments/parts/tax/investments_incl_tax_body.html.twig' %}
                     {% endif %}
                 {% endfor %}
                 </tbody>
                 <tfoot>
-                {% include 'parts/tax/investments_incl_tax_footer.html.twig' %}
+                {% include 'investments/parts/tax/investments_incl_tax_footer.html.twig' %}
                 </tfoot>
             </table>
         {% endif %}

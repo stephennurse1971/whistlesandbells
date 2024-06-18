@@ -1,4 +1,4 @@
-{% extends '../../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Bank Balances{% endblock %}
 
@@ -11,18 +11,18 @@
             <h1 style="color: red">Bank Balances</h1>
         </div>
         <div class="col-3">
-            {% include '../../market_data/parts/investmentAsOfDate.html.twig' %}
+            {% include 'market_data/parts/investmentAsOfDate.html.twig' %}
         </div>
     </div>
-    {% include 'parts/summary_bank_acounts.html.twig' %}
+    {% include 'bank_balances/parts/summary_bank_acounts.html.twig' %}
 
     <div class="row">
         {% for bank_account in bank_accounts %}
             <div class="col-3">
                 <h2 style="color: blue">{{ bank_account.bank }}
                     <a class="btn btn-outline-primary btn-sm" href="{{ path('bank_balances_new') }}">+</a></h2>
-                {% include 'parts/bank_accounts_headers.html.twig' %}
-                {% include 'parts/bank_accounts_body.html.twig' %}
+                {% include 'bank_balances/parts/bank_accounts_headers.html.twig' %}
+                {% include 'bank_balances/parts/bank_accounts_body.html.twig' %}
             </div>
         {% endfor %}
     </div>
