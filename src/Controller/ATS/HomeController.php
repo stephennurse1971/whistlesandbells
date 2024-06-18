@@ -187,8 +187,8 @@ class HomeController extends AbstractController
     {
         $company_details = $companyDetailsRepository->find('1');
         $vcard = new VCard();
-        $firstName = $company_details->getCompanyName();
-        $lastName = '';
+        $firstName = 'Stephen';
+        $lastName = 'Nurse';
         $company = $company_details->getCompanyName();
         $addressStreet = $company_details->getCompanyAddressStreet();
         $addressTown = $company_details->getCompanyAddressTown();
@@ -199,7 +199,7 @@ class HomeController extends AbstractController
         $instagram = $company_details->getInstagram();
         $linkedIn = $company_details->getLinkedIn();
         $url = $_SERVER['SERVER_NAME'];
-        $notes_all = "Facebook: " . $facebook . "    Instagram: " . $instagram . "   LinkedIn: " . $linkedIn . "   URL: " . $url;
+        $notes_all = "URL: " . $url;
         $email = $company_details->getCompanyEmail();
         $mobile = $company_details->getCompanyMobile();
         $tel = $company_details->getCompanyTel();

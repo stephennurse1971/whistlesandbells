@@ -787,27 +787,7 @@ class UserController extends AbstractController
         return new Response(null);
     }
 
-    /**
-     * @Route("/create/StephenNurse/Vcarduser", name="create_vcard_SN")
-     */
-    public function createVcardSN(UserRepository $userRepository)
-    {
-        $user = $userRepository->findOneBy([
-            'fullName' => "Stephen Nurse"]);
-        $vcard = new VCard();
-        $userFirstName = $user->getFirstName();
-        $userLastName = $user->getLastName();
-        $vcard->addName($userLastName, $userFirstName);
-        $vcard->addEmail($user->getEmail())
-            ->addJobtitle($user->getJobTitle())
-            ->addCompany($user->getCompany())
-            ->addPhoneNumber($user->getMobile(), 'work')
-            ->addPhoneNumber($user->getHomePhone(), 'home')
-            ->addURL("https://stephen-nurse.com/")
-            ->addNote($user->getNotes());
-        $vcard->download();
-        return new Response(null);
-    }
+
 
     /**
      * @Route ("/user/export/file/{Subset}", name="user_export" )
