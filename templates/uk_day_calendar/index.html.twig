@@ -19,6 +19,7 @@
     <table class="table table-responsive">
         <thead>
         <tr>
+            <th>DoW</th>
             <th>Date</th>
             <th>Location</th>
             <th></th>
@@ -27,29 +28,34 @@
         </thead>
         <tbody>
         {% for uk_day_calendar in uk_day_calendars %}
-            <tr>
-                <td data-sort="{{ uk_day_calendar.date|date('Y-m-d') }}"> {{ uk_day_calendar.date|date('d-M-y') }}</td>
-                <td>
-                    {% if uk_day_calendar.locationAtMidnight is not null %}
-                        {{ uk_day_calendar.locationAtMidnight.country }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
+            {% if uk_day_calendar.date|date('D') =="Sat" or uk_day_calendar.date|date('D') =="Sun" %}
+                <tr style="background-color: whitesmoke">
+            {% else %}
+                <tr>
+            {% endif %}
+            <td> {{ uk_day_calendar.date|date('D') }}</td>
+            <td data-sort="{{ uk_day_calendar.date|date('Y-m-d') }}"> {{ uk_day_calendar.date|date('d-M-y') }}</td>
+            <td>
+                {% if uk_day_calendar.locationAtMidnight is not null %}
+                    {{ uk_day_calendar.locationAtMidnight.country }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
 
-                <td>
-                    <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('uk_day_calendar_edit', {'id': uk_day_calendar.id}) }}">Edit</a>
-                </td>
-                <td>
-                    <form method="post" action="{{ path('uk_day_calendar_delete', {'id': uk_day_calendar.id}) }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ uk_day_calendar.id) }}">
-                        <button>
-                            <i style="color: red" class="fa fa-trash"></i>
-                        </button>
-                    </form>
+            <td>
+                <a class="btn btn-outline-danger btn-sm"
+                   href="{{ path('uk_day_calendar_edit', {'id': uk_day_calendar.id}) }}">Edit</a>
+            </td>
+            <td>
+                <form method="post" action="{{ path('uk_day_calendar_delete', {'id': uk_day_calendar.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ uk_day_calendar.id) }}">
+                    <button>
+                        <i style="color: red" class="fa fa-trash"></i>
+                    </button>
+                </form>
 
-                </td>
+            </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -63,7 +69,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [0, 'desc'],
+                "order": [1, 'desc'],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

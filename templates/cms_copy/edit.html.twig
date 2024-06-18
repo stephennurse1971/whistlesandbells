@@ -11,14 +11,14 @@
 
 {% block body %}
     <h1 style="color: red">Edit:
-        {% if (cms_copy.category != "Product" or cms_copy.category != "Static") %}
+        {% if (cms_copy.category != "Product" and cms_copy.category != "Static") %}
             Null
         {% else %}
             {% if cms_copy.category == "Product" %}
-                CMS: {{ cms_copy.product.product }}
+                {{ cms_copy.product.product }}
             {% endif %}
             {% if cms_copy.category == "Static" %}
-                CMS: {{ cms_copy.staticPageName }}
+                {{ cms_copy.staticPageName }}
             {% endif %}
         {% endif %}
     </h1>
@@ -29,6 +29,17 @@
 
 {% block additionaljs %}
     <script>
+
+        {% if cms_copy.attachment %}
+        $(".file-upload-container").hide();
+        {% else %}
+        $(".file-upload-container").show();
+        {% endif %}
+
+
+
+
+
         var category = $("#cms_copy_category").val();
         if (category === 'Static') {
             $(".static-container").show();
@@ -48,6 +59,13 @@
             }
         })
     </script>
+
+
+
+
+
+
+
 
     <script>
         ClassicEditor

@@ -167,7 +167,6 @@ class CompanyDetailsController extends AbstractController
     public function deleteQRCodeLiveFavicon(Request $request, int $id, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
-
         $companyDetails->setCompanyQrCode(null);
         $entityManager->flush();
         $files = glob($this->getParameter('favicon_directory') . "/*qr*");

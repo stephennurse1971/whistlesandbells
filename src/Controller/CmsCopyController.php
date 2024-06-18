@@ -205,9 +205,12 @@ class CmsCopyController extends AbstractController
     public function deleteCmsCopyFile(int $id, Request $request, CmsCopy $cmsCopy, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
-        $file = $cmsCopy->getAttachment();
-        unlink($file);
-        $cmsCopy->setAttachment('');
+        $fileName = $cmsCopy->getAttachment();
+        $file = $this->getParameter('website_attachments_directory') . "/".$fileName;
+        if(file_exists($file)){
+            unlink($file);
+        }
+        $cmsCopy->setAttachment(null);
         $entityManager->flush();
         return $this->redirect($referer);
     }

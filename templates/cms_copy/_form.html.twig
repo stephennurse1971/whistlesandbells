@@ -24,7 +24,24 @@
     <div class="col-md-3">
         <h2>Tab Title</h2>
         {{ form_row(form.ranking) }}
-        {{ form_row(form.attachment) }}
+
+        {% if cms_copy.attachment is not null %}
+            <b>Attachment:</b><br>
+            {{ cms_copy.attachment }}
+            <a class="btn btn-outline-danger btn-sm"
+               href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}"> <i
+                        style="color: red" class="fa fa-trash"></i></a>
+            <br>
+            <a title="{{ cms_copy.attachment }}" target="_blank"
+               href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
+                <i title="{{ cms_copy.attachment }}" class="fa fa-paperclip"></i>
+            </a>
+            <br>
+        {% endif %}
+
+        <div class="file-upload-container">
+            {{ form_row(form.attachment) }}
+        </div>
     </div>
     <div class="col-md-3">
         <h2>Tab Title</h2>

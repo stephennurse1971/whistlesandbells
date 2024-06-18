@@ -7,8 +7,9 @@
     <br>
 <div class="row">
     <div class="col-3">
-        <a target="_blank" class="btn btn-success btn-sm" href="{{ path('uk_day_calendar_create') }}">Create calendar</a>
-        <a target="_blank" class="btn btn-outline-success btn-sm" href="{{ path('uk_day_calendar_index') }}">Calendar</a>
+        <a class="btn btn-danger btn-sm" href="{{ path('uk_day_calendar_delete_all') }}">Reset calendar</a>
+        <a target="_blank" class="btn btn-success btn-sm" href="{{ path('uk_day_calendar_create') }}">Re-compute Days By Country</a>
+        <a target="_blank" class="btn btn-outline-success btn-sm" href="{{ path('uk_day_calendar_index') }}">Show calendar</a>
     </div>
     <div class="col-3">
         <a target="_blank" class="btn btn-outline-info btn-sm" href="{{ path('airports_new') }}">Add Airport</a>
@@ -65,14 +66,15 @@
     <table class="table table-responsive">
         <thead>
         <tr>
+            <th style="width: 50px">DoW</th>
             <th style="width: 100px;border-right: dotted">Flight Date</th>
             <th style="width: 50px; color: green">Departs</th>
             <th style="width: 50px; border-right: dotted"><span style="color: green">Airport</span>
-                <i class="fa fa-plane-departure"></i>
+                <i style="color: green" class="fa fa-plane-departure"></i>
             </th>
             <th style="width: 50px; color: blue">Arrives</th>
             <th style="width: 50px; border-right: dotted"><span style="color: blue">Airport</span>
-                <i class="fa fa-plane-arrival"></i>
+                <i style="color: blue" class="fa fa-plane-arrival"></i>
             </th>
             <th style="width: 50px">Airline</th>
             <th><i class="fa fa-paperclip"></i></th>
@@ -84,10 +86,13 @@
         </thead>
         <tbody>
         {% for uk_day in uk_days %}
-            <tr>
+           <tr>
+               <td>
+                   {{  uk_day.flightDate|date('D') }}
+               </td>
                 <td style="border-right: dotted"
                     data-sort="{{ uk_day.flightDate ? uk_day.flightDate|date('Y-m-d') : '' }}">
-                    <a href="{{ path('uk_days_edit', {'id': uk_day.id}) }}">{{ uk_day.flightDate ? uk_day.flightDate|date('d-M-Y') : '' }}  </a>
+                    <a href="{{ path('uk_days_edit', {'id': uk_day.id}) }}">{{  uk_day.flightDate|date('d-M-Y') }}  </a>
                 </td>
 
                 <td style="text-align: left; width:100px">
@@ -159,7 +164,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 50,
-                "order": [[0, 'desc', 1, 'desc']],
+                "order": [[1, 'desc'],[ 2, 'desc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
