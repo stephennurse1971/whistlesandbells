@@ -8,6 +8,7 @@
     <table class="table table-responsive">
         <thead>
         <tr>
+            <th>ID</th>
             <th title="Minimum of 'Today'">Scrape: <br>Start Date</th>
             <th>Scrape:<br> # days</th>
             <th>Return Leg<br>Delay Offset</th>
@@ -20,6 +21,7 @@
         <tbody>
         {% for setting in settings %}
             <tr>
+                <td>{{ setting.id }}</td>
                 <td style="text-align: center">
                     {% if setting.flightStatsStartDate is not null %}
                         {{ setting.flightStatsStartDate ? setting.flightStatsStartDate|date('d-M-y') : '' }}

@@ -14,7 +14,7 @@ class SettingsType extends AbstractType
     {
         $builder
             ->add('flightStatsStartDate', DateType::class, [
-                'label' => 'Date',
+                'label' => 'Flight Stats Start Date',
                 'required' => false,
                 'widget' => 'single_text',
             ])
@@ -31,7 +31,7 @@ class SettingsType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('lastOutlookDownload', \Symfony\Component\Form\Extension\Core\Type\DateType::class, [
-                'label' => 'Start Date of UK Days Analysis',
+                'label' => 'Last date Outlook',
                 'required' => false,
                 'widget' => 'single_text',
             ]);
