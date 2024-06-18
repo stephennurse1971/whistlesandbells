@@ -6,6 +6,7 @@ use App\Repository\ATS\ResetPasswordRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
+use App\Entity\Project_Specific\User;
 
 /**
  * @ORM\Entity(repositoryClass=ResetPasswordRequestRepository::class)
