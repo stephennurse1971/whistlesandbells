@@ -3,7 +3,7 @@
 namespace App\Security;
 
 use App\Entity\Project_Specific\User;
-use App\Services\Project_Specific\LogService;
+use App\Services\ATS\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
