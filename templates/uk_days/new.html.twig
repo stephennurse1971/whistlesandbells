@@ -33,4 +33,11 @@
                 });
         })
     </script>
+    <script>
+        {% if uk_day.travelDocs %}
+        $(".travel-docs-container").hide();
+        {% else %}
+        $(".travel-docs-container").show();
+        {% endif %}
+    </script>
 {% endblock %}

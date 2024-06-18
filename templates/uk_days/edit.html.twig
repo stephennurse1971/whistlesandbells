@@ -1,6 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Days in UK{% endblock %}
+{% block title %}Edit:
+    {% if uk_day.departCountry is not null %}
+        {{ uk_day.departCountry.country }}
+    {% endif %}
+    -
+    {% if uk_day.arrivalCountry is not null %}
+        {{ uk_day.arrivalCountry.country }}
+    {% endif %}
+{% endblock %}
 
 {% block body %}
     <h1 style="color: red">Edit: Days in UK</h1>
@@ -14,24 +22,32 @@
 {% endblock %}
 {% block additionaljs %}
     <script>
-        $("#uk_days_departCountry").change(function(){
+        $("#uk_days_departCountry").change(function () {
             var countryId = $(this).val();
-            var url = "/ukdays/ajax/"+countryId;
+            var url = "/ukdays/ajax/" + countryId;
             $.get(url,
-                function(data, status){
+                function (data, status) {
                     $("#uk_days_departureAirport").html(data);
                 });
         })
     </script>
 
     <script>
-        $("#uk_days_arrivalCountry").change(function(){
+        $("#uk_days_arrivalCountry").change(function () {
             var countryId = $(this).val();
-            var url = "/ukdays/ajax/"+countryId;
+            var url = "/ukdays/ajax/" + countryId;
             $.get(url,
-                function(data, status){
+                function (data, status) {
                     $("#uk_days_arrivalAirport").html(data);
                 });
         })
+    </script>
+
+    <script>
+        {% if uk_day.travelDocs %}
+        $(".travel-docs-container").hide();
+        {% else %}
+        $(".travel-docs-container").show();
+        {% endif %}
     </script>
 {% endblock %}

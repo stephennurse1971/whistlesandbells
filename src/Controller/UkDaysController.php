@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CompanyDetails;
 use App\Entity\UkDays;
 use App\Form\UkDaysType;
 use App\Repository\AirportsRepository;
@@ -30,7 +31,7 @@ class UkDaysController extends AbstractController
     {
         return $this->render('uk_days/index.html.twig', [
             'uk_days' => $ukDaysRepository->findAll(),
-            'uk_calendar'=>$ukDayCalendarRepository->findAll(),
+            'uk_calendar' => $ukDayCalendarRepository->findAll(),
             'countries' => $countryRepository->findAll(),
             'taxyears' => $taxYearRepository->findAll(),
         ]);
@@ -158,4 +159,21 @@ class UkDaysController extends AbstractController
         return new BinaryFileResponse($publicResourcesFolderPath . "/" . $fileName);
     }
 
+
+    /**
+     * @Route("/delete_travel_doc/{id}", name="travel_docs_delete_file", methods={"POST", "GET"})
+     */
+    public function deleteTravelDocFile(Request $request, int $id, UkDays $ukDays, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $travelDoc =$ukDays->getTravelDocs();
+//        $file = glob($this->getParameter('uk_travel_days_directory') . "/" . $travelDoc);
+//        unlink($file);
+
+        $ukDays->setTravelDocs(null);
+        $entityManager->flush();
+
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
 }

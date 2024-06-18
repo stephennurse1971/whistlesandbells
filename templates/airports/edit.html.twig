@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Airports{% endblock %}
+{% block title %}Edit: {{ airport.city }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Airports</h1>
+    <h1 style="color: red">Edit: {{ airport.city }} | {{ airport.airportCode }}</h1>
 
     {{ include('airports/_form.html.twig', {'button_label': 'Update'}) }}
 

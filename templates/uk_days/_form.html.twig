@@ -28,7 +28,27 @@
         <h2>Arrival</h2>
         {{ form_row(form.arrivalCountry) }}
         {{ form_row(form.arrivalAirport) }}
-        {{ form_row(form.travelDocs) }}
+
+
+
+        {% if uk_day.travelDocs is not null %}
+            <b>Travel Docs:</b><br>
+            {{ uk_day.travelDocs }}
+            <a class="btn btn-outline-danger btn-sm"
+               href="{{ path('travel_docs_delete_file', {id: uk_day.id}) }}">
+                <i style="color: red" class="fa fa-trash"></i></a>
+            <br>
+            <a title="{{ uk_day.travelDocs }}" target="_blank"
+               href="{{ path('travel_docs_view_file',{ fileName:  uk_day.travelDocs}) }}">
+                <i class="fas fa-paperclip"></i>
+            </a>
+            <br>
+        {% endif %}
+
+        <div class="travel-docs-container">
+            {{ form_row(form.travelDocs) }}
+        </div>
+
     </div>
 </div>
 
