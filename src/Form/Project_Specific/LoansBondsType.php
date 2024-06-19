@@ -30,10 +30,11 @@ class LoansBondsType extends AbstractType
                 'required' =>true,
                 'expanded' => false,
                 'choices' => [
-                    'No' => 'No',
+                    'Bank Deposit' => 'Bank Deposit',
+                    'SME Loan' => 'SME Loan',
                     'EBT 1998' => 'EBT 1998',
                     'EBT 2007' => 'EBT 2007',
-                    'EFRB 2010' => 'EFRB 2010'
+                    'EFRB 2010' => 'EFRB 2010',
                 ],])
             ->add('notional')
             ->add('interestRate')
