@@ -32,6 +32,7 @@ class LoansBondsType extends AbstractType
                 'choices' => [
                     'Bank Deposit' => 'Bank Deposit',
                     'SME Loan' => 'SME Loan',
+                    'Pref Shares' => 'Pref Shares',
                     'EBT 1998' => 'EBT 1998',
                     'EBT 2007' => 'EBT 2007',
                     'EFRB 2010' => 'EFRB 2010',
