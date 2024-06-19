@@ -2,9 +2,9 @@
 
 namespace App\Controller\ATS;
 
-use App\Entity\Project_Specific\User;
+use App\Entity\ProjectSpecific\User;
 use App\Form\ATS\ResetPasswordRequestFormType;
-use App\Form\Project_Specific\ChangePasswordFormType;
+use App\Form\ProjectSpecific\ChangePasswordFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;

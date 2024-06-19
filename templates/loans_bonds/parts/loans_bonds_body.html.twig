@@ -13,11 +13,7 @@
 
 
 {% for loans_bond in loans_bonds %}
-
-{#    {% if loans_bond.eBT == "No"  %}#}
-
-    {% include 'loans_bonds/parts/body_calcs.html.twig' %}
-{#    {% endif %}#}
+     {% include 'loans_bonds/parts/body_calcs.html.twig' %}
 {% endfor %}
 
 <tr style="background-color: whitesmoke; font-weight: bold; text-align: right; border-top: 1px solid;; border-bottom: 1px solid">

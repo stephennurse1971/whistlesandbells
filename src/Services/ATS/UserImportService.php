@@ -5,8 +5,8 @@ namespace App\Services\ATS;
 
 
 use App\Entity\Import;
-use App\Entity\Project_Specific\User;
-use App\Repository\Project_Specific\UserRepository;
+use App\Entity\ProjectSpecific\User;
+use App\Repository\ProjectSpecific\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;

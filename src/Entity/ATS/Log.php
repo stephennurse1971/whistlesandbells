@@ -2,8 +2,8 @@
 
 namespace App\Entity\ATS;
 
-use App\Entity\Project_Specific\User;
-use App\Repository\Project_Specific\LogRepository;
+use App\Entity\ProjectSpecific\User;
+use App\Repository\ProjectSpecific\LogRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

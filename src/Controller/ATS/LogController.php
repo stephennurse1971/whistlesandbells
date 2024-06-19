@@ -4,7 +4,7 @@ namespace App\Controller\ATS;
 
 use App\Entity\ATS\Log;
 use App\Form\ATS\LogType;
-use App\Repository\Project_Specific\LogRepository;
+use App\Repository\ProjectSpecific\LogRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

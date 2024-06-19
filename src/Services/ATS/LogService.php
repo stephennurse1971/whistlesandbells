@@ -5,7 +5,7 @@ namespace App\Services\ATS;
 
 
 use App\Entity\ATS\Log;
-use App\Entity\Project_Specific\User;
+use App\Entity\ProjectSpecific\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class LogService

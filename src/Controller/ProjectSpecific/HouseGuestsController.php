@@ -1,0 +1,239 @@
+<?php
+
+namespace App\Controller\ProjectSpecific;
+
+use App\Entity\ProjectSpecific\HouseGuests;
+use App\Form\ProjectSpecific\HouseGuestsType;
+use App\Repository\ProjectSpecific\FlightDestinationsRepository;
+use App\Repository\ProjectSpecific\FlightStatsRepository;
+use App\Repository\ProjectSpecific\HouseGuestsRepository;
+use App\Repository\ProjectSpecific\SettingsRepository;
+use App\Repository\ProjectSpecific\UserRepository;
+use App\Services\ProjectSpecific\FlightPrice;
+use App\Services\ProjectSpecific\HouseGuestPerDayList;
+use Doctrine\ORM\EntityManagerInterface;
+use Spatie\IcalendarGenerator\Components\Calendar;
+use Spatie\IcalendarGenerator\Components\Event;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+
+/**
+ * @Route("/houseguests")
+ *
+ */
+class HouseGuestsController extends AbstractController
+{
+    /**
+     * @Route("/index/{subset}", name="house_guests_index", methods={"GET"}, defaults={"subset"="All"})
+     */
+    public function index(Request $request, string $subset, HouseGuestsRepository $houseGuestsRepository, HouseGuestPerDayList $houseGuestPerDayList,
+                          FlightStatsRepository        $flightStatsRepository, SettingsRepository $settingsRepository,
+                          FlightDestinationsRepository $flightDestinationsRepository, EntityManagerInterface $entityManager): Response
+    {
+        $today = new \DateTime('now');
+        $tomorrow = new \DateTime('tomorrow');
+        $settings = $settingsRepository->find('1');
+        $startDate = $settings->getFlightStatsStartDate();
+        if ($startDate < $today) {
+            $settings->setFlightStatsStartDate($today);
+            $entityManager->flush();
+        }
+        $flightDestinationsAllDateReset = $flightDestinationsRepository->findAll();
+        foreach ($flightDestinationsAllDateReset as $destination) {
+            if ($destination->getDateStart() < $today) {
+                $destination->setDateStart($today);
+                $entityManager->flush();
+            }
+            if ($destination->getDateEnd() < $today) {
+                $destination->setDateEnd($tomorrow);
+                $entityManager->flush();
+            }
+        }
+
+        if ($subset == "All") {
+            $flightDestinations = $flightDestinationsRepository->findAll();
+        }
+        if ($subset == "Active") {
+            $flightDestinations = $flightDestinationsRepository->findBy([
+                'isActive' => 1
+            ]);
+        }
+        $date = new \DateTime('now');
+        $month = $date->format('m');
+        $year = $date->format('Y');
+        $dates = [];
+        $sixth_month = $month + 6;
+
+        if ($sixth_month > 12) {
+            $sixth_month = $sixth_month - 12;
+            $year = $year + 1;
+        }
+        $first_date_of_sixth_month = "01-" . $sixth_month . "-" . $year;
+        $new_date = new \DateTime($first_date_of_sixth_month);
+        $last_day_of_six_month = $new_date->modify('last day of');
+        $current_date = new \DateTime('now');
+        while ($current_date <= $last_day_of_six_month) {
+            $dates[] = new \DateTime($current_date->format('d-m-Y'));
+            $current_date = new \DateTime($current_date->modify("+1 day")->format('d-m-Y'));
+        }
+        usort($flightDestinations,function($first,$second){
+            return $first->getGroupingX() > $second->getGroupingX();
+        });
+        return $this->render('house_guests/calendarindex.html.twig', [
+            'flight_destinations' => $flightDestinations,
+            'house_guests' => $lists = $houseGuestPerDayList->guestList(),
+            'dates' => $dates,
+            'flights' => $flightStatsRepository->findAll(),
+            'settings' => $settings
+        ]);
+    }
+
+    /**
+     * @Route("/new/{startdate}", name="house_guests_new", methods={"GET","POST"})
+     */
+    public function new(string $startdate, Request $request, Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
+    {
+        $calendar = new HouseGuests();
+        $defaultDepartureDate = new \DateTime($startdate);
+        $defaultDepartureDate = $defaultDepartureDate->modify("+1 day");
+
+        $logged_user = $security->getUser();
+        $referenceInformation = '';
+        if (in_array("ROLE_ADMIN", $logged_user->getRoles())) {
+            $user_list = $userRepository->findByRole('ROLE_GUEST');
+
+        } else {
+            $user_list = $userRepository->findBy(['id' => $logged_user->getId()]);
+            $referenceInformation = "Guest Booking";
+        }
+        $houseGuest = new HouseGuests();
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list, 'referenceInformation' => $referenceInformation]);
+        $houseGuest->setDateArrival(new \DateTime($startdate));
+        $houseGuest->setDateDeparture($defaultDepartureDate);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($houseGuest);
+            $entityManager->flush();
+            if ($houseGuest->getGuestName()) {
+                $senderEmail = $security->getUser()->getEmail();
+                $guest = $houseGuest->getGuestName()->getFullName();
+                $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
+                $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
+                $meetingStartTime = new \DateTime('now');
+                $meetingEndTime = new \DateTime('now');
+                $meetingEndTime->modify("+1 day");
+                $recipient = 'nurse_stephen@hotmail.com';
+                $subject = 'New guest booking' . ' - ' . $guest;
+                $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
+                $email = (new Email())
+                    ->to($recipient)
+                    ->subject($subject)
+                    ->from('nurse_stephen@hotmail.com')
+                    ->html($html);
+                $mailer->send($email);
+            }
+            return $this->redirectToRoute('house_guests_index');
+
+        }
+
+        return $this->render('house_guests/new.html.twig', [
+            'house_guest' => $houseGuest,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="house_guests_show", methods={"GET"})
+     */
+    public function show(HouseGuests $houseGuest): Response
+    {
+        return $this->render('house_guests/show.html.twig', [
+            'house_guest' => $houseGuest,
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="house_guests_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, HouseGuests $houseGuest, Security $security, MailerInterface $mailer, UserRepository $userRepository): Response
+    {
+        $logged_user = $security->getUser();
+        $referenceInformation = '';
+        if (in_array("ROLE_ADMIN", $logged_user->getRoles())) {
+            $user_list = $userRepository->findByRole('ROLE_GUEST');
+
+        } else {
+            $user_list = $userRepository->findBy(['id' => $logged_user->getId()]);
+            $referenceInformation = "Guest Booking";
+        }
+        $startdate = $houseGuest->getDateArrival()->format('d-m-y');
+        $form = $this->createForm(HouseGuestsType::class, $houseGuest, ['user_list' => $user_list, 'referenceInformation' => $referenceInformation]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            if ($houseGuest->getGuestName()) {
+                $senderEmail = $security->getUser()->getEmail();
+                $guest = $houseGuest->getGuestName()->getFullName();
+                $arrivalDate = $houseGuest->getDateArrival()->format('d-M-Y');
+                $departureDate = $houseGuest->getDateDeparture()->format('d-M-Y');
+                $recipient = 'nurse_stephen@hotmail.com';
+                $subject = 'New guest booking' . ' - ' . $guest;
+                $html = '<p>New booking for ' . $guest . ' - Arriving on ' . $arrivalDate . ' and departing ' . $departureDate . '</p>';
+                $email = (new Email())
+                    ->to($recipient)
+                    ->subject($subject)
+                    ->from('nurse_stephen@hotmail.com')
+                    ->html($html);
+                $mailer->send($email);
+            }
+            return $this->redirectToRoute('house_guests_index');
+        }
+
+        return $this->render('house_guests/edit.html.twig', [
+            'house_guest' => $houseGuest,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="house_guests_delete", methods={"POST"})
+     */
+    public function delete(Request $request, HouseGuests $houseGuest): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $houseGuest->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($houseGuest);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('house_guests_index');
+    }
+
+    /**
+     * @Route("/flight/price/scrape/all", name="house_guests_flight_price_scrape_all")
+     */
+    public function getPrice(FlightPrice $flightPrice, FlightDestinationsRepository $flightDestinationsRepository): Response
+    {
+        $flightPrice->getPrice('all');
+        return $this->redirectToRoute('house_guests_index');
+    }
+
+    /**
+     * @Route("/flight/price/scrape_one_destination/{id}", name="house_guests_flight_price_scrape_one_destination")
+     */
+    public function getPriceOne(Request $request, $id, FlightPrice $flightPrice, FlightDestinationsRepository $flightDestinationsRepository): Response
+    {
+        $flightPrice->getPrice($id);
+        return $this->redirectToRoute('house_guests_index');
+    }
+}

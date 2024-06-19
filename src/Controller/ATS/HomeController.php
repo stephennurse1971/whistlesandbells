@@ -3,16 +3,16 @@
 namespace App\Controller\ATS;
 
 
-use App\Entity\Project_Specific\User;
+use App\Entity\ProjectSpecific\User;
 use App\Repository\ATS\CmsCopyRepository;
 use App\Repository\ATS\CmsPhotoRepository;
 use App\Repository\ATS\CompanyDetailsRepository;
 use App\Repository\ATS\ProductRepository;
 use App\Repository\ATS\SubPageRepository;
-use App\Repository\Project_Specific\IntroductionRepository;
-use App\Repository\Project_Specific\RecruiterEmailsRepository;
-use App\Repository\Project_Specific\TaxInputsRepository;
-use App\Repository\Project_Specific\UserRepository;
+use App\Repository\ProjectSpecific\IntroductionRepository;
+use App\Repository\ProjectSpecific\RecruiterEmailsRepository;
+use App\Repository\ProjectSpecific\TaxInputsRepository;
+use App\Repository\ProjectSpecific\UserRepository;
 use App\Services\ATS\CompanyDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;

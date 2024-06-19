@@ -2,8 +2,8 @@
 
 namespace App\Controller\ATS;
 
-use App\Entity\Project_Specific\User;
-use App\Form\Project_Specific\RegistrationFormType;
+use App\Entity\ProjectSpecific\User;
+use App\Form\ProjectSpecific\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
