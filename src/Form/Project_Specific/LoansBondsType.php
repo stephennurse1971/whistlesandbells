@@ -27,7 +27,7 @@ class LoansBondsType extends AbstractType
             ->add('EBT', ChoiceType::class, [
                 'multiple' => false,
                 'label' => 'Held within an EBT',
-                'required' =>true,
+                'required' =>false,
                 'expanded' => false,
                 'choices' => [
                     'Bank Deposit' => 'Bank Deposit',
