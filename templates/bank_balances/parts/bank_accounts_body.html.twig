@@ -11,16 +11,16 @@
 {#                {{ bank_balance.bank.bank }}#}
 {#            </td>#}
             <td style="text-align: right">
-                {{ bank_balance.BalanceGbp|number_format(2, '.', ',') }}
+                {{ bank_balance.BalanceGbp|number_format(0, '.', ',') }}
             </td>
             <td style="text-align: right">
-                {{ bank_balance.BalanceUsd|number_format(2, '.', ',') }}
+                {{ bank_balance.BalanceUsd|number_format(0, '.', ',') }}
             </td>
             <td style="text-align: right">
-                {{ bank_balance.BalanceEur|number_format(2, '.', ',') }}
+                {{ bank_balance.BalanceEur|number_format(0, '.', ',') }}
             </td>
             <td style="text-align: right; border-right: 1px solid">
-                {{ bank_balance.BalanceChf|number_format(2, '.', ',') }}
+                {{ bank_balance.BalanceChf|number_format(0, '.', ',') }}
             </td>
         </tr>
     {% endif %}
