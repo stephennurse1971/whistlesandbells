@@ -5,17 +5,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Tech Arete">
-    <meta name="author" content="Tech Arete">
+    <meta name="description" content="ATS Template 2">
+    <meta name="author" content="ATS Template 2">
 
 
-
-    {% if app.environment=='dev' %}
-        <link rel="icon" href="{{ asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconDev) }}">
-    {% else %}
-        <link rel="icon" href="{{ asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconLive) }}">
+    {% if CompanyDetails.companyDetails is not null %}
+        {% if app.environment=='dev' %}
+            <link rel="icon"
+                  href="{{ asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconDev) }}">
+        {% else %}
+            <link rel="icon"
+                  href="{{ asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconLive) }}">
+        {% endif %}
     {% endif %}
-    <title>{% block title %}Tech Arete{% endblock %}</title>
+    <title>{% block title %}ATS Template 2{% endblock %}</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -100,7 +103,7 @@
         }
 
         .nav-link {
-            color: white !important;
+            /*color: white !important;*/
             font-size: 18px
         }
 
@@ -305,7 +308,6 @@
         .catch(error => {
             console.error(error);
         });
-
 
 
     // $('table').addClass('table-striped');

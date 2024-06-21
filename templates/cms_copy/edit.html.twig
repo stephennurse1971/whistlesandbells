@@ -2,7 +2,7 @@
 
 {% block title %}
     {% if cms_copy.category == "Product" %}
-    CMS: {{ cms_copy.product.product }}
+        CMS: {{ cms_copy.product.product }}
     {% endif %}
     {% if cms_copy.category == "Static" %}
         CMS: {{ cms_copy.staticPageName }}
@@ -11,11 +11,15 @@
 
 {% block body %}
     <h1 style="color: red">Edit:
-        {% if cms_copy.category == "Product" %}
-            CMS: {{ cms_copy.product.product }}
-        {% endif %}
-        {% if cms_copy.category == "Static" %}
-            CMS: {{ cms_copy.staticPageName }}
+        {% if (cms_copy.category != "Product" and cms_copy.category != "Static") %}
+            Null
+        {% else %}
+            {% if cms_copy.category == "Product" %}
+                {{ cms_copy.product.product }}
+            {% endif %}
+            {% if cms_copy.category == "Static" %}
+                {{ cms_copy.staticPageName }}
+            {% endif %}
         {% endif %}
     </h1>
     {{ include('cms_copy/_form.html.twig', {'button_label': 'Update'}) }}
@@ -25,25 +29,62 @@
 
 {% block additionaljs %}
     <script>
+
+        {% if cms_copy.attachment %}
+        $(".file-upload-container").hide();
+        {% else %}
+        $(".file-upload-container").show();
+        {% endif %}
+
+
+
+
+
         var category = $("#cms_copy_category").val();
-        if(category==='Static'){
+        if (category === 'Static') {
             $(".static-container").show();
             $(".product-container").hide();
-        }
-        else{
+        } else {
             $(".static-container").hide();
             $(".product-container").show();
         }
-        $("#cms_copy_category").change(function (){
+        $("#cms_copy_category").change(function () {
             var category = $(this).val();
-            if(category==='Static'){
+            if (category === 'Static') {
                 $(".static-container").show();
                 $(".product-container").hide();
-            }
-            else{
+            } else {
                 $(".static-container").hide();
                 $(".product-container").show();
             }
         })
+    </script>
+
+
+
+
+
+
+
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentText'))
+            .catch(error => {
+                console.error(error);
+            });
+
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentTextFR'))
+            .catch(error => {
+                console.error(error);
+            });
+
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentTextDE'))
+            .catch(error => {
+                console.error(error);
+            });
+
     </script>
 {% endblock %}

@@ -27,7 +27,7 @@ class CmsPhotoType extends AbstractType
             ->add('staticPageName')
             ->add('product', EntityType::class, [
                 'class' => Product::class,
-                'required' => true,
+                'required' => false,
                 'choice_label' => 'product'
             ])
             ->add('photoOrVideo', ChoiceType::class, [
@@ -46,7 +46,8 @@ class CmsPhotoType extends AbstractType
                 'required' => false,
                 'label' => 'Title (English)'
             ])
-            ->add('link');
+            ->add('link')
+            ->add('ranking');
     }
 
     public function configureOptions(OptionsResolver $resolver)

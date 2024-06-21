@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CompanyDetailsRepository;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass=CompanyDetailsRepository::class)
  */
@@ -162,6 +163,16 @@ class CompanyDetails
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $companyTimeZone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $companySkype;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $companyQrCode;
 
 
 
@@ -498,6 +509,30 @@ class CompanyDetails
     public function setCompanyTimeZone(?string $companyTimeZone): self
     {
         $this->companyTimeZone = $companyTimeZone;
+
+        return $this;
+    }
+
+    public function getCompanySkype(): ?string
+    {
+        return $this->companySkype;
+    }
+
+    public function setCompanySkype(?string $companySkype): self
+    {
+        $this->companySkype = $companySkype;
+
+        return $this;
+    }
+
+    public function getCompanyQrCode(): ?string
+    {
+        return $this->companyQrCode;
+    }
+
+    public function setCompanyQrCode(?string $companyQrCode): self
+    {
+        $this->companyQrCode = $companyQrCode;
 
         return $this;
     }

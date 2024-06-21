@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use App\Entity\ContentPage;
-use App\Entity\SubPage;
 use App\Entity\Product;
+use App\Entity\SubPage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

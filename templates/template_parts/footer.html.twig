@@ -117,21 +117,23 @@
 
                             <div style="text-align: left" class="col-md-6 mt-3 col-lg-2 mx-auto  ">
                                 <h6 class="text-uppercase mb-4 font-weight-bold">
-                                    <a target="_blank" href="{{ path('/aboutUs') }}">Follow us</a>
+                                    Follow us
                                 </h6>
 
                                 <!-- Facebook -->
-                                <a target="_blank"
-                                   class="btn btn-primary btn-floating m-1 footer-social-icon-fb"
-                                   data-hover-rule="color" data-hover-color="#dd3333"
-                                   style="color : #1877F2; font-size: 16px; padding:6px;background-color: #3b5998"
-                                   href="https://www.facebook.com/{{ CompanyDetails.getCompanyDetails.facebook }}"
-                                   role="button">
-                                    <i class="fab fa-facebook-f text-light"></i>
-                                </a>
-
+                                {% if  CompanyDetails.getCompanyDetails.facebook is not null %}
+                                    <a target="_blank"
+                                       class="btn btn-primary btn-floating m-1 footer-social-icon-fb"
+                                       data-hover-rule="color" data-hover-color="#dd3333"
+                                       style="color : #1877F2; font-size: 16px; padding:6px;background-color: #3b5998"
+                                       href="https://www.facebook.com/{{ CompanyDetails.getCompanyDetails.facebook }}"
+                                       role="button">
+                                        <i class="fab fa-facebook-f text-light"></i>
+                                    </a>
+                                {% endif %}
 
                                 <!-- Linkedin -->
+                                {% if  CompanyDetails.getCompanyDetails.linkedIn is not null %}
                                 <a target="_blank"
                                    class="btn btn-primary btn-floating m-1 footer-social-icon-ln"
                                    data-hover-rule="color" data-hover-color="#dd3333"
@@ -140,9 +142,10 @@
                                    role="button">
                                     <i class="fab fa-linkedin-in text-light"></i>
                                 </a>
-
+                                {% endif %}
 
                                 <!-- Instagram -->
+                                {% if  CompanyDetails.getCompanyDetails.instagram is not null %}
                                 <a target="_blank"
                                    class="btn btn-primary btn-floating m-1 footer-social-icon-in"
                                    data-hover-rule="color" data-hover-color="red"
@@ -151,9 +154,10 @@
                                    role="button">
                                     <i class="fab fa-instagram text-light"></i>
                                 </a>
-
+                                {% endif %}
 
                                 <!-- Twitter -->
+                                {% if  CompanyDetails.getCompanyDetails.twitter is not null %}
                                 <a target="_blank"
                                    class="btn btn-primary btn-floating m-1 footer-social-icon-tw"
                                    data-hover-rule="color" data-hover-color="#dd3333"
@@ -162,6 +166,7 @@
                                    role="button">
                                     <i class="fab fa-twitter text-light"></i>
                                 </a>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>

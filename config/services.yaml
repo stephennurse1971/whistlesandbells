@@ -2,12 +2,15 @@
 # Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-  users_attachments_directory: '%kernel.project_dir%/public/administration/import_export/users/'
-  favicon_directory: '%kernel.project_dir%/public/administration/img/favicons/'
-  website_pictures_directory: '%kernel.project_dir%/public/administration/img/website_pictures/'
-  scraper: '%kernel.project_dir%/public/scrape/'
+  favicon_directory: '%kernel.project_dir%/public/administration/attachments/Favicons/'
+  user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
+  website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos'
+  website_attachments_directory: '%kernel.project_dir%/public/administration/attachments/WebsiteAttachments'
+
+
+
 
 
 
@@ -25,6 +28,13 @@ services:
       - '../src/DependencyInjection/'
       - '../src/Entity/'
       - '../src/Kernel.php'
+      - '../src/Tests/'
+
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
+  App\Controller\:
+    resource: '../src/Controller/'
+    tags: ['controller.service_arguments']
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Log;
-use App\Entity\User;
+use App\Entity\ProjectSpecific\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

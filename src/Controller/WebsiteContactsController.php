@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\WebsiteContacts;
 use App\Form\WebsiteContactsType;
 use App\Repository\ProductRepository;
-use App\Repository\UserRepository;
+use App\Repository\ProjectSpecific\UserRepository;
 use App\Repository\WebsiteContactsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class WebsiteContactsController extends AbstractController
 {
     /**
-     * @Route("/", name="website_contacts_index", methods={"GET"})
+     * @Route("/index", name="website_contacts_index", methods={"GET"})
      */
     public function index(WebsiteContactsRepository $websiteContactsRepository, UserRepository $userRepository): Response
     {
@@ -60,7 +60,7 @@ class WebsiteContactsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="website_contacts_show", methods={"GET"})
+     * @Route("/show/{id}", name="website_contacts_show", methods={"GET"})
      */
     public function show(WebsiteContacts $websiteContact): Response
     {
@@ -70,7 +70,7 @@ class WebsiteContactsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="website_contacts_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="website_contacts_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository): Response
     {
@@ -90,7 +90,7 @@ class WebsiteContactsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/setToJunk", name="website_contacts_set_to_junk", methods={"GET", "POST"})
+     * @Route("/setToJunk/{id}", name="website_contacts_set_to_junk", methods={"GET", "POST"})
      */
     public function setToJunk(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
     {
@@ -102,7 +102,7 @@ class WebsiteContactsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/revertToPending", name="website_contacts_revert_to_pending", methods={"GET", "POST"})
+     * @Route("/revertToPending/{id}", name="website_contacts_revert_to_pending", methods={"GET", "POST"})
      */
     public function revertToPending(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
     {
@@ -114,7 +114,7 @@ class WebsiteContactsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="website_contacts_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="website_contacts_delete", methods={"POST"})
      */
     public
     function delete(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository): Response
@@ -122,7 +122,6 @@ class WebsiteContactsController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $websiteContact->getId(), $request->request->get('_token'))) {
             $websiteContactsRepository->remove($websiteContact, true);
         }
-
         return $this->redirectToRoute('website_contacts_index', [], Response::HTTP_SEE_OTHER);
     }
 }

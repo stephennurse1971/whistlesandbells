@@ -13,40 +13,46 @@
     <div class="col-md-3">
         <h2>Category</h2>
         {{ form_row(form.category) }}
-
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-3">
-
         <div class="static-container">
-            <h2>Static</h2>
             {{ form_row(form.staticPageName) }}
         </div>
-
-
         <div class="product-container">
             <h2>Product</h2>
             {{ form_row(form.product) }}
         </div>
-
     </div>
+    <div class="col-md-3">
+        <h2>Tab Title</h2>
+        {{ form_row(form.ranking) }}
 
-</div>
+        {% if cms_copy.attachment is not null %}
+            <b>Attachment:</b><br>
+            {{ cms_copy.attachment }}
+            <a class="btn btn-outline-danger btn-sm"
+               href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}"> <i
+                        style="color: red" class="fa fa-trash"></i></a>
+            <br>
+            <a title="{{ cms_copy.attachment }}" target="_blank"
+               href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
+                <i title="{{ cms_copy.attachment }}" class="fa fa-paperclip"></i>
+            </a>
+            <br>
+        {% endif %}
 
-<div class="row">
+        <div class="file-upload-container">
+            {{ form_row(form.attachment) }}
+        </div>
+    </div>
     <div class="col-md-3">
         <h2>Tab Title</h2>
         {{ form_row(form.tabTitle) }}
         {{ form_row(form.hyperlinks) }}
     </div>
 </div>
-
+<hr>
 <h2>Headings</h2>
 <div class="row">
     <div class="col-md-3">
-
         {{ form_row(form.contentTitle) }}
     </div>
     <div class="col-md-3">
@@ -56,7 +62,7 @@
         {{ form_row(form.contentTitleDE) }}
     </div>
 </div>
-
+<hr>
 
 <h2>Content</h2>
 <div class="row">
@@ -79,18 +85,7 @@
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 
-{% block additionaljs %}
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#cms_copy_contentText'));
 
-        ClassicEditor
-            .create(document.querySelector('#cms_copy_contentTextFR'));
-
-        ClassicEditor
-            .create(document.querySelector('#cms_copy_contentTextDE'));
-    </script>
-{% endblock %}
 
 
 

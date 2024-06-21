@@ -10,16 +10,17 @@
         <tr>
             <th style="text-align: left">Name</th>
             <th style="text-align: left">Website</th>
-            <th style="text-align: left">Favicons</th>
-            <th style="text-align: left">Favicons</th>
+            <th style="text-align: left">Favicons<br>Live/Dev</th>
             <th style="text-align: left">Email</th>
             <th>Tel</th>
             <th>Mobile</th>
+            <th>Skype</th>
             <th>Address</th>
             <th>Time<br>Zone</th>
             <th>Ccy</th>
             <th>Weather<br>Location</th>
             <th>Directions</th>
+            <th>QR</th>
             <th>Facebook</th>
             <th>LinkedIn</th>
             <th>Instagram</th>
@@ -40,14 +41,18 @@
                     {{ company_detail.companyWebsite }}
                 </td>
 
-                {% set faviconLive = asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconLive)  %}
-                {% set faviconDev = asset('administration/img/favicons/'~CompanyDetails.getCompanyDetails.faviconDev)  %}
+                {% set faviconLive = asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconLive) %}
+                {% set faviconDev = asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconDev) %}
 
                 <td style="text-align: center">
-                    <img height="50" width="50" src="{{ faviconLive }}" class="rounded-circle test">
-                </td>
-                <td style="text-align: center">
-                    <img height="50" width="50" src="{{ faviconDev }}" class="rounded-circle test">
+                    {% if company_detail.faviconLive is not null %}
+                        <img height="50" width="50" src="{{ faviconLive }}" class="rounded-circle test">
+                        <br>
+                        <br>
+                    {% endif %}
+                    {% if company_detail.faviconDev is not null %}
+                        <img height="50" width="50" src="{{ faviconDev }}" class="rounded-circle test">
+                    {% endif %}
                 </td>
 
                 <td style="text-align: left">
@@ -63,8 +68,29 @@
                         (Import: {{ company_detail.companyEmailImportDirectory }} /{{ company_detail.companyEmailImportProcessedDirectory }} )
                     {% endif %}
                 </td>
-                <td>{{ company_detail.companyTel }}</td>
-                <td>{{ company_detail.companyMobile }}</td>
+                <td style="text-align: center">
+                    <a title="{{ company_detail.companyTel }}"
+                       href="https://wa.me/{{ company_detail.companyTel | replace({' ': ''}) }}">
+                        <i style="color: green" class="fab fa-whatsapp"></i>
+                    </a>
+                    {#                    {{ company_detail.companyTel }} #}
+                </td>
+                <td style="text-align: center">
+                    <a title="{{ company_detail.companyMobile }}"
+                       href="https://wa.me/{{ company_detail.companyMobile | replace({' ': ''}) }}">
+                        <i style="color: green"
+                           class="fab fa-whatsapp"></i>
+                    </a>
+                    {#                    {{ company_detail.companyMobile }} #}
+                </td>
+                <td style="text-align: center">
+                    <a title="{{ company_detail.companySkype }}"
+                       href="skype:{{ company_detail.companySkype }}?call">
+                        <i style="color: royalblue"
+                           class="fab fa-skype"></i>
+                    </a>
+                    {#                    {{ company_detail.companySkype }} #}
+                </td>
                 <td>
                     {{ company_detail.companyAddressStreet }}, <br>
                     {{ company_detail.companyAddressTown }},
@@ -86,6 +112,14 @@
                     {{ company_detail.companyAddressInstructions |raw }}
                 </td>
 
+                <td style="text-align: center">
+                    {% if company_detail.companyQrCode is not empty %}
+                        <a target="_blank" title="{{ company_detail.companyQrCode }}"
+                           href="{{ path('app_home') }}">
+                            <i class="fa fa-qrcode"></i>
+                        </a>
+                    {% endif %}
+                </td>
                 <td style="text-align: center">
                     {% if company_detail.facebook is not empty %}
                         <a target="_blank" title="{{ company_detail.facebook }}"
@@ -137,7 +171,10 @@
         </tbody>
     </table>
 
-    <a target="_blank" class="btn btn-success btn-sm" href="{{ path('company_details_new') }}">New</a>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <br><br>
+        <a target="_blank" class="btn btn-success btn-sm" href="{{ path('company_details_new') }}">New</a>
+    {% endif %}
 {% endblock %}
 
 {% block datatable %}

@@ -11,6 +11,13 @@
 {% endblock %}
 {% block additionaljs %}
    <script>
+       {% if cms_copy.attachment %}
+       $(".file-upload-container").hide();
+       {% else %}
+       $(".file-upload-container").show();
+       {% endif %}
+
+
        var category = $("#cms_copy_category").val();
        if(category==='Static'){
            $(".static-container").show();
@@ -32,4 +39,23 @@
            }
        })
    </script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentText'))
+            .catch(error => {
+                console.error(error);
+            });
+
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentTextFR'))
+            .catch(error => {
+                console.error(error);
+            });
+
+        ClassicEditor
+            .create(document.querySelector('#cms_copy_contentTextDE'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 {% endblock %}

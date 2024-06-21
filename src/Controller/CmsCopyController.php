@@ -2,29 +2,33 @@
 
 namespace App\Controller;
 
+use App\Controller\FileException;
 use App\Entity\CmsCopy;
 use App\Form\CmsCopyType;
 use App\Repository\CmsCopyRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/cmscopy")
+ * @Route("/cmscopy")
  */
 class CmsCopyController extends AbstractController
 {
     /**
-     * @Route("/", name="cms_copy_index", methods={"GET"})
+     * @Route("/index", name="cms_copy_index", methods={"GET"})
      */
-    public function index(CmsCopyRepository $cmsCopyRepository): Response
+    public function index(CmsCopyRepository $cmsCopyRepository, ProductRepository $productRepository): Response
     {
-        $site_pages = ['Emails', 'HomePage', 'AboutSN', 'Cyprus', 'Flying', 'Tennis', 'WebDesign', 'PrivateEquity', 'Risk & Capital Consulting'];
+        $products = $productRepository->findAll();
         return $this->render('cms_copy/index.html.twig', [
             'cms_copies' => $cmsCopyRepository->findAll(),
-            'site_pages' => $site_pages
+            'products' => $products
         ]);
     }
 
@@ -36,8 +40,34 @@ class CmsCopyController extends AbstractController
         $cmsCopy = new CmsCopy();
         $form = $this->createForm(CmsCopyType::class, $cmsCopy);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $attachment = $form->get('attachment')->getData();
+            if ($attachment) {
+                $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                if ($cmsCopy->getProduct()) {
+                    $safeFilename = $cmsCopy->getProduct()->getProduct() . uniqid();
+                }
+                if ($cmsCopy->getStaticPageName()) {
+                    $safeFilename = $cmsCopy->getStaticPageName() . uniqid();
+                }
+
+                $newFilename = $safeFilename . '.' . $attachment->guessExtension();
+                try {
+                    $attachment->move(
+                        $this->getParameter('website_attachments_directory'),
+                        $newFilename
+                    );
+                    $cmsCopy->setAttachment($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+            if($cmsCopy->getCategory()=="Product"){
+                $cmsCopy->setStaticPageName(null);
+            }
+            if($cmsCopy->getCategory()=="Static"){
+                $cmsCopy->setProduct(null);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
@@ -51,7 +81,7 @@ class CmsCopyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="cms_copy_show", methods={"GET"})
+     * @Route("/show/{id}", name="cms_copy_show", methods={"GET"})
      */
     public function show(CmsCopy $cmsCopy): Response
     {
@@ -61,14 +91,36 @@ class CmsCopyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="cms_copy_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="cms_copy_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, CmsCopy $cmsCopy): Response
     {
         $form = $this->createForm(CmsCopyType::class, $cmsCopy);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $attachment = $form->get('attachment')->getData();
+            if ($attachment) {
+                $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+
+
+                $newFilename = $originalFilename . '.' . $attachment->guessExtension();
+                try {
+                    $attachment->move(
+                        $this->getParameter('website_attachments_directory'),
+                        $newFilename
+                    );
+                    $cmsCopy->setAttachment($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+            if($cmsCopy->getCategory()=="Product"){
+                $cmsCopy->setStaticPageName(null);
+            }
+            if($cmsCopy->getCategory()=="Static"){
+                $cmsCopy->setProduct(null);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
@@ -82,7 +134,7 @@ class CmsCopyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/copy_and_edit", name="cms_copy_copy_and_edit", methods={"GET","POST"})
+     * @Route("/copy_and_edit/{id}", name="cms_copy_copy_and_edit", methods={"GET","POST"})
      */
     public function copyAndEdit(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $manager): Response
     {
@@ -115,7 +167,7 @@ class CmsCopyController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="cms_copy_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="cms_copy_delete", methods={"POST"})
      */
     public function delete(Request $request, CmsCopy $cmsCopy): Response
     {
@@ -127,4 +179,65 @@ class CmsCopyController extends AbstractController
 
         return $this->redirectToRoute('cms_copy_index');
     }
+
+    /**
+     * @Route("/show_attachment/{id}", name="cms_copy_show_attachment")
+     */
+    public function showCmsCopyAttachment(Request $request, CmsCopy $cmsCopy)
+    {
+        $filename = $cmsCopy->getAttachment();
+        $filepath = $this->getParameter('website_attachments_directory') . "/" . $filename;
+        if (file_exists($filepath)) {
+            $response = new BinaryFileResponse($filepath);
+            //  $response->headers->set('Content-Type');
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_INLINE, //use ResponseHeaderBag::DISPOSITION_ATTACHMENT to save as an attachment
+                $filename
+            );
+            return $response;
+        } else {
+            return new Response("file does not exist");
+        }
+    }
+
+    /**
+     * @Route("/cms_copy_delete_file/{id}", name="cms_copy_delete_file", methods={"POST", "GET"})
+     */
+    public function deleteCmsCopyFile(int $id, Request $request, CmsCopy $cmsCopy, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $fileName = $cmsCopy->getAttachment();
+        $file = $this->getParameter('website_attachments_directory') . "/".$fileName;
+        if(file_exists($file)){
+            unlink($file);
+        }
+        $cmsCopy->setAttachment(null);
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+
+    /**
+     * @Route("/cms_copy_delete/all_files", name="cms_copy_delete_all_files",)
+     */
+    public function deleteCmsCopyAllFiles(Request $request, CmsCopyRepository $cmsCopyRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $cms_copys = $cmsCopyRepository->findAll();
+
+        $files = glob($this->getParameter('website_attachments_directory') . "/*");
+        foreach ($files as $file) {
+            unlink($file);
+        }
+        $entityManager->flush();
+
+        foreach ($cms_copys as $cms_copy) {
+            $cms_copy->setAttachment(null);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+
+
 }

@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\CompanyDetails;
-
 use App\Form\CompanyDetailsType;
 use App\Repository\CompanyDetailsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/company_details")
- * @Security("is_granted('ROLE_STAFF')")
+ * @Security("is_granted('ROLE_ADMIN')")
  */
 class CompanyDetailsController extends AbstractController
 {
@@ -24,14 +24,14 @@ class CompanyDetailsController extends AbstractController
     public function index(CompanyDetailsRepository $companyDetailsRepository): Response
     {
         return $this->render('company_details/index.html.twig', [
-            'company_details'=>$companyDetailsRepository->findAll()
+            'company_details' => $companyDetailsRepository->findAll()
         ]);
     }
 
     /**
      * @Route("/new", name="company_details_new", methods={"GET", "POST"})
      */
-    public function new(Request $request,CompanyDetailsRepository $companyDetailsRepository): Response
+    public function new(Request $request, CompanyDetailsRepository $companyDetailsRepository): Response
     {
         $companyDetails = new CompanyDetails();
         $form = $this->createForm(CompanyDetailsType::class, $companyDetails);
@@ -43,14 +43,14 @@ class CompanyDetailsController extends AbstractController
             return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('company_details/new.html.twig', [
+        return $this->render('company_details/new.html.twig', [
             'company_details' => $companyDetails,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="company_details_show", methods={"GET"})
+     * @Route("/show/{id}", name="company_details_show", methods={"GET"})
      */
     public function show(CompanyDetails $companyDetails): Response
     {
@@ -60,7 +60,7 @@ class CompanyDetailsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="company_details_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="company_details_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -68,12 +68,13 @@ class CompanyDetailsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $faviconDev=$form['faviconDev']->getData();
-            $faviconLive=$form['faviconLive']->getData();
+            $faviconDev = $form['faviconDev']->getData();
+            $faviconLive = $form['faviconLive']->getData();
+            $qrCode = $form['companyQrCode']->getData();
 
             if ($faviconDev) {
                 $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $companyDetails->getCompanyName() .'_dev.'. $faviconDev->guessExtension();
+                $newFilename = $companyDetails->getCompanyName() . '_dev.' . $faviconDev->guessExtension();
                 $faviconDev->move(
                     $this->getParameter('favicon_directory'),
                     $newFilename
@@ -82,33 +83,97 @@ class CompanyDetailsController extends AbstractController
             }
             if ($faviconLive) {
                 $originalFilenameLive = pathinfo($faviconLive->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilenameLive = $companyDetails->getCompanyName() .'_live.'. $faviconLive->guessExtension();
+                $newFilenameLive = $companyDetails->getCompanyName() . '_live.' . $faviconLive->guessExtension();
                 $faviconLive->move(
                     $this->getParameter('favicon_directory'),
                     $newFilenameLive
                 );
                 $companyDetails->setFaviconLive($newFilenameLive);
             }
+            if ($qrCode) {
+                $originalFilenameQR = pathinfo($qrCode->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilenameQR = $companyDetails->getCompanyName() . '_qr_code.' . $qrCode->guessExtension();
+                $qrCode->move(
+                    $this->getParameter('favicon_directory'),
+                    $newFilenameQR
+                );
+                $companyDetails->setCompanyQrCode($newFilenameQR);
+            }
             $companyDetailsRepository->add($companyDetails, true);
 
             return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('company_details/edit.html.twig', [
+        return $this->render('company_details/edit.html.twig', [
             'company_details' => $companyDetails,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="company_details_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="company_details_delete", methods={"POST"})
      */
     public function delete(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$companyDetails->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $companyDetails->getId(), $request->request->get('_token'))) {
             $companyDetailsRepository->remove($companyDetails, true);
         }
 
         return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/map_gps", name="company_details_map_gps", methods={"POST"})
+     */
+
+    public function officeAddressGPS(CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        return $this->render('home/officeAddress.html.twig');
+    }
+
+
+    /**
+     * @Route("/delete_favicon/{live_or_dev}/{id}", name="company_details_delete_favicon", methods={"POST", "GET"})
+     */
+    public function deleteLiveFavicon(Request $request, int $id, string $live_or_dev, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        if ($live_or_dev == 'live') {
+            $companyDetails->setFaviconLive(null);
+            $entityManager->flush();
+            $files = glob($this->getParameter('favicon_directory') . "/*live*");
+            foreach ($files as $file) {
+                unlink($file);
+            }
+        }
+        if ($live_or_dev == 'dev') {
+            $companyDetails->setFaviconDev(null);
+            $entityManager->flush();
+            $files = glob($this->getParameter('favicon_directory') . "/*dev*");
+            foreach ($files as $file) {
+                unlink($file);
+            }
+        }
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+
+    /**
+     * @Route("/delete_qr_code/{id}", name="company_details_delete_qr_code", methods={"POST", "GET"})
+     */
+    public function deleteQRCodeLiveFavicon(Request $request, int $id, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $companyDetails->setCompanyQrCode(null);
+        $entityManager->flush();
+        $files = glob($this->getParameter('favicon_directory') . "/*qr*");
+        foreach ($files as $file) {
+            unlink($file);
+        }
+
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
 }

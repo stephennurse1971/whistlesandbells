@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\EmailTemplates;
 use App\Entity\Transaction;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function App\Services\str_contains;
 
 class StringReplace
 {

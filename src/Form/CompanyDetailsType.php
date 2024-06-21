@@ -5,8 +5,6 @@ namespace App\Form;
 use App\Entity\CompanyDetails;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,6 +14,8 @@ class CompanyDetailsType extends AbstractType
     {
         $builder
             ->add('companyName')
+//            ->add('contactFirstName')
+//            ->add('contactLastName')
             ->add('companyWebsite')
 
             ->add('faviconLive', FileType::class, [
@@ -34,6 +34,12 @@ class CompanyDetailsType extends AbstractType
             ->add('companyEmailImportProcessedDirectory')
             ->add('companyTel')
             ->add('companyMobile')
+            ->add('companySkype')
+            ->add('companyQrCode', FileType::class,[
+                'label' => 'QR Code',
+                'mapped' => false,
+                'required' => false
+            ])
             ->add('companyAddressStreet')
             ->add('companyAddressTown')
             ->add('companyAddressCity')
