@@ -18,8 +18,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse  main-menu navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
+            <div class="collapse  main-menu navbar-collapse pr-5 mr-5 " id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto " >
 
                     <!-- Nav Item #1 - Home -->
                     <li class="nav-item active">
@@ -131,13 +131,14 @@
 
                                 {% if app.user %}
                                     {% if CompanyDetails.companyDetails.companyAddressStreet is not null %}
-                                        <a target="_blank"
+                                        <a class="dropdown-item" target="_blank"
                                            title="{{ CompanyDetails.companyDetails.companyAddressStreet }} "
                                            href="{{ path('office_address') }}"> <i style="color: royalblue"
                                                                                    class="fa fa-car"></i> {{ CompanyDetails.companyDetails.companyAddressStreet }}
                                         </a>
                                     {% endif %}
                                 {% endif %}
+
                                 <a class="dropdown-item" title="Contact details"
                                    href="{{ path('create_vcard_company') }}">
                                     <i class="fa fa-credit-card"></i> Business Card
