@@ -174,6 +174,36 @@ class CompanyDetails
      */
     private $companyQrCode;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $footerDisplayProducts;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $footerDisplaySocialMedia;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $footerDisplayAddress;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $footerDisplayTelNumbers;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $footerDisplayContactDetails;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayLogin;
+
 
 
 
@@ -533,6 +563,78 @@ class CompanyDetails
     public function setCompanyQrCode(?string $companyQrCode): self
     {
         $this->companyQrCode = $companyQrCode;
+
+        return $this;
+    }
+
+    public function isFooterDisplayProducts(): ?bool
+    {
+        return $this->footerDisplayProducts;
+    }
+
+    public function setFooterDisplayProducts(?bool $footerDisplayProducts): self
+    {
+        $this->footerDisplayProducts = $footerDisplayProducts;
+
+        return $this;
+    }
+
+    public function isFooterDisplaySocialMedia(): ?bool
+    {
+        return $this->footerDisplaySocialMedia;
+    }
+
+    public function setFooterDisplaySocialMedia(?bool $footerDisplaySocialMedia): self
+    {
+        $this->footerDisplaySocialMedia = $footerDisplaySocialMedia;
+
+        return $this;
+    }
+
+    public function isFooterDisplayAddress(): ?bool
+    {
+        return $this->footerDisplayAddress;
+    }
+
+    public function setFooterDisplayAddress(?bool $footerDisplayAddress): self
+    {
+        $this->footerDisplayAddress = $footerDisplayAddress;
+
+        return $this;
+    }
+
+    public function isFooterDisplayTelNumbers(): ?bool
+    {
+        return $this->footerDisplayTelNumbers;
+    }
+
+    public function setFooterDisplayTelNumbers(?bool $footerDisplayTelNumbers): self
+    {
+        $this->footerDisplayTelNumbers = $footerDisplayTelNumbers;
+
+        return $this;
+    }
+
+    public function isFooterDisplayContactDetails(): ?bool
+    {
+        return $this->footerDisplayContactDetails;
+    }
+
+    public function setFooterDisplayContactDetails(?bool $footerDisplayContactDetails): self
+    {
+        $this->footerDisplayContactDetails = $footerDisplayContactDetails;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayLogin(): ?bool
+    {
+        return $this->headerDisplayLogin;
+    }
+
+    public function setHeaderDisplayLogin(?bool $headerDisplayLogin): self
+    {
+        $this->headerDisplayLogin = $headerDisplayLogin;
 
         return $this;
     }

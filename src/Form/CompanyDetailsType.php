@@ -56,6 +56,12 @@ class CompanyDetailsType extends AbstractType
             ->add('twitter')
             ->add('instagram')
             ->add('linkedIn')
+            ->add('footerDisplayContactDetails')
+            ->add('footerDisplayAddress')
+            ->add('footerDisplayTelNumbers')
+            ->add('footerDisplaySocialMedia')
+            ->add('footerDisplayProducts')
+            ->add('headerDisplayLogin')
         ;
     }
 

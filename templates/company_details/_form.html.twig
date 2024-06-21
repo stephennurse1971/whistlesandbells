@@ -99,6 +99,16 @@
             {{ form_row(form.companyQrCode) }}
         </div>
     </div>
+    <div class="col-2">
+        {{ form_row(form.footerDisplayAddress) }}
+        {{ form_row(form.footerDisplayContactDetails) }}
+        {{ form_row(form.footerDisplayProducts) }}
+        {{ form_row(form.footerDisplaySocialMedia) }}
+        {{ form_row(form.footerDisplayTelNumbers) }}
+        {{ form_row(form.headerDisplayLogin) }}
+
+    </div>
+
 </div>
 
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>

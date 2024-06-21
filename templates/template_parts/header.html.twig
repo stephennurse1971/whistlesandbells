@@ -19,7 +19,7 @@
             </button>
 
             <div class="collapse  main-menu navbar-collapse pr-5 mr-5 " id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto " >
+                <ul class="navbar-nav ml-auto ">
 
                     <!-- Nav Item #1 - Home -->
                     <li class="nav-item active">
@@ -87,7 +87,7 @@
                     </li>
 
 
-                     {% include 'template_parts_project_specific/header_project_specific.html.twig' %}
+                    {% include 'template_parts_project_specific/header_project_specific.html.twig' %}
 
                     <!-- Nav Item #5 - Contact -->
                     {% if CompanyDetails.getCompanyDetails is not null %}
@@ -143,13 +143,44 @@
                                    href="{{ path('create_vcard_company') }}">
                                     <i class="fa fa-credit-card"></i> Business Card
                                 </a>
-
                             </div>
                         </li>
                     {% endif %}
 
 
                     {% include 'template_parts_project_specific/header_project_specific2.html.twig' %}
+
+                    <!-- Nav Item #10 - Login -->
+                    {% if CompanyDetails.companyDetails.headerDisplayLogin ==1 %}
+                        {% if app.user %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ app.user.fullName }}
+                                </a>
+
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
+                                {% endif %}
+
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
+                                {% endif %}
+
+
+                                {% include 'template_parts_project_specific/header_project_specific3.html.twig' %}
+
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item"
+                                       href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">Profile</a>
+                                    <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <a class=" btn btn-sm btn-outline-dark" href="{{ path('app_login') }}">Login</a>
+                        {% endif %}
+                    {% endif %}
 
                 </ul>
             </div>

@@ -38,6 +38,37 @@ class CompanyDetailsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $faviconDev = $form['faviconDev']->getData();
+            $faviconLive = $form['faviconLive']->getData();
+            $qrCode = $form['companyQrCode']->getData();
+
+            if ($faviconDev) {
+                $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $companyDetails->getCompanyName() . '_dev.' . $faviconDev->guessExtension();
+                $faviconDev->move(
+                    $this->getParameter('favicon_directory'),
+                    $newFilename
+                );
+                $companyDetails->setFaviconDev($newFilename);
+            }
+            if ($faviconLive) {
+                $originalFilenameLive = pathinfo($faviconLive->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilenameLive = $companyDetails->getCompanyName() . '_live.' . $faviconLive->guessExtension();
+                $faviconLive->move(
+                    $this->getParameter('favicon_directory'),
+                    $newFilenameLive
+                );
+                $companyDetails->setFaviconLive($newFilenameLive);
+            }
+            if ($qrCode) {
+                $originalFilenameQR = pathinfo($qrCode->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilenameQR = $companyDetails->getCompanyName() . '_qr_code.' . $qrCode->guessExtension();
+                $qrCode->move(
+                    $this->getParameter('favicon_directory'),
+                    $newFilenameQR
+                );
+                $companyDetails->setCompanyQrCode($newFilenameQR);
+            }
             $companyDetailsRepository->add($companyDetails, true);
 
             return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
