@@ -7,8 +7,8 @@ use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\CompanyDetailsRepository;
 use App\Repository\ProductRepository;
-use App\Repository\UserRepository;
 use App\Repository\SubPageRepository;
+use App\Repository\UserRepository;
 use App\Services\CompanyDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
@@ -23,8 +23,9 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CompanyDetails $companyDetails, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository): Response
+    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, CompanyDetails $companyDetails): Response
     {
+
         $cms_copy = $cmsCopyRepository->findBy([
             'staticPageName' => 'Home'
         ]);
@@ -169,9 +170,9 @@ class HomeController extends AbstractController
     {
         $company_details = $companyDetailsRepository->find('1');
         $vcard = new VCard();
-        $firstName = 'Stephen';
-        $lastName = 'Nurse';
         $company = $company_details->getCompanyName();
+        $firstName = $company_details->getContactFirstName();
+        $lastName = $company_details->getContactLastName();
         $addressStreet = $company_details->getCompanyAddressStreet();
         $addressTown = $company_details->getCompanyAddressTown();
         $addressCity = $company_details->getCompanyAddressCity();

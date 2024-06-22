@@ -204,6 +204,16 @@ class CompanyDetails
      */
     private $headerDisplayLogin;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $contactFirstName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $contactLastName;
+
 
 
 
@@ -635,6 +645,30 @@ class CompanyDetails
     public function setHeaderDisplayLogin(?bool $headerDisplayLogin): self
     {
         $this->headerDisplayLogin = $headerDisplayLogin;
+
+        return $this;
+    }
+
+    public function getContactFirstName(): ?string
+    {
+        return $this->contactFirstName;
+    }
+
+    public function setContactFirstName(?string $contactFirstName): self
+    {
+        $this->contactFirstName = $contactFirstName;
+
+        return $this;
+    }
+
+    public function getContactLastName(): ?string
+    {
+        return $this->contactLastName;
+    }
+
+    public function setContactLastName(?string $contactLastName): self
+    {
+        $this->contactLastName = $contactLastName;
 
         return $this;
     }

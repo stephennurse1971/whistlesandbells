@@ -1,14 +1,14 @@
 <!--Start Header Section -->
 <header id="top-header" class="clearfix">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-gray-100 fixed-top shadow">
         <div class="container-fluid">
             <div class="logo">
                 <a class="navbar-brand" href="{{ path('app_home') }}">
                     {% if CompanyDetails.getCompanyDetails is not null %}
-                        {{ CompanyDetails.getCompanyDetails.companyName }}
-                    {% else %}
-                        Template
+                        <a style="color: black" href="{{ path('app_home') }}">
+                            {{ CompanyDetails.getCompanyDetails.companyName }}
+                        </a>
                     {% endif %}
                 </a>
             </div>
@@ -18,8 +18,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse  main-menu navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
+            <div class="collapse  main-menu navbar-collapse pr-5 mr-5 " id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto ">
 
                     <!-- Nav Item #1 - Home -->
                     <li class="nav-item active">
@@ -38,7 +38,7 @@
                             <li class="nav-item active">
                                 <a style="color: red" class="nav-link" target="_blank"
                                    href="{{ path('website_contacts_index') }}">
-                                    <i title="Website inquiries awaiting a response" style="color: yellow"
+                                    <i title="Website inquiries awaiting a response" style="color: purple"
                                        class="fa fa-user-secret"></i>
                                     ({{ CountPendingWebsiteInquiries.countContacts }})
                                 </a>
@@ -57,15 +57,17 @@
                                 {% set products = Product.getProductAll %}
                                 {% for product in products %}
                                     {% if product.isActive==1 and product.includeInFooter==1 %}
-                                        <a target="_blank" class="text-white mb-1"
+                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
                                            href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
                                         </a>
+                                        <br>
                                     {% else %}
                                         {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
-                                            <a target="_blank" class="text-white mb-1"
+                                            <a target="_blank" class="text-gray-600 mb-3 ml-3"
                                                href="{{ path('product_display', { product: product.product}) }}">
                                                 <span style="color: red">{{ product.product }}*</span>
                                             </a>
+                                            <br>
                                         {% endif %}
                                     {% endif %}
 
@@ -85,7 +87,7 @@
                     </li>
 
 
-                     {% include 'template_parts_project_specific/header_project_specific.html.twig' %}
+                    {% include 'template_parts_project_specific/header_project_specific.html.twig' %}
 
                     <!-- Nav Item #5 - Contact -->
                     {% if CompanyDetails.getCompanyDetails is not null %}
@@ -129,24 +131,58 @@
 
                                 {% if app.user %}
                                     {% if CompanyDetails.companyDetails.companyAddressStreet is not null %}
-                                        <a target="_blank"
+                                        <a class="dropdown-item" target="_blank"
                                            title="{{ CompanyDetails.companyDetails.companyAddressStreet }} "
                                            href="{{ path('office_address') }}"> <i style="color: royalblue"
                                                                                    class="fa fa-car"></i> {{ CompanyDetails.companyDetails.companyAddressStreet }}
                                         </a>
                                     {% endif %}
                                 {% endif %}
+
                                 <a class="dropdown-item" title="Contact details"
                                    href="{{ path('create_vcard_company') }}">
                                     <i class="fa fa-credit-card"></i> Business Card
                                 </a>
-
                             </div>
                         </li>
                     {% endif %}
 
 
                     {% include 'template_parts_project_specific/header_project_specific2.html.twig' %}
+
+                    <!-- Nav Item #10 - Login -->
+                    {% if CompanyDetails.companyDetails is not null %}
+                        {% if CompanyDetails.companyDetails.headerDisplayLogin ==1 %}
+                            {% if app.user %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ app.user.fullName }}
+                                    </a>
+
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
+                                    {% endif %}
+
+
+                                    {% include 'template_parts_project_specific/header_project_specific3.html.twig' %}
+
+
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item"
+                                           href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">Profile</a>
+                                        <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                                    </div>
+                                </li>
+                            {% else %}
+                                <a class=" btn btn-sm btn-outline-dark" href="{{ path('app_login') }}">Login</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
 
                 </ul>
             </div>

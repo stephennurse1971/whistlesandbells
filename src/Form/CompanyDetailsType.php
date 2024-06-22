@@ -14,8 +14,8 @@ class CompanyDetailsType extends AbstractType
     {
         $builder
             ->add('companyName')
-//            ->add('contactFirstName')
-//            ->add('contactLastName')
+            ->add('contactFirstName')
+            ->add('contactLastName')
             ->add('companyWebsite')
 
             ->add('faviconLive', FileType::class, [
