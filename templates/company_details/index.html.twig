@@ -16,6 +16,7 @@
             <th>Mobile</th>
             <th>Skype</th>
             <th>Address</th>
+            <th>GPS</th>
             <th>Time<br>Zone</th>
             <th>Ccy</th>
             <th>Weather<br>Location</th>
@@ -98,6 +99,10 @@
                     {{ company_detail.companyAddressPostalCode }}
                     <a target="_blank" href="{{ path('office_address') }}">
                         <i style="color: red" class="fa fa-map-marker ml-2"></i></a>
+                </td>
+                <td style="text-align: center">
+                    <a target="_blank" href="{{ path('gps_location') }}">
+                        <i style="color: blue" class="fa fa-map-marker ml-2"></i></a>
                 </td>
                 <td style="text-align: center">
                     {{ company_detail.companyTimeZone }}

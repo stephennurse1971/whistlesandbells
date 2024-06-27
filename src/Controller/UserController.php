@@ -2,26 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Transaction;
 use App\Entity\User;
-use App\Entity\WebsiteContacts;
-use App\Form\ImportType;
 use App\Form\UserType;
-use App\Repository\ClientAvailabilityRepository;
 use App\Repository\ProductRepository;
-use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
-use App\Repository\WebsiteContactsRepository;
-use App\Services\UserImportService;
-use Doctrine\ORM\EntityManagerInterface;
-use JeroenDesloovere\VCard\VCard;
-use Jsvrcek\ICS\CalendarExport;
-use Jsvrcek\ICS\CalendarStream;
-use Jsvrcek\ICS\Model\Calendar;
-use Jsvrcek\ICS\Model\CalendarEvent;
-use Jsvrcek\ICS\Model\Relationship\Attendee;
-use Jsvrcek\ICS\Model\Relationship\Organizer;
-use Jsvrcek\ICS\Utility\Formatter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -42,7 +26,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/users", name="user_index", methods={"GET"})
+     * @Route("/index", name="user_index", methods={"GET"})
      * @Security("is_granted('ROLE_STAFF')")
      */
     public function index(UserRepository $userRepository, ProductRepository $servicesOfferedRepository): Response
@@ -92,7 +76,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
+     * @Route("/show/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -102,7 +86,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{fullName}/edit", name="user_edit", methods={"GET", "POST"})
+     * @Route("/edit/{fullName}", name="user_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, string $fullName, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, \Symfony\Component\Security\Core\Security $security): Response
     {
@@ -145,7 +129,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="user_delete", methods={"POST"})
      * @Security("is_granted('ROLE_STAFF')")
      */
     public

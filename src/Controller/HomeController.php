@@ -7,8 +7,8 @@ use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\CompanyDetailsRepository;
 use App\Repository\ProductRepository;
-use App\Repository\SubPageRepository;
 use App\Repository\UserRepository;
+use App\Repository\SubPageRepository;
 use App\Services\CompanyDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
@@ -18,30 +18,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class HomeController extends AbstractController
+class   HomeController extends AbstractController
 {
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, CompanyDetails $companyDetails): Response
+    public function index(CompanyDetails $companyDetails, CmsPhotoRepository $cmsPhotoRepository): Response
     {
-
-        $cms_copy = $cmsCopyRepository->findBy([
-            'staticPageName' => 'Home'
-        ]);
-
-        $cms_photo = $cmsPhotoRepository->findBy([
-            'staticPageName' => 'Home'
-        ]);
-
-        $sub_pages = [];
-
-        return $this->render('/home/products.html.twig', [
-//            'product' => $product,
-            'cms_copy_array' => $cms_copy,
-            'cms_photo_array' => $cms_photo,
-            'sub_pages' => $sub_pages,
-            'include_contact' => 'Yes'
+        return $this->render('home/home.html.twig', [
+            'photos' => $cmsPhotoRepository->findBy([
+                'staticPageName' => 'HomePage'
+            ])
         ]);
     }
 
@@ -61,7 +48,7 @@ class HomeController extends AbstractController
         } else {
             $user = new User();
             $user->setFirstName('Stephen')
-                ->setLastName('Nurse2')
+                ->setLastName('Nurse HMX2')
                 ->setEmail('nurse_stephen@hotmail.com')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
                 ->setPassword(
@@ -100,7 +87,8 @@ class HomeController extends AbstractController
             $cms_copy = $cmsCopyRepository->findBy([
                 'product' => $productEntity
             ]);
-        } else {
+        }
+        else {
             $cms_copy = $cmsCopyRepository->findBy([
                 'staticPageName' => $product
             ]);
@@ -110,7 +98,8 @@ class HomeController extends AbstractController
             $cms_photo = $cmsPhotoRepository->findBy([
                 'product' => $productEntity
             ]);
-        } else {
+        }
+        else {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'staticPageName' => $product
             ]);
@@ -141,6 +130,25 @@ class HomeController extends AbstractController
         return $this->render('home/officeAddress.html.twig');
     }
 
+
+    /**
+     * @Route("/gps_location", name="gps_location", methods={"GET"})
+     */
+    public function gpsLocation(CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        $companyDetails = $companyDetailsRepository->find('1');
+
+        $longitude=$companyDetails->getCompanyAddressLongitude();
+        $latitude=$companyDetails->getCompanyAddressLatitude();
+
+        return $this->render('home/gpsLocation.html.twig', [
+            'longitude' =>$longitude,
+            'latitude' =>$latitude,
+        ]);
+    }
+
+
+
     /**
      * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})
      */
@@ -163,6 +171,8 @@ class HomeController extends AbstractController
     }
 
 
+
+
     /**
      * @Route("/create/VcardUser/company", name="create_vcard_company")
      */
@@ -170,9 +180,9 @@ class HomeController extends AbstractController
     {
         $company_details = $companyDetailsRepository->find('1');
         $vcard = new VCard();
+        $firstName = 'Stephen';
+        $lastName = 'Nurse';
         $company = $company_details->getCompanyName();
-        $firstName = $company_details->getContactFirstName();
-        $lastName = $company_details->getContactLastName();
         $addressStreet = $company_details->getCompanyAddressStreet();
         $addressTown = $company_details->getCompanyAddressTown();
         $addressCity = $company_details->getCompanyAddressCity();

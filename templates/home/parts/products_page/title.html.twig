@@ -9,9 +9,13 @@
 </h4>
 
 {% if is_granted('ROLE_ADMIN') %}
-    <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
-        <i style="color: red" class="fa fa-pen"></i>
-    </a>
+    {% for cms_copy in cms_copy_array %}
+        {% if cms_copy.ranking == 1 %}
+            <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
+                <i style="color: red" class="fa fa-pencil"></i>
+            </a>
+        {% endif %}
+    {% endfor %}
 {% endif %}
-    {% endif %}
-{% endfor %}
+
+

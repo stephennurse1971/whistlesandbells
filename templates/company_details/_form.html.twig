@@ -71,11 +71,11 @@
         {{ form_row(form.companyEmailImportProcessedDirectory) }}
     </div>
     <div class="col-2">
-        {{ form_row(form.companyAddressLongitude) }}
         {{ form_row(form.companyAddressLatitude) }}
+        {{ form_row(form.companyAddressLongitude) }}
         {{ form_row(form.companyAddressInstructions) }}
     </div>
-    <div class="col-2">
+    <div class="col-1">
         {{ form_row(form.linkedIn) }}
         {{ form_row(form.facebook) }}
         {{ form_row(form.instagram) }}
@@ -100,13 +100,16 @@
         </div>
     </div>
     <div class="col-2">
-        {{ form_row(form.footerDisplayAddress) }}
-        {{ form_row(form.footerDisplayContactDetails) }}
+        <h2>Footer</h2>
         {{ form_row(form.footerDisplayProducts) }}
         {{ form_row(form.footerDisplaySocialMedia) }}
+        {{ form_row(form.footerDisplayContactDetails) }}
+        {{ form_row(form.footerDisplayAddress) }}
         {{ form_row(form.footerDisplayTelNumbers) }}
+        <h2>Header</h2>
         {{ form_row(form.headerDisplayLogin) }}
     </div>
+
 </div>
 
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
