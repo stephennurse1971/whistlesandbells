@@ -214,6 +214,21 @@ class CompanyDetails
      */
     private $contactLastName;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $homePagePhotosOnly;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $databasePassword;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sqlDatabase;
+
 
 
 
@@ -669,6 +684,42 @@ class CompanyDetails
     public function setContactLastName(?string $contactLastName): self
     {
         $this->contactLastName = $contactLastName;
+
+        return $this;
+    }
+
+    public function isHomePagePhotosOnly(): ?bool
+    {
+        return $this->homePagePhotosOnly;
+    }
+
+    public function setHomePagePhotosOnly(?bool $homePagePhotosOnly): self
+    {
+        $this->homePagePhotosOnly = $homePagePhotosOnly;
+
+        return $this;
+    }
+
+    public function getDatabasePassword(): ?string
+    {
+        return $this->databasePassword;
+    }
+
+    public function setDatabasePassword(?string $databasePassword): self
+    {
+        $this->databasePassword = $databasePassword;
+
+        return $this;
+    }
+
+    public function getSqlDatabase(): ?string
+    {
+        return $this->sqlDatabase;
+    }
+
+    public function setSqlDatabase(?string $sqlDatabase): self
+    {
+        $this->sqlDatabase = $sqlDatabase;
 
         return $this;
     }

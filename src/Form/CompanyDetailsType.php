@@ -17,6 +17,8 @@ class CompanyDetailsType extends AbstractType
             ->add('contactFirstName')
             ->add('contactLastName')
             ->add('companyWebsite')
+            ->add('sqlDatabase')
+            ->add('databasePassword')
 
             ->add('faviconLive', FileType::class, [
                 'label' => 'Favicon Live',
@@ -62,6 +64,7 @@ class CompanyDetailsType extends AbstractType
             ->add('footerDisplaySocialMedia')
             ->add('footerDisplayProducts')
             ->add('headerDisplayLogin')
+            ->add('homePagePhotosOnly')
         ;
     }
 

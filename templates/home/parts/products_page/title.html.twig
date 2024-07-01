@@ -1,16 +1,18 @@
 {% for cms_copy in cms_copy_array %}
-    {% if cms_copy.ranking == 1 %}
-<h4>
-    {% if cms_copy.hyperlinks is empty %}
-        {{ cms_copy.contentTitle|raw }}
-    {% else %}
-        <a target="_blank" href="{{ cms_copy.hyperlinks }}">{{ cms_copy.contentTitle|raw }}</a>
+    {% if cms_copy is defined and cms_copy.ranking == 1 %}
+        <h4>
+            {% if cms_copy.hyperlinks is empty %}
+                {{ cms_copy.contentTitle|raw }}
+            {% else %}
+                <a target="_blank" href="{{ cms_copy.hyperlinks }}">{{ cms_copy.contentTitle|raw }}</a>
+            {% endif %}
+        </h4>
     {% endif %}
-</h4>
+{% endfor %}
 
 {% if is_granted('ROLE_ADMIN') %}
     {% for cms_copy in cms_copy_array %}
-        {% if cms_copy.ranking == 1 %}
+        {% if cms_copy is defined and cms_copy.ranking == 1 %}
             <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
                 <i style="color: red" class="fa fa-pencil"></i>
             </a>

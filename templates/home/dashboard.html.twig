@@ -15,12 +15,12 @@
     <div class="row">
         <div class="col-2">
             <div class="border py-4">
-                <h2 style="color: red">Products</h2>
+                <h2 style="color: red">Services/Products</h2>
                 <ul>
                     <a target="_blank" href="{{ path('company_details_index') }}">Company Details</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('product_index') }}">Products</a>
+                    <a target="_blank" href="{{ path('product_index') }}">Interests</a>
                 </ul>
             </div>
         </div>
@@ -59,7 +59,20 @@
                 </ul>
             </div>
         </div>
+        <div class="col-12 col-md-2">
+            <div class="border py-4">
+                <h2 style="color: red">SetUp</h2>
+                <ul>
+                    <a target="_blank" href="{{ path('weather_index') }}">Weather</a>
+                </ul>
 
+                {#                {% if app.environment=='live' %} #}
+                <ul>
+                    <a class="btn btn-outline-success btn-sm" target="_blank" href="{{ path('export_live_database') }}">Export Live Data</a>
+                </ul>
+                {#                {% endif %} #}
+            </div>
+        </div>
 
     </div>
 

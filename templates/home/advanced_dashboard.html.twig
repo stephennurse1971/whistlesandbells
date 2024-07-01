@@ -1,16 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Advanced Dashboard{% endblock %}
 
 {% block body %}
-    <h1 class="text-danger">Dashboard</h1>
-    <hr>
-
-    {% include 'template_parts_project_specific/dashboard_project_specific.html.twig' %}
-
-    <br>
-    <hr>
-    <br>
+    <h1 class="text-danger">Advanced Dashboard</h1>
 
     <div class="row">
         <div class="col-2">
@@ -39,15 +32,22 @@
                 </ul>
             </div>
         </div>
-
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">Users</h2>
+                <ul>
+                    <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests/contacts</a></ul>
+                <ul>
+                    <a target="_blank" href="{{ path('user_index') }}">Users</a>
+                </ul>
+                <ul>
+                    <a target="_blank" href="{{ path('log_index') }}">User log</a></ul>
+            </div>
+        </div>
 
         <div class="col-2">
             <div class="border py-4">
                 <h2 style="color: red">E-mails</h2>
-                <ul>
-                    <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests/contacts</a>
-                </ul>
-                <hr>
                 <ul>
                     <a target="_blank" href="{{ path('emails_import_index') }}">Emails Received: Pending</a>
                 </ul>

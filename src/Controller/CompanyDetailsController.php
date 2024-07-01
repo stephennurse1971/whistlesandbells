@@ -207,4 +207,30 @@ class CompanyDetailsController extends AbstractController
         return $this->redirect($referer);
     }
 
+    /**
+     * @Route("/export/live/database", name="export_live_database", methods={"POST", "GET"})
+     */
+    public function exportDatabase(Request $request, EntityManagerInterface $entityManager, \App\Services\CompanyDetails $companyDetails)
+    {
+        $filename = $companyDetails->getCompanyDetails()->getSqlDatabase().'.sql';
+        $sqlDatabase = $companyDetails->getCompanyDetails()->getSqlDatabase();
+        $sqlPassword = $companyDetails->getCompanyDetails()->getDatabasePassword();
+
+        if( $_ENV['APP_ENV']=="dev"){
+            exec('mysqldump --user=root --password= --host=localhost '.$sqlDatabase.'>'.$filename);
+        }
+        else{
+            exec('mysqldump --user=stephen --password='.$sqlPassword.' --host=localhost '.$sqlDatabase.' >'.$filename);
+        }
+        $file = $this->getParameter('public').$filename;
+        if(file_exists($file)){
+            header('Content-Type: application/octet-stream');
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-disposition: attachment; filename=\"" . basename($filename) . "\"");
+            readfile($file);
+            unlink($file);
+        }
+       $referer = $request->headers->get('Referer');
+        return $this->redirect($referer);
+    }
 }

