@@ -46,32 +46,28 @@
                         {% endif %}
                     {% endif %}
 
-                    <!-- Nav Item #2 - Interests -->
+                    <!-- Nav Item #2 - Products -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Interests
+                            Products
                         </a>
                         {% if app.user %}
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {% set products = Product.getProductAll %}
+                                {% set products = Product.getProductMainAll %}
                                 {% for product in products %}
-                                    {% if product.isActive==1 and product.includeInFooter==1 %}
+                                    {% if product.isActive==1 %}
                                         <a target="_blank" class="text-gray-600 mb-3 ml-3"
                                            href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
                                         </a>
-                                        <br>
                                     {% else %}
                                         {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
                                             <a target="_blank" class="text-gray-600 mb-3 ml-3"
                                                href="{{ path('product_display', { product: product.product}) }}">
                                                 <span style="color: red">{{ product.product }}*</span>
                                             </a>
-                                            <br>
                                         {% endif %}
                                     {% endif %}
-
-
                                 {% endfor %}
                             </div>
                         {% else %}
@@ -82,6 +78,49 @@
                                        href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
                                     </a>
                                 {% endfor %}
+                            </div>
+                        {% endif %}
+                    </li>
+
+
+                    <!-- Nav Item #2 - Sub-Products -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Resources
+                        </a>
+                        {% if app.user %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set products = Product.getProductSubAll %}
+                                {% for product in products %}
+                                    {% if product.isActive==1 %}
+                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                           href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                        </a>
+                                    {% else %}
+                                        {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
+                                            <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                               href="{{ path('product_display', { product: product.product}) }}">
+                                                <span style="color: red">{{ product.product }}*</span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                   href="{{ path('podcast_episodes_index') }}">Podcasts</a>
+                            </div>
+                        {% else %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set products = Product.getProductSubAll %}
+                                {% for product in products %}
+                                    {% if product.isActive==1 %}
+                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                           href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                                <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                   href="{{ path('podcast_episodes_index') }}">Podcasts</a>
                             </div>
                         {% endif %}
                     </li>
@@ -151,36 +190,34 @@
                     {% include 'template_parts_project_specific/header_project_specific2.html.twig' %}
 
                     <!-- Nav Item #10 - Login -->
-                    {% if CompanyDetails.companyDetails is not null %}
-                        {% if CompanyDetails.companyDetails.headerDisplayLogin ==1 %}
-                            {% if app.user %}
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {{ app.user.fullName }}
-                                    </a>
+                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.headerDisplayLogin ==1 %}
+                        {% if app.user %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ app.user.fullName }}
+                                </a>
 
-                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                        <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
-                                    {% endif %}
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
+                                {% endif %}
 
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
-                                    {% endif %}
-
-
-                                    {% include 'template_parts_project_specific/header_project_specific3.html.twig' %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
+                                {% endif %}
 
 
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item"
-                                           href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">Profile</a>
-                                        <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
-                                    </div>
-                                </li>
-                            {% else %}
-                                <a class=" btn btn-sm btn-outline-dark" href="{{ path('app_login') }}">Login</a>
-                            {% endif %}
+                                {% include 'template_parts_project_specific/header_project_specific3.html.twig' %}
+
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item"
+                                       href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">Profile</a>
+                                    <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <a class=" btn btn-sm btn-outline-dark" href="{{ path('app_login') }}">Login</a>
                         {% endif %}
                     {% endif %}
 

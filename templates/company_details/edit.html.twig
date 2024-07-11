@@ -30,6 +30,13 @@
         {% else %}
         $(".qr_code-upload-container").show();
         {% endif %}
+    </script>
 
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#company_details_companyAddressInstructions'))
+            .catch(error => {
+                console.error(error);
+            });
     </script>
 {% endblock %}
