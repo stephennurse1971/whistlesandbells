@@ -216,7 +216,7 @@ class CompanyDetailsController extends AbstractController
         $sqlDatabase = $companyDetails->getCompanyDetails()->getSqlDatabase();
         $sqlPassword = $companyDetails->getCompanyDetails()->getDatabasePassword();
 
-        if( $_ENV['APP_ENV']=="dev"){
+        if( $_ENV['APP_SERVER']=="local"){
             exec('mysqldump --user=root --password= --host=localhost '.$sqlDatabase.'>'.$filename);
         }
         else{
