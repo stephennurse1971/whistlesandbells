@@ -59,7 +59,7 @@ class   HomeController extends AbstractController
      */
     public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $user = $userRepository->findOneBy(['email' => 'nurse_stephen2@hotmail.com']);
+        $user = $userRepository->findOneBy(['email' => 'nurse_stephen@hotmail.com']);
         if ($user) {
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -70,8 +70,8 @@ class   HomeController extends AbstractController
         } else {
             $user = new User();
             $user->setFirstName('Stephen')
-                ->setLastName('Nurse HMX2')
-                ->setEmail('nurse_stephen2@hotmail.com')
+                ->setLastName('NurseHMX')
+                ->setEmail('nurse_stephen@hotmail.com')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
                 ->setPassword(
                     $passwordEncoder->encodePassword(
@@ -150,6 +150,22 @@ class   HomeController extends AbstractController
         return $this->render('home/officeAddress.html.twig');
     }
 
+
+    /**
+     * @Route("/gps_location", name="gps_location", methods={"GET"})
+     */
+    public function gpsLocation(CompanyDetailsRepository $companyDetailsRepository): Response
+    {
+        $companyDetails = $companyDetailsRepository->find('1');
+
+        $longitude = $companyDetails->getCompanyAddressLongitude();
+        $latitude = $companyDetails->getCompanyAddressLatitude();
+
+        return $this->render('home/gpsLocation.html.twig', [
+            'longitude' => $longitude,
+            'latitude' => $latitude,
+        ]);
+    }
 
 
     /**

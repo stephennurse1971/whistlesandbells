@@ -38,7 +38,7 @@
             <div class="row">
 
                 <div class="col-6">
-                    {% for cms_copy in cms_copy_array %}
+                    {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
                         <div class="row">
                             <div class="col-12">
                                 <p>{{ cms_copy.contentText|raw }}</p>
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="col-6">
-                    {% for cms_photo in cms_photo_array %}
+                    {% for cms_photo in cms_photo_array|sort((a, b) => a.ranking <=> b.ranking) %}
                     <div class="row">
                         <div class="col-12">
                             <div class="justify-content-center d-flex py-1 product-image-container m-auto ">
@@ -71,12 +71,10 @@
                 <div class="row">
                     <div class="col-12">
                         {% for sub_page in sub_pages %}
-
                             <ul>
                                 <a target="_blank"
                                    href="{{ path('sub_page_show', {id: sub_page.id} ) }}">{{ sub_page.title }}</a>
                             </ul>
-
                         {% endfor %}
                     </div>
                 </div>
