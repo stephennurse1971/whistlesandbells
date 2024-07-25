@@ -151,22 +151,6 @@ class   HomeController extends AbstractController
     }
 
 
-    /**
-     * @Route("/gps_location", name="gps_location", methods={"GET"})
-     */
-    public function gpsLocation(CompanyDetailsRepository $companyDetailsRepository): Response
-    {
-        $companyDetails = $companyDetailsRepository->find('1');
-
-        $longitude = $companyDetails->getCompanyAddressLongitude();
-        $latitude = $companyDetails->getCompanyAddressLatitude();
-
-        return $this->render('home/gpsLocation.html.twig', [
-            'longitude' => $longitude,
-            'latitude' => $latitude,
-        ]);
-    }
-
 
     /**
      * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})

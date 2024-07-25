@@ -586,6 +586,7 @@ pre code {
 }
 
 .container-fluid {
+  color: black;
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;

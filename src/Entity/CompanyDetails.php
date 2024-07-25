@@ -229,21 +229,6 @@ class CompanyDetails
      */
     private $sqlDatabase;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $headerDisplayTandCs;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $headerDisplayPricing;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $headerDisplayInstructions;
-
 
 
 
@@ -735,42 +720,6 @@ class CompanyDetails
     public function setSqlDatabase(?string $sqlDatabase): self
     {
         $this->sqlDatabase = $sqlDatabase;
-
-        return $this;
-    }
-
-    public function getHeaderDisplayTandCs(): ?bool
-    {
-        return $this->headerDisplayTandCs;
-    }
-
-    public function setHeaderDisplayTandCs(?bool $headerDisplayTandCs): self
-    {
-        $this->headerDisplayTandCs = $headerDisplayTandCs;
-
-        return $this;
-    }
-
-    public function getHeaderDisplayPricing(): ?bool
-    {
-        return $this->headerDisplayPricing;
-    }
-
-    public function setHeaderDisplayPricing(?bool $headerDisplayPricing): self
-    {
-        $this->headerDisplayPricing = $headerDisplayPricing;
-
-        return $this;
-    }
-
-    public function getHeaderDisplayInstructions(): ?bool
-    {
-        return $this->headerDisplayInstructions;
-    }
-
-    public function setHeaderDisplayInstructions(?bool $headerDisplayInstructions): self
-    {
-        $this->headerDisplayInstructions = $headerDisplayInstructions;
 
         return $this;
     }

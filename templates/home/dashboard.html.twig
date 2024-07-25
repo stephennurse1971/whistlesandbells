@@ -66,11 +66,12 @@
                     <a target="_blank" href="{{ path('weather_index') }}">Weather</a>
                 </ul>
 
-                {#                {% if app.environment=='live' %} #}
-                <ul>
-                    <a class="btn btn-outline-success btn-sm" target="_blank" href="{{ path('export_live_database') }}">Export Live Data</a>
-                </ul>
-                {#                {% endif %} #}
+                {% if app.request.getSchemeAndHttpHost() != 'https://stephen-nurse.com' %}
+                    <ul>
+                        <a class="btn btn-outline-success btn-sm" target="_blank"
+                           href="{{ path('export_live_database') }}">Export Live Data</a>
+                    </ul>
+                {% endif %}
             </div>
         </div>
 

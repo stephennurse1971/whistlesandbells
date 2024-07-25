@@ -230,7 +230,7 @@ class CompanyDetailsController extends AbstractController
             readfile($file);
             unlink($file);
         }
-       $referer = $request->headers->get('Referer');
+        $referer = $request->headers->get('Referer');
         return $this->redirect($referer);
     }
 }

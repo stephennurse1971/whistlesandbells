@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,6 +14,13 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('product')
+            ->add('category', ChoiceType::class,[
+                'required'=>true,
+                'choices'=>[
+                    'Main'=>'Main',
+                    'Sub'=>'Sub'
+                ]
+            ])
             ->add('ranking')
             ->add('isActive')
             ->add('includeInFooter')

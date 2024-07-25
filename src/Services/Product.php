@@ -11,6 +11,21 @@ class Product
         return $this->productRepository->findAll();
     }
 
+    public function getProductMainAll()
+    {
+        return $this->productRepository->findBy([
+            'category'=>'Main'
+        ]);
+    }
+
+
+    public function getProductSubAll()
+    {
+        return $this->productRepository->findBy([
+            'category'=>'Sub'
+        ]);
+    }
+
     public function getProductActive()
     {
         return $this->productRepository->findBy([

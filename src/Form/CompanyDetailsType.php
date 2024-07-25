@@ -64,9 +64,6 @@ class CompanyDetailsType extends AbstractType
             ->add('footerDisplaySocialMedia')
             ->add('footerDisplayProducts')
             ->add('headerDisplayLogin')
-            ->add('headerDisplayPricing')
-            ->add('headerDisplayInstructions')
-            ->add('headerDisplayTandCs')
             ->add('homePagePhotosOnly')
         ;
     }

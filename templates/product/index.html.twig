@@ -10,6 +10,7 @@
         <tr>
             <th>Rank</th>
             <th>Product</th>
+            <th>Main/Sub</th>
             <th>Active</th>
             <th>Include<br>In Footer</th>
             <th>Comments</th>
@@ -21,6 +22,7 @@
             <tr>
                 <td>{{ product.ranking }}</td>
                 <td>{{ product.product }}</td>
+                <td>{{ product.category }}</td>
                 <td style="text-align: center">
                     {% if product.isActive =="Yes" %}
                         <i style="color: green" class="fa fa-dot-circle"></i>
@@ -56,7 +58,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc']],
+                "order": [[2, 'asc'],[0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
