@@ -20,7 +20,6 @@
 
             <div class="collapse  main-menu navbar-collapse pr-5 mr-5 " id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto ">
-
                     <!-- Nav Item #1 - Home -->
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ path('app_home') }}">
@@ -50,7 +49,11 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Products
+                            {% if CompanyDetails.companyDetails is not null and CompanyDetails.companyDetails.titleProducts is not null %}
+                                {{ CompanyDetails.companyDetails.titleProducts }}
+                            {% else %}
+                                Products
+                            {% endif %}
                         </a>
                         {% if app.user %}
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -87,7 +90,12 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Resources
+                            {% if CompanyDetails.companyDetails is not null and CompanyDetails.companyDetails.titleSubProducts is not null %}
+                                {{ CompanyDetails.companyDetails.titleSubProducts }}
+                            {% else %}
+                                Resources
+                            {% endif %}
+
                         </a>
                         {% if app.user %}
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -117,8 +125,6 @@
                                         </a>
                                     {% endif %}
                                 {% endfor %}
-                                <a target="_blank" class="text-gray-600 mb-3 ml-3"
-                                   href="{{ path('podcast_episodes_index') }}">Podcasts</a>
                             </div>
                         {% endif %}
                     </li>

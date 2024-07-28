@@ -32,9 +32,11 @@
                 <a href="{{ path('app_forgot_password_request') }}">Forgot password</a>
                 <br><br><br>
             </form>
-            {% if app.environment=='dev' %}
+
+            {% if app.request.getSchemeAndHttpHost() != CompanyDetails.companyDetails.companyWebsite %}
                 <hr><br><br><br><br>
-                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i> Stephen (Super-Admin)</button>
+                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i> nurse_stephen@hotmail.com (Super-Admin)</button> <br>
+                <button onclick="fillForm2()"><i class="fa fa-info-circle"> </i> nurse_stephen2@hotmail.com (Super-Admin)</button> <br>
             {% endif %}
         </div>
     </div>
@@ -46,5 +48,11 @@
             $("#inputEmail").val("nurse_stephen@hotmail.com").change();
             $("#inputPassword").val("Descartes99").change();
         }
+
+        function fillForm2() {
+            $("#inputEmail").val("nurse_stephen2@hotmail.com").change();
+            $("#inputPassword").val("Descartes99").change();
+        }
+
     </script>
 {% endblock %}

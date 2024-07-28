@@ -244,6 +244,16 @@ class CompanyDetails
      */
     private $headerDisplayInstructions;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $titleProducts;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $titleSubProducts;
+
 
 
 
@@ -771,6 +781,30 @@ class CompanyDetails
     public function setHeaderDisplayInstructions(?bool $headerDisplayInstructions): self
     {
         $this->headerDisplayInstructions = $headerDisplayInstructions;
+
+        return $this;
+    }
+
+    public function getTitleProducts(): ?string
+    {
+        return $this->titleProducts;
+    }
+
+    public function setTitleProducts(?string $titleProducts): self
+    {
+        $this->titleProducts = $titleProducts;
+
+        return $this;
+    }
+
+    public function getTitleSubProducts(): ?string
+    {
+        return $this->titleSubProducts;
+    }
+
+    public function setTitleSubProducts(?string $titleSubProducts): self
+    {
+        $this->titleSubProducts = $titleSubProducts;
 
         return $this;
     }

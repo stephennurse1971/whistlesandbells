@@ -25,7 +25,11 @@ class   HomeController extends AbstractController
     public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository): Response
     {
         $companyDetails = $companyDetailsRepository->find('1');
-        $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
+        $homePagePhotosOnly = 0;
+        if($companyDetails ){
+            $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
+        }
+
         $cms_copy = [];
         $cms_photo = [];
         $product = [];
@@ -83,7 +87,7 @@ class   HomeController extends AbstractController
             $manager->flush();
         }
         $manager->flush();
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_login');
     }
 
 

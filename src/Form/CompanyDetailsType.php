@@ -68,6 +68,8 @@ class CompanyDetailsType extends AbstractType
             ->add('headerDisplayInstructions')
             ->add('headerDisplayTandCs')
             ->add('homePagePhotosOnly')
+            ->add('titleProducts')
+            ->add('titleSubProducts')
         ;
     }
 

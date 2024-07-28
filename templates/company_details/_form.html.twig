@@ -100,22 +100,30 @@
         </div>
     </div>
     <div class="col-2">
-        <h2>Footer</h2>
+        <h4>Footer</h4>
         {{ form_row(form.footerDisplayProducts) }}
         {{ form_row(form.footerDisplaySocialMedia) }}
         {{ form_row(form.footerDisplayContactDetails) }}
         {{ form_row(form.footerDisplayAddress) }}
         {{ form_row(form.footerDisplayTelNumbers) }}
-        <h2>Header</h2>
+
+        <h4>Header</h4>
         {{ form_row(form.headerDisplayLogin) }}
         {{ form_row(form.headerDisplayTandCs) }}
         {{ form_row(form.headerDisplayPricing) }}
         {{ form_row(form.headerDisplayInstructions) }}
-        <h2>HomePage</h2>
+
+        <h4>Header/Footer Titles</h4>
+        {{ form_row(form.titleProducts) }}
+        {{ form_row(form.titleSubProducts) }}
+
+        <h4>HomePage</h4>
         {{ form_row(form.homePagePhotosOnly) }}
-        <h2>SQL Database Export</h2>
+
+        <h4>SQL Database Export</h4>
         {{ form_row(form.sqlDatabase) }}
         {{ form_row(form.databasePassword) }}
+
     </div>
 
 </div>
