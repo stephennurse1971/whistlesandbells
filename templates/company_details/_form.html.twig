@@ -100,18 +100,22 @@
         </div>
     </div>
     <div class="col-2">
-        <h4>Footer</h4>
+        <h4>Header: Display...</h4>
+        {{ form_row(form.headerDisplayLogin) }}
+        {{ form_row(form.headerDisplayProducts) }}
+        {{ form_row(form.headerDisplaySubProducts) }}
+        {{ form_row(form.headerDisplayTandCs) }}
+        {{ form_row(form.headerDisplayPricing) }}
+        {{ form_row(form.headerDisplayInstructions) }}
+
+        <h4>Footer: Display...</h4>
         {{ form_row(form.footerDisplayProducts) }}
+        {{ form_row(form.footerDisplaySubProducts) }}
         {{ form_row(form.footerDisplaySocialMedia) }}
         {{ form_row(form.footerDisplayContactDetails) }}
         {{ form_row(form.footerDisplayAddress) }}
         {{ form_row(form.footerDisplayTelNumbers) }}
 
-        <h4>Header</h4>
-        {{ form_row(form.headerDisplayLogin) }}
-        {{ form_row(form.headerDisplayTandCs) }}
-        {{ form_row(form.headerDisplayPricing) }}
-        {{ form_row(form.headerDisplayInstructions) }}
 
         <h4>Header/Footer Titles</h4>
         {{ form_row(form.titleProducts) }}

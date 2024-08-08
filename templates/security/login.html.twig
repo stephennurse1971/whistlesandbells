@@ -32,11 +32,37 @@
                 <a href="{{ path('app_forgot_password_request') }}">Forgot password</a>
                 <br><br><br>
             </form>
+            <hr><br><br><br><br>
 
-            {% if app.request.getSchemeAndHttpHost() != CompanyDetails.companyDetails.companyWebsite %}
-                <hr><br><br><br><br>
-                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i> nurse_stephen@hotmail.com (Super-Admin)</button> <br>
-                <button onclick="fillForm2()"><i class="fa fa-info-circle"> </i> nurse_stephen2@hotmail.com (Super-Admin)</button> <br>
+
+            {% if CompanyDetails.companyDetails is not null %}
+                {% if app.request.getSchemeAndHttpHost() != CompanyDetails.companyDetails.companyWebsite %}
+
+                    <button onclick="fillForm()"><i class="fa fa-info-circle"> </i> nurse_stephen@hotmail.com
+                        (Super-Admin)
+                    </button>
+
+                    <br>
+                    <button onclick="fillForm2()"><i class="fa fa-info-circle"> </i> nurse_stephen2@hotmail.com
+                        (Super-Admin)
+                    </button>
+                    <br>
+                {% endif %}
+            {% else %}
+                <b>Please set up your "Company Details" profile.</b>
+                <br>
+                <br>
+                <br>
+
+                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i> nurse_stephen@hotmail.com
+                    (Super-Admin)
+                </button>
+
+                <br>
+                <button onclick="fillForm2()"><i class="fa fa-info-circle"> </i> nurse_stephen2@hotmail.com
+                    (Super-Admin)
+                </button>
+                <br>
             {% endif %}
         </div>
     </div>

@@ -254,6 +254,21 @@ class CompanyDetails
      */
     private $titleSubProducts;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayProducts;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplaySubProducts;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $footerDisplaySubProducts;
+
 
 
 
@@ -805,6 +820,42 @@ class CompanyDetails
     public function setTitleSubProducts(?string $titleSubProducts): self
     {
         $this->titleSubProducts = $titleSubProducts;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayProducts(): ?bool
+    {
+        return $this->headerDisplayProducts;
+    }
+
+    public function setHeaderDisplayProducts(?bool $headerDisplayProducts): self
+    {
+        $this->headerDisplayProducts = $headerDisplayProducts;
+
+        return $this;
+    }
+
+    public function isHeaderDisplaySubProducts(): ?bool
+    {
+        return $this->headerDisplaySubProducts;
+    }
+
+    public function setHeaderDisplaySubProducts(?bool $headerDisplaySubProducts): self
+    {
+        $this->headerDisplaySubProducts = $headerDisplaySubProducts;
+
+        return $this;
+    }
+
+    public function isFooterDisplaySubProducts(): ?bool
+    {
+        return $this->footerDisplaySubProducts;
+    }
+
+    public function setFooterDisplaySubProducts(?bool $footerDisplaySubProducts): self
+    {
+        $this->footerDisplaySubProducts = $footerDisplaySubProducts;
 
         return $this;
     }

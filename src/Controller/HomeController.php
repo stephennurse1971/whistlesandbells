@@ -101,6 +101,16 @@ class   HomeController extends AbstractController
     }
 
     /**
+     * @Route("/advanced_dashboard", name="advanced_dashboard")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function advancedDashboard()
+    {
+        return $this->render('template_parts_project_specific/advanced_dashboard_specific.html.twig', []);
+    }
+
+
+    /**
      * @Route("/interests/{product}", name="product_display")
      */
     public function articles(string $product, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, ProductRepository $productRepository): Response
