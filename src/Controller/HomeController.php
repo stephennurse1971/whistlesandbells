@@ -44,7 +44,8 @@ class   HomeController extends AbstractController
 
         if ($homePagePhotosOnly == 1) {
             return $this->render('home/home.html.twig', [
-                'photos' => $cms_photo
+                'photos' => $cms_photo,
+                'include_contact' => 'Yes'
             ]);
         } else {
             return $this->render('/home/products.html.twig', [
@@ -52,7 +53,7 @@ class   HomeController extends AbstractController
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
                 'sub_pages' => $sub_pages,
-                'include_contact' => 'No'
+                'include_contact' => 'Yes'
             ]);
         }
     }

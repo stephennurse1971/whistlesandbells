@@ -97,7 +97,10 @@ class CompanyDetailsType extends AbstractType
                 'label' => 'SubProducts',
                 'required' => false])
             ->add('homePagePhotosOnly', CheckboxType::class, [
-                'label' => 'HomePage: Photos Only',
+                'label' => 'Photos Only',
+                'required' => false])
+            ->add('includeContactFormHomePage', CheckboxType::class, [
+                'label' => 'Include Contact Form',
                 'required' => false])
             ->add('titleProducts')
             ->add('titleSubProducts');

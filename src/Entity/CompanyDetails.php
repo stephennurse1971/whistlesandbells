@@ -269,6 +269,11 @@ class CompanyDetails
      */
     private $footerDisplaySubProducts;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $includeContactFormHomePage;
+
 
 
 
@@ -856,6 +861,18 @@ class CompanyDetails
     public function setFooterDisplaySubProducts(?bool $footerDisplaySubProducts): self
     {
         $this->footerDisplaySubProducts = $footerDisplaySubProducts;
+
+        return $this;
+    }
+
+    public function isIncludeContactFormHomePage(): ?bool
+    {
+        return $this->includeContactFormHomePage;
+    }
+
+    public function setIncludeContactFormHomePage(?bool $includeContactFormHomePage): self
+    {
+        $this->includeContactFormHomePage = $includeContactFormHomePage;
 
         return $this;
     }
