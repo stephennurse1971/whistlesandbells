@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Languages{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Languages index</h1>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Language</th>
+            <th>Abbreviation</th>
+            <th>Icon</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for language in languages %}
+            <tr>
+                <td>{{ language.id }}</td>
+                <td>{{ language.language }}</td>
+                <td style="text-align: center">{{ language.abbreviation }}</td>
+                <td style="text-align: center">
+                    {% if language.icon is not empty %}
+                        {% set icon = asset('administration/attachments/LanguageIcons/')~language.icon %}
+                        <img height="50" width="50" src="{{ icon }}" class="rounded-circle test">
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('languages_edit', {'id': language.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('languages_new') }}">New</a>
+{% endblock %}
+
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

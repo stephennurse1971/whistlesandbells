@@ -274,6 +274,11 @@ class CompanyDetails
      */
     private $includeContactFormHomePage;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $multiLingual;
+
 
 
 
@@ -873,6 +878,18 @@ class CompanyDetails
     public function setIncludeContactFormHomePage(?bool $includeContactFormHomePage): self
     {
         $this->includeContactFormHomePage = $includeContactFormHomePage;
+
+        return $this;
+    }
+
+    public function isMultiLingual(): ?bool
+    {
+        return $this->multiLingual;
+    }
+
+    public function setMultiLingual(?bool $multiLingual): self
+    {
+        $this->multiLingual = $multiLingual;
 
         return $this;
     }

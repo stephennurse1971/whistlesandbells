@@ -86,6 +86,16 @@ class CmsCopy
      */
     private $ranking;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tabTitleFR;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tabTitleDE;
+
 
 
     public function getId(): ?int
@@ -248,6 +258,30 @@ class CmsCopy
     public function setRanking(?int $ranking): self
     {
         $this->ranking = $ranking;
+
+        return $this;
+    }
+
+    public function getTabTitleFR(): ?string
+    {
+        return $this->tabTitleFR;
+    }
+
+    public function setTabTitleFR(?string $tabTitleFR): self
+    {
+        $this->tabTitleFR = $tabTitleFR;
+
+        return $this;
+    }
+
+    public function getTabTitleDE(): ?string
+    {
+        return $this->tabTitleDE;
+    }
+
+    public function setTabTitleDE(?string $tabTitleDE): self
+    {
+        $this->tabTitleDE = $tabTitleDE;
 
         return $this;
     }

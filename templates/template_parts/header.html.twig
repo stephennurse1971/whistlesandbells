@@ -4,18 +4,17 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-gray-100 fixed-top shadow">
         <div class="container-fluid">
             <div class="logo">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a target="_blank" href="{{ path('company_details_edit', {'id': '1'}) }}">
+                        <i style="color: red" class="fa fa-pen"></i>
+                    </a>
+                {% endif %}
                 <a class="navbar-brand" href="{{ path('app_home') }}">
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <a style="color: black" href="{{ path('company_details_edit', {id:'1'}) }}">
-                            <i style="color: red" class="fa fa-pencil"></i>
-                        </a>
-                    {% endif %}
                     {% if CompanyDetails.getCompanyDetails is not null %}
                         <a style="color: black" href="{{ path('app_home') }}">
                             {{ CompanyDetails.getCompanyDetails.companyName }}
                         </a>
                     {% endif %}
-
                 </a>
             </div>
 
@@ -26,6 +25,7 @@
 
             <div class="collapse  main-menu navbar-collapse pr-5 mr-5 " id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto ">
+
                     <!-- Nav Item #1 - Home -->
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ path('app_home') }}">
@@ -52,95 +52,79 @@
                     {% endif %}
 
                     <!-- Nav Item #2 - Products -->
-                    {% if CompanyDetails.companyDetails is not null %}
-                        {% if CompanyDetails.companyDetails.headerDisplayProducts ==1 %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {% if CompanyDetails.companyDetails is not null and CompanyDetails.companyDetails.titleProducts is not null %}
-                                        {{ CompanyDetails.companyDetails.titleProducts }}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Products
+                        </a>
+                        {% if app.user %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set products = Product.getProductMainAll %}
+                                {% for product in products %}
+                                    {% if product.isActive==1 %}
+                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                           href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                        </a>
                                     {% else %}
-                                        Products
-                                    {% endif %}
-                                </a>
-                                {% if app.user %}
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {% set products = Product.getProductMainAll %}
-                                        {% for product in products %}
-                                            {% if product.isActive==1 %}
-                                                <a target="_blank" class="dropdown-item text-gray-600 mb-1"
-                                                   href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
-                                                </a>
-                                            {% else %}
-                                                {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
-                                                    <a target="_blank" class="dropdown-item text-gray-600 mb-1"
-                                                       href="{{ path('product_display', { product: product.product}) }}">
-                                                        <span style="color: red">{{ product.product }}*</span>
-                                                    </a>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {% set products = Product.getProductMainAll %}
-                                        {% for product in products %}
-                                            <a target="_blank" class="dropdown-item text-gray-600 mb-1"
-                                               href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                        {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
+                                            <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                               href="{{ path('product_display', { product: product.product}) }}">
+                                                <span style="color: red">{{ product.product }}*</span>
                                             </a>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set products = Product.getProductFooter %}
+                                {% for product in products %}
+                                    <a class="dropdown-item" target="_blank"
+                                       href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                    </a>
+                                {% endfor %}
+                            </div>
                         {% endif %}
-                    {% endif %}
+                    </li>
+
 
                     <!-- Nav Item #2 - Sub-Products -->
-                    {% if CompanyDetails.companyDetails is not null %}
-                        {% if  CompanyDetails.companyDetails.headerDisplaySubProducts ==1 %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {% if CompanyDetails.companyDetails is not null and CompanyDetails.companyDetails.titleSubProducts is not null %}
-                                        {{ CompanyDetails.companyDetails.titleSubProducts }}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Resources
+                        </a>
+                        {% if app.user %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set products = Product.getProductSubAll %}
+                                {% for product in products %}
+                                    {% if product.isActive==1 %}
+                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                           href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                        </a>
                                     {% else %}
-                                        Resources
+                                        {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
+                                            <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                               href="{{ path('product_display', { product: product.product}) }}">
+                                                <span style="color: red">{{ product.product }}*</span>
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
-
-                                </a>
-                                {% if app.user %}
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {% set products = Product.getProductSubAll %}
-                                        {% for product in products %}
-                                            {% if product.isActive==1 %}
-                                                <a target="_blank" class="dropdown-item text-gray-600 mb-1"
-                                                   href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
-                                                </a>
-                                            {% else %}
-                                                {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
-                                                    <a target="_blank" class="dropdown-item text-gray-600 mb-1"
-                                                       href="{{ path('product_display', { product: product.product}) }}">
-                                                        <span style="color: red">{{ product.product }}*</span>
-                                                    </a>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {% set products = Product.getProductSubAll %}
-                                        {% for product in products %}
-                                            {% if product.isActive==1 %}
-                                                <a target="_blank" class="dropdown-item text-gray-600 mb-1"
-                                                   href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
-                                                </a>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </li>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% set products = Product.getProductSubAll %}
+                                {% for product in products %}
+                                    {% if product.isActive==1 %}
+                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                           href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         {% endif %}
-                    {% endif %}
+                    </li>
 
 
                     {% include 'template_parts_project_specific/header_project_specific.html.twig' %}
@@ -222,10 +206,11 @@
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
                                     {% endif %}
-
-
-                                    {% include 'template_parts_project_specific/header_project_specific3.html.twig' %}
                                 </a>
+
+                                {% include 'template_parts_project_specific/header_project_specific3.html.twig' %}
+
+
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item"
                                        href="{{ path('user_edit',{'fullName':app.user.fullName}) }}">Profile</a>
@@ -235,6 +220,28 @@
                         {% else %}
                             <a class=" btn btn-sm btn-outline-dark" href="{{ path('app_login') }}">Login</a>
                         {% endif %}
+                    {% endif %}
+
+                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.multiLingual ==1 %}
+
+
+                    <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('administration/attachments/LanguageIcons/'~Languages.LanguageSelected.icon) }}"
+                                     height="30" width=30">
+                            </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% for language in Languages.getLanguages %}
+                                {% if language.language != Languages.LanguageSelected.language %}
+                                    <a class="dropdown-item" href="{{ path('select_default_language',{id:language.id}) }}">
+                                        <img src="{{ asset('administration/attachments/LanguageIcons/'~language.icon) }}"
+                                             height="30" width=30">
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </li>
                     {% endif %}
 
                 </ul>

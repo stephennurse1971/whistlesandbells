@@ -1,7 +1,7 @@
 <style>
     .ck-editor__editable {
-        min-height: 600px;
-        max-height: 600px
+        min-height: 400px;
+        max-height: 400px
     }
 </style>
 {{ form_start(form) }}
@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <h2>Tab Title</h2>
+        <h2>Attachments/Links</h2>
         {{ form_row(form.ranking) }}
 
         {% if cms_copy.attachment is not null %}
@@ -37,16 +37,25 @@
                 <i title="{{ cms_copy.attachment }}" class="fa fa-paperclip"></i>
             </a>
             <br>
+            {{ form_row(form.hyperlinks) }}
         {% endif %}
 
         <div class="file-upload-container">
             {{ form_row(form.attachment) }}
         </div>
     </div>
+</div>
+<hr>
+<div class="row">
     <div class="col-md-3">
         <h2>Tab Title</h2>
         {{ form_row(form.tabTitle) }}
-        {{ form_row(form.hyperlinks) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.tabTitleFR) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.tabTitleDE) }}
     </div>
 </div>
 <hr>

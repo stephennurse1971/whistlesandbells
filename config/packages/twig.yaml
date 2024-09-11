@@ -4,6 +4,7 @@ twig:
   globals:
     CompanyDetails: '@App\Services\CompanyDetails'
     CountPendingWebsiteInquiries: '@App\Services\CountPendingWebsiteInquiries'
+    Languages: '@App\Services\Languages'
     Product: '@App\Services\Product'
     WeatherService: '@App\Services\WeatherService'
 

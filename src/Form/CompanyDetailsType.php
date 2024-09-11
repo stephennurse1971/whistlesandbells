@@ -102,6 +102,9 @@ class CompanyDetailsType extends AbstractType
             ->add('includeContactFormHomePage', CheckboxType::class, [
                 'label' => 'Include Contact Form',
                 'required' => false])
+            ->add('multiLingual', CheckboxType::class, [
+                'label' => 'Multi Lingual Site',
+                'required' => false])
             ->add('titleProducts')
             ->add('titleSubProducts');
     }
