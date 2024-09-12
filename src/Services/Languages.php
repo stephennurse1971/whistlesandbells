@@ -9,7 +9,9 @@ class Languages
 {
     public function getLanguages()
     {
-        return $this->languagesRepository->findAll();
+        return $this->languagesRepository->findBy([
+            'isActive' => true
+        ]);
     }
 
     public function LanguageSelected()

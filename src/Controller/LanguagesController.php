@@ -32,21 +32,25 @@ class LanguagesController extends AbstractController
         $form = $this->createForm(LanguagesType::class, $language);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $languagesRepository->add($language, true);
-            $icon = $form->get('icon')->getData();
-            if ($icon) {
-                $safeFilename = $language->getAbbreviation();
-                $newFilename = $safeFilename . '.' . $icon->guessExtension();
-                try {
-                    $icon->move(
-                        $this->getParameter('icon_directory'),
-                        $newFilename
-                    );
-                    $language->setIcon($newFilename);
-                } catch (FileException $e) {
-                    die('Import failed');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $languagesRepository->add($language, true);
+                $icon = $form->get('icon')->getData();
+                if ($icon) {
+                    $safeFilename = $language->getAbbreviation();
+                    $newFilename = $safeFilename . '.' . $icon->guessExtension();
+                    try {
+                        $icon->move(
+                            $this->getParameter('icon_directory'),
+                            $newFilename
+                        );
+                        $language->setIcon($newFilename);
+                    } catch (FileException $e) {
+                        die('Import failed');
+                    }
                 }
             }
+            $languagesRepository->add($language, true);
+
             return $this->redirectToRoute('languages_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -72,8 +76,6 @@ class LanguagesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             if ($form->isSubmitted() && $form->isValid()) {
                 $languagesRepository->add($language, true);
                 $icon = $form->get('icon')->getData();

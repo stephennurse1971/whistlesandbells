@@ -222,9 +222,7 @@
                         {% endif %}
                     {% endif %}
 
-                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.multiLingual ==1 %}
-
-
+                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.multiLingual ==1 and Languages.getLanguages is not empty  %}
                     <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -8,7 +8,7 @@
     <table class="table table-responsive">
         <thead>
         <tr>
-            <th>Id</th>
+            <th>Active</th>
             <th>Language</th>
             <th>Abbreviation</th>
             <th>Icon</th>
@@ -18,7 +18,13 @@
         <tbody>
         {% for language in languages %}
             <tr>
-                <td>{{ language.id }}</td>
+                <td style="text-align: center">
+                    {% if language.isActive ==1 %}
+                        <i style="color: green" class="fa fa-check"></i>
+                    {% else %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+                </td>
                 <td>{{ language.language }}</td>
                 <td style="text-align: center">{{ language.abbreviation }}</td>
                 <td style="text-align: center">

@@ -13,6 +13,7 @@ class LanguagesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('isActive')
             ->add('language')
             ->add('abbreviation')
             ->add('icon', FileType::class, [
