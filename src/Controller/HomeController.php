@@ -15,7 +15,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class   HomeController extends AbstractController
 {
@@ -26,7 +25,7 @@ class   HomeController extends AbstractController
     {
         $companyDetails = $companyDetailsRepository->find('1');
         $homePagePhotosOnly = 0;
-        if($companyDetails ){
+        if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
         }
 
@@ -40,7 +39,6 @@ class   HomeController extends AbstractController
         $cms_photo = $cmsPhotoRepository->findBy([
             'staticPageName' => 'Home'
         ]);
-
 
         if ($homePagePhotosOnly == 1) {
             return $this->render('home/home.html.twig', [
@@ -114,7 +112,7 @@ class   HomeController extends AbstractController
     /**
      * @Route("/interests/{product}", name="product_display")
      */
-    public function articles(string $product, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, ProductRepository $productRepository): Response
+    public function articles(string $product, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, ProductRepository $productRepository, \Symfony\Component\Security\Core\Security $security, EntityManagerInterface $entityManager): Response
     {
         $productEntity = $productRepository->findOneBy([
             'product' => $product
@@ -124,11 +122,31 @@ class   HomeController extends AbstractController
             $cms_copy = $cmsCopyRepository->findBy([
                 'product' => $productEntity
             ]);
+            $cms_copy_ranking1 = $cmsCopyRepository->findOneBy([
+                'product' => $productEntity,
+                'ranking' => '1',
+            ]);
         } else {
             $cms_copy = $cmsCopyRepository->findBy([
                 'staticPageName' => $product
             ]);
+            $cms_copy_ranking1 = $cmsCopyRepository->findOneBy([
+                'staticPageName' => $product,
+                'ranking' => '1',
+            ]);
         }
+
+        if($security->getUser()) {
+            if (in_array('ROLE_ADMIN', $security->getUser()->getRoles())) {
+                $pageCountAdmin = $cms_copy_ranking1->getPageCountAdmin();
+                $cms_copy_ranking1->setPageCountAdmin($pageCountAdmin + 1);
+            }
+        }
+                $pageCountUser = $cms_copy_ranking1->getPageCountUsers();
+                $cms_copy_ranking1->setPageCountUsers($pageCountUser + 1);
+                $entityManager->flush($cms_copy_ranking1);
+
+
 
         if ($productEntity) {
             $cms_photo = $cmsPhotoRepository->findBy([
@@ -219,7 +237,7 @@ class   HomeController extends AbstractController
         if ($contactFirstName == null) {
             $firstName = "";
             $lastName = $company;
-            $company ="";
+            $company = "";
         }
         if ($contactFirstName != null) {
             $firstName = $contactFirstName;

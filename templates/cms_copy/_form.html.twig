@@ -17,7 +17,6 @@
             {{ form_row(form.staticPageName) }}
         </div>
         <div class="product-container">
-            <h2>Product</h2>
             {{ form_row(form.product) }}
         </div>
     </div>
@@ -43,6 +42,11 @@
         <div class="file-upload-container">
             {{ form_row(form.attachment) }}
         </div>
+    </div>
+    <div class="col-md-3">
+        <h2>User Count</h2>
+        {{ form_row(form.pageCountUsers) }}
+        {{ form_row(form.pageCountAdmin) }}
     </div>
 </div>
 <hr>

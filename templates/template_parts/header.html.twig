@@ -218,28 +218,32 @@
                                 </div>
                             </li>
                         {% else %}
-                            <a class=" btn btn-sm btn-outline-dark" href="{{ path('app_login') }}">Login</a>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-dark btn-sm" href="{{ path('app_login') }}">Login</a>
+                            </li>
                         {% endif %}
                     {% endif %}
 
-                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.multiLingual ==1 and Languages.getLanguages is not empty  %}
-                    <li class="nav-item dropdown">
+
+                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.multiLingual ==1 and Languages.getLanguages is not empty %}
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ asset('administration/attachments/LanguageIcons/'~Languages.LanguageSelected.icon) }}"
                                      height="30" width=30">
                             </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% for language in Languages.getLanguages %}
-                                {% if language.language != Languages.LanguageSelected.language %}
-                                    <a class="dropdown-item" href="{{ path('select_default_language',{id:language.id}) }}">
-                                        <img src="{{ asset('administration/attachments/LanguageIcons/'~language.icon) }}"
-                                             height="30" width=30">
-                                    </a>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </li>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% for language in Languages.getLanguages %}
+                                    {% if language.language != Languages.LanguageSelected.language %}
+                                        <a class="dropdown-item"
+                                           href="{{ path('select_default_language',{id:language.id}) }}">
+                                            <img src="{{ asset('administration/attachments/LanguageIcons/'~language.icon) }}"
+                                                 height="30" width=30">
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </li>
                     {% endif %}
 
                 </ul>

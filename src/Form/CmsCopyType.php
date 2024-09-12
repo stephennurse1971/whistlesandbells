@@ -75,7 +75,10 @@ class CmsCopyType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
-            ->add('ranking');
+            ->add('ranking')
+            ->add('pageCountUsers')
+            ->add('pageCountAdmin')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

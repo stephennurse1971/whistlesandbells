@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
   favicon_directory: '%kernel.project_dir%/public/administration/attachments/Favicons/'
-  user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
   icon_directory: '%kernel.project_dir%/public/administration/attachments/LanguageIcons/'
+  user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
   website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos/'
   website_attachments_directory: '%kernel.project_dir%/public/administration/attachments/WebsiteAttachments/'
   public: '%kernel.project_dir%/public/'

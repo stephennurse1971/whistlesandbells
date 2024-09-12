@@ -96,6 +96,16 @@ class CmsCopy
      */
     private $tabTitleDE;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pageCountUsers;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pageCountAdmin;
+
 
 
     public function getId(): ?int
@@ -282,6 +292,30 @@ class CmsCopy
     public function setTabTitleDE(?string $tabTitleDE): self
     {
         $this->tabTitleDE = $tabTitleDE;
+
+        return $this;
+    }
+
+    public function getPageCountUsers(): ?int
+    {
+        return $this->pageCountUsers;
+    }
+
+    public function setPageCountUsers(?int $pageCountUsers): self
+    {
+        $this->pageCountUsers = $pageCountUsers;
+
+        return $this;
+    }
+
+    public function getPageCountAdmin(): ?int
+    {
+        return $this->pageCountAdmin;
+    }
+
+    public function setPageCountAdmin(?int $pageCountAdmin): self
+    {
+        $this->pageCountAdmin = $pageCountAdmin;
 
         return $this;
     }
