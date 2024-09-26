@@ -9,9 +9,15 @@ class Languages
 {
     public function getLanguages()
     {
-        return $this->languagesRepository->findBy([
+        $languages = $this->languagesRepository->findBy([
             'isActive' => true
         ]);
+        if($languages){
+            return $languages;
+        }
+        else{
+            return null;
+        }
     }
 
     public function LanguageSelected()
@@ -21,7 +27,17 @@ class Languages
             $language = $session->get('selected_language');
             return $this->languagesRepository->findOneBy(['language' => $language]);
         }
-        return $this->languagesRepository->findOneBy(['language' => 'English']);
+        else{
+            $default_language = $this->languagesRepository->findOneBy(['language' => 'English']);
+            if($default_language){
+                return $default_language;
+            }
+            else{
+                return null;
+            }
+
+        }
+
     }
 
     public function getSelectedLanguageCode()

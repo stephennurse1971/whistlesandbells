@@ -25,6 +25,7 @@ class CompanyDetailsType extends AbstractType
             ])
             ->add('contactFirstName',TextType::class,[
                 'label' =>$this->translationsWorker->getTranslations('Contact First Name'),
+                'required' => false,
             ])
             ->add('contactLastName')
             ->add('companyWebsite')

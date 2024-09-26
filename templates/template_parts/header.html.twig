@@ -55,56 +55,46 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Products
+                            {{ CompanyDetails.companyDetails.titleProducts }}
                         </a>
-                        {% if app.user %}
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {% set products = Product.getProductMainAll %}
-                                {% for product in products %}
-                                    {% if product.isActive==1 %}
-                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
-                                           href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
-                                        </a>
-                                    {% else %}
-                                        {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
-                                            <a target="_blank" class="text-gray-600 mb-3 ml-3"
-                                               href="{{ path('product_display', { product: product.product}) }}">
-                                                <span style="color: red">{{ product.product }}*</span>
-                                            </a>
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {% set products = Product.getProductFooter %}
-                                {% for product in products %}
-                                    <a class="dropdown-item" target="_blank"
+
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% set products = Product.getProductMainAll %}
+                            {% for product in products %}
+                                {% if product.isActive==1 %}
+                                    <a target="_blank" class="dropdown-item text-gray-600 ml-3"
                                        href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
                                     </a>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+                                {% else %}
+                                    {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
+                                        <a target="_blank" class="dropdown-item text-gray-600 ml-3"
+                                           href="{{ path('product_display', { product: product.product}) }}">
+                                            <span style="color: red">{{ product.product }}*</span>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </li>
 
-
+                    {% if CompanyDetails.companyDetails.headerDisplaySubProducts ==1 %}
                     <!-- Nav Item #2 - Sub-Products -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Resources
+                            {{ CompanyDetails.companyDetails.titleSubProducts }}
                         </a>
                         {% if app.user %}
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 {% set products = Product.getProductSubAll %}
                                 {% for product in products %}
                                     {% if product.isActive==1 %}
-                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                        <a target="_blank" class="dropdown-item text-gray-600 ml-3"
                                            href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
                                         </a>
                                     {% else %}
                                         {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
-                                            <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                            <a target="_blank" class="dropdown-item text-gray-600 ml-3"
                                                href="{{ path('product_display', { product: product.product}) }}">
                                                 <span style="color: red">{{ product.product }}*</span>
                                             </a>
@@ -117,7 +107,7 @@
                                 {% set products = Product.getProductSubAll %}
                                 {% for product in products %}
                                     {% if product.isActive==1 %}
-                                        <a target="_blank" class="text-gray-600 mb-3 ml-3"
+                                        <a target="_blank" class="dropdown-item text-gray-600 ml-3"
                                            href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
                                         </a>
                                     {% endif %}
@@ -125,6 +115,7 @@
                             </div>
                         {% endif %}
                     </li>
+                    {% endif %}
 
 
                     {% include 'template_parts_project_specific/header_project_specific.html.twig' %}
@@ -225,7 +216,7 @@
                     {% endif %}
 
 
-                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.multiLingual ==1 and Languages.getLanguages is not empty %}
+                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.multiLingual ==1 and Languages.getLanguages != null and Languages.LanguageSelected != null %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

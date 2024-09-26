@@ -21,8 +21,9 @@
         </div>
     </div>
     <div class="col-md-3">
-        <h2>Attachments/Links</h2>
-        {{ form_row(form.ranking) }}
+        <h2>Attachments & Hyperlinks</h2>
+        {{ form_row(form.hyperlinks) }}
+
 
         {% if cms_copy.attachment is not null %}
             <b>Attachment:</b><br>
@@ -44,15 +45,22 @@
         </div>
     </div>
     <div class="col-md-3">
-        <h2>User Count</h2>
-        {{ form_row(form.pageCountUsers) }}
-        {{ form_row(form.pageCountAdmin) }}
+        <h2>Ranking & User Count</h2>
+        <div class="row">
+            {{ form_row(form.ranking) }}
+        </div>
+        <div class="row">
+            {{ form_row(form.pageCountUsers) }}
+            {{ form_row(form.pageCountAdmin) }}
+        </div>
     </div>
+
 </div>
 <hr>
+<h2>Tab Title</h2>
 <div class="row">
     <div class="col-md-3">
-        <h2>Tab Title</h2>
+
         {{ form_row(form.tabTitle) }}
     </div>
     <div class="col-md-3">
@@ -95,7 +103,7 @@
 </div>
 
 
-<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+<button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 
 

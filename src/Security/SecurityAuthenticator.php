@@ -55,7 +55,7 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
         $this->logService->userLoggedIn($user);
         // For example:
-         return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+         return new RedirectResponse($this->urlGenerator->generate('app_home'));
 
     }
 

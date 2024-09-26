@@ -37,6 +37,11 @@ class Languages
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $linkedInOther;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Languages
     public function setIsActive(?bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getLinkedInOther(): ?bool
+    {
+        return $this->linkedInOther;
+    }
+
+    public function setLinkedInOther(?bool $linkedInOther): self
+    {
+        $this->linkedInOther = $linkedInOther;
 
         return $this;
     }

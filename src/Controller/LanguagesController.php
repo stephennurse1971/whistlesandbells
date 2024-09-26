@@ -105,8 +105,19 @@ class LanguagesController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'languages_delete', methods: ['POST'])]
-    public function delete(Request $request, Languages $language, LanguagesRepository $languagesRepository): Response
+    public function delete(Request $request, Languages $language, LanguagesRepository $languagesRepository, EntityManagerInterface $entityManager): Response
     {
+        $file_name = $language->getIcon();
+        if ($file_name) {
+            $file = $this->getParameter('icon_directory') . $file_name;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+            $language->setIcon('');
+            $entityManager->flush();
+
+        }
+
         if ($this->isCsrfTokenValid('delete' . $language->getId(), $request->request->get('_token'))) {
             $languagesRepository->remove($language, true);
         }
