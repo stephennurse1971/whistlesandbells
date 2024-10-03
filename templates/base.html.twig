@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/small-device.css') }}">
     <link rel="stylesheet" href="{{ asset('css/medium-device.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/large-device.css') }}">
     <link rel="stylesheet" href="{{ asset('calendar/calendar-2/dist/zabuto_calendar.min.css') }}"/>
 
     {% block topjs %}
@@ -275,19 +276,11 @@
 {% endblock additionaljs %}
 
 <script>
-
-    ClassicEditor
+     ClassicEditor
         .create(document.querySelector('#sub_page_content'))
         .catch(error => {
             console.error(error);
         });
-
-    ClassicEditor
-        .create(document.querySelector('#company_details_companyAddressInstructions'))
-        .catch(error => {
-            console.error(error);
-        });
-
 
     // $('table').addClass('table-striped');
     $('.table').addClass('.table-borderless');

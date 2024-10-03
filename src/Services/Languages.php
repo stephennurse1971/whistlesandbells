@@ -22,7 +22,7 @@ class Languages
 
     public function LanguageSelected()
     {
-        $session = $this->requestStack->getSession();
+        $session = $this->requestStack->getCurrentRequest()->getSession();
         if( $session->get('selected_language')) {
             $language = $session->get('selected_language');
             return $this->languagesRepository->findOneBy(['language' => $language]);
@@ -42,7 +42,7 @@ class Languages
 
     public function getSelectedLanguageCode()
     {
-        $session = $this->requestStack->getSession();
+        $session = $this->requestStack->getCurrentRequest()->getSession();
         if( $session->get('selected_language')) {
             $language = $session->get('selected_language');
             if ($language == 'English') {

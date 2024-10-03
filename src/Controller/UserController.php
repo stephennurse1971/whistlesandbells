@@ -34,7 +34,7 @@ class UserController extends AbstractController
         $now = new \DateTime('now');
         $users = $userRepository->findAll();
 
-        return $this->render('user/index.html.twig', [
+        return $this->render('index_template.html.twig', [
             'users' => $users,
             'services' => $servicesOfferedRepository->findAll(),
             'now' => $now
