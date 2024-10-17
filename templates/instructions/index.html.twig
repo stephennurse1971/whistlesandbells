@@ -12,6 +12,7 @@
             <th>Summary</th>
             <th>Format</th>
             <th>Media</th>
+            <th>Copy link</th>
             <th style="text-align: center">#</th>
             <th style="text-align: center">#</th>
         </tr>
@@ -23,24 +24,18 @@
                 <td>{{ instruction.summary|raw }}</td>
                 <td>{{ instruction.photoOrVideo }}</td>
                 <td>
-                    {% set image = asset('administration/attachments/Instructions/')~instruction.media %}
-                    {% set fileType =  instruction.media|split('.')|last %}
                     {% if instruction.media is not null %}
-                        {% if fileType == 'mp4' or fileType == 'mov' %}
-                            <video class="videoByInstructions" controls="controls">
-                                <source src="{{ image }}" type="video/mp4"/>
-                            </video>
-                        {% else %}
-                            {% if instruction.media is not null %}
-                                <img class="image-containerThumbnail" src="{{ image }}">
-                            {% endif %}
-                        {% endif %}
+                        <i class="fa fa-file"></i>
                     {% endif %}
+                    {{ instruction.media }}
                 </td>
                 <td>
-                    <a class="btn btn-outline-primary btn-sm"
+                    xx
+                </td>
+                <td>
+                    <a target="_blank" class="btn btn-outline-primary btn-sm"
                        href="{{ path('instructions_show', {'topic': instruction.topic}) }}">Show</a>
-                    <a class="btn btn-outline-danger btn-sm"
+                    <a target="_blank" class="btn btn-outline-danger btn-sm"
                        href="{{ path('instructions_edit', {'id': instruction.id}) }}">Edit</a>
                 </td>
                 <td>

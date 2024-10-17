@@ -7,9 +7,9 @@ use App\Repository\BusinessContactsRepository;
 use App\Repository\ReferralsRepository;
 
 
-class CountBusinessContactReferals
+class CountBusinessContactReferrals
 {
-    public function countReferals(int $businessContact, \DateTimeInterface $startDate = null, \DateTimeInterface $endDate = null, string $format)
+    public function countReferrals(int $businessContact, \DateTimeInterface $startDate = null, \DateTimeInterface $endDate = null, string $format)
     {
         $today = new \DateTime('now');
 

@@ -14,18 +14,18 @@
     </td>
     <td>...</td>
     <td style="text-align: center;">
-        {{ CountBusinessContactReferals.countReferals(business_contact.id, null,null, 'Website') }}
+        {{ CountBusinessContactReferrals.countReferrals(business_contact.id, null,null, 'Website') }}
     </td>
     <td style="text-align: center;">
-        {{ CountBusinessContactReferals.countReferals(business_contact.id, null,null, 'Email') }}
+        {{ CountBusinessContactReferrals.countReferrals(business_contact.id, null,null, 'Email') }}
     </td>
     <td style="text-align: center;">
-        {{ CountBusinessContactReferals.countReferals(business_contact.id, null,null, 'WhatsApp') +  CountBusinessContactReferals.countReferals(business_contact.id, null,null, 'Phone') }}
+        {{ CountBusinessContactReferrals.countReferrals(business_contact.id, null,null, 'WhatsApp') +  CountBusinessContactReferrals.countReferrals(business_contact.id, null,null, 'Phone') }}
     </td>
     <td style="text-align: center;">
-        {{ CountBusinessContactReferals.countReferals(business_contact.id, null,null, 'Map') }}
+        {{ CountBusinessContactReferrals.countReferrals(business_contact.id, null,null, 'Map') }}
     </td>
     <td style="text-align: center;">
-        {{ CountBusinessContactReferals.countReferals(business_contact.id, null,null, 'VCF') }}
+        {{ CountBusinessContactReferrals.countReferrals(business_contact.id, null,null, 'VCF') }}
     </td>
 {% endif %}
