@@ -9,6 +9,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,6 +18,26 @@ class BusinessContactsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('status', ChoiceType::class, [
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => [
+                    'Pending' => 'Pending',
+                    'Approved' => 'Approved',
+                    'Not approved' => 'Not approved'
+                ],])
+            ->add('publicPrivate', ChoiceType::class, [
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => [
+                    'Public' => 'Public',
+                    'Private' => 'Private'
+                ],])
+            ->add('photo', FileType::class, [
+                'label' => 'Photo',
+                'mapped' => false,
+                'required' => false
+            ])
             ->add('businessType', EntityType::class, [
                 'class' => BusinessTypes::class,
                 'choice_label' => 'businessType',
@@ -41,21 +62,14 @@ class BusinessContactsType extends AbstractType
             ->add('addressCity')
             ->add('addressPostCode')
             ->add('addressCountry')
-            ->add('gpsLocation')
-            ->add('publicPrivate', ChoiceType::class, [
-                'multiple' => false,
-                'expanded' => false,
-                'choices' => [
-                    'Public' => 'Public',
-                    'Private' => 'Private'
-                ],])
-            ->add('status', ChoiceType::class, [
-                'multiple' => false,
-                'expanded' => false,
-                'choices' => [
-                    'Pending' => 'Pending',
-                    'Approved' => 'Approved'
-                ],])
+            ->add('locationLongitude')
+            ->add('locationLatitude')
+            ->add('files', FileType::class, [
+                'label' => 'Files',
+                'mapped' => false,
+                'required' => false
+            ])
+
         ;
     }
 

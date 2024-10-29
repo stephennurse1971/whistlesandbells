@@ -1,4 +1,6 @@
+
 {% extends 'base.html.twig' %}
+{% block title %}{{ business }} {% endblock %}
 {% block body %}
 {{ app.request.server.get('GOOGLE_MAP_API') }}
     <div class="row">

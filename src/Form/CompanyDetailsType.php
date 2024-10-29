@@ -129,6 +129,12 @@ class CompanyDetailsType extends AbstractType
             ->add('headerDisplayTandCs', CheckboxType::class, [
                 'label' => 'T&Cs',
                 'required' => false])
+            ->add('headerDisplayBusinessContacts', CheckboxType::class, [
+                'label' => 'Business Contacts',
+                'required' => false])
+            ->add('headerDisplayWeather', CheckboxType::class, [
+                'label' => 'Weather',
+                'required' => false])
             ->add('footerDisplayContactDetails', CheckboxType::class, [
                 'label' => 'Contact Details',
                 'required' => false])

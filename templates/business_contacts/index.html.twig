@@ -4,27 +4,17 @@
 
 {% block body %}
 
-    <style>
-        th, td {
-            width: 150px
-        }
-    </style>
     {% include 'business_contacts/parts/import_and_export.html.twig' %}
 
-    {% for category in categories %}
-        <h2 style="color: red">{{ category }} </h2>
-        {% if is_granted('ROLE_ADMIN') %}
-            <a target="_blank" href="{{ path('business_types_index') }}">+</a>
-        {% endif %}
-        <br>
-
+    {% for business_type in business_types %}
+        <h2 style="color: red">{{ business_type }} </h2><br>
         <table class="table table-responsive-sm">
             <thead>
             <tr>
-                {% if is_granted('ROLE_STAFF') %}
-                    <th style="width: 150px; text-align: left">Status</th>
+                <th>Photo</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th style="width: 10px; text-align: left; color: red">Status</th>
                 {% endif %}
-                <th style="width: 150px; text-align: left">Business Type</th>
                 <th style="width: 150px; text-align: left">Company</th>
                 <th style="width: 150px; text-align: left">Name</th>
                 <th class="desktop" style="width: 10px; text-align: center">Website</th>
@@ -32,24 +22,48 @@
                 <th class="desktop" style="width: 10px; text-align: center">Mobile</th>
                 <th class="desktop" style="width: 10px; text-align: center">Landline</th>
                 <th class="desktop" style="width: 10px; text-align: center">Address</th>
-                <th class="desktop" style="width: 10px; text-align: center">Location</th>
-                <th style="width: 10px; text-align: center"></th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th class="desktop" style="width: 10px; text-align: center">Location</th>
+                {% endif %}
+                <th style="width: 10px; text-align: center">
+                    VCF
+                </th>
+                <th class="desktop" style="width: 10px; text-align: center">Files</th>
                 {% include 'business_contacts/parts/access_count_headers.html.twig' %}
             </tr>
             </thead>
             <tbody>
             {% for business_contact in business_contacts %}
-                {% if business_contact.businessType.businessCategory == category %}
+                {% if business_type == business_contact.businessType.businessType %}
                     <tr>
-                        {% if is_granted('ROLE_STAFF') %}
-                            <td style="width: 150px; text-align: left">{{ business_contact.status }}</td>
+                        <td>
+                            {% if business_contact.photo is not null or 1==1 %}
+                                {% set photo = asset('administration/attachments/Business_contacts/Photos/')~business_contact.photo %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="">
+                                    <img height="50" width="50" src="{{ photo }}" class="rounded-circle"></a>
+                                {{ business_contact.photo }}
+                            {% endif %}
+                        </td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td style="width: 10px; text-align: center">
+                                {% if business_contact.status == "Approved" %}
+                                    <i title="{{ business_contact.status }}" style="color: green"
+                                       class="fa fa-check"></i>
+                                {% elseif business_contact.status == "Pending" %}
+                                    <i title="{{ business_contact.status }}" style="color: grey"
+                                       class="fa fa-question-circle"></i>
+                                {% elseif business_contact.status == "Not Approved" %}
+                                    <i title="{{ business_contact.status }}" style="color: red"
+                                       class="fa fa-remove"></i>
+                                {% endif %}
+                            </td>
                         {% endif %}
-                        <td>{{ business_contact.businessType.businessType }}</td>
-                        <td>{{ business_contact.company }}</td>
+
+                        <td>
+                            {{ business_contact.company }}
+                        </td>
                         <td>{{ business_contact.firstName }} {{ business_contact.LastName }}</td>
-
-
-
 
                         <td class="desktop" style="text-align: center">
                             {% if business_contact.website  is not null %}
@@ -90,44 +104,58 @@
                         </td>
                         <td class="desktop">
                             {% if business_contact.addressStreet is not empty %}
+                                {% if is_granted('ROLE') %}
+                                {% else %}
+                                    {% if business_contact.locationLongitude is not empty %}
+                                        <a target="_blank"
+                                           href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
+                                           class="action" data-id="{{ business_contact.id }}"
+                                           data-action="Map">
+                                            <i class='fas fa-map-marker-alt text-danger'></i></a>
+                                    {% endif %}
+                                {% endif %}
                                 {{ business_contact.addressStreet }},
                                 {{ business_contact.addressCity }},
                                 {{ business_contact.addressPostCode }}
                             {% endif %}
                         </td>
-                        <td class="desktop" style="text-align: center">
-                            {% if business_contact.gpsLocation is empty %}
-                                {% if is_granted('ROLE_STAFF') %}
-                                    <button class="btn btn-primary btn-sm"
-                                            onclick="getLocation('{{ business_contact.id }}')">
-                                        Get Coordinates
-                                    </button>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td class="desktop" style="text-align: center">
+                                {% if business_contact.locationLongitude is empty %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <button class="btn btn-primary btn-sm"
+                                                onclick="getLocation('{{ business_contact.id }}')">
+                                            <i class="fa fa-arrow-down"></i>
+                                        </button>
+                                    {% else %}
+                                        -
+                                    {% endif %}
                                 {% else %}
-                                    -
+                                    <a target="_blank"
+                                       href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
+                                       class="action" data-id="{{ business_contact.id }}"
+                                       data-action="Map">
+                                        <i class='fas fa-map-marker-alt text-danger'></i></a>
                                 {% endif %}
-                            {% else %}
-                                <a target="_blank"
-                                   href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
-                                   class="action" data-id="{{ business_contact.id }}"
-                                   data-action="Map">
-                                    <i class='fas fa-map-marker-alt text-danger'></i></a>
-                            {% endif %}
-                        </td>
-
-
-
-
+                            </td>
+                        {% endif %}
 
                         <td style="text-align: center">
                             <div class="mobile">
                                 <a class="btn btn-success btn-sm"
                                    href="{{ path('business_contacts_show',{id: business_contact.id}) }}">Show</a>
                             </div>
-                            <div class="desktop">
+                            <div class="desktop" style="text-align: center">
                                 <a href="{{ path('create_vcard', {id: business_contact.id} ) }}" class="action"
                                    data-id="{{ business_contact.id }}"
                                    data-action="VCF"> <i style="color: blue" class="fas fa-address-card mr-0"></i></a>
                             </div>
+                        </td>
+                        <td class="desktop">
+                            {% if business_contact.files is not empty %}
+                                <i title="{{ business_contact.files }}" class="fa fa-paperclip"></i>
+                            {% endif %}
                         </td>
 
                         {% include 'business_contacts/parts/access_count_body.html.twig' %}
@@ -145,15 +173,27 @@
 
 {% block datatable %}
     <script>
+        {% if is_granted('ROLE_ADMIN') %}
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'], [1, 'asc']],
+                "order": [[1, 'asc'], [2, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false
             });
         });
+        {% else %}
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[1, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+        {% endif %}
     </script>
 {% endblock datatable %}
 {% block additionaljs %}

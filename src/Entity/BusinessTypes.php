@@ -25,7 +25,17 @@ class BusinessTypes
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $businessCategory;
+    private $mapIcon;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mapIconColour;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mapDisplay;
 
 
 
@@ -46,16 +56,39 @@ class BusinessTypes
         return $this;
     }
 
-    public function getBusinessCategory(): ?string
+    public function getMapIcon(): ?string
     {
-        return $this->businessCategory;
+        return $this->mapIcon;
     }
 
-    public function setBusinessCategory(?string $businessCategory): self
+    public function setMapIcon(?string $mapIcon): self
     {
-        $this->businessCategory = $businessCategory;
+        $this->mapIcon = $mapIcon;
 
         return $this;
     }
 
+    public function getMapIconColour(): ?string
+    {
+        return $this->mapIconColour;
+    }
+
+    public function setMapIconColour(?string $mapIconColour): self
+    {
+        $this->mapIconColour = $mapIconColour;
+
+        return $this;
+    }
+
+    public function getMapDisplay(): ?int
+    {
+        return $this->mapDisplay;
+    }
+
+    public function setMapDisplay(?int $mapDisplay): self
+    {
+        $this->mapDisplay = $mapDisplay;
+
+        return $this;
+    }
 }
