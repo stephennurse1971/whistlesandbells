@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: {{ client_detail.user.fullName}}{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: {{ client_detail.user.fullName}}</h1>
+
+    {{ include('client_details/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('client_details_index') }}">Return to list</a>
+
+    {{ include('client_details/_delete_form.html.twig') }}
+{% endblock %}

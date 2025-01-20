@@ -1,30 +1,35 @@
 <div class="row">
     <div class="col-1">
-        <a class="btn btn-outline-primary btn-sm" href="{{ path('app_home') }}">Map</a>
+        <a target="_blank" class="btn btn-outline-primary btn-sm"
+           href="{{ path('business_contacts_map', {subset:'All'}) }}">Map:: All</a>
     </div>
-    <div class="col-7">
-        {% if is_granted('ROLE_ADMIN') %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="col-1">
+            <a target="_blank" class="btn btn-success btn-sm"
+               href="{{ path('business_contacts_new', {business_type:'Restaurant'}) }}">New</a>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-outline-primary btn-sm" target="_blank" href="{{ path('business_types_index') }}">Business
+                Types</a>
+            <a class="btn btn-outline-primary btn-sm" target="_blank" href="{{ path('map_icons_index') }}">Map Icons</a>
+        </div>
+        <div class="col-2">
             <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_import') }}">Import</a>
             <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_export') }}">Export</a>
-            <a href="{{ asset('administration/import_export/business_contacts/business-contacts-import-template.csv') }}">(Template)</a>
-        {% endif %}
-    </div>
+            <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/BusinessContacts_ImportTemplate.csv') }}">(Template)</a>
+        </div>
+    {% endif %}
 
     <div class="col-2">
         {% if is_granted('ROLE_ADMIN') %}
-            <a class="btn btn-outline-success btn-sm" href="{{ path('business_contacts_new') }}">Add</a>
+            <a class="btn btn-outline-danger btn-sm" href="{{ path('business_contacts_delete_all') }}">Delete All</a>
             <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('referrals_index') }}"> Referrals
                 log</a>
         {% else %}
-            <a class="btn btn-outline-success btn-sm" href="{{ path('business_contacts_new') }}">Suggestion</a>
-        {% endif %}
-    </div>
-
-    <div class="col-1">
-        {% if is_granted('ROLE_ADMIN') %}
-            <a class="btn btn-outline-primary btn-sm" target="_blank" href="{{ path('business_types_index') }}">Business
-                Types</a>
+            {% if app.user %}
+                <a class="btn btn-outline-success btn-sm" href="{{ path('business_contacts_new') }}">Suggestion</a>
+            {% endif %}
         {% endif %}
     </div>
 </div>
-<br>

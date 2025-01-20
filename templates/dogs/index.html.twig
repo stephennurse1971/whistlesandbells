@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dogs index{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Dogs</h1>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Owner</th>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Breed</th>
+            <th>Breed<br>Choice<br>Reasons</th>
+            <th>Dog<br>Choice<br>Reasons</th>
+
+
+            <th style="border-left: 1px dotted">Rescue<br>Dog</th>
+            <th style="border-right: 1px dotted">Neutered</th>
+
+            <th style="border-left: 1px dotted">Date of<br>Birth</th>
+            <th style="border-right: 1px dotted">Arrival<br>Date</th>
+
+            <th>Dog<br>Food</th>
+            <th>Daily Meal<br>Count</th>
+            <th>Meal<br>Times</th>
+            <th>Health<br>Issues</th>
+            <th>Dog Walked<br>Count</th>
+            <th>Dog Walk<br>Length</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for dog in dogs %}
+            <tr>
+                <td>{{ dog.owner.fullName }}</td>
+                <td>
+                    {% if dog.photo is not empty %}
+                        {% set photo = asset('administration/attachments/Dogs/')~dog.photo %}
+                        <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
+                    {% endif %}
+                    {{ dog.photo }}
+                </td>
+                <td>{{ dog.name }}</td>
+                <td>{{ dog.gender }}</td>
+                <td>{{ dog.breed }}</td>
+                <td>{{ dog.breedChoiceReasons }}</td>
+                <td>{{ dog.dogChoiceReasons }}</td>
+
+                <td style="border-left: 1px dotted">
+{#                    Rescue:#}
+                    {% if dog.rescueDog ==1 %}
+                        <i title="Rescue dog: Yes" style="color: green" class="fa fa-check"></i>
+                    {% elseif dog.rescueDog ==0 %}
+                        <i title="Rescue dog: No" style="color: red" class="fa fa-remove"></i>
+                    {% else %}
+                        <i title="Rescue dog: Maybe" style="color: grey" class="fa fa-question"></i>
+                    {% endif %}
+                </td>
+
+                <td style="border-right: 1px dotted">
+{#                    Neutered:#}
+                    {% if dog.neutered ==1 %}
+                        <i title="Neutered: Yes" style="color: green" class="fa fa-check"></i>
+                        {{ dog.neuteredDate ? dog.neuteredDate|date('d-M-y') : '' }}
+                        Age: {{ Age.computeAge(dog.neuteredDate) }}
+                    {% elseif dog.neutered ==0 %}
+                        <i title="Neutered: No" style="color: red" class="fa fa-remove"></i>
+                    {% else %}
+                        <i title="Neutered: Maybe" style="color: grey" class="fa fa-question"></i>
+                    {% endif %}
+{#                    {{ dog.neutered ? 'Yes' : 'No' }}#}
+                </td>
+
+
+                <td style="border-left: 1px dotted" data-sort="{{ dog.dateOfBirth|date('Y-m-d') }}">
+                    {{ dog.dateOfBirth ? dog.dateOfBirth|date('d-M-y') : '' }}
+                    Age: {{ Age.computeAge(dog.dateOfBirth) }}
+                </td>
+
+
+                <td style="border-right: 1px dotted" data-sort="{{ dog.arrivalDate|date('Y-m-d') }}">
+                    {{ dog.arrivalDate ? dog.arrivalDate|date('d-M-y') : '' }}
+                    Age: {{ Age.computeAge(dog.arrivalDate) }}
+                </td>
+
+
+                <td style="text-align: right">{{ dog.dogFood }}</td>
+                <td style="text-align: center">{{ dog.dailyMealCount }}</td>
+                <td style="text-align: right">{{ dog.mealTimes }}</td>
+                <td style="text-align: right">{{ dog.healthIssues }}</td>
+                <td style="text-align: center">{{ dog.dogWalkedCount }}</td>
+                <td style="text-align: right">{{ dog.dogWalkLength }}</td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('dogs_edit', {'id': dog.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('dogs_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [1, 'desc'],
+                "paging": true,
+                "searching": true,
+                "bInfo": true
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Entity\BusinessContacts;
 use App\Repository\BusinessContactsRepository;
+use App\Repository\BusinessTypesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -13,26 +14,28 @@ class BusinessContactsImportService
     public function importBusinessContacts(string $fileName)
     {
         $status = '';
-        $publicPrivate = '';
-        $photo = '';
         $businessOrPerson = '';
+        $businessType = '';
+        $company = '';
         $firstName = '';
         $lastName = '';
-        $email = '';
-        $mobile = '';
-        $landline = '';
-        $company = '';
         $website = '';
+        $email = '';
+        $landline = '';
+        $mobile = '';
         $addressStreet = '';
         $addressCity = '';
+        $addressCounty = '';
         $addressPostCode = '';
         $addressCountry = '';
         $locationLongitude = '';
         $locationLatitude = '';
+        $publicPrivate = '';
         $notes = '';
-        $filepath = $this->container->getParameter('business_contacts_import_filepath');
+
+        $filepath = $this->container->getParameter('business_contacts_import_directory');
         $fullpath = $filepath . $fileName;
-        $alldatatsFromCsv = [];
+        $alldataFromCsv = [];
         $row = 0;
         if (($handle = fopen($fullpath, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
@@ -43,84 +46,83 @@ class BusinessContactsImportService
                 $num = count($data);
                 $row++;
                 for ($c = 0; $c < $num; $c++) {
-                    $alldatatsFromCsv[$row][] = $data[$c];
+                    $alldataFromCsv[$row][] = $data[$c];
                 }
             }
             fclose($handle);
         }
-        foreach ($alldatatsFromCsv as $oneLineFromCsv) {
-            $status = trim($oneLineFromCsv[1]);
-            $publicPrivate = trim($oneLineFromCsv[2]);
-            $photo = trim($oneLineFromCsv[3]);
-            $businessOrPerson = trim($oneLineFromCsv[4]);
-            $firstName = trim($oneLineFromCsv[5]);
-            $lastName = trim($oneLineFromCsv[6]);
+        foreach ($alldataFromCsv as $oneLineFromCsv) {
+            $status = trim($oneLineFromCsv[0]);
+            $businessOrPerson = trim($oneLineFromCsv[1]);
+            $businessType = trim($oneLineFromCsv[2]);
+            $company = trim($oneLineFromCsv[3]);
+            $firstName = trim($oneLineFromCsv[4]);
+            $lastName = trim($oneLineFromCsv[5]);
+            $website = trim($oneLineFromCsv[6]);
             $email = trim($oneLineFromCsv[7]);
-            $mobile = trim($oneLineFromCsv[8]);
-            $landline = trim($oneLineFromCsv[9]);
-            $company = trim($oneLineFromCsv[10]);
-            $website = trim($oneLineFromCsv[11]);
-            $addressStreet = trim($oneLineFromCsv[12]);
-            $addressCity = trim($oneLineFromCsv[13]);
-            $addressPostCode = trim($oneLineFromCsv[14]);
-            $addressCountry = trim($oneLineFromCsv[15]);
-            $locationLongitude = trim($oneLineFromCsv[16]);
-            $locationLatitude = trim($oneLineFromCsv[17]);
+            $landline = trim($oneLineFromCsv[8]);
+            $mobile = trim($oneLineFromCsv[9]);
+            $addressStreet = trim($oneLineFromCsv[10]);
+            $addressCity = trim($oneLineFromCsv[11]);
+            $addressCounty = trim($oneLineFromCsv[12]);
+            $addressPostCode = trim($oneLineFromCsv[13]);
+            $addressCountry = trim($oneLineFromCsv[14]);
+            $locationLongitude = (float)trim($oneLineFromCsv[15]);
+            $locationLatitude = (float)trim($oneLineFromCsv[16]);
+            $publicPrivate = trim($oneLineFromCsv[17]);
+            $notes = trim($oneLineFromCsv[18]);
 
-            if (empty($addressCountry)) {
-                $addressCountry = "Cyprus";
+            $landline = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $landline);
+            if ($landline != '') {
+                $landline = "+" . $landline;
             }
-            if (count($oneLineFromCsv) >= 31) {
-                $landline = trim($oneLineFromCsv[31]);
-                $landline = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $businessPhone);
-                if ($landline != '') {
-                    $landline = "+" . $landline;
-                }
-                $mobile = trim($oneLineFromCsv[8]);
-                $mobile = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $mobile1);
-                if ($mobile != '') {
-                    $mobile = "+" . $mobile1;
-                }
-            }
-            if (count($oneLineFromCsv) >= 91) {
-                $website = trim(strtolower($oneLineFromCsv[91]));
-            }
-            if (count($oneLineFromCsv) < 91) {
-                $website = '';
+            $mobile = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $mobile);
+            if ($mobile != '') {
+                $mobile = "+" . $mobile;
             }
 
-            if ($company != "Personal - Cyprus Tourist Attraction") {
-                continue;
-            }
-
-            $businessContact = $this->businessContactsRepository->findOneBy(['firstName' => $firstName]);
+            $businessContact = $this->businessContactsRepository->findOneBy([
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'company' => $company,
+            ]);
 
             if (!$businessContact) {
                 $businessContact = new BusinessContacts();
-                $businessContact->setFirstName($firstName)
-                    ->setLastName($lastName)
+                $businessContact->setStatus($status)
+                    ->setBusinessOrPerson($businessOrPerson)
                     ->setCompany($company)
-                    ->setAddressStreet($addressStreet)
-                    ->setAddressCity($addressCity)
-                    ->setAddressCountry($addressPostCode)
-                    ->setAddressCountry($addressCountry)
+                    ->setFirstName($firstName)
+                    ->setLastName($lastName)
+                    ->setWebsite($website)
+                    ->setEmail($email)
                     ->setLandline($landline)
                     ->setMobile($mobile)
-                    ->setEmail($email)
-                    ->setWebsite($website);
+                    ->setAddressStreet($addressStreet)
+                    ->setAddressCity($addressCity)
+                    ->setAddressCounty($addressCounty)
+                    ->setAddressPostCode($addressPostCode)
+                    ->setAddressCountry($addressCountry)
+                    ->setLocationLongitude($locationLongitude)
+                    ->setLocationLatitude($locationLatitude)
+                    ->setPublicPrivate($publicPrivate)
+                    ->setNotes($notes)
+                    ->setBusinessType($this->businessTypeRepository->findOneBy([
+                        'businessType' => $businessType])
+                    );
                 $this->manager->persist($businessContact);
                 $this->manager->flush();
             }
         }
-        $today = new \DateTime('now');
         $this->manager->flush();
         return null;
     }
 
-    public function __construct(BusinessContactsRepository $businessContactsRepository, ContainerInterface $container, EntityManagerInterface $manager)
+    public function __construct(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, ContainerInterface $container, EntityManagerInterface $manager)
     {
         $this->container = $container;
         $this->manager = $manager;
         $this->businessContactsRepository = $businessContactsRepository;
+        $this->businessTypeRepository = $businessTypesRepository;
     }
 }

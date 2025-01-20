@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dogs{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Dogs</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ dog.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ dog.name }}</td>
+            </tr>
+            <tr>
+                <th>Breed</th>
+                <td>{{ dog.breed }}</td>
+            </tr>
+            <tr>
+                <th>BreedChoiceReasons</th>
+                <td>{{ dog.breedChoiceReasons }}</td>
+            </tr>
+            <tr>
+                <th>DogChoiceReasons</th>
+                <td>{{ dog.dogChoiceReasons }}</td>
+            </tr>
+            <tr>
+                <th>DateOfBirth</th>
+                <td>{{ dog.dateOfBirth ? dog.dateOfBirth|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>{{ dog.gender }}</td>
+            </tr>
+            <tr>
+                <th>Neutered</th>
+                <td>{{ dog.neutered ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>NeuteredDate</th>
+                <td>{{ dog.neuteredDate ? dog.neuteredDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>RescueDog</th>
+                <td>{{ dog.rescueDog ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>ArrivalDate</th>
+                <td>{{ dog.arrivalDate ? dog.arrivalDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DogFood</th>
+                <td>{{ dog.dogFood }}</td>
+            </tr>
+            <tr>
+                <th>DailyMealCount</th>
+                <td>{{ dog.dailyMealCount }}</td>
+            </tr>
+            <tr>
+                <th>MealTimes</th>
+                <td>{{ dog.mealTimes }}</td>
+            </tr>
+            <tr>
+                <th>HealthIssues</th>
+                <td>{{ dog.healthIssues }}</td>
+            </tr>
+            <tr>
+                <th>DogWalkedCount</th>
+                <td>{{ dog.dogWalkedCount }}</td>
+            </tr>
+            <tr>
+                <th>DogWalkLength</th>
+                <td>{{ dog.dogWalkLength }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('dogs_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('dogs_edit', {'id': dog.id}) }}">Edit</a>
+
+    {{ include('dogs/_delete_form.html.twig') }}
+{% endblock %}

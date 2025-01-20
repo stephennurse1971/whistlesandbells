@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ CompanyDetails.companyDetails.companyName }} {% endblock %}
+{% block title %}{{ CompanyDetailsService.companyDetails.companyName }} {% endblock %}
 
 {% block body %}
     <div class="row">
         {% for photo in photos %}
-            {% set image = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
+            {% set image = asset('administration/Attachments/CMSPhotos')~"/"~photo.photo %}
             {% set fileType =  photo.photo|split('.')|last %}
             <div class="col-lg-3 col-md-4 m-4 p-4">
                 <div class="justify-content-center d-flex">
@@ -16,13 +16,9 @@
                                     <source src="{{ image }}" type="video/mp4"/>
                                 </video>
                             {% else %}
-                                {% if photo.link is not null %}
-                                    <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
-                                        <img class="homepage-image" src="{{ image }}">
-                                    </a>
-                                {% else %}
-                                    <img title="{{ photo.title }}" class="homepage-image" src="{{ image }}">
-                                {% endif %}
+                                <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
+                                    <img class="homepage-image rotate-{{ photo.rotate }}" src="{{ image }}">
+                                </a>
                             {% endif %}
                         {% endif %}
                     </div>

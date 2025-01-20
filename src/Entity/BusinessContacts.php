@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\BusinessContactsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\BusinessContacts;
 
 /**
  * @ORM\Entity(repositoryClass=BusinessContactsRepository::class)
@@ -48,10 +51,6 @@ class BusinessContacts
     private $company;
 
 
-
-
-
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -84,7 +83,7 @@ class BusinessContacts
 
     /**
      * @ORM\ManyToOne(targetEntity=BusinessTypes::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $businessType;
 
@@ -117,6 +116,25 @@ class BusinessContacts
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $files;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $notes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $addressCounty;
+
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=Referrals::class, mappedBy="businessContact", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $referrals;
+
+
 
     public function getId(): ?int
     {
@@ -354,4 +372,62 @@ class BusinessContacts
 
         return $this;
     }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getAddressCounty(): ?string
+    {
+        return $this->addressCounty;
+    }
+
+    public function setAddressCounty(?string $addressCounty): self
+    {
+        $this->addressCounty = $addressCounty;
+
+        return $this;
+    }
+
+
+
+    public function __construct()
+    {
+        $this->referrals = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getReferrals()
+    {
+        return $this->referrals;
+    }
+
+    public function addReferral(Referrals $referral): self
+    {
+        if (!$this->referrals->contains($referral)) {
+            $this->referrals[] = $referral;
+            $referral->setBusinessContact($this);
+        }
+        return $this;
+    }
+
+    public function removeReferral(Referrals $referral): self
+    {
+        if ($this->referrals->removeElement($referral)) {
+            // Set the owning side to null
+            if ($referral->getBusinessContact() === $this) {
+                $referral->setBusinessContact(null);
+            }
+        }
+        return $this;
+    }
+
+
 }

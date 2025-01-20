@@ -6,9 +6,6 @@ use App\Entity\Translation;
 use App\Form\ImportType;
 use App\Form\TranslationType;
 use App\Repository\TranslationRepository;
-use App\Repository\UserRepository;
-use App\Repository\WeatherRepository;
-use App\Services\UserImportGrapevineService;
 use App\Services\TranslationsImportService;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -23,7 +20,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/translation')]
 class TranslationController extends AbstractController
 {
-    #[Route('/inde', name: 'translation_index', methods: ['GET'])]
+    #[Route('/index', name: 'translation_index', methods: ['GET'])]
     public function index(TranslationRepository $translationRepository): Response
     {
         return $this->render('translation/index.html.twig', [
@@ -108,6 +105,7 @@ class TranslationController extends AbstractController
         $translations = $translationRepository->findAll();
         foreach ($translations as $translation) {
             $data[] = [
+                $translation->getEntity(),
                 $translation->getEnglish(),
                 $translation->getFrench(),
                 $translation->getGerman(),
@@ -118,11 +116,12 @@ class TranslationController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Translations');
-        $sheet->getCell('A1')->setValue('English');
-        $sheet->getCell('B1')->setValue('French');
-        $sheet->getCell('C1')->setValue('German');
-        $sheet->getCell('D1')->setValue('Spanish');
-        $sheet->getCell('E1')->setValue('Russian');
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('English');
+        $sheet->getCell('C1')->setValue('French');
+        $sheet->getCell('D1')->setValue('German');
+        $sheet->getCell('E1')->setValue('Spanish');
+        $sheet->getCell('F1')->setValue('Russian');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();
@@ -157,7 +156,7 @@ class TranslationController extends AbstractController
                 $newFilename = $safeFilename . '.' . 'csv';
                 try {
                     $importFile->move(
-                        $this->getParameter('translations_directory'),
+                        $this->getParameter('translations_import_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
@@ -168,8 +167,9 @@ class TranslationController extends AbstractController
 
             }
         }
-        return $this->render('admin/import/index.html.twig', [
-            'form' => $form->createView()
+        return $this->render('home/import.html.twig', [
+            'form' => $form->createView(),
+            'heading'=>'Translations',
         ]);
 
 

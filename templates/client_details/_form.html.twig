@@ -1,0 +1,31 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-2">
+        <h2 style="color: blue">Household</h2>
+        {{ form_row(form.user) }}
+        {{ form_row(form.mobile) }}
+        {{ form_row(form.childrenInHome) }}
+        If yes.... popup
+    </div>
+    <div class="col-2">
+        <h2 style="color: blue">Address</h2>
+        {{ form_row(form.addressStreet) }}
+        {{ form_row(form.addressTown) }}
+        {{ form_row(form.addressCounty) }}
+        {{ form_row(form.addressPostCode) }}
+        {{ form_row(form.addresslongitude) }}
+        {{ form_row(form.addresslatitude) }}
+    </div>
+    <div class="col-2">
+        <h2 style="color: blue">Communication methods</h2>
+        {{ form_row(form.communicationEmail) }}
+        {{ form_row(form.communicationVerbally) }}
+        {{ form_row(form.communicationWhatsApp) }}
+        {{ form_row(form.communicationWhatsAppGroup) }}
+    </div>
+</div>
+
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+

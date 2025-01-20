@@ -7,7 +7,6 @@ use App\Form\ReferralsType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
 use App\Repository\ReferralsRepository;
-use App\Repository\WeatherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +20,7 @@ use Symfony\Component\Security\Core\Security;
 class ReferralsController extends AbstractController
 {
     /**
-     * @Route("/", name="referrals_index", methods={"GET"})
+     * @Route("/index", name="referrals_index", methods={"GET"})
      */
     public function index(ReferralsRepository $referralsRepository): Response
     {
@@ -60,6 +59,7 @@ class ReferralsController extends AbstractController
         $now = new \DateTime('now');
         $referral = new Referrals();
         $referral->setBusinessSite($businessContactsRepository->find($business_referred))
+            ->setBusinessContact($businessContactsRepository->find($business_referred))
             ->setAction($action)
             ->setDateTime($now);
         if($user){

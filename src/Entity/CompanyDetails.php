@@ -274,20 +274,14 @@ class CompanyDetails
      */
     private $enableUserRegistration;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $registrationEmail;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $includeQRCodeHomePage;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $companyAddressMapLink;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -303,6 +297,36 @@ class CompanyDetails
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $headerDisplayWeather;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayFacebookPages;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayCompetitors;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $companyAddressMapLink;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $facebookReviewsHistoryShowMonths;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $titleUsefulLinks;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayPhotos;
 
 
     public function getId(): ?int
@@ -341,7 +365,7 @@ class CompanyDetails
         return $this->companyTel;
     }
 
-    public function setCompanyTel(string $companyTel): self
+    public function setCompanyTel(?string $companyTel): self
     {
         $this->companyTel = $companyTel;
 
@@ -910,17 +934,7 @@ class CompanyDetails
         return $this;
     }
 
-    public function getRegistrationEmail(): ?string
-    {
-        return $this->registrationEmail;
-    }
 
-    public function setRegistrationEmail(?string $registrationEmail): self
-    {
-        $this->registrationEmail = $registrationEmail;
-
-        return $this;
-    }
 
     public function isIncludeQRCodeHomePage(): ?bool
     {
@@ -934,17 +948,6 @@ class CompanyDetails
         return $this;
     }
 
-    public function getCompanyAddressMapLink(): ?string
-    {
-        return $this->companyAddressMapLink;
-    }
-
-    public function setCompanyAddressMapLink(?string $companyAddressMapLink): self
-    {
-        $this->companyAddressMapLink = $companyAddressMapLink;
-
-        return $this;
-    }
 
     public function isHeaderDisplayContactDetails(): ?bool
     {
@@ -978,6 +981,78 @@ class CompanyDetails
     public function setHeaderDisplayWeather(?bool $headerDisplayWeather): self
     {
         $this->headerDisplayWeather = $headerDisplayWeather;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayFacebookPages(): ?bool
+    {
+        return $this->headerDisplayFacebookPages;
+    }
+
+    public function setHeaderDisplayFacebookPages(?bool $headerDisplayFacebookPages): self
+    {
+        $this->headerDisplayFacebookPages = $headerDisplayFacebookPages;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayCompetitors(): ?bool
+    {
+        return $this->headerDisplayCompetitors;
+    }
+
+    public function setHeaderDisplayCompetitors(?bool $headerDisplayCompetitors): self
+    {
+        $this->headerDisplayCompetitors = $headerDisplayCompetitors;
+
+        return $this;
+    }
+
+    public function getCompanyAddressMapLink(): ?string
+    {
+        return $this->companyAddressMapLink;
+    }
+
+    public function setCompanyAddressMapLink(?string $companyAddressMapLink): self
+    {
+        $this->companyAddressMapLink = $companyAddressMapLink;
+
+        return $this;
+    }
+
+    public function getFacebookReviewsHistoryShowMonths(): ?int
+    {
+        return $this->facebookReviewsHistoryShowMonths;
+    }
+
+    public function setFacebookReviewsHistoryShowMonths(?int $facebookReviewsHistoryShowMonths): self
+    {
+        $this->facebookReviewsHistoryShowMonths = $facebookReviewsHistoryShowMonths;
+
+        return $this;
+    }
+
+    public function getTitleUsefulLinks(): ?string
+    {
+        return $this->titleUsefulLinks;
+    }
+
+    public function setTitleUsefulLinks(?string $titleUsefulLinks): self
+    {
+        $this->titleUsefulLinks = $titleUsefulLinks;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayPhotos(): ?bool
+    {
+        return $this->headerDisplayPhotos;
+    }
+
+    public function setHeaderDisplayPhotos(?bool $headerDisplayPhotos): self
+    {
+        $this->headerDisplayPhotos = $headerDisplayPhotos;
 
         return $this;
     }

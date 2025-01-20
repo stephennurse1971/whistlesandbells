@@ -1,0 +1,34 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-2">
+        {{ form_row(form.owner) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.photo) }}
+        {{ form_row(form.breed) }}
+        {{ form_row(form.breedChoiceReasons) }}
+        {{ form_row(form.dogChoiceReasons) }}
+    </div>
+    <div class="col-2">
+        {{ form_row(form.dateOfBirth) }}
+        {{ form_row(form.gender) }}
+        {{ form_row(form.neutered) }}
+        {{ form_row(form.neuteredDate) }}
+        {{ form_row(form.rescueDog) }}
+        {{ form_row(form.arrivalDate) }}
+    </div>
+    <div class="col-2">
+        {{ form_row(form.dogFood) }}
+        {{ form_row(form.dailyMealCount) }}
+        {{ form_row(form.mealTimes) }}
+        {{ form_row(form.healthIssues) }}
+        {{ form_row(form.dogWalkedCount) }}
+        {{ form_row(form.dogWalkLength) }}
+    </div>
+
+</div>
+
+
+
+    <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

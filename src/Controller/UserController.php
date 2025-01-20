@@ -86,37 +86,30 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{fullName}", name="user_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="user_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, string $fullName, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, \Symfony\Component\Security\Core\Security $security): Response
+    public function edit(Request $request, int $id, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, \Symfony\Component\Security\Core\Security $security): Response
     {
-        $user_name = explode(' ', $fullName);
-        if(count($user_name)<3){
-            $first_name = $user_name[0];
-            $last_name = $user_name[1];
-        }
-        else{
-            $first_name = $user_name[0];
-            $last_name = $user_name[1]." ".$user_name[2];
-        }
-        $user = $userRepository->findOneBy([
-            'firstName' => $first_name,
-            'lastName'=>$last_name]);
-
+        $referer = $request->request->get('referer');
+        $user = $userRepository->find($id);
+        $old_password = $user->getPassword();
         $form = $this->createForm(UserType::class, $user, ['user' => $user]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $referer = $request->request->get('referer');
             if ($form->has('roles')) {
                 $roles = $form['roles']->getData();
                 $user->setRoles($roles);
             }
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $user->getPassword()
-                )
-            );
+
+            $new_Password = $form['password']->getData();
+            if ($new_Password) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword($user, $new_Password));
+            } else {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword($user, $old_password));
+            }
+
             $userRepository->add($user, true);
             return $this->redirect($referer);
         }

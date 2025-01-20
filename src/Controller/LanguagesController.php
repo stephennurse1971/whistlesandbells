@@ -2,20 +2,22 @@
 
 namespace App\Controller;
 
-use App\Entity\CmsPhoto;
 use App\Entity\Languages;
-use App\Entity\ToDoListItems;
+use App\Form\ImportType;
 use App\Form\LanguagesType;
-use App\Repository\CmsPhotoRepository;
 use App\Repository\LanguagesRepository;
-use App\Repository\ToDoListItemsRepository;
-use App\Repository\ToDoListRepository;
+use App\Services\LanguagesImportService;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/languages')]
 class LanguagesController extends AbstractController
@@ -43,7 +45,7 @@ class LanguagesController extends AbstractController
                     $newFilename = $safeFilename . '.' . $icon->guessExtension();
                     try {
                         $icon->move(
-                            $this->getParameter('icon_directory'),
+                            $this->getParameter('language_icon_directory'),
                             $newFilename
                         );
                         $language->setIcon($newFilename);
@@ -87,7 +89,7 @@ class LanguagesController extends AbstractController
                     $newFilename = $safeFilename . '.' . $icon->guessExtension();
                     try {
                         $icon->move(
-                            $this->getParameter('icon_directory'),
+                            $this->getParameter('language_icon_directory'),
                             $newFilename
                         );
                         $language->setIcon($newFilename);
@@ -112,7 +114,7 @@ class LanguagesController extends AbstractController
     {
         $file_name = $language->getIcon();
         if ($file_name) {
-            $file = $this->getParameter('icon_directory') . $file_name;
+            $file = $this->getParameter('language_icon_directory') . $file_name;
             if (file_exists($file)) {
                 unlink($file);
             }
@@ -120,7 +122,6 @@ class LanguagesController extends AbstractController
             $entityManager->flush();
 
         }
-
         if ($this->isCsrfTokenValid('delete' . $language->getId(), $request->request->get('_token'))) {
             $languagesRepository->remove($language, true);
         }
@@ -130,6 +131,19 @@ class LanguagesController extends AbstractController
 
 
     /**
+     * @Route("/delete_all", name="languages_delete_all")
+     */
+    public function deleteLanguages(LanguagesRepository $languagesRepository, EntityManagerInterface $entityManager): Response
+    {
+        $languages = $languagesRepository->findAll();
+        foreach ($languages as $language) {
+            $entityManager->remove($language);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('languages_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
      * @Route("/delete_language_icon/{id}", name="language_icon_delete", methods={"POST", "GET"})
      */
     public function deleteLanguageIcon(int $id, Request $request, Languages $language, EntityManagerInterface $entityManager)
@@ -137,7 +151,7 @@ class LanguagesController extends AbstractController
         $referer = $request->headers->get('referer');
         $file_name = $language->getIcon();
         if ($file_name) {
-            $file = $this->getParameter('icon_directory') . $file_name;
+            $file = $this->getParameter('language_icon_directory') . $file_name;
             if (file_exists($file)) {
                 unlink($file);
             }
@@ -151,9 +165,15 @@ class LanguagesController extends AbstractController
     /**
      * @Route("/set/default/language/{id}", name="select_default_language")
      */
-    public function setDefaultLanguage(Request $request, Languages $languages)
+    public function setDefaultLanguage(Request $request, Languages $languages, Security $security, EntityManagerInterface $entityManager): Response
     {
         $session = $request->getSession();
+        $user = $security->getUser();
+        if($user){
+            $user->setDefaultLanguage($languages);
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
         $session->set('selected_language', $languages->getLanguage());
         return $this->redirect($request->headers->get('referer'));
     }
@@ -182,15 +202,13 @@ class LanguagesController extends AbstractController
     /**
      * @Route("/update_ranking", name="update_ranking", methods={"GET", "POST"})
      */
-    public function updateRanking(LanguagesRepository $languagesRepository, Request $request, EntityManagerInterface $manager): Response
+    public function updateLanguageRanking(LanguagesRepository $languagesRepository, Request $request, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
         $rankingContainer = [];
         $languages = $languagesRepository->findAll();
         foreach ($languages as $language) {
-
-                $rankingContainer[] = ['id' => $language->getId(), 'ranking' => $language->getRanking()];
-
+            $rankingContainer[] = ['id' => $language->getId(), 'ranking' => $language->getRanking()];
             array_multisort(array_column($rankingContainer, 'ranking'), SORT_ASC, $rankingContainer);
             $minRank = 1;
 
@@ -211,14 +229,14 @@ class LanguagesController extends AbstractController
     {
         $referer = $request->headers->get('Referer');
         $language = $languagesRepository->find($id);
-        $current_status= $language->isIsActive();
+        $current_status = $language->isIsActive();
 
-        if($current_status == 1){
+        if ($current_status == 1) {
             $language->setIsActive(0);
             $manager->persist($language);
             $manager->flush();
         }
-        if($current_status == 0 ){
+        if ($current_status == 0) {
             $language->setIsActive(1);
             $manager->persist($language);
             $manager->flush();
@@ -228,4 +246,84 @@ class LanguagesController extends AbstractController
     }
 
 
+    /**
+     * @Route ("/export/languages", name="languages_export" )
+     */
+    public function languagesExport(LanguagesRepository $languagesRepository)
+    {
+        $data = [];
+        $exported_date = new \DateTime('now');
+        $exported_date_formatted = $exported_date->format('d-M-Y');
+        $exported_date_formatted_for_file = $exported_date->format('d-m-Y');
+        $fileName = 'languages_export_' . $exported_date_formatted_for_file . '.csv';
+
+        $count = 0;
+        $languages_list = $languagesRepository->findAll();
+        foreach ($languages_list as $language) {
+            $data[] = [
+                $language->getRanking(),
+                $language->isIsActive(),
+                $language->getLanguage(),
+                $language->getAbbreviation(),
+                $language->getLinkedInOther(),
+                $language->getIcon(),
+            ];
+        }
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Languages');
+        $sheet->getCell('A1')->setValue('Ranking');
+        $sheet->getCell('B1')->setValue('IsActive');
+        $sheet->getCell('C1')->setValue('Language');
+        $sheet->getCell('D1')->setValue('Abbreviation');
+        $sheet->getCell('E1')->setValue('LinkedIn Other');
+        $sheet->getCell('F1')->setValue('Icon');
+
+        $sheet->fromArray($data, null, 'A2', true);
+        $total_rows = $sheet->getHighestRow();
+        for ($i = 2; $i <= $total_rows; $i++) {
+            $cell = "L" . $i;
+            $sheet->getCell($cell)->getHyperlink()->setUrl("https://google.com");
+        }
+        $writer = new Csv($spreadsheet);
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+        $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Disposition', sprintf('attachment;filename="%s"', $fileName));
+        $response->headers->set('Cache-Control', 'max-age=0');
+        return $response;
+    }
+
+
+    /**
+     * @Route ("/import/languages", name="languages_import" )
+     */
+    public function languagesImport(Request $request, SluggerInterface $slugger, LanguagesImportService $languagesImportService): Response
+    {
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('File')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . 'csv';
+                try {
+                    $importFile->move(
+                        $this->getParameter('languages_import_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+                $languagesImportService->importLanguages($newFilename);
+                return $this->redirectToRoute('languages_index');
+            }
+        }
+        return $this->render('home/import.html.twig', [
+            'form' => $form->createView(),
+            'heading' => 'Languages Import',
+        ]);
+    }
 }

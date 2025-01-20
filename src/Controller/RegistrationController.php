@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\CompanyDetails;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
@@ -14,14 +13,13 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, MailerInterface $mailer, \App\Services\CompanyDetails $companyDetails): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, MailerInterface $mailer, \App\Services\CompanyDetailsService $companyDetails): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);

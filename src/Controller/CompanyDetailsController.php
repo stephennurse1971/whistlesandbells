@@ -14,12 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/company_details")
- * @Security("is_granted('ROLE_ADMIN')")
  */
 class CompanyDetailsController extends AbstractController
 {
     /**
      * @Route("/index", name="company_details_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -30,6 +30,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/new", name="company_details_new", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(Request $request, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -46,7 +47,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $companyDetails->getCompanyName() . '_dev.' . $faviconDev->guessExtension();
                 $faviconDev->move(
-                    $this->getParameter('favicon_directory'),
+                    $this->getParameter('favicon_and_QR_directory'),
                     $newFilename
                 );
                 $companyDetails->setFaviconDev($newFilename);
@@ -55,7 +56,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilenameLive = pathinfo($faviconLive->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilenameLive = $companyDetails->getCompanyName() . '_live.' . $faviconLive->guessExtension();
                 $faviconLive->move(
-                    $this->getParameter('favicon_directory'),
+                    $this->getParameter('favicon_and_QR_directory'),
                     $newFilenameLive
                 );
                 $companyDetails->setFaviconLive($newFilenameLive);
@@ -64,7 +65,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilenameQR = pathinfo($qrCode->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilenameQR = $companyDetails->getCompanyName() . '_qr_code.' . $qrCode->guessExtension();
                 $qrCode->move(
-                    $this->getParameter('favicon_directory'),
+                    $this->getParameter('favicon_and_QR_directory'),
                     $newFilenameQR
                 );
                 $companyDetails->setCompanyQrCode($newFilenameQR);
@@ -82,6 +83,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/show/{id}", name="company_details_show", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function show(CompanyDetails $companyDetails): Response
     {
@@ -92,6 +94,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="company_details_edit", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -107,7 +110,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $companyDetails->getCompanyName() . '_dev.' . $faviconDev->guessExtension();
                 $faviconDev->move(
-                    $this->getParameter('favicon_directory'),
+                    $this->getParameter('favicon_and_QR_directory'),
                     $newFilename
                 );
                 $companyDetails->setFaviconDev($newFilename);
@@ -116,7 +119,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilenameLive = pathinfo($faviconLive->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilenameLive = $companyDetails->getCompanyName() . '_live.' . $faviconLive->guessExtension();
                 $faviconLive->move(
-                    $this->getParameter('favicon_directory'),
+                    $this->getParameter('favicon_and_QR_directory'),
                     $newFilenameLive
                 );
                 $companyDetails->setFaviconLive($newFilenameLive);
@@ -125,7 +128,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilenameQR = pathinfo($qrCode->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilenameQR = $companyDetails->getCompanyName() . '_qr_code.' . $qrCode->guessExtension();
                 $qrCode->move(
-                    $this->getParameter('favicon_directory'),
+                    $this->getParameter('favicon_and_QR_directory'),
                     $newFilenameQR
                 );
                 $companyDetails->setCompanyQrCode($newFilenameQR);
@@ -143,6 +146,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="company_details_delete", methods={"POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -164,6 +168,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/delete_favicon/{live_or_dev}/{id}", name="company_details_delete_favicon", methods={"POST", "GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteLiveFavicon(Request $request, int $id, string $live_or_dev, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
     {
@@ -171,7 +176,7 @@ class CompanyDetailsController extends AbstractController
         if ($live_or_dev == 'live') {
             $companyDetails->setFaviconLive(null);
             $entityManager->flush();
-            $files = glob($this->getParameter('favicon_directory') . "/*live*");
+            $files = glob($this->getParameter('favicon_and_QR_directory') . "/*live*");
             foreach ($files as $file) {
                 unlink($file);
             }
@@ -179,7 +184,7 @@ class CompanyDetailsController extends AbstractController
         if ($live_or_dev == 'dev') {
             $companyDetails->setFaviconDev(null);
             $entityManager->flush();
-            $files = glob($this->getParameter('favicon_directory') . "/*dev*");
+            $files = glob($this->getParameter('favicon_and_QR_directory') . "/*dev*");
             foreach ($files as $file) {
                 unlink($file);
             }
@@ -191,13 +196,14 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/delete_qr_code/{id}", name="company_details_delete_qr_code", methods={"POST", "GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteQRCodeLiveFavicon(Request $request, int $id, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
         $companyDetails->setCompanyQrCode(null);
         $entityManager->flush();
-        $files = glob($this->getParameter('favicon_directory') . "/*qr*");
+        $files = glob($this->getParameter('favicon_and_QR_directory') . "/*qr*");
         foreach ($files as $file) {
             unlink($file);
         }
@@ -207,29 +213,47 @@ class CompanyDetailsController extends AbstractController
     }
 
     /**
-     * @Route("/export/live/database", name="export_live_database", methods={"POST", "GET"})
+     * @Route("/export/database", name="export_database", methods={"POST", "GET"})
+     *
      */
-    public function exportDatabase(Request $request, EntityManagerInterface $entityManager, \App\Services\CompanyDetails $companyDetails)
+    public function exportDatabase(Request $request, EntityManagerInterface $entityManager, \App\Services\CompanyDetailsService $companyDetails)
     {
-        $filename = $companyDetails->getCompanyDetails()->getSqlDatabase().'.sql';
-        $sqlDatabase = $companyDetails->getCompanyDetails()->getSqlDatabase();
+        $sqlDatabase = $companyDetails->getCompanyDetails()->getSqlDatabase() . '.sql';
         $sqlPassword = $companyDetails->getCompanyDetails()->getDatabasePassword();
+        $publicPath = $this->getParameter('public');
+        $filePath = $publicPath . '/' . $sqlDatabase;
 
-        if( $_ENV['APP_SERVER']=="local"){
-            exec('mysqldump --user=root --password= --host=localhost '.$sqlDatabase.'>'.$filename);
+        if ($_ENV['APP_SERVER'] == "local") {
+            exec('mysqldump --user=root --password= --host=localhost ' . escapeshellarg($sqlDatabase) . ' > ' . escapeshellarg($filePath));
+        } else {
+            exec('mysqldump --user=stephen --password=' . escapeshellarg($sqlPassword) . ' --host=localhost ' . escapeshellarg($sqlDatabase) . ' > ' . escapeshellarg($filePath));
         }
-        else{
-            exec('mysqldump --user=stephen --password='.$sqlPassword.' --host=localhost '.$sqlDatabase.' >'.$filename);
+
+        if (file_exists($filePath)) {
+            return $this->file($filePath)->deleteFileAfterSend(true); // Symfony helper to download files
         }
-        $file = $this->getParameter('public').$filename;
-        if(file_exists($file)){
-            header('Content-Type: application/octet-stream');
-            header("Content-Transfer-Encoding: Binary");
-            header("Content-disposition: attachment; filename=\"" . basename($filename) . "\"");
-            readfile($file);
-            unlink($file);
-        }
+
+        // If file doesn't exist, redirect back with an error message
+        $this->addFlash('error', 'Failed to export the database.');
         $referer = $request->headers->get('Referer');
-        return $this->redirect($referer);
+        return $this->redirect($referer ?? $this->generateUrl('app_home'));
     }
+
+    /**
+     * @Route("/edit/update/location", name="update_company_details_location", methods={"POST"})
+     */
+    public function updateLocation(CompanyDetailsRepository $companyDetailsRepository, EntityManagerInterface $manager): Response
+    {
+        $id = $_POST['id'];
+        $latitude = $_POST['latitude'];
+        $longitude = $_POST['longitude'];
+        $gps = $latitude . ',' . $longitude;
+        $company_details = $companyDetailsRepository->find($id);
+        $company_details->setCompanyAddressLongitude($longitude)
+            ->setCompanyAddressLatitude($latitude);
+        $manager->flush();
+        return new Response(null);
+    }
+
+
 }

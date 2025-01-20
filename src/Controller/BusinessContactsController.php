@@ -7,17 +7,21 @@ use App\Form\BusinessContactsType;
 use App\Form\ImportType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
-use App\Repository\UserRepository;
+use App\Repository\FileAttachmentsRepository;
+use App\Repository\PhotosRepository;
 use App\Services\BusinessContactsImportService;
-use App\Services\UserImportService;
+use App\Services\CompanyDetailsService;
+use App\Services\CountBusinessContactsService;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -28,9 +32,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class BusinessContactsController extends AbstractController
 {
     /**
-     * @Route("/", name="business_contacts_index", methods={"GET"})
+     * @Route("/index", name="business_contacts_index", methods={"GET"})
      */
-    public function index(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository): Response
+    public function index(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContactsService): Response
     {
         $business_contacts = $businessContactsRepository->findBy([
             'status' => 'Approved'
@@ -39,24 +43,91 @@ class BusinessContactsController extends AbstractController
         if ($this->isGranted('ROLE_ADMIN')) {
             $business_contacts = $businessContactsRepository->findAll();
         }
-        $business_types = [];
 
-        foreach ($businessTypesRepository->findAll() as $businessTypes) {
-            $business_types[] = $businessTypes->getBusinessType();
-        }
-        $business_types = array_unique($business_types);
+        $business_types = $businessTypesRepository->findBy([], ['ranking' => 'ASC']);
+
         return $this->render('business_contacts/index.html.twig', [
             'business_contacts' => $business_contacts,
-            'business_types' => $business_types
+            'business_types' => $business_types,
+            'countBusinessContactsService' => $countBusinessContactsService,
+            'list_or_map'=>'list'
         ]);
     }
 
     /**
-     * @Route("/new", name="business_contacts_new", methods={"GET", "POST"})
+     * @Route("/map/{subset}", name="business_contacts_map", methods={"GET"})
      */
-    public function new(Request $request, BusinessContactsRepository $businessContactsRepository, EntityManagerInterface $entityManager): Response
+    public function map(Request $request, string $subset, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
     {
+        if ($subset == 'All') {
+            $business_contacts = $businessContactsRepository->findBy([
+                'status' => 'Approved'
+            ]);
+        }
+
+        if ($subset != 'All') {
+            $business_type = $businessTypesRepository->findOneBy(['businessType' => $subset]);
+            $business_contacts = $businessContactsRepository->findBy([
+                'status' => 'Approved',
+                'businessType' => $business_type
+            ]);
+        }
+
+        $latitude_total = 0;
+        $longitude_total = 0;
+        $count = 0;
+        $latitude_max = -100;
+        $latitude_min = +100;
+        $longitude_max = -100;
+        $longitude_min = +100;
+
+        foreach ($business_contacts as $business_contact) {
+            $latitude_total = $latitude_total + $business_contact->getLocationLatitude();
+            $longitude_total = $longitude_total + $business_contact->getLocationLongitude();
+            $count = $count + 1;
+
+            if ($business_contact->getLocationLatitude() > $latitude_max) {
+                $latitude_max = $business_contact->getLocationLatitude();
+            }
+            if ($business_contact->getLocationLatitude() < $latitude_min) {
+                $latitude_min = $business_contact->getLocationLatitude();
+            }
+            if ($business_contact->getLocationLongitude() > $longitude_max) {
+                $longitude_max = $business_contact->getLocationLongitude();
+            }
+            if ($business_contact->getLocationLongitude() < $longitude_min) {
+                $longitude_min = $business_contact->getLocationLongitude();
+            }
+        }
+
+        $latitude_average = $latitude_total / $count;
+        $longitude_average = $longitude_total / $count;
+
+        $business_types = $businessTypesRepository->findAll();
+        return $this->render('business_contacts/map_of_business_contacts.html.twig', [
+            'business_contacts' => $business_contacts,
+            'business_types' => $business_types,
+            'subset' => $subset,
+            'latitude_average' => $latitude_average,
+            'longitude_average' => $longitude_average,
+            'latitude_max' => $latitude_max,
+            'latitude_min' => $latitude_min,
+            'longitude_max' => $longitude_max,
+            'longitude_min' => $longitude_min,
+            'list_or_map'=>'map'
+        ]);
+    }
+
+    /**
+     * @Route("/new/{business_type}", name="business_contacts_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, string $business_type, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CompanyDetailsService $companyDetails, EntityManagerInterface $entityManager): Response
+    {
+        $business_type = $businessTypesRepository->find($business_type);
+        $default_country = $companyDetails->getCompanyDetails()->getCompanyAddressCountry();
         $businessContact = new BusinessContacts();
+        $businessContact->setBusinessType($business_type);
+        $businessContact->setAddressCountry($default_country);
         $form = $this->createForm(BusinessContactsType::class, $businessContact);
         $form->handleRequest($request);
 
@@ -67,10 +138,23 @@ class BusinessContactsController extends AbstractController
                 $photo_directory = $this->getParameter('business_contacts_photos_directory');
                 $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $photo->guessExtension();
-                $newFileName = $fileName . "." . $file_extension;
+                $newFileName = $businessContact->getFirstName() . "_" . $businessContact->getLastName() . "_" . uniqid() . "." . $file_extension;
                 $photo->move($photo_directory, $newFileName);
                 $businessContact->setPhoto($newFileName);
             }
+
+            $file = $form['files']->getData();
+            if ($file) {
+                $file_name = [];
+                $file_directory = $this->getParameter('business_contacts_files_directory');
+                $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $file_extension = $file->guessExtension();
+                $newFileName = $fileName . "." . $file_extension;
+                $file->move($file_directory, $newFileName);
+                $businessContact->setFiles($newFileName);
+            }
+
+
             $businessContactsRepository->add($businessContact, true);
             $firstName = $businessContact->getFirstName();
             $lastName = $businessContact->getLastName();
@@ -108,7 +192,7 @@ class BusinessContactsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="business_contacts_show", methods={"GET"})
+     * @Route("/show/{id}", name="business_contacts_show", methods={"GET"})
      */
     public function show(BusinessContacts $businessContact): Response
     {
@@ -118,7 +202,7 @@ class BusinessContactsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="business_contacts_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="business_contacts_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, BusinessContacts $businessContact, BusinessContactsRepository $businessContactsRepository): Response
     {
@@ -126,6 +210,28 @@ class BusinessContactsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $photo = $form['photo']->getData();
+            if ($photo) {
+                $files_name = [];
+                $photo_directory = $this->getParameter('business_contacts_photos_directory');
+                $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $file_extension = $photo->guessExtension();
+                $newFileName = $businessContact->getFirstName() . "_" . $businessContact->getLastName() . "_" . uniqid() . "." . $file_extension;
+                $photo->move($photo_directory, $newFileName);
+                $businessContact->setPhoto($newFileName);
+            }
+
+            $file = $form['files']->getData();
+            if ($file) {
+                $file_name = [];
+                $file_directory = $this->getParameter('business_contacts_files_directory');
+                $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $file_extension = $file->guessExtension();
+                $newFileName = $fileName . "." . $file_extension;
+                $file->move($file_directory, $newFileName);
+                $businessContact->setFiles($newFileName);
+            }
+
             $businessContactsRepository->add($businessContact, true);
 
             return $this->redirectToRoute('business_contacts_index', [], Response::HTTP_SEE_OTHER);
@@ -138,10 +244,11 @@ class BusinessContactsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="business_contacts_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="business_contacts_delete", methods={"POST"})
      */
     public function delete(Request $request, BusinessContacts $businessContact, BusinessContactsRepository $businessContactsRepository): Response
     {
+
         if ($this->isCsrfTokenValid('delete' . $businessContact->getId(), $request->request->get('_token'))) {
             $businessContactsRepository->remove($businessContact, true);
         }
@@ -151,7 +258,67 @@ class BusinessContactsController extends AbstractController
 
 
     /**
-     * @Route ("/export/business_contacts", name="business_contacts_export" )
+     * @Route("/delete_all", name="business_contacts_delete_all")
+     */
+    public function deleteAllBusinessContacts(BusinessContactsRepository $businessContactsRepository, EntityManagerInterface $entityManager): Response
+    {
+        $business_contacts = $businessContactsRepository->findAll();
+        foreach ($business_contacts as $business_contact) {
+            $entityManager->remove($business_contact);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('business_contacts_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    /**
+     * @Route("/delete_photo_file/{id}", name="business_contact_delete_photo_file", methods={"POST", "GET"})
+     */
+    public function deleteBusinessContactPhotoFile(int $id, Request $request, BusinessContacts $businessContacts, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $file_name = $businessContacts->getPhoto();
+        if ($file_name) {
+            $file = $this->getParameter('business_contacts_photos_directory') . "/" . $file_name;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+            $businessContacts->setPhoto('');
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/delete_attachment_file/{id}", name="business_contact_delete_attachment_file", methods={"POST", "GET"})
+     */
+    public function deleteBusinessContactAttachmentFile(int $id, Request $request, BusinessContacts $businessContacts, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $file_name = $businessContacts->getFiles();
+        if ($file_name) {
+            $file = $this->getParameter('business_contacts_files_directory') . "/" . $file_name;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+            $businessContacts->setFiles('');
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route ("/view/photo/{id}", name="view_business_contact_photo")
+     */
+    public function viewBusinessContactPhoto(Request $request, $id, BusinessContactsRepository $businessContactsRepository)
+    {
+        $business_contact = $businessContactsRepository->find($id);
+        return $this->render('business_contacts/view_photo.html.twig', ['business_contact' => $business_contact]);
+    }
+
+
+    /**
+     * @Route ("/export/BusinessContacts", name="business_contacts_export" )
      */
     public function businessContactsExport(BusinessContactsRepository $businessContactsRepository)
     {
@@ -159,31 +326,33 @@ class BusinessContactsController extends AbstractController
         $exported_date = new \DateTime('now');
         $exported_date_formatted = $exported_date->format('d-M-Y');
         $exported_date_formatted_for_file = $exported_date->format('d-m-Y');
-        $fileName = 'business_contacts_export'.$exported_date_formatted_for_file.'csv';
+        $fileName = 'business_contacts_export_' . $exported_date_formatted_for_file . '.csv';
 
         $count = 0;
         $business_contact_list = $businessContactsRepository->findAll();
         foreach ($business_contact_list as $business_contact) {
             $concatenatedNotes = "Exported on: " . $exported_date_formatted;
             $data[] = [
-                $business_contact->getPhoto(),
                 $business_contact->getStatus(),
                 $business_contact->getBusinessOrPerson(),
-                $business_contact->getBusinessType(),
+                $business_contact->getBusinessType()->getBusinessType(),
                 $business_contact->getCompany(),
                 $business_contact->getFirstName(),
+
                 $business_contact->getLastName(),
                 $business_contact->getWebsite(),
                 $business_contact->getEmail(),
                 $business_contact->getLandline(),
                 $business_contact->getMobile(),
+
                 $business_contact->getAddressStreet(),
                 $business_contact->getAddressCity(),
+                $business_contact->getAddressCounty(),
                 $business_contact->getAddressPostCode(),
                 $business_contact->getAddressCountry(),
+
                 $business_contact->getLocationLongitude(),
                 $business_contact->getLocationLatitude(),
-
                 $business_contact->getPublicPrivate(),
                 $concatenatedNotes,
                 $business_contact->getId()
@@ -192,28 +361,29 @@ class BusinessContactsController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Business Contacts');
-        $sheet->getCell('A1')->setValue('Photo');
-        $sheet->getCell('B1')->setValue('Status');
-        $sheet->getCell('C1')->setValue('Business Or Person');
-        $sheet->getCell('D1')->setValue('Business Type');
-        $sheet->getCell('E1')->setValue('Company Name');
-        $sheet->getCell('F1')->setValue('First Name');
-        $sheet->getCell('G1')->setValue('Last Name');
-        $sheet->getCell('H1')->setValue('Website');
-        $sheet->getCell('I1')->setValue('Email');
-        $sheet->getCell('J1')->setValue('Mobile1');
-        $sheet->getCell('K1')->setValue('Landline');
-        $sheet->getCell('L1')->setValue('Company');
-        $sheet->getCell('M1')->setValue('Address Street');
-        $sheet->getCell('N1')->setValue('Address City');
-        $sheet->getCell('O1')->setValue('Address Post Code');
-        $sheet->getCell('P1')->setValue('Address Country');
-        $sheet->getCell('Q1')->setValue('Location Longitude');
-        $sheet->getCell('R1')->setValue('Location Latitude');
-        $sheet->getCell('S1')->setValue('Public or Private');
-        $sheet->getCell('T1')->setValue('Business or Person');
-        $sheet->getCell('U1')->setValue('Notes');
-        $sheet->getCell('V1')->setValue('Id');
+        $sheet->getCell('A1')->setValue('Status');
+        $sheet->getCell('B1')->setValue('Business Or Person');
+        $sheet->getCell('C1')->setValue('Business Type');
+        $sheet->getCell('D1')->setValue('Company');
+        $sheet->getCell('E1')->setValue('First Name');
+
+        $sheet->getCell('F1')->setValue('Last Name');
+        $sheet->getCell('G1')->setValue('Web Page');
+        $sheet->getCell('H1')->setValue('E-mail');
+        $sheet->getCell('I1')->setValue('Business Phone');
+        $sheet->getCell('J1')->setValue('Mobile Phone');
+
+        $sheet->getCell('K1')->setValue('Business Street');
+        $sheet->getCell('L1')->setValue('Business City');
+        $sheet->getCell('M1')->setValue('Business County');
+        $sheet->getCell('N1')->setValue('Business Postal Code');
+        $sheet->getCell('O1')->setValue('Business Country/Region');
+
+        $sheet->getCell('P1')->setValue('Location Longitude');
+        $sheet->getCell('Q1')->setValue('Location Latitude');
+        $sheet->getCell('R1')->setValue('Public or Private');
+        $sheet->getCell('S1')->setValue('Notes');
+        $sheet->getCell('T1')->setValue('Id');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();
@@ -233,7 +403,7 @@ class BusinessContactsController extends AbstractController
 
 
     /**
-     * @Route ("/import/business_contacts", name="business_contacts_import" )
+     * @Route ("/import/BusinessContacts", name="business_contacts_import" )
      */
     public function businessContactsImport(Request $request, SluggerInterface $slugger, BusinessContactsRepository $businessContactsRepository, BusinessContactsImportService $businessContactsImportService): Response
     {
@@ -247,7 +417,7 @@ class BusinessContactsController extends AbstractController
                 $newFilename = $safeFilename . '.' . 'csv';
                 try {
                     $importFile->move(
-                        $this->getParameter('business_contact_attachments_directory'),
+                        $this->getParameter('business_contacts_import_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
@@ -257,9 +427,9 @@ class BusinessContactsController extends AbstractController
                 return $this->redirectToRoute('business_contacts_index');
             }
         }
-        return $this->render('business_contacts/import.html.twig', [
+        return $this->render('home/import.html.twig', [
             'form' => $form->createView(),
-            'heading'=>'Business Contacts Import',
+            'heading' => 'Business Contacts Import',
         ]);
     }
 
@@ -271,22 +441,42 @@ class BusinessContactsController extends AbstractController
     {
         $business_contact = $businessContactsRepository->find($id);
         $vcard = new VCard();
+        $businessOrPerson = $business_contact->getBusinessOrPerson();
+        $business_type = $business_contact->getBusinessType()->getBusinessType();
         $firstName = $business_contact->getFirstName();
         $lastName = $business_contact->getLastName();
+        $mobile = $business_contact->getMobile();
+        $landline = $business_contact->getLandline();
         $company = $business_contact->getCompany();
         $website = $business_contact->getWebsite();
-        $address = $business_contact->getAddressStreet();
+        $addressStreet = $business_contact->getAddressStreet();
         $addressCity = $business_contact->getAddressCity();
-        $addressPostalCode = $business_contact->getAddressPostcode();
+        $addressPostCode = $business_contact->getAddressPostcode();
         $addressCountry = $business_contact->getAddressCountry();
-        $notes = "GPS location: " . $business_contact->getLocationLongitude();
-        $vcard->addName($lastName, $firstName);
+        $longitude = $business_contact->getLocationLongitude();
+        $latitude = $business_contact->getLocationLatitude();
+        $notes = $business_contact->getNotes();
+
+        if ($businessOrPerson = "Business") {
+            $firstNameCard = $company;
+            $lastNameCard = $business_type;
+            $companyCard = [];
+        }
+
+        if ($businessOrPerson = "Person") {
+            $firstNameCard = $firstName;
+            $lastNameCard = $lastName;
+            $companyCard = $company;
+        }
+
+        $vcard->addName($lastNameCard, $firstNameCard);
         $vcard->addEmail($business_contact->getEmail())
-            ->addPhoneNumber($business_contact->getLandline(), 'work')
-            ->addCompany($company)
+            ->addPhoneNumber($landline, 'work')
+            ->addPhoneNumber($mobile, 'mobile')
+            ->addCompany($companyCard)
             ->addURL($website)
             ->addNote($notes)
-            ->addAddress($name = '', $extended = '', $street = $address, $city = $addressCity, $region = '', $zip = $addressPostalCode, $country = $addressCountry, $type = 'WORK;POSTAL');
+            ->addAddress($name = '', $extended = '', $street = $addressStreet, $city = $addressCity, $region = '', $zip = $addressPostCode, $country = $addressCountry, $type = 'WORK;POSTAL');
         $vcard->download();
         return new Response(null);
     }
@@ -302,12 +492,12 @@ class BusinessContactsController extends AbstractController
         return $this->render('business_contacts/gpsGoogleMaps.html.twig', [
             'latitude' => $latitude,
             'longitude' => $longitude,
-            'business' => $business_contact->getCompany()
+            'business' => $business_contact
         ]);
     }
 
     /**
-     * @Route("/update/user/location", name="update_user_location", methods={"POST"})
+     * @Route("/update/location", name="update_business_contact_location", methods={"POST"})
      */
     public function updateLocation(BusinessContactsRepository $businessContactsRepository, EntityManagerInterface $manager): Response
     {
@@ -316,19 +506,21 @@ class BusinessContactsController extends AbstractController
         $longitude = $_POST['longitude'];
         $gps = $latitude . ',' . $longitude;
         $business_contact = $businessContactsRepository->find($id);
-        $business_contact->setGpsLocation($gps);
+        $business_contact->setLocationLongitude($longitude)
+            ->setLocationLatitude($latitude);
         $manager->flush();
         return new Response(null);
     }
 
     /**
-     * @Route("/gps_location_clear/{id}", name="tourist_attraction_clear_gps_location")
+     * @Route("/gps_location_clear/{id}", name="business_contact_clear_gps_location")
      */
     public
-    function clearGPSLocation(Request $request, TouristAttraction $touristAttraction, EntityManagerInterface $entityManager)
+    function clearGPSLocation(Request $request, BusinessContacts $businessContacts, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
-        $touristAttraction->setGpsLocation(null);
+        $businessContacts->setLocationLongitude(null);
+        $businessContacts->setLocationLatitude(null);
         $entityManager->flush();
         return $this->redirect($referer);
     }
@@ -337,7 +529,7 @@ class BusinessContactsController extends AbstractController
      * @Route("/importContacts", name="importContacts")
      */
     public
-    function userImportContacts(Request $request, SluggerInterface $slugger, BusinessContactsImportService $touristAttractionImportOutlookService): Response
+    function userImportContacts(Request $request, SluggerInterface $slugger, BusinessContactsImportService $businessContactsImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -349,20 +541,40 @@ class BusinessContactsController extends AbstractController
                 $newFilename = $safeFilename . '.' . 'csv';
                 try {
                     $importFile->move(
-                        $this->getParameter('user_attachments_directory'),
+                        $this->getParameter('business_contacts_import_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-                $touristAttractionImportOutlookService->importTouristAttraction($newFilename);
-                return $this->redirectToRoute('tourist_attraction_index');
+                $businessContactsImportService->importBusinessContacts($newFilename);
+                return $this->redirectToRoute('business_contacts_index');
             }
         }
         return $this->render('admin/import/index.html.twig', [
             'form' => $form->createView(),
-            'heading' => 'Cyprus Tourist Attractions'
+            'heading' => 'Business Contacts Import 2',
         ]);
     }
 
+
+    /**
+     * @Route("/show_attachment/{id}", name="business_contact_show_attachment")
+     */
+    public function showAttachmentBusinessContact(int $id, BusinessContactsRepository $businessContactsRepository)
+    {
+        $business_contact = $businessContactsRepository->find($id);
+        $filename = $business_contact->getFiles();
+        $filepath = $this->getParameter('business_contacts_files_directory') . "/" . $filename;
+        if (file_exists($filepath)) {
+            $response = new BinaryFileResponse($filepath);
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_INLINE, //use ResponseHeaderBag::DISPOSITION_ATTACHMENT to save as an attachment
+                $filename
+            );
+            return $response;
+        } else {
+            return new Response("file does not exist");
+        }
+    }
 }

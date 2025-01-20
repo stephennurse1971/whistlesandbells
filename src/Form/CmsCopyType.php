@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\CmsCopy;
+use App\Entity\CmsCopyPageFormats;
 use App\Entity\Product;
+use App\Repository\ProductRepository;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,67 +21,71 @@ class CmsCopyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('category', ChoiceType::class,[
-                'required'=>true,
-                'choices'=>[
-                    'Static'=>'Static',
-                    'Product'=>'Product',
+            ->add('category', ChoiceType::class, [
+                'label' => $this->translationsWorker->getTranslations('Category'),
+                'required' => true,
+                'choices' => [
+                    'Static' => 'Static',
+                    'Product or Service' => 'Product or Service',
                 ]
             ])
             ->add('staticPageName')
 
-            ->add('product', EntityType::class,[
-                'class'=> Product::class,
-                'required'=>false,
-                'choice_label'=>'product'
+            ->add('pageLayout', EntityType::class, [
+                'label' => $this->translationsWorker->getTranslations('Page Layout'),
+                'class' => CmsCopyPageFormats::class,
+                'required' => true,
+                'choice_label' => 'name'
+            ])
+
+            ->add('product', EntityType::class, [
+                'label' => $this->translationsWorker->getTranslations('Product'),
+                'class' => Product::class,
+                'required' => false,
+                'choice_label' => 'product',
+                'query_builder' => function (ProductRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.ranking', 'ASC');
+                },
             ])
             ->add('tabTitle')
             ->add('tabTitleFR', TextType::class, [
-                'required' => false,
-                'label' => 'Tab Title (French)'])
+                'label' => $this->translationsWorker->getTranslations('Title FR'),
+                'required' => false, ])
             ->add('tabTitleDE', TextType::class, [
-                'required' => false,
-                'label' => 'Tab Title (German)'])
-
-
+                'label' => $this->translationsWorker->getTranslations('Title DE'),
+                'required' => false, ])
             ->add('contentTitle', TextType::class, [
+                'label' => $this->translationsWorker->getTranslations('Content Title'),
                 'required' => false,
-                'label' => 'Content title (English)'
             ])
             ->add('contentText', TextareaType::class, [
+                'label' => $this->translationsWorker->getTranslations('Content'),
                 'required' => false,
-                'label' => 'Main Content (English)'
             ])
-
-
             ->add('contentTitleFR', TextType::class, [
-                'required' => false,
-                'label' => 'Content Title (French)'])
+                'label' => $this->translationsWorker->getTranslations('Content Title FR'),
+                'required' => false, ])
             ->add('contentTextFR', TextareaType::class, [
+                'label' => $this->translationsWorker->getTranslations('Content FR'),
                 'required' => false,
-                'label' => 'Main Content (French)'
             ])
-
-
             ->add('contentTitleDE', TextType::class, [
-                'required' => false,
-                'label' => 'Content Title (German)'])
-
+                'label' => $this->translationsWorker->getTranslations('Content Title DE'),
+                'required' => false, ])
             ->add('contentTextDE', TextareaType::class, [
+                'label' => $this->translationsWorker->getTranslations('Content DE'),
                 'required' => false,
-                'label' => 'Main Content (German)'
             ])
-
             ->add('hyperlinks')
             ->add('attachment', FileType::class, [
-                'label' => 'Attachment',
+                'label' => $this->translationsWorker->getTranslations('Attachment'),
                 'mapped' => false,
                 'required' => false
             ])
             ->add('ranking')
             ->add('pageCountUsers')
-            ->add('pageCountAdmin')
-        ;
+            ->add('pageCountAdmin');
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -86,5 +93,9 @@ class CmsCopyType extends AbstractType
         $resolver->setDefaults([
             'data_class' => CmsCopy::class,
         ]);
+    }
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
     }
 }

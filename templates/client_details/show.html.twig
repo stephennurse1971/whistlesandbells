@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ClientDetails{% endblock %}
+
+{% block body %}
+    <h1>ClientDetails</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ client_detail.id }}</td>
+            </tr>
+            <tr>
+                <th>AddressStreet</th>
+                <td>{{ client_detail.addressStreet }}</td>
+            </tr>
+            <tr>
+                <th>AddressTown</th>
+                <td>{{ client_detail.addressTown }}</td>
+            </tr>
+            <tr>
+                <th>AddressCounty</th>
+                <td>{{ client_detail.addressCounty }}</td>
+            </tr>
+            <tr>
+                <th>AddressPostCode</th>
+                <td>{{ client_detail.addressPostCode }}</td>
+            </tr>
+            <tr>
+                <th>Addresslongitude</th>
+                <td>{{ client_detail.addresslongitude }}</td>
+            </tr>
+            <tr>
+                <th>Addresslatitude</th>
+                <td>{{ client_detail.addresslatitude }}</td>
+            </tr>
+            <tr>
+                <th>Mobile</th>
+                <td>{{ client_detail.mobile }}</td>
+            </tr>
+            <tr>
+                <th>ChildrenInHome</th>
+                <td>{{ client_detail.childrenInHome }}</td>
+            </tr>
+            <tr>
+                <th>CommunicationVerbally</th>
+                <td>{{ client_detail.communicationVerbally ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CommunicationEmail</th>
+                <td>{{ client_detail.communicationEmail ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CommunicationWhatsApp</th>
+                <td>{{ client_detail.communicationWhatsApp ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CommunicationWhatsAppGroup</th>
+                <td>{{ client_detail.communicationWhatsAppGroup ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('client_details_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-danger btn-sm" href="{{ path('client_details_edit', {'id': client_detail.id}) }}">Edit</a>
+
+    {{ include('client_details/_delete_form.html.twig') }}
+{% endblock %}

@@ -26,8 +26,10 @@ class   HomeController extends AbstractController
     {
         $companyDetails = $companyDetailsRepository->find('1');
         $homePagePhotosOnly = 0;
+        $qrcode=false;
         if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
+            $qrcode = $companyDetails->isIncludeQRCodeHomePage();
         }
 
         $cms_copy = [];
@@ -38,16 +40,24 @@ class   HomeController extends AbstractController
             'staticPageName' => 'Home'
         ]);
 
-        $cms_photo = $cmsPhotoRepository->findBy([
-            'staticPageName' => 'Home'
-        ]);
+        $cms_photo = $cmsPhotoRepository->findBy(
+            ['staticPageName' => 'Home'],
+            ['ranking' => 'ASC']
+        );
+
 
         $cms_copy_ranking1 = $cmsCopyRepository->findOneBy([
             'staticPageName' => 'Home',
             'ranking' => '1',
         ]);
 
-        if($cms_copy_ranking1) {
+        if ($cms_copy_ranking1) {
+            $page_layout = $cms_copy_ranking1->getPageLayout();
+        } else {
+            $page_layout = 'default';
+        }
+
+        if ($cms_copy_ranking1) {
             if ($security->getUser()) {
                 if (in_array('ROLE_ADMIN', $security->getUser()->getRoles())) {
                     $pageCountAdmin = $cms_copy_ranking1->getPageCountAdmin();
@@ -61,8 +71,7 @@ class   HomeController extends AbstractController
 
         if ($homePagePhotosOnly == 1) {
             return $this->render('home/home.html.twig', [
-                'photos' => $cms_photo,
-                'include_contact' => 'Yes'
+                'photos' => $cms_photo
             ]);
         } else {
             return $this->render('home/products.html.twig', [
@@ -70,7 +79,9 @@ class   HomeController extends AbstractController
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
                 'sub_pages' => $sub_pages,
-                'include_contact' => 'Yes'
+                'include_contact' => 'Yes',
+                'include_QR_code' => $qrcode,
+                'format' => $page_layout
             ]);
         }
     }
@@ -92,7 +103,7 @@ class   HomeController extends AbstractController
         } else {
             $user = new User();
             $user->setFirstName('Stephen')
-                ->setLastName('NurseHMX')
+                ->setLastName('Nurse')
                 ->setEmailVerified(1)
                 ->setEmail('nurse_stephen@hotmail.com')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
@@ -112,12 +123,12 @@ class   HomeController extends AbstractController
 
     /**
      * @Route("/dashboard", name="dashboard")
-     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function dashboard()
     {
         return $this->render('home/dashboard.html.twig', []);
     }
+
 
     /**
      * @Route("/advanced_dashboard", name="advanced_dashboard")
@@ -125,7 +136,7 @@ class   HomeController extends AbstractController
      */
     public function advancedDashboard()
     {
-        return $this->render('template_parts_project_specific/advanced_dashboard_specific.html.twig', []);
+        return $this->render('template_parts_project_specific/dashboard_project_specific.html.twig', []);
     }
 
 
@@ -171,13 +182,17 @@ class   HomeController extends AbstractController
 
         if ($productEntity) {
             $cms_photo = $cmsPhotoRepository->findBy([
-                'product' => $productEntity
-            ]);
+                'product' => $productEntity,
+            ],
+                ['ranking' => 'ASC'])
+            ;
         } else {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'staticPageName' => $product
-            ]);
+            ],
+                ['ranking' => 'ASC']);
         }
+
 
         $sub_pages = [];
         if ($cms_copy) {
@@ -191,29 +206,9 @@ class   HomeController extends AbstractController
             'cms_copy_array' => $cms_copy,
             'cms_photo_array' => $cms_photo,
             'sub_pages' => $sub_pages,
-            'include_contact' => 'No'
+            'include_contact' => 'No',
+            'include_QR_code' => 'No'
         ]);
-    }
-
-    /**
-     * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})
-     */
-    public function investmentFileLaunch(int $id, string $filetype): Response
-    {
-        $fileName = '';
-        $filepath = '';
-
-        if ($fileName != '') {
-            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-            $filepath = explode("public", $filepath);
-            $filepath = $filepath[1];
-            return $this->render('home/file_view.html.twig', [
-                'ext' => $ext,
-                'tab_title' => $fileName,
-                'filepath' => $filepath,
-            ]);
-        }
-        return $this->render('error/file_not_found.html.twig');
     }
 
 
@@ -262,5 +257,16 @@ class   HomeController extends AbstractController
         return new Response(null);
     }
 
-
+    /**
+     * @Route("/company_qr_code", name="company_qr_code")
+     *
+     */
+    public function companyQrCode(CompanyDetailsRepository $companyDetailsRepository)
+    {
+        $company_details = $companyDetailsRepository->find('1');
+        $qr_code = $company_details->getCompanyQrCode();
+        return $this->render('home/company_qr_code.html.twig', [
+            'qr_code' => $qr_code,
+        ]);
+    }
 }

@@ -5,13 +5,12 @@
 {% block body %}
     <h1 style="color: red">New Business Contacts</h1>
     <button class="btn btn-primary " onclick="getLocation()">Get Coordinates</button>
-    {{ include('business_contacts/_form.html.twig') }}
+    {{ include('BusinessContacts/_form.html.twig') }}
 
     <a class="btn btn-outline-primary btn-sm mt-1" href="{{ path('business_contacts_index') }}">Return to list</a>
 {% endblock %}
 {% block additionaljs %}
     <script>
-
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showLocation);
@@ -39,9 +38,15 @@
             // });
         }
 
+        ClassicEditor
+            .create(document.querySelector('#business_contacts_notes'))
+            .catch(error => {
+                console.error(error);
+            });
     </script>
+
     <script>
-        $('document').ready(function (){
+        $('document').ready(function () {
             {% if 'ROLE_CLIENT' in app.user.roles %}
             $('.status-container').hide();
             {% endif %}

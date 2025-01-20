@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\BusinessTypesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\BusinessContacts;
 
 /**
  * @ORM\Entity(repositoryClass=BusinessTypesRepository::class)
@@ -22,20 +25,31 @@ class BusinessTypes
      */
     private $businessType;
 
+
+
+
+
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $ranking;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=BusinessContacts::class, mappedBy="businessType")
+     */
+    private $businessContacts;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=MapIcons::class)
      */
     private $mapIcon;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mapIconColour;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $mapDisplay;
 
 
 
@@ -56,39 +70,57 @@ class BusinessTypes
         return $this;
     }
 
-    public function getMapIcon(): ?string
+
+
+
+
+    public function getRanking(): ?float
+    {
+        return $this->ranking;
+    }
+
+    public function setRanking(?float $ranking): self
+    {
+        $this->ranking = $ranking;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function __construct()
+    {
+        $this->businessContacts = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, BusinessContacts>
+     */
+    public function getBusinessContacts(): Collection
+    {
+        return $this->businessContacts;
+    }
+
+    public function getMapIcon(): ?MapIcons
     {
         return $this->mapIcon;
     }
 
-    public function setMapIcon(?string $mapIcon): self
+    public function setMapIcon(?MapIcons $mapIcon): self
     {
         $this->mapIcon = $mapIcon;
 
         return $this;
     }
 
-    public function getMapIconColour(): ?string
-    {
-        return $this->mapIconColour;
-    }
-
-    public function setMapIconColour(?string $mapIconColour): self
-    {
-        $this->mapIconColour = $mapIconColour;
-
-        return $this;
-    }
-
-    public function getMapDisplay(): ?int
-    {
-        return $this->mapDisplay;
-    }
-
-    public function setMapDisplay(?int $mapDisplay): self
-    {
-        $this->mapDisplay = $mapDisplay;
-
-        return $this;
-    }
 }
