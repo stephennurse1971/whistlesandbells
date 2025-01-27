@@ -45,7 +45,6 @@ class   HomeController extends AbstractController
             ['ranking' => 'ASC']
         );
 
-
         $cms_copy_ranking1 = $cmsCopyRepository->findOneBy([
             'staticPageName' => 'Home',
             'ranking' => '1',
@@ -71,7 +70,8 @@ class   HomeController extends AbstractController
 
         if ($homePagePhotosOnly == 1) {
             return $this->render('home/home.html.twig', [
-                'photos' => $cms_photo
+                'photos' => $cms_photo,
+                'cms_copy_array' => $cms_copy,
             ]);
         } else {
             return $this->render('home/products.html.twig', [
@@ -178,8 +178,6 @@ class   HomeController extends AbstractController
             $cms_copy_ranking1->setPageCountUsers($pageCountUser + 1);
             $entityManager->flush($cms_copy_ranking1);
         }
-
-
         if ($productEntity) {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'product' => $productEntity,
@@ -192,8 +190,6 @@ class   HomeController extends AbstractController
             ],
                 ['ranking' => 'ASC']);
         }
-
-
         $sub_pages = [];
         if ($cms_copy) {
             $sub_pages = $subPageRepository->findBy([

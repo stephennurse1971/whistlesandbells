@@ -49,7 +49,6 @@ class CmsCopyController extends AbstractController
                 if ($cmsCopy->getStaticPageName()) {
                     $safeFilename = $cmsCopy->getStaticPageName() . uniqid();
                 }
-
                 $newFilename = $safeFilename . '.' . $attachment->guessExtension();
                 try {
                     $attachment->move(
@@ -96,13 +95,10 @@ class CmsCopyController extends AbstractController
     {
         $form = $this->createForm(CmsCopyType::class, $cmsCopy);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
+        if ($form->isSubmitted() && $form->isValid() ) {
             $attachment = $form->get('attachment')->getData();
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
-
-
                 $newFilename = $originalFilename . '.' . $attachment->guessExtension();
                 try {
                     $attachment->move(
@@ -185,7 +181,7 @@ class CmsCopyController extends AbstractController
     public function showCmsCopyAttachment(Request $request, CmsCopy $cmsCopy)
     {
         $filename = $cmsCopy->getAttachment();
-        $filepath = $this->getParameter('cms_copy_attachments_directory') . "/" . $filename;
+        $filepath = $this->getParameter('cms_copy_attachments_directory') . $filename;
         if (file_exists($filepath)) {
             $response = new BinaryFileResponse($filepath);
             //  $response->headers->set('Content-Type');
@@ -206,7 +202,7 @@ class CmsCopyController extends AbstractController
     {
         $referer = $request->headers->get('referer');
         $fileName = $cmsCopy->getAttachment();
-        $file = $this->getParameter('cms_copy_attachments_directory') . "/".$fileName;
+        $file = $this->getParameter('cms_copy_attachments_directory') .$fileName;
         if(file_exists($file)){
             unlink($file);
         }
@@ -224,7 +220,7 @@ class CmsCopyController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         $cms_copys = $cmsCopyRepository->findAll();
 
-        $files = glob($this->getParameter('cms_copy_attachments_directory') . "/*");
+        $files = glob($this->getParameter('cms_copy_attachments_directory') . "*");
         foreach ($files as $file) {
             unlink($file);
         }

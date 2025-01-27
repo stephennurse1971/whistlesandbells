@@ -6,6 +6,7 @@ use App\Entity\Languages;
 use App\Form\ImportType;
 use App\Form\LanguagesType;
 use App\Repository\LanguagesRepository;
+use App\Repository\UserRepository;
 use App\Services\LanguagesImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -58,8 +59,6 @@ class LanguagesController extends AbstractController
 
             return $this->redirectToRoute('languages_index', [], Response::HTTP_SEE_OTHER);
         }
-
-
         return $this->render('languages/new.html.twig', [
             'language' => $language,
             'form' => $form->createView(),
@@ -120,7 +119,6 @@ class LanguagesController extends AbstractController
             }
             $language->setIcon('');
             $entityManager->flush();
-
         }
         if ($this->isCsrfTokenValid('delete' . $language->getId(), $request->request->get('_token'))) {
             $languagesRepository->remove($language, true);
@@ -133,8 +131,12 @@ class LanguagesController extends AbstractController
     /**
      * @Route("/delete_all", name="languages_delete_all")
      */
-    public function deleteLanguages(LanguagesRepository $languagesRepository, EntityManagerInterface $entityManager): Response
+    public function deleteLanguages(UserRepository $userRepository, LanguagesRepository $languagesRepository, EntityManagerInterface $entityManager): Response
     {
+        $users = $userRepository->findAll();
+        foreach ($users as $user) {
+            $user->setDefaultLanguage(null);
+        }
         $languages = $languagesRepository->findAll();
         foreach ($languages as $language) {
             $entityManager->remove($language);
@@ -157,7 +159,6 @@ class LanguagesController extends AbstractController
             }
             $language->setIcon('');
             $entityManager->flush();
-
         }
         return $this->redirect($referer);
     }
@@ -182,8 +183,7 @@ class LanguagesController extends AbstractController
     /**
      * @Route("/change_ranking/{change}/{id}", name="language_change_ranking", methods={"GET", "POST"})
      */
-    public
-    function changePriority(Request $request, $change, Languages $languages, EntityManagerInterface $manager): Response
+    public function changePriority(Request $request, $change, Languages $languages, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
         $currentRanking = $languages->getRanking();
@@ -241,7 +241,6 @@ class LanguagesController extends AbstractController
             $manager->persist($language);
             $manager->flush();
         }
-
         return $this->redirect($referer);
     }
 
@@ -254,8 +253,7 @@ class LanguagesController extends AbstractController
         $data = [];
         $exported_date = new \DateTime('now');
         $exported_date_formatted = $exported_date->format('d-M-Y');
-        $exported_date_formatted_for_file = $exported_date->format('d-m-Y');
-        $fileName = 'languages_export_' . $exported_date_formatted_for_file . '.csv';
+        $fileName = 'languages_export_' . $exported_date_formatted . '.csv';
 
         $count = 0;
         $languages_list = $languagesRepository->findAll();

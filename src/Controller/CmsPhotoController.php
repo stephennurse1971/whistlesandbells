@@ -22,10 +22,8 @@ class CmsPhotoController extends AbstractController
      */
     public function index(CmsPhotoRepository $cmsPhotoRepository): Response
     {
-        $site_pages = ['HomePage', 'AboutSN', 'Cyprus', 'Flying', 'Tennis', 'WebDesign', 'PrivateEquity', 'Risk & Capital Consulting'];
         return $this->render('cms_photo/index.html.twig', [
-            'cms_photos' => $cmsPhotoRepository->findAll(),
-            'site_pages' => $site_pages
+            'cms_photos' => $cmsPhotoRepository->findAll()
         ]);
     }
 
@@ -96,12 +94,10 @@ class CmsPhotoController extends AbstractController
     {
         $form = $this->createForm(CmsPhotoType::class, $cmsPhoto);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $photo = $form->get('photo')->getData();
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-
                 if ($cmsPhoto->getProduct()) {
                     $safeFilename = $cmsPhoto->getProduct()->getProduct() . uniqid();
                 }
@@ -128,7 +124,6 @@ class CmsPhotoController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('cms_photo_index');
         }
-
         return $this->render('cms_photo/edit.html.twig', [
             'cms_photo' => $cmsPhoto,
             'form' => $form->createView(),
@@ -158,7 +153,6 @@ class CmsPhotoController extends AbstractController
     }
 
 
-
     /**
      * @Route("/delete/{id}", name="cms_photo_delete", methods={"POST"})
      */
@@ -186,7 +180,6 @@ class CmsPhotoController extends AbstractController
             }
             $cmsPhoto->setPhoto('');
             $entityManager->flush();
-
         }
         return $this->redirect($referer);
     }
@@ -222,6 +215,4 @@ class CmsPhotoController extends AbstractController
         }
         return $this->redirect($referer);
     }
-
-
 }

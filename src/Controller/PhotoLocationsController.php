@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/photolocations")
- * @IsGranted("ROLE_USER")
+ *
  */
 class PhotoLocationsController extends AbstractController
 {
@@ -24,6 +24,8 @@ class PhotoLocationsController extends AbstractController
      */
     public function index(PhotoLocationsRepository $photoLocationsRepository): Response
     {
+//        $photoLocationResult = $countPhotoLocationsService->photoLocation();
+
 
         return $this->render('photo_locations/index.html.twig', [
             'photo_locations' => $photoLocationsRepository->findAll(),
@@ -127,5 +129,4 @@ class PhotoLocationsController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);
     }
-
 }

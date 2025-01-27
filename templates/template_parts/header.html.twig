@@ -139,24 +139,24 @@
 
                     <!-- Nav Item #5 - Photos -->
                     {% if CompanyDetailsService.companyDetails is not null %}
-                        {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 and CountPhotoLocationsService.count() >0 %}
                             <li class="nav-item">
-                                {% if 1==1 %}
+                                {% if CountPhotoLocationsService.count() >1 %}
                                     <a class="nav-link" href="{{ path('photos_index' ) }}">Photos</a>
-                                {% else %}
-                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Photos</a>
+                                {% endif %}
+                                {% if CountPhotoLocationsService.count() ==1 %}
+                                    <a class="nav-link" href="{{ path('show_photos_by_location', { id: CountPhotoLocationsService.maxId(), author: 'All', format: 'Full' }) }}">Gallery</a>
                                 {% endif %}
                             </li>
                         {% endif %}
                     {% endif %}
 
-                    {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
+
 
                     <!-- Nav Item #6 - Useful Contacts/ Weather -->
                     {% if CompanyDetailsService.companyDetails is not null %}
                         {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1
-                            or CompanyDetailsService.companyDetails.headerDisplayWeather ==1
-                        %}
+                            or CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -167,20 +167,25 @@
                                     {% endif %}
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
+
                                     {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1 %}
                                         <a class="dropdown-item" href="{{ path('business_contacts_index') }}">Useful
                                             contacts
                                         </a>
                                     {% endif %}
-                                    {% if 1 ==1 %}
-                                        <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful links</a>
-                                    {% endif %}
-                                    {% if 1 ==1 %}
-                                        <a class="dropdown-item" href="{{ path('file_attachments_index') }}">Useful files</a>
-                                    {% endif %}
+
                                     {% if  CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
                                         <a class="dropdown-item" href="{{ path('weather_index') }}">Weather
                                         </a>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <hr>
+                                        <a style="color: red" class="dropdown-item"
+                                           href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful links</a>
+                                        <a style="color: red" class="dropdown-item"
+                                           href="{{ path('file_attachments_index') }}">Useful files</a>
                                     {% endif %}
                                 </div>
                             </li>
@@ -268,14 +273,12 @@
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                                         <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
                                     {% endif %}
-
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
                                     {% endif %}
                                 </a>
 
                                 {% include 'template_parts_project_specific/header_project_specific3.html.twig' %}
-
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item"
