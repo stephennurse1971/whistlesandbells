@@ -58,13 +58,14 @@ class BusinessContactsController extends AbstractController
     public function map(Request $request, string $subset, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
     {
         if ($subset == 'All') {
+
             $business_contacts = $businessContactsRepository->findBy([
                 'status' => 'Approved'
             ]);
         }
 
         if ($subset != 'All') {
-            $business_type = $businessTypesRepository->findOneBy(['businessType' => $subset]);
+            $business_type= $businessTypesRepository->findOneBy(['businessType' => $subset]);
             $business_contacts = $businessContactsRepository->findBy([
                 'status' => 'Approved',
                 'businessType' => $business_type
@@ -117,7 +118,7 @@ class BusinessContactsController extends AbstractController
             $longitude_range = $longitude_max - $longitude_min;
         }
 
-        $business_types = $businessTypesRepository->findAll();
+        $business_types = $businessTypesRepository->findBy([], ['ranking' => 'ASC']);
         return $this->render('business_contacts/map_of_business_contacts.html.twig', [
             'business_contacts' => $business_contacts,
             'business_types' => $business_types,
@@ -478,7 +479,6 @@ class BusinessContactsController extends AbstractController
 
                 $business_contact->getLocationLongitude(),
                 $business_contact->getLocationLatitude(),
-                $business_contact->getPublicPrivate(),
                 $concatenatedNotes,
                 $business_contact->getId()
             ];
@@ -506,9 +506,8 @@ class BusinessContactsController extends AbstractController
 
         $sheet->getCell('P1')->setValue('Location Longitude');
         $sheet->getCell('Q1')->setValue('Location Latitude');
-        $sheet->getCell('R1')->setValue('Public or Private');
-        $sheet->getCell('S1')->setValue('Notes');
-        $sheet->getCell('T1')->setValue('Id');
+        $sheet->getCell('R1')->setValue('Notes');
+        $sheet->getCell('S1')->setValue('Id');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();

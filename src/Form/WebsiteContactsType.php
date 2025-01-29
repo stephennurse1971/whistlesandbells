@@ -2,8 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\PhotoLocations;
+use App\Entity\Product;
 use App\Entity\WebsiteContacts;
+use App\Repository\ProductRepository;
 use App\Services\TranslationsWorkerService;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -24,7 +28,16 @@ class WebsiteContactsType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false,
             ])
-
+            ->add('product', EntityType::class, [
+                'class' => Product::class,
+                'choice_label' => 'Product', // Adjust to the field to display as the label
+                'required' => false,
+                'empty_data' => null,
+                'query_builder' => function (ProductRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.ranking', 'ASC'); // Replace 'rank' with your field if it's different
+                },
+            ])
             ->add('status', ChoiceType::class, [
                 'multiple' => false,
                 'placeholder' => false,
@@ -33,7 +46,7 @@ class WebsiteContactsType extends AbstractType
                 'choices' => [
                     'Pending' => 'Pending',
                     'Accepted' => 'Accepted',
-                    'Junk' => 'Junk',
+                    'Spam' => 'Spam',
                 ],
             ])
         ;

@@ -39,7 +39,7 @@
 {#                    {{ user.emailVerified }}#}
                 </td>
                 <td>
-                    <a class="btn btn-outline-danger btn-sm" target="_blank" href="{{ path('user_edit', {'fullName': user.fullName}) }}">Edit</a>
+                    <a class="btn btn-outline-danger btn-sm" target="_blank" href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
                 </td>
             </tr>
         {% endfor %}
