@@ -1,11 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Dog Skills{% endblock %}
+{% block title %}New Dog Skill/Behaviour{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">New DogSkills</h1>
+    <h1 style="color: red">New Dog Skill/Behaviour</h1>
 
     {{ include('dog_skills/_form.html.twig') }}
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('dog_skills_index') }}">Return to list</a>
+{% endblock %}
+
+
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#dog_skills_notes'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
 {% endblock %}

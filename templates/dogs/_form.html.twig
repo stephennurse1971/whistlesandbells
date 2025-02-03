@@ -4,31 +4,47 @@
     <div class="col-2">
         {{ form_row(form.owner) }}
         {{ form_row(form.name) }}
-        {{ form_row(form.photo) }}
         {{ form_row(form.breed) }}
         {{ form_row(form.breedChoiceReasons) }}
         {{ form_row(form.dogChoiceReasons) }}
+
+        {% if dog.photo is not empty %}
+        {{ dog.photo }}
+            {% set photo = asset('administration/Attachments/Dog/'~dog.photo) %}
+            <a class="btn btn-outline-danger btn-sm" target="_blank"
+               href="{{ path('dog_photo_view', {'id': dog.id}) }}">
+                <img height="50" width="50" src="{{ photo }}"><br>
+            </a>
+            <a class="btn btn-sm btn-danger" href="{{ path('delete_dog_photo', {'id': dog.id}) }}">Delete
+                photo</a>
+            <br>
+        {% endif %}
+
+        {{ form_row(form.photo) }}
     </div>
     <div class="col-2">
         {{ form_row(form.dateOfBirth) }}
         {{ form_row(form.gender) }}
         {{ form_row(form.neutered) }}
-        {{ form_row(form.neuteredDate) }}
+        <div id="neuteredMain">
+            {{ form_row(form.neuteredDate) }}
+        </div>
+
         {{ form_row(form.rescueDog) }}
         {{ form_row(form.arrivalDate) }}
     </div>
-    <div class="col-2">
+    <div class="col-4 richtext">
+        Meals
         {{ form_row(form.dogFood) }}
         {{ form_row(form.dailyMealCount) }}
         {{ form_row(form.mealTimes) }}
+    </div>
+    <div class="col-4 richtext">
+        Health and walks
         {{ form_row(form.healthIssues) }}
         {{ form_row(form.dogWalkedCount) }}
         {{ form_row(form.dogWalkLength) }}
     </div>
-
 </div>
-
-
-
-    <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

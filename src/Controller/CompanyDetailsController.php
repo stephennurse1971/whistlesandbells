@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CompanyDetails;
+use App\Entity\Product;
 use App\Form\CompanyDetailsType;
 use App\Repository\CompanyDetailsRepository;
 
@@ -89,7 +90,7 @@ class CompanyDetailsController extends AbstractController
     public function show(CompanyDetails $companyDetails): Response
     {
         return $this->render('company_details/show.html.twig', [
-            'company_details' => $companyDetails,
+            'company_detail' => $companyDetails,
         ]);
     }
 
@@ -99,6 +100,7 @@ class CompanyDetailsController extends AbstractController
      */
     public function edit(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
+
         $form = $this->createForm(CompanyDetailsType::class, $companyDetails);
         $form->handleRequest($request);
 
@@ -134,6 +136,7 @@ class CompanyDetailsController extends AbstractController
                 );
                 $companyDetails->setCompanyQrCode($newFilenameQR);
             }
+
             $companyDetailsRepository->add($companyDetails, true);
 
             return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
@@ -254,4 +257,29 @@ class CompanyDetailsController extends AbstractController
         $manager->flush();
         return new Response(null);
     }
+
+
+    /**
+     * @Route("/company_details_change_field_status/{input}", name="company_details_change_field_status", methods={"GET", "POST"})
+     */
+    public function changeStatus(Request $request, string $input, CompanyDetailsRepository $companyDetailsRepository, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $company_details = $companyDetailsRepository->find('1');
+
+        $fieldname = $input;
+        $getter = 'is' . ucfirst($fieldname);
+        $setter = 'set' . ucfirst($fieldname);
+
+        if (method_exists($company_details, $getter) && method_exists($company_details, $setter)) {
+            $newValue = !$company_details->$getter();
+            $company_details->$setter($newValue);
+        }
+
+        $manager->persist($company_details);
+        $manager->flush();
+        return $this->redirect($referer);
+    }
+
+
 }

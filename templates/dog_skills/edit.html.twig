@@ -11,3 +11,14 @@
 
     {{ include('dog_skills/_delete_form.html.twig') }}
 {% endblock %}
+
+{% block additionaljs %}
+     <script>
+        ClassicEditor
+            .create(document.querySelector('#dog_skills_notes'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+{% endblock %}

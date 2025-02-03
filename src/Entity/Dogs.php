@@ -33,7 +33,7 @@ class Dogs
     private $breed;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $breedChoiceReasons;
 
@@ -43,7 +43,7 @@ class Dogs
     private $dogChoiceReasons;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateOfBirth;
 
@@ -53,22 +53,22 @@ class Dogs
     private $gender;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $neutered;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $neuteredDate;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $rescueDog;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $arrivalDate;
 
@@ -196,12 +196,12 @@ class Dogs
         return $this;
     }
 
-    public function isNeutered(): ?bool
+    public function isNeutered(): ?string
     {
         return $this->neutered;
     }
 
-    public function setNeutered(?bool $neutered): self
+    public function setNeutered(?string $neutered): self
     {
         $this->neutered = $neutered;
 
@@ -220,12 +220,12 @@ class Dogs
         return $this;
     }
 
-    public function isRescueDog(): ?bool
+    public function isRescueDog(): ?string
     {
         return $this->rescueDog;
     }
 
-    public function setRescueDog(?bool $rescueDog): self
+    public function setRescueDog(?string $rescueDog): self
     {
         $this->rescueDog = $rescueDog;
 

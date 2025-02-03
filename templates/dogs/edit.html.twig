@@ -1,13 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Dogs{% endblock %}
+{% block title %}{{ dog.name }} ({{ dog.owner.fullName }}){% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit Dogs</h1>
+    <h1 style="color: red">{{ dog.name }} ({{ dog.owner.fullName }})</h1>
 
     {{ include('dogs/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('dogs_index') }}">Return to list</a>
 
     {{ include('dogs/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#dogs_breedChoiceReasons'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Check the initial state of the buttons
+            if ($("#dogs_neutered_0").is(":checked")) {
+                $("#neuteredMain").show();
+            } else {
+                $("#neuteredMain").hide();
+            }
+
+            // Listen for changes on both buttons
+            $("#dogs_neutered_0, #dogs_neutered_1").change(function () {
+                if ($("#dogs_neutered_0").is(":checked")) {
+                    $("#neuteredMain").show();
+                } else {
+                    $("#neuteredMain").hide();
+                    $("#dogs_neuteredDate").val(''); // Clear the date input
+                }
+            });
+        });
+
+    </script>
 {% endblock %}

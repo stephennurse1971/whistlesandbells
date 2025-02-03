@@ -34,7 +34,11 @@ parameters:
   users_import_directory:                    '%kernel.project_dir%/public/administration/Import/Users/'
   public:                                    '%kernel.project_dir%/public/'
 
+  script_timeout: 30
+
 services:
+  App\Service\EmailFetcherService:
+    arguments: [ ]
   # default configuration for services in *this* file
   _defaults:
     autowire: true      # Automatically injects dependencies in your services.

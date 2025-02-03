@@ -1,9 +1,26 @@
+<style>
+    .ck-content {
+        height: 500px;
+    }
+
+    #dog_skills_notes {
+        height: 300px;
+    }
+</style>
+
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-3">
-        {{ form_widget(form) }}
+    <div class="col-2">
+        {{ form_row(form.ranking) }}
+        {{ form_row(form.skillOrBehaviour) }}
+
+    </div>
+    <div class="col-8">
+        {{ form_row(form.description) }}
+        {{ form_row(form.notes) }}
     </div>
 </div>
-
-    <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+<hr>
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+

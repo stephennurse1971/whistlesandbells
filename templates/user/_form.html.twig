@@ -6,27 +6,91 @@
 {{ form_start(form) }}
 <input type="hidden" name="referer" value="{{ app.request.headers.get('referer') }}">
 <div class="row">
-    <div class="col-12 col-lg-2">
+    <div class="col-3 col-lg-2">
         <h2 style="color: red">Personal Details</h2>
+        {{ form_row(form.salutation) }}
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
-        {{ form_row(form.email) }}
-    </div>
+        {{ form_row(form.emailVerified  ) }}
+        {{ form_row(form.defaultLanguage  ) }}
 
-    <div class="col-12 col-lg-2">
-        <div class="password">
-            <h2 style="color: red">Password</h2>
-            {{ form_row(form.password) }}
-        </div>
-        {% if form.roles is defined %}
-            <h2 style="color: red">Roles</h2>
-            {{ form_row(form.roles) }}
+        {% if CompanyDetailsService.getCompanyDetails.userIncludeJobDetails == 1 %}
+            <div class="container-job-details">
+                <h2 style="color: red">Company</h2>
+                {% if (form.company is defined) %}
+                    {{ form_row(form.company) }}
+                {% endif %}
+                {{ form_row(form.jobTitle) }}
+                {{ form_row(form.linkedIn) }}
+            </div>
+            <div class="container-personal-details">
+                <h2 style="color: red">Other</h2>
+                {{ form_row(form.birthday) }}
+                {{ form_row(form.webPage) }}
+                {{ form_row(form.notes) }}
+            </div>
         {% endif %}
     </div>
 
 
+    <div class="col-3 col-lg-2">
+        <h2 style="color: red">Email and Tel</h2>
+        {{ form_row(form.email) }}
+
+        {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+            {{ form_row(form.email2) }}
+            {{ form_row(form.email3) }}
+        {% endif %}
+
+        {{ form_row(form.mobile) }}
+
+        {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+            {{ form_row(form.mobile2) }}
+        {% endif %}
+
+        {% if form.password is defined %}
+            <h2 style="color: red">Password</h2>
+            {{ form_row(form.password) }}
+        {% endif %}
+    </div>
+
+    {% if CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress == 1 %}
+        <div class="col-3 col-lg-2 container-business-address">
+            <h2 style="color: red">Addresses</h2>
+            {{ form_row(form.businessStreet) }}
+            {{ form_row(form.businessCity) }}
+            {{ form_row(form.businessCountry) }}
+            {{ form_row(form.businessPostalCode) }}
+            {{ form_row(form.businessPhone) }}
+        </div>
+    {% endif %}
+
+    {% if CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress == 1 %}
+        <div class="col-3 col-lg-2 container-home-address">
+            <h2 style="color: red">Addresses</h2>
+            {{ form_row(form.homeStreet) }}
+            {{ form_row(form.homeCity) }}
+            {{ form_row(form.homeCountry) }}
+            {{ form_row(form.homePostalCode) }}
+            {{ form_row(form.homePhone) }}
+            {{ form_row(form.homePhone2) }}
+        </div>
+    {% endif %}
+
+    {% if form.roles is defined %}
+        <div class="col-3 col-lg-2">
+            <h2 style="color: red">Roles</h2>
+            {{ form_widget(form.roles) }}
+        </div>
+    {% endif %}
 </div>
 
+<div class="col-12 col-lg-2">
+    <div class="password">
+    </div>
+</div>
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+<hr>
 {{ form_end(form) }}
+
 

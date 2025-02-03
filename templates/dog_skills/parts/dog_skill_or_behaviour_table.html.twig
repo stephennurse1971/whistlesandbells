@@ -1,0 +1,17 @@
+<tr>
+    <td>{{ dog_skill.ranking }}</td>
+    <td>{{ dog_skill.skillOrBehaviour }}</td>
+    <td>{{ dog_skill.description }}</td>
+    <td>{{ dog_skill.notes|raw }}</td>
+    <td>
+        <a class="btn btn-outline-danger btn-sm" href="{{ path('dog_skills_edit', {'id': dog_skill.id}) }}">Edit</a>
+    </td>
+    <td>
+        <form method="post" action="{{ path('dog_skills_delete', {'id': dog_skill.id}) }}"
+              onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ dog_skill.id) }}">
+            <button class="btn btn-danger btn-sm">Delete</button>
+        </form>
+    </td>
+</tr>
+

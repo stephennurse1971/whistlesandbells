@@ -3,9 +3,49 @@
 {% block title %}New Dogs{% endblock %}
 
 {% block body %}
-    <h1>New Dog</h1>
+    <h1 style="color: red">New Dog</h1>
 
     {{ include('dogs/_form.html.twig') }}
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('dogs_index') }}">Return to list</a>
+{% endblock %}
+
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#dogs_breedChoiceReasons'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#dogs_dogChoiceReasons'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#dogs_dogFood'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#dogs_mealTimes'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#dogs_healthIssues'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#dogs_dogWalkedCount'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#dogs_dogWalkLength'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 {% endblock %}
