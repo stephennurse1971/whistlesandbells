@@ -5,107 +5,69 @@ namespace App\Entity;
 use App\Repository\DogsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=DogsRepository::class)
- */
+
+#[ORM\Entity(repositoryClass: DogsRepository::class)]
+#[ORM\Table(name: "dogs")]
 class Dogs
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
-    private $owner;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $owner = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $name;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $breed;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $breed = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $breedChoiceReasons;
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $breedChoiceReasons = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $dogChoiceReasons;
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $dogChoiceReasons = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $dateOfBirth;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?\DateTimeInterface $dateOfBirth = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $gender;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $gender = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $neutered;
+    #[ORM\Column(type: "string", nullable: true)]
+    private ?string $neutered = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $neuteredDate;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?\DateTimeInterface $neuteredDate = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $rescueDog;
+    #[ORM\Column(type: "string", nullable: true)]
+    private ?string $rescueDog = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $arrivalDate;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?\DateTimeInterface $arrivalDate = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $dogFood;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $dogFood = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $dailyMealCount;
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $dailyMealCount = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mealTimes;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $mealTimes = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $healthIssues;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $healthIssues = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $dogWalkedCount;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $dogWalkedCount = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $dogWalkLength;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $dogWalkLength = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $photo;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $photo = null;
 
     public function getId(): ?int
     {
@@ -120,7 +82,6 @@ class Dogs
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
-
         return $this;
     }
 
@@ -132,11 +93,11 @@ class Dogs
     public function setName(?string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
-    public function getBreed(): ?string
+
+public function getBreed(): ?string
     {
         return $this->breed;
     }

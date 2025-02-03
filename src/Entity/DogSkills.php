@@ -5,37 +5,28 @@ namespace App\Entity;
 use App\Repository\DogSkillsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=DogSkillsRepository::class)
- */
+#[ORM\Entity(repositoryClass: DogSkillsRepository::class)]
+#[ORM\Table(name: "dog_skills")]
+
+
 class DogSkills
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $skillOrBehaviour;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $skillOrBehaviour = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $description;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $notes;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $notes = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $ranking;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $ranking = null;
 
     public function getId(): ?int
     {
@@ -50,7 +41,6 @@ class DogSkills
     public function setSkillOrBehaviour(?string $skillOrBehaviour): self
     {
         $this->skillOrBehaviour = $skillOrBehaviour;
-
         return $this;
     }
 
@@ -62,7 +52,6 @@ class DogSkills
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -74,7 +63,6 @@ class DogSkills
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
-
         return $this;
     }
 
@@ -86,7 +74,6 @@ class DogSkills
     public function setRanking(?int $ranking): self
     {
         $this->ranking = $ranking;
-
         return $this;
     }
 }

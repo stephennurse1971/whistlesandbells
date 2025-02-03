@@ -71,7 +71,7 @@
                         <i title="Neutered: Yes" style="color: green" class="fa fa-check"></i>
                         {{ dog.neuteredDate ? dog.neuteredDate|date('d-M-y') : '' }}
 
-                        Age: {{ Age.computeAge(dog.neuteredDate , today|date('Y-m-d') ) }}
+{#                        Age: {{ Age.computeAge(dog.neuteredDate , today|date('Y-m-d') ) }}#}
 
                     {% elseif dog.neutered =='No' %}
                         <i title="Neutered: No" style="color: red" class="fa fa-remove"></i>
@@ -84,7 +84,7 @@
                 <td style="border-left: 1px dotted" data-sort="{{ dog.dateOfBirth|date('Y-m-d') }}">
                     {{ dog.dateOfBirth ? dog.dateOfBirth|date('d-M-Y') : '' }} <br>
 
-                    Age: {{ Age.computeAge(dog.dateOfBirth , today) }}
+{#                    Age: {{ Age.computeAge(dog.dateOfBirth , today) }}#}
                 </td>
 
 

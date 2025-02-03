@@ -5,82 +5,52 @@ namespace App\Entity;
 use App\Repository\ClientDetailsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ClientDetailsRepository::class)
- */
+#[ORM\Entity(repositoryClass: ClientDetailsRepository::class)]
 class ClientDetails
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $addressStreet;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $addressStreet = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $addressTown;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $addressTown = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $addressCounty;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $addressCounty = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $addressPostCode;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $addressPostCode = null;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $addresslongitude;
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $addressLongitude = null;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $addresslatitude;
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $addressLatitude = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mobile;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $mobile = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $childrenInHome;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $childrenInHome = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $communicationVerbally;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $communicationVerbally = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $communicationEmail;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $communicationEmail = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $communicationWhatsApp;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $communicationWhatsApp = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $communicationWhatsAppGroup;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $communicationWhatsAppGroup = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     */
-    private $user;
+    #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -95,7 +65,6 @@ class ClientDetails
     public function setAddressStreet(?string $addressStreet): self
     {
         $this->addressStreet = $addressStreet;
-
         return $this;
     }
 
@@ -107,7 +76,6 @@ class ClientDetails
     public function setAddressTown(?string $addressTown): self
     {
         $this->addressTown = $addressTown;
-
         return $this;
     }
 
@@ -119,7 +87,6 @@ class ClientDetails
     public function setAddressCounty(?string $addressCounty): self
     {
         $this->addressCounty = $addressCounty;
-
         return $this;
     }
 
@@ -131,31 +98,28 @@ class ClientDetails
     public function setAddressPostCode(?string $addressPostCode): self
     {
         $this->addressPostCode = $addressPostCode;
-
         return $this;
     }
 
-    public function getAddresslongitude(): ?float
+    public function getAddressLongitude(): ?float
     {
-        return $this->addresslongitude;
+        return $this->addressLongitude;
     }
 
-    public function setAddresslongitude(?float $addresslongitude): self
+    public function setAddressLongitude(?float $addressLongitude): self
     {
-        $this->addresslongitude = $addresslongitude;
-
+        $this->addressLongitude = $addressLongitude;
         return $this;
     }
 
-    public function getAddresslatitude(): ?float
+    public function getAddressLatitude(): ?float
     {
-        return $this->addresslatitude;
+        return $this->addressLatitude;
     }
 
-    public function setAddresslatitude(?float $addresslatitude): self
+    public function setAddressLatitude(?float $addressLatitude): self
     {
-        $this->addresslatitude = $addresslatitude;
-
+        $this->addressLatitude = $addressLatitude;
         return $this;
     }
 
@@ -167,7 +131,6 @@ class ClientDetails
     public function setMobile(?string $mobile): self
     {
         $this->mobile = $mobile;
-
         return $this;
     }
 
@@ -179,7 +142,6 @@ class ClientDetails
     public function setChildrenInHome(?int $childrenInHome): self
     {
         $this->childrenInHome = $childrenInHome;
-
         return $this;
     }
 
@@ -191,7 +153,6 @@ class ClientDetails
     public function setCommunicationVerbally(?bool $communicationVerbally): self
     {
         $this->communicationVerbally = $communicationVerbally;
-
         return $this;
     }
 
@@ -203,7 +164,6 @@ class ClientDetails
     public function setCommunicationEmail(?bool $communicationEmail): self
     {
         $this->communicationEmail = $communicationEmail;
-
         return $this;
     }
 
@@ -215,7 +175,6 @@ class ClientDetails
     public function setCommunicationWhatsApp(?bool $communicationWhatsApp): self
     {
         $this->communicationWhatsApp = $communicationWhatsApp;
-
         return $this;
     }
 
@@ -227,7 +186,6 @@ class ClientDetails
     public function setCommunicationWhatsAppGroup(?bool $communicationWhatsAppGroup): self
     {
         $this->communicationWhatsAppGroup = $communicationWhatsAppGroup;
-
         return $this;
     }
 
@@ -239,7 +197,6 @@ class ClientDetails
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
         return $this;
     }
 }

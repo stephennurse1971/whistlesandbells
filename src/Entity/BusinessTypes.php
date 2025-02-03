@@ -6,10 +6,11 @@ use App\Repository\BusinessTypesRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\BusinessContacts;
 
 #[ORM\Entity(repositoryClass: BusinessTypesRepository::class)]
 #[ORM\Table(name: "business_types")]
+
+
 class BusinessTypes
 {
     #[ORM\Id]
