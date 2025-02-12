@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\WebsiteContactsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WebsiteContactsRepository::class)]
 #[ORM\Table(name: 'website_contacts')]
-
 class WebsiteContacts
 {
     #[ORM\Id]
@@ -24,7 +25,7 @@ class WebsiteContacts
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $mobile = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(type: "text", nullable: true)]
     private ?string $notes = null;
 
     #[ORM\Column(type: "datetime", nullable: true)]
@@ -36,8 +37,19 @@ class WebsiteContacts
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(targetEntity: Product::class)]
-    private ?Product $product = null;
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\ManyToMany(targetEntity: Product::class)]
+    private Collection $productsRequested;
+
+    public function __construct()
+    {
+        $this->productsRequested = new ArrayCollection();
+    }
+
+
+
 
     public function getId(): ?int
     {
@@ -121,14 +133,30 @@ class WebsiteContacts
         return $this;
     }
 
-    public function getProduct(): ?Product
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProductsRequested(): Collection
     {
-        return $this->product;
+        return $this->productsRequested;
     }
 
-    public function setProduct(?Product $product): self
+    public function addProductsRequested(Product $productsRequested): static
     {
-        $this->product = $product;
+        if (!$this->productsRequested->contains($productsRequested)) {
+            $this->productsRequested->add($productsRequested);
+        }
+
         return $this;
     }
+
+    public function removeProductsRequested(Product $productsRequested): static
+    {
+        $this->productsRequested->removeElement($productsRequested);
+
+        return $this;
+    }
+
+
+
 }

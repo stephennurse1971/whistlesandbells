@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -63,8 +64,10 @@ class ProductController extends AbstractController
     /**
      * @Route("/edit/{id}", name="product_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
+    public function edit(Request $request, Product $product, ProductRepository $productRepository, RequestStack $requestStack): Response
     {
+        $session = $requestStack->getSession();
+        $session->getFlashBag()->clear();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
@@ -140,6 +143,14 @@ class ProductController extends AbstractController
             }
             if ($status == "No") {
                 $product->setIncludeInFooter('0');
+            }
+        }
+        if ($input == 'includeInContactForm') {
+            if ($status == "Yes") {
+                $product->setIncludeInContactForm('1');
+            }
+            if ($status == "No") {
+                $product->setIncludeInContactForm('0');
             }
         }
         if ($input == 'main_sub') {

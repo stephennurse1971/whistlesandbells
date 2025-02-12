@@ -1,6 +1,8 @@
 <div class="col-2">
     <table class="table small">
         <tbody>
+        <h4>Address</h4>
+
         <tr>
             <th>Street</th>
             <td>{{ company_detail.companyAddressStreet }}</td>
@@ -43,19 +45,6 @@
         <tr>
             <th>Currency</th>
             <td>{{ company_detail.currency }}</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-
-<div class="col-4">
-    <table class="table small">
-        <tbody>
-        <tr>
-            <td>
-                {{ company_detail.companyAddressInstructions|raw }}
-            </td>
         </tr>
         </tbody>
     </table>

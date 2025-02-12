@@ -2,7 +2,25 @@
     .ck-content {
         min-height: 700px;
     }
+
+    #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9); /* Darker background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        flex-direction: column;
+    }
 </style>
+
 {{ form_start(form) }}
 <input type="hidden" name="referer" value="{{ app.request.headers.get('referer') }}">
 <div class="row">
@@ -12,7 +30,6 @@
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
         {{ form_row(form.emailVerified  ) }}
-        {{ form_row(form.defaultLanguage  ) }}
 
         {% if CompanyDetailsService.getCompanyDetails.userIncludeJobDetails == 1 %}
             <div class="container-job-details">
@@ -28,6 +45,7 @@
                 {{ form_row(form.birthday) }}
                 {{ form_row(form.webPage) }}
                 {{ form_row(form.notes) }}
+
             </div>
         {% endif %}
     </div>
@@ -36,22 +54,32 @@
     <div class="col-3 col-lg-2">
         <h2 style="color: red">Email and Tel</h2>
         {{ form_row(form.email) }}
-
-        {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
-            {{ form_row(form.email2) }}
-            {{ form_row(form.email3) }}
-        {% endif %}
+        <div class="container-personal-details">
+            {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+                {{ form_row(form.email2) }}
+                {{ form_row(form.email3) }}
+            {% endif %}
+        </div>
 
         {{ form_row(form.mobile) }}
-
-        {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
-            {{ form_row(form.mobile2) }}
-        {% endif %}
-
-        {% if form.password is defined %}
-            <h2 style="color: red">Password</h2>
-            {{ form_row(form.password) }}
-        {% endif %}
+        <div class="container-personal-details">
+            {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+                {{ form_row(form.mobile2) }}
+                {% if user.photo is not empty %}
+                    {% set loc = asset(user_photos_directory ~ user.photo) %}
+                    <a  class="btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('user_photo_view', {'id': user.id}) }}">
+                        <img id="photo_image" height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                    <br>
+                    <b>{{ user.photo }}</b>
+                    <br>
+                    <a class="btn btn-sm btn-danger" href="{{ path('user_photo_file_delete', {'id': user.id}) }}">Delete
+                        photo</a>
+                    <br>
+                {% endif %}
+                {{ form_row(form.photo) }}
+            {% endif %}
+        </div>
     </div>
 
     {% if CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress == 1 %}
@@ -77,20 +105,21 @@
         </div>
     {% endif %}
 
-    {% if form.roles is defined %}
-        <div class="col-3 col-lg-2">
-            <h2 style="color: red">Roles</h2>
+
+    <div class="col-3 col-lg-2">
+        <h2 style="color: red">Roles & Language</h2>
+        {% if form.roles is defined %}
             {{ form_widget(form.roles) }}
-        </div>
-    {% endif %}
-</div>
-
-<div class="col-12 col-lg-2">
-    <div class="password">
+        {% endif %}
+        {{ form_row(form.defaultLanguage  ) }}
     </div>
-</div>
-<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
-<hr>
-{{ form_end(form) }}
 
+    <div class="col-2">
+        <h2 style="color: red">Reset Password</h2>
+        {{ form_row(form.password) }}
+    </div>
+
+</div>
+<button class="btn btn-success btn-sm update_button">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\WebsiteContacts;
 use App\Form\WebsiteContactsType;
 use App\Repository\ProductRepository;
@@ -9,6 +10,7 @@ use App\Repository\UserRepository;
 use App\Repository\WebsiteContactsRepository;
 use App\Services\CheckIfUserService;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\NoReturn;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,34 +36,51 @@ class WebsiteContactsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="website_contacts_new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager, ProductRepository $productRepository): Response
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(Request $request, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $entityManager): Response
     {
         $now = new \DateTime('now');
-        $first_name = $_POST['firstName'];
-        $last_name = $_POST['lastName'];
-        $email = $_POST['email'];
-        $mobile = $_POST['mobile'];
-        $notes = $_POST['notes'];
-        $service = $_POST['service'];
-        $serviceId = $productRepository->findOneBy([
-            'product' => $service
-        ]);
         $website_contact = new WebsiteContacts();
-        $website_contact->setProduct($serviceId)
-            ->setDateTime($now)
-            ->setFirstName($first_name)
-            ->setLastName($last_name)
-            ->setEmail($email)
-            ->setMobile($mobile)
-            ->setStatus('Pending')
-            ->setNotes($notes);
-        $manager->persist($website_contact);
-        $manager->flush();
+        $website_contact->setDateTime($now);
+        $form = $this->createForm(WebsiteContactsType::class, $website_contact);
+        $form->handleRequest($request);
 
-        return $this->redirect($request->headers->get('Referer'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $website_contact->setDateTime(new \DateTime('now'))
+                ->setStatus('Pending');
+            $entityManager->persist($website_contact);
+            $entityManager->flush();
+            $this->addFlash('success', 'Your contact request has been submitted.');
+            return $this->redirectToRoute('website_contacts_index', [
+                'website_contact' => $website_contact,
+            ], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('website_contacts/new.html.twig', [
+            'website_contact' => $website_contact,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    #[NoReturn] #[Route('/new_website_contact_from_contact_form', name: 'new_website_contact_from_contact_form', methods: ['GET', 'POST'])]
+    public function newFromContact(Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository, WebsiteContactsRepository $websiteContactsRepository): Response
+    {
+        $now = new \DateTime('now');
+        $website_contact = new WebsiteContacts();
+        $form = $this->createForm(WebsiteContactsType::class, $website_contact);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //dump('I am in if');die;
+            $website_contact->setDateTime(new \DateTime('now'))
+                ->setStatus('Pending');
+            $entityManager->persist($website_contact);
+            $entityManager->flush();
+            $this->addFlash('success', 'Your contact request has been submitted.');
+            return $this->redirectToRoute('app_home');
+        }
+            return $this->redirectToRoute('app_home');
     }
 
     /**
@@ -81,12 +100,12 @@ class WebsiteContactsController extends AbstractController
      */
     public function edit(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository): Response
     {
+
         $form = $this->createForm(WebsiteContactsType::class, $websiteContact);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $websiteContactsRepository->add($websiteContact, true);
-
             return $this->redirectToRoute('website_contacts_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -100,24 +119,34 @@ class WebsiteContactsController extends AbstractController
      * @Route("/update_status/{new_status}/{id}", name="website_contacts_update_status", methods={"GET", "POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function setToJunk(Request $request, string $new_status,  WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
+    public function setToJunk(Request $request, string $new_status, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
-        if($new_status = "Junk"){
+        if ($new_status = "Junk") {
             $websiteContact->setStatus('Junk');
             $manager->flush($websiteContact);
         }
-        if($new_status = "Pending"){
+        if ($new_status = "Pending") {
             $websiteContact->setStatus('Pending');
             $manager->flush($websiteContact);
         }
-        if($new_status = "New"){
+        if ($new_status = "New User") {
             $websiteContact->setStatus('Accepted');
+            $new_user = new User();
+
+            $new_user->setEmail($websiteContact->getEmail())
+                ->setFirstName($websiteContact->getFirstName())
+                ->setLastName($websiteContact->getLastName())
+                ->setMobile($websiteContact->getMobile())
+                ->setPassword('password')
+                ->setRoles(['ROLE_USER']);  // Pass roles as an array
+            $manager->persist($new_user);
+            $manager->flush($new_user);
+
             $manager->flush($websiteContact);
         }
         return $this->redirect($referer);
     }
-
 
 
     /**

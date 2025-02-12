@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CmsCopy;
 use App\Form\CmsCopyType;
 use App\Repository\CmsCopyRepository;
+use App\Repository\PhotoLocationsRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -21,6 +22,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CmsCopyController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+    private CmsCopyRepository $cmsCopyRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, PhotoLocationsRepository $photoLocationsRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->photoLocationsRepository = $photoLocationsRepository;
+    }
+
+
     /**
      * @Route("/index", name="cms_copy_index", methods={"GET"})
      */
@@ -68,7 +79,7 @@ class CmsCopyController extends AbstractController
             if($cmsCopy->getCategory()=="Static"){
                 $cmsCopy->setProduct(null);
             }
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
             return $this->redirectToRoute('cms_copy_index');
@@ -118,7 +129,7 @@ class CmsCopyController extends AbstractController
             if($cmsCopy->getCategory()=="Static"){
                 $cmsCopy->setProduct(null);
             }
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
             return $this->redirectToRoute('cms_copy_index');
@@ -133,7 +144,7 @@ class CmsCopyController extends AbstractController
     /**
      * @Route("/copy_and_edit/{id}", name="cms_copy_copy_and_edit", methods={"GET","POST"})
      */
-    public function copyAndEdit(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $manager): Response
+    public function copyAndEdit(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $entityManager): Response
     {
         $product = $cmsCopy->getProduct();
         $sitePage = 'Test';
@@ -149,7 +160,7 @@ class CmsCopyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
             return $this->redirectToRoute('cms_copy_index');
@@ -166,10 +177,10 @@ class CmsCopyController extends AbstractController
     /**
      * @Route("/delete/{id}", name="cms_copy_delete", methods={"POST"})
      */
-    public function delete(Request $request, CmsCopy $cmsCopy): Response
+    public function delete(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $cmsCopy->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->remove($cmsCopy);
             $entityManager->flush();
         }
@@ -230,6 +241,23 @@ class CmsCopyController extends AbstractController
 
         foreach ($cms_copys as $cms_copy) {
             $cms_copy->setAttachment(null);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+
+    /**
+     * @Route("/cms_copy_reset_counters", name="cms_copy_reset_counters",)
+     */
+    public function resetCounters(Request $request, CmsCopyRepository $cmsCopyRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $cms_copys = $cmsCopyRepository->findAll();
+
+        foreach ($cms_copys as $cms_copy) {
+            $cms_copy->setPageCountAdmin(null);
+            $cms_copy->setPageCountUsers(null);
             $entityManager->flush();
         }
         return $this->redirect($referer);

@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\ClientDetails;
 use App\Form\ClientDetailsType;
 use App\Repository\ClientDetailsRepository;
+use App\Repository\CompanyDetailsRepository;
+use JeroenDesloovere\VCard\VCard;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,4 +77,44 @@ class ClientDetailsController extends AbstractController
 
         return $this->redirectToRoute('client_details_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+    /**
+     * @Route("/create/VcardClient/{id}", name="create_vcard_client")
+     */
+    public function createVcardVenue(ClientDetailsRepository $clientDetailsRepository)
+    {
+        $client = $clientDetailsRepository->find($id);
+        $vcard = new VCard();
+
+        $firstName = $client->getUser()->getFirstName();
+        $lastName = $client->getUser()->getLastName();
+        $email = $client->getUser()->getEmail();
+        $mobile = $client->getUser()->getMobile();
+
+        $addressStreet = $client->getAddressStreet();
+        $addressTown = $client->getAddressTown();
+        $addressCity = $client->getAddressCounty();
+        $addressPostalCode = $client->getAddressPostCode();
+        $notes_all='';
+
+        $vcard->addName($lastName, $firstName);
+        $vcard->addEmail($email)
+            ->addPhoneNumber($mobile, 'home')
+            ->addAddress($name = '', $extended = '', $street = $addressStreet, $city = $addressTown, $region = $addressCity, $zip = $addressPostalCode, $country = $addressCountry, $type = 'WORK POSTAL')
+
+            ->addNote(strip_tags($notes_all));
+        $vcard->download();
+        return new Response(null);
+    }
+
+
+
+
+
+
+
+
+
 }

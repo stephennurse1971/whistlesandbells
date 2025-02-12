@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ImportType;
+use App\Form\PasswordResetType;
 use App\Form\UserType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\UserRepository;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
@@ -29,6 +30,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class UserController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Route("/", name="user_index", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
@@ -38,29 +46,29 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => 'All',
-            'title' => 'All'
+            'title' => 'All',
+            'user_photos_directory' => $this->getParameter('user_photos_directory'),
         ]);
     }
 
     /**
      * @Route("/reset/password/{id}", name="user_reset_password", methods={"GET","POST"})
      */
-    public function resetPassword(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function resetPassword(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(PasswordResetType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $passwordHasher->hashPassword(
                     $user,
                     $form->get('password')->getData()
                 )
             );
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->flush();
             $this->addFlash('success', 'Password reset successfully.');
             return $this->redirect($request->headers->get('referer'));
-
         }
         return $this->render('user/password_reset.html.twig', [
             'form' => $form->createView(),
@@ -69,13 +77,11 @@ class UserController extends AbstractController
     }
 
 
-
-
     /**
      * @Route("/admin/new", name="user_new", methods={"GET","POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function new(MailerInterface $mailer, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
@@ -87,12 +93,31 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $photo = $form->get('photo')->getData();
+            if ($photo) {
+                $uniqueId = uniqid(); // Generates a unique ID
+                $uniqueId3 = substr($uniqueId, 0, 3);
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $user->getFirstName() . '_' . $user->getLastName() . '_' . $uniqueId3 . '.' . $photo->guessExtension();
+                try {
+                    $photo->move(
+                        $this->getParameter('user_photos_directory'),
+                        $newFilename
+                    );
+                    $user->setPhoto($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
             $get_roles = $form->get('role')->getData();
             $roles = $get_roles;
             $password = $form->get('password')->getData();
             if ($password != '') {
                 $user->setPlainPassword($password);
-                $user->setPassword($passwordEncoder->encodePassword($user, $password));
+                // Use the new password hasher interface here
+                $user->setPassword($passwordHasher->hashPassword($user, $password));
             }
             $user->setRoles($roles);
 
@@ -136,25 +161,40 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(int $id, MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder, CmsCopyRepository $cmsCopyRepository, UserRepository $userRepository): Response
+    public function edit(int $id, MailerInterface $mailer, Request $request, UserPasswordHasherInterface $passwordHasher, CmsCopyRepository $cmsCopyRepository, UserRepository $userRepository): Response
     {
         $user = $userRepository->findOneBy([
             'id' => $id,
         ]);
         $referer = $request->server->get('HTTP_REFERER');
-
         $hasAccess = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
-        if ($this->getUser()->getId() == $id || $hasAccess) {
-            $logged_user_fullName = $this->getUser()->getFullName();
 
+        if ($this->getUser()->getId() == $id || $hasAccess) {
+            $old_password = $user->getPassword();
             $roles = $user->getRoles();
             $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
-            $logged_user_roles = $this->getUser()->getRoles();
-            $form->remove('password');
-            $form->handleRequest($request);
 
+            $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $referer = $request->request->get('referer');
+
+                $photo = $form->get('photo')->getData();
+                if ($photo) {
+                    $uniqueId = uniqid(); // Generates a unique ID
+                    $uniqueId3 = substr($uniqueId, 0, 3);
+                    $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $user->getFirstName() . '_' . $user->getLastName() . '_' . $uniqueId3 . '.' . $photo->guessExtension();
+                    try {
+                        $photo->move(
+                            $this->getParameter('user_photos_directory'),
+                            $newFilename
+                        );
+                        $user->setPhoto($newFilename);
+                    } catch (FileException $e) {
+                        die('Import failed');
+                    }
+                }
+
                 if ($form->has('role')) {
                     $get_roles = $form->get('role')->getData();
                     $roles = $get_roles;
@@ -164,44 +204,38 @@ class UserController extends AbstractController
                 $firstName = $user->getFirstName();
                 $lastName = $user->getLastName();
                 $user->setFullName($firstName . ' ' . $lastName);
-                $today = new \DateTime('now');
-                $user->setLastEdited($today);
-                $this->getDoctrine()->getManager()->flush();
 
-                if ($form['sendEmail']->getData() == 1) {
-                    $html = $this->renderView('emails/welcome_email.html.twig', [
-                        'user' => $user,
-                        'roles' => $roles,
-                        'cmsContact' => $cmsContact,
-                        'cmsFamily' => $cmsFamily,
-                        'cmsGuest' => $cmsGuest,
-                        'cmsRecruiter' => $cmsRecruiter,
-                        'cmsJobApplicant' => $cmsJobApplicant,
-                    ]);
-                    $email = (new Email())
-                        ->from('nurse_stephen@hotmail.com')
-                        ->to($user->getEmail())
-                        ->bcc('nurse_stephen@hotmail.com')
-                        ->subject("Welcome to SN's personal website")
-                        ->html($html);
-                    $mailer->send($email);
+                if ($form->has('password')) {
+                    $password = $form->get('password')->getData();
+
+                    if (!empty($password)) {
+                        // Use the new password hasher interface here
+                        $encodedPassword = $passwordHasher->hashPassword($user, $password);
+                        $user->setPassword($encodedPassword);
+                    } else {
+                        // Ensure password is set to an empty string if it's empty (no change to password)
+                        $user->setPassword('');  // Set to empty string, not null
+                    }
                 }
+
+                $this->getDoctrine()->getManager()->flush();
                 return $this->redirect($referer);
             }
-
             return $this->render('user/edit.html.twig', [
                 'user' => $user,
                 'form' => $form->createView(),
-                'roles' => $roles
+                'roles' => $roles,
+                'user_photos_directory' => $this->getParameter('user_photos_directory'),
             ]);
         }
+
         if ($referer) {
             return $this->redirect($referer);
-
         } else {
             return $this->redirectToRoute('user_index');
         }
     }
+
 
     /**
      * @Route("/{id}/{role}/{active}/edit", name="user_edit_button", methods={"GET","POST"})
@@ -412,7 +446,6 @@ class UserController extends AbstractController
     }
 
 
-
     /**
      * @Route("/reset_user_password/{userId}", name="reset_user_password", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
@@ -475,6 +508,56 @@ class UserController extends AbstractController
             'heading' => 'All'
         ]);
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route ("/view_user_photo/{id}", name="user_photo_view")
+     */
+    public function viewCMSPhoto(int $id, UserRepository $userRepository)
+    {
+        $user = $userRepository->find($id);
+        return $this->render('user/image_view.html.twig',[
+            'user_photos_directory' => $this->getParameter('user_photos_directory'),
+            'user' => $user]);
+    }
+
+    /**
+     * @Route("/delete_user_photo_file/{id}", name="user_photo_file_delete", methods={"POST", "GET"})
+     */
+    public function deleteUserPhotoFile(int $id, Request $request, User $user, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $file_name = $user->getPhoto();
+        if ($file_name) {
+            $file = $this->getParameter('user_photos_directory') . $file_name;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+            $user->setPhoto('');
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/user_photos_delete_all_files", name="user_photos_delete_all_files",)
+     */
+    public function deleteAll(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $user_photos = $userRepository->findAll();
+
+        $files = glob($this->getParameter('user_photos_directory') . "/*");
+        foreach ($files as $file) {
+            unlink($file);
+        }
+        $entityManager->flush();
+
+        foreach ($user_photos as $user_photo) {
+            $user_photo->setPhoto(null);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
     }
 
 }

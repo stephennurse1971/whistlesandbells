@@ -1,6 +1,7 @@
 <div class="col-2">
     <table class="table small">
         <tbody>
+        <h4>Website/Email</h4>
         <tr>
             <th>Website</th>
             <td>
@@ -33,6 +34,14 @@
         <tr>
             <th>Password</th>
             <td>{{ company_detail.databasePassword }}</td>
+        </tr>
+        <tr>
+            <th>Export SQL</th>
+            <td>
+                <a class="btn btn-outline-danger btn-sm" href="{{ path('export_database') }}">
+                <i class="fa fa-download"></i>
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -3,12 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Languages;
-use App\Entity\Product;
 use App\Entity\User;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -104,12 +105,16 @@ class UserType extends AbstractType
                 'required' => false
             ])
             ->add('password', PasswordType::class, [
-                // 'mapped' => false,
+                'required' => false,
+                'empty_data' => ''
             ])
-            ->add('sendEmail', HiddenType::class, [
+
+            ->add('photo', FileType::class, [
+                'label' => 'Photo',
                 'mapped' => false,
                 'required' => false
-            ]);
+            ])
+        ;
         $logged_user_roles = $this->security->getUser()->getRoles();
 
         $user_roles = $options['user']->getRoles();
@@ -121,15 +126,7 @@ class UserType extends AbstractType
                     'choices' => [
                         'Super-Admin' => 'ROLE_SUPER_ADMIN',
                         'Admin' => 'ROLE_ADMIN',
-                        'IT' => 'ROLE_IT',
-                        'Family' => 'ROLE_FAMILY',
-                        'Health' => 'ROLE_HEALTH',
-                        'HMRC' => 'ROLE_HMRC',
-                        'Accountant' => 'ROLE_ACCOUNTANT',
-                        'Contact' => 'ROLE_CONTACT',
-                        'Recruiter' => 'ROLE_RECRUITER',
-                        'Job applicant' => 'ROLE_JOB_APPLICANT',
-                        'Guest' => 'ROLE_GUEST'
+                        'User' => 'ROLE_USER'
                     ],
                     // 'mapped' => false
                 ])
@@ -153,4 +150,5 @@ class UserType extends AbstractType
             'user' => null
         ]);
     }
+    
 }

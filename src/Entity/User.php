@@ -7,13 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "user")]
 
 
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -136,6 +137,9 @@ class User implements UserInterface
     #[ORM\ManyToOne]
     private ?Languages $defaultLanguage = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photo = null;
+
     public function __construct()
     {
         $this->logs = new ArrayCollection();
@@ -146,14 +150,21 @@ class User implements UserInterface
         return $this->id;
     }
 
+
+    public function getUserIdentifier(): string
+    {
+        // Typically, the identifier is the user's email or username
+        return $this->email ?? '';
+    }
+
     public function getEmail(): ?string
     {
-        return $this->email;
+        return $this->email ?? '';
     }
 
     public function setEmail(string $email): self
     {
-        $this->email = $email;
+        $this->email = $email ?? '';
         return $this;
     }
 
@@ -599,6 +610,18 @@ class User implements UserInterface
     public function setDefaultLanguage(?Languages $defaultLanguage): static
     {
         $this->defaultLanguage = $defaultLanguage;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
 
         return $this;
     }
