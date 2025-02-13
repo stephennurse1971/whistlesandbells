@@ -3,7 +3,10 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+
+/public/css/update
 /config/secrets/prod/prod.decrypt.private.php
+/public/css/update /
 /public/bundles/
 /public/administration/Attachments
 /public/administration/Import
